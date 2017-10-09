@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<title>My Account - InFlow</title>
+</head>
+<body>
+	<h1>View Basic Account Information Here</h1>
+	<p>{{ settings.UserAccount.first_name }}&nbsp;{{ settings.UserAccount.last_name }}&nbsp;{{ settings.UserAccount.id }}</p>
+	<p>{{ settings.Active }}</p>
+	<p>{{ settings.Joined }}</p>
+	<p>{{ settings.BaseCurrency }}</p>
+	<p>{{ settings.PaymentLevel }}</p>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

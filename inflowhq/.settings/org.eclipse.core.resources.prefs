@@ -1,0 +1,17 @@
+eclipse.preferences.version=1
+encoding//accounts/apps.py=utf-8
+encoding//accounts/models.py=utf-8
+encoding//accounts/tests.py=utf-8
+encoding//accounts/views.py=utf-8
+encoding//contractsandprojects/apps.py=utf-8
+encoding//contractsandprojects/models.py=utf-8
+encoding//contractsandprojects/tests.py=utf-8
+encoding//contractsandprojects/views.py=utf-8
+encoding//inflowco/admin.py=utf-8
+encoding//inflowco/apps.py=utf-8
+encoding//inflowco/models.py=utf-8
+encoding//inflowco/tests.py=utf-8
+encoding//inflowco/views.py=utf-8
+encoding//talktostripe/apps.py=utf-8
+encoding//talktostripe/tests.py=utf-8
+encoding//talktostripe/views.py=utf-8

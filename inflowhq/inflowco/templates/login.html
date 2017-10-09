@@ -1,0 +1,32 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<title>Welcome to InFlow - Please Log In</title>
+</head>
+<body>
+	<h1>This is the start of something very special and cool</h1>
+	<form method="post">
+		<table>
+			<tr>
+				<td>
+					<input type="text" name="username" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="password" name="password" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="submit" value="Login" />
+					{% csrf_token %}
+				</td>
+			</tr>
+		</table>
+	</form>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
