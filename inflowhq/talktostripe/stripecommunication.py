@@ -9,6 +9,7 @@ class StripeCommunication():
     
     def CreateNewStripeCustomerWithId(self,userInformation,**testargs):
         rtnCustomerId = ""
+        
         if (isinstance(userInformation,UserSettings) and (userInformation.StripeApiCustomerKey is None or not userInformation.StripeApiCustomerKey)):
             try:
                 stripe.api_key = self.apiKey
@@ -22,6 +23,7 @@ class StripeCommunication():
                                        description="Inflow Customer %s" % userInformation.UserAccount.username,
                                        email=userInformation.UserAccount.email,
                                        metadata=formeta)
+                
                 userInformation.StripeApiCustomerKey = createdStripeUser["id"]
                 userInformation.save()
             except stripe.error.CardError as e:

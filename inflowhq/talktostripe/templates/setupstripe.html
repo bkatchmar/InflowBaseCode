@@ -3,12 +3,10 @@
 <html>
 <head>
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-	<title>Time To Talk To Stripe</title>
+	<title>Send Users To Stripe</title>
 </head>
 <body>
-	<h1>Hello Stripe, This Is Me</h1>
-	
-	<a href="{% url 'connect' %}">Set Up Your Stripe Account</a>
+	<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{ stripeClientId }}&scope=read_write">Click Here To Get Started With Stripe</a>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://js.stripe.com/v3/"></script>
