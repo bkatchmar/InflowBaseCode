@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost']
 
 STRIPE_TEST_API_SECRET = '[intentionally left out]'
 STRIPE_TEST_PUBLISHABLE_KEY = '[intentionally left out]'
+STRIPE_CONNECT_ACCOUNT = "[intentionally left out]"
 
 # Application definition
 

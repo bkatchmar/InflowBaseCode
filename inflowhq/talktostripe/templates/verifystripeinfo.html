@@ -1,0 +1,136 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=201710151251" />
+	<title>Time To Talk To Stripe</title>
+</head>
+<body>
+	<h1>You Need To Verify Your Stripe Info</h1>
+	
+	<h2>Your Current Account Information</h2>
+	<table>
+		<tr>
+			<th>ID</th>
+			<th>User Name</th>
+			<th>Name On Account</th>
+			<th>Joined On</th>
+		</tr>
+		<tr>
+			<td>{{ settings.UserAccount.id }}</td>
+			<td>{{ settings.UserAccount.username }}</td>
+			<td>{{ settings.UserAccount.first_name }}&nbsp;{{ settings.UserAccount.last_name }}</td>
+			<td>{{ settings.Joined }}</td>
+		</tr>
+	</table>
+	
+	{% if request.method == "POST" %}
+		<p>{{ successMessage }}</p>
+	{% endif %}
+	
+	<h2>Enter Information Needed For Verification</h2>
+	<form method="post" id="stripe-verification">
+		<table>
+			<tr>
+				<td>
+					<select id="legal-entity-type" name="legal-entity-type">
+						<option value="individual" {% if legalEntityType == "individual" %}selected="selected"{% endif %}>Individual</option>
+						<option value="company" {% if legalEntityType == "company" %}selected="selected"{% endif %}>Company</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>Date of Birth: <input type="text" id="date-of-birth" name="date-of-birth" /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>Address Line 1: <input type="text" id="address-1" name="address-1" value="{% if legalEntityAddress.line1 %}{{legalEntityAddress.line1}}{% endif %}" /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>City: <input type="text" id="address-city" name="address-city" value="{% if legalEntityAddress.city %}{{legalEntityAddress.city}}{% endif %}" /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>State: <input type="text" id="address-state" name="address-state" value="{% if legalEntityAddress.state %}{{legalEntityAddress.state}}{% endif %}" /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<p>Postal Code: <input type="text" id="address-zip" name="address-zip" value="{% if legalEntityAddress.postal_code %}{{legalEntityAddress.postal_code}}{% endif %}" /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<div>By registering your account, you agree to our Services Agreement and the Stripe Connected Account Agreement.</div>
+					<input type="submit" value="Register" />
+					{% csrf_token %}
+				</td>
+			</tr>
+		</table>
+	</form>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://js.stripe.com/v3/"></script>
+	<script>
+		var InflowLib = {
+			ValidateAtLeastOneCharacter: function(str) { return str.length > 0; },
+			ValidateSocialSecurity: function(str) { return /^([0-9]{4})$/.test(str); },
+			ValidatePostalCode: function(str) { return /^([0-9]{5})$/.test(str); }
+		};
+	</script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("form#stripe-verification input#date-of-birth").datepicker({showOtherMonths:true,selectOtherMonths:true});
+			jQuery("form#stripe-verification input#date-of-birth").blur(function() {
+				val = jQuery(this).val();
+		        val1 = Date.parse(val);
+		        if (isNaN(val1)==true && val!=='') {
+		        	jQuery(this).val("");
+		        }
+		    });
+			
+			{% if legalEntityDob %}
+				jQuery("form#stripe-verification input#date-of-birth").datepicker("setDate", new Date({{ legalEntityDob.year }}, {{ legalEntityDob.zeroBasedIndexMonth }}, {{ legalEntityDob.day }}))
+			{% endif %}
+			
+			jQuery("form#stripe-verification").submit(function() {
+				enteredDate = jQuery("form#stripe-verification input#date-of-birth").val();
+				val1 = Date.parse(enteredDate);
+		        if (isNaN(val1)===true && enteredDate==="") {
+		        	alert("Need To Enter A Valid Date");
+		        	return false;
+		        }
+		        
+		        var enteredAddressFields = [
+					jQuery("form#stripe-verification input#address-1").val(),
+					jQuery("form#stripe-verification input#address-city").val(),
+					jQuery("form#stripe-verification input#address-state").val(),
+					jQuery("form#stripe-verification input#address-zip").val()];
+		        
+		        // Address Fields
+		        for (var iterator = 0; iterator < enteredAddressFields.length; iterator++) {
+		        	if (!InflowLib.ValidateAtLeastOneCharacter(enteredAddressFields[iterator])) { 
+		        		alert("All Address Fields Required");
+		        		return false;
+			        }	
+		        }
+		        
+		        // Postal Code
+		        if (!InflowLib.ValidatePostalCode(jQuery("form#stripe-verification input#address-zip").val())) {
+		        	alert("Need To Enter A Valid US Postal Code");
+		        	return false;
+		        }
+		        
+				return true;
+			});
+		});
+	</script>
+</body>
+</html>

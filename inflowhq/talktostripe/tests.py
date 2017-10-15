@@ -3,16 +3,18 @@ from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.utils import timezone
 from accounts.models import UserSettings
 from inflowco.models import Currency
 from talktostripe.stripecommunication import StripeCommunication
-import stripe
 import pytz
+import stripe
+import time as _time
 
 class StripeAccountCreationTests(TestCase):
     def setUp(self):
+        stripe.api_key = settings.STRIPE_TEST_API_SECRET
         usd = Currency.objects.create()
         timezone.activate(pytz.timezone("America/New_York"))
         
@@ -47,6 +49,39 @@ class StripeAccountCreationTests(TestCase):
         comm.CreateNewStripeCustomerWithId(settings1,fromtestcase=True)
         comm.CreateNewStripeCustomerWithId(settings2,fromtestcase=True)
         
+        comm.CreateNewStripeCustomAccount(settings1,fromtestcase=True)
+        comm.CreateNewStripeCustomAccount(settings2,fromtestcase=True)
+        
+        # Custom Stripe Account Information
+        accountFromStripeQuery1 = stripe.Account.retrieve(settings1.StripeConnectAccountKey)
+        accountFromStripeQuery2 = stripe.Account.retrieve(settings2.StripeConnectAccountKey)
+        
+        accountFromStripeQuery1 = stripe.Account.retrieve(settings1.StripeConnectAccountKey)
+        accountFromStripeQuery1.legal_entity.dob.day = 30
+        accountFromStripeQuery1.legal_entity.dob.month = 7
+        accountFromStripeQuery1.legal_entity.dob.year = 1986
+        accountFromStripeQuery1.legal_entity.type = "individual"
+        accountFromStripeQuery1.legal_entity.address.line1 = "123 Anywhere Lane"
+        accountFromStripeQuery1.legal_entity.address.city = "New York"
+        accountFromStripeQuery1.legal_entity.address.state = "New York"
+        accountFromStripeQuery1.legal_entity.address.postal_code = 10001
+        accountFromStripeQuery1.tos_acceptance.date = int(_time.time())
+        accountFromStripeQuery1.tos_acceptance.ip = "8.8.8.8"
+        accountFromStripeQuery1.save()
+        
+        accountFromStripeQuery2 = stripe.Account.retrieve(settings2.StripeConnectAccountKey)
+        accountFromStripeQuery2.legal_entity.dob.day = 6
+        accountFromStripeQuery2.legal_entity.dob.month = 3
+        accountFromStripeQuery2.legal_entity.dob.year = 1990
+        accountFromStripeQuery2.legal_entity.type = "company"
+        accountFromStripeQuery2.legal_entity.address.line1 = "456 Other Circle"
+        accountFromStripeQuery2.legal_entity.address.city = "New York"
+        accountFromStripeQuery2.legal_entity.address.state = "New York"
+        accountFromStripeQuery2.legal_entity.address.postal_code = 10001
+        accountFromStripeQuery2.tos_acceptance.date = int(_time.time())
+        accountFromStripeQuery2.tos_acceptance.ip = "8.8.8.8"
+        accountFromStripeQuery2.save()
+        
     def test_stripe_calls(self):
         stripe.api_key = settings.STRIPE_TEST_API_SECRET
         
@@ -69,3 +104,49 @@ class StripeAccountCreationTests(TestCase):
         
         self.assertTrue(userFromStripeQuery1["deleted"])
         self.assertTrue(userFromStripeQuery2["deleted"])
+    
+    def test_stripe_screens_user_kicked_out(self):
+        c = Client()
+        response1 = c.get('/inflow/stripe/')
+        self.assertEqual(302,response1.status_code)
+        
+        response2 = c.get('/inflow/stripe/stripe-setup/')
+        self.assertEqual(302,response2.status_code)
+    
+    def test_stripe_account_creation_and_screens_1(self):
+        stripe.api_key = settings.STRIPE_TEST_API_SECRET
+        stripeuser1 = User.objects.get(username="stripeuser1")
+        settings1 = UserSettings.objects.get(UserAccount=stripeuser1)
+        accountFromStripeQuery1 = stripe.Account.retrieve(settings1.StripeConnectAccountKey)
+        
+        c = Client()
+        loginAttempt = c.login(username='stripeuser1', password='password2')
+        response = c.get('/inflow/stripe/stripe-setup/')
+        
+        self.assertEqual(response.context["legalEntityType"], "individual")
+        self.assertEqual(response.context["legalEntityAddress"]["line1"], "123 Anywhere Lane")
+        self.assertEqual(response.context["legalEntityAddress"]["city"], "New York")
+        self.assertEqual(response.context["legalEntityAddress"]["state"], "New York")
+        self.assertEqual(response.context["legalEntityAddress"]["postal_code"], "10001")
+        self.assertEqual(response.context["legalEntityDob"]["year"], 1986)
+        self.assertEqual(response.context["legalEntityDob"]["month"], 7)
+        self.assertEqual(response.context["legalEntityDob"]["day"], 30)
+        self.assertEqual(response.context["legalEntityDob"]["zeroBasedIndexMonth"], 6)
+        self.assertEqual(200,response.status_code)
+        
+        accountFromStripeQuery1.delete()
+        
+    def test_stripe_account_creation_and_screens_2(self):
+        stripe.api_key = settings.STRIPE_TEST_API_SECRET
+        stripeuser2 = User.objects.get(username="stripeuser2")
+        settings2 = UserSettings.objects.get(UserAccount=stripeuser2)
+        accountFromStripeQuery2 = stripe.Account.retrieve(settings2.StripeConnectAccountKey)
+
+        c = Client()
+        loginAttempt = c.login(username='stripeuser2', password='password3')
+        response = c.get('/inflow/stripe/stripe-setup/')
+        
+        self.assertEqual(response.context["legalEntityType"], "company")
+        self.assertEqual(200,response.status_code)
+        
+        accountFromStripeQuery2.delete()

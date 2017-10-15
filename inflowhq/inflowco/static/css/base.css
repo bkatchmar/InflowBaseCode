@@ -20,4 +20,6 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 table { border-collapse: collapse; border-spacing: 0px; }
 strong { font-weight: bold; }
 
-/* I LIKE CHICKEN FINGERS AND PIZZA */
+/* Beginning My Own Overrides */
+table { margin: 5px; }
+table tr th, table tr td { padding: 5px 15px 5px 5px; text-align: left; }
