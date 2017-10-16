@@ -134,8 +134,6 @@ class StripeAccountCreationTests(TestCase):
         self.assertEqual(response.context["legalEntityDob"]["zeroBasedIndexMonth"], 6)
         self.assertEqual(200,response.status_code)
         
-        accountFromStripeQuery1.delete()
-        
     def test_stripe_account_creation_and_screens_2(self):
         stripe.api_key = settings.STRIPE_TEST_API_SECRET
         stripeuser2 = User.objects.get(username="stripeuser2")
@@ -149,4 +147,43 @@ class StripeAccountCreationTests(TestCase):
         self.assertEqual(response.context["legalEntityType"], "company")
         self.assertEqual(200,response.status_code)
         
-        accountFromStripeQuery2.delete()
+    def test_stripe_account_creation_screen_post_test(self):
+        stripe.api_key = settings.STRIPE_TEST_API_SECRET
+        stripeuser1 = User.objects.get(username="stripeuser1")
+        settings1 = UserSettings.objects.get(UserAccount=stripeuser1)
+        
+        c = Client()
+        loginAttempt = c.login(username='stripeuser1', password='password2')
+        response = c.post("/inflow/stripe/stripe-setup/", {
+                                                           "date-of-birth":"7/30/2000",
+                                                           "legal-entity-type":"individual",
+                                                           "address-1":"61 W 37th Street",
+                                                           "address-city":"New York",
+                                                           "address-state":"New York",
+                                                           "address-zip":"10018"
+                                                           })
+        
+        accountFromStripeQuery1 = stripe.Account.retrieve(settings1.StripeConnectAccountKey)
+        
+        self.assertEqual(response.context["legalEntityType"], accountFromStripeQuery1.legal_entity.type)
+        self.assertEqual(response.context["legalEntityAddress"]["line1"], accountFromStripeQuery1.legal_entity.address.line1)
+        self.assertEqual(response.context["legalEntityAddress"]["city"], accountFromStripeQuery1.legal_entity.address.city)
+        self.assertEqual(response.context["legalEntityAddress"]["state"], accountFromStripeQuery1.legal_entity.address.state)
+        self.assertEqual(response.context["legalEntityAddress"]["postal_code"], accountFromStripeQuery1.legal_entity.address.postal_code)
+        self.assertEqual(response.context["legalEntityDob"]["year"], accountFromStripeQuery1.legal_entity.dob.year)
+        self.assertEqual(response.context["legalEntityDob"]["month"], accountFromStripeQuery1.legal_entity.dob.month)
+        self.assertEqual(response.context["legalEntityDob"]["day"], accountFromStripeQuery1.legal_entity.dob.day)
+        self.assertEqual(response.context["legalEntityDob"]["zeroBasedIndexMonth"], (accountFromStripeQuery1.legal_entity.dob.month-1))
+        self.assertEqual(200,response.status_code)
+        
+        # Reset in case other unit tests have not run yet
+        accountFromStripeQuery1 = stripe.Account.retrieve(settings1.StripeConnectAccountKey)
+        accountFromStripeQuery1.legal_entity.dob.day = 30
+        accountFromStripeQuery1.legal_entity.dob.month = 7
+        accountFromStripeQuery1.legal_entity.dob.year = 1986
+        accountFromStripeQuery1.legal_entity.type = "individual"
+        accountFromStripeQuery1.legal_entity.address.line1 = "123 Anywhere Lane"
+        accountFromStripeQuery1.legal_entity.address.city = "New York"
+        accountFromStripeQuery1.legal_entity.address.state = "New York"
+        accountFromStripeQuery1.legal_entity.address.postal_code = 10001
+        accountFromStripeQuery1.save()

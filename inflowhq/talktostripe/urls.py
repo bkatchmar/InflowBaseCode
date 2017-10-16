@@ -4,5 +4,5 @@ from . import views
 urlpatterns = [
     url(r'^$', views.BaseTalk.as_view(), name='stripebasepoint'),
     url(r'^stripe-setup/$', views.UserEntersBasicStripeAccountInformationAndAcceptsTerms.as_view(), name='connect'),
-    url(r'^stripe-setup/result/$', views.StripeConnectResult.as_view(), name='connectresult'),
+    url(r'^stripe-setup/cards/$', views.UserCards.as_view(), name='cards'),
 ]

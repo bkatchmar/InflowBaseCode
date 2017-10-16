@@ -1,4 +1,4 @@
-# python manage.py updateuserpayments
+# python3 manage.py updateuserpayments
 from django.core.management.base import BaseCommand
 from accounts.models import UserSettings
 
