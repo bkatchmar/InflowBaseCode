@@ -42,6 +42,11 @@
 			</tr>
 			<tr>
 				<td>
+					<p>Business Name: <input type="text" id="business-name" name="business-name" value="{% if legalEntityBusinessName %}{{ legalEntityBusinessName }}{% endif %}" {% if legalEntityType == "individual" %}disabled="disabled"{% endif %} /></p>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<p>Date of Birth: <input type="text" id="date-of-birth" name="date-of-birth" /></p>
 				</td>
 			</tr>
@@ -67,6 +72,17 @@
 			</tr>
 			<tr>
 				<td>
+					{% if ssnLastFourProvided %}
+						<p>Last 4 of SSN Provided, not needed</p>
+						<p>Last Four SSN Digits: <input type="text" id="ssn-last-4" name="ssn-last-4" value="" disabled="disabled" /></p>
+					{% else %}
+						<p>You still need to provide the last 4 digits of your SSN</p>
+						<p>Last Four SSN Digits: <input type="text" id="ssn-last-4" name="ssn-last-4" value="" /></p>
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<div>By registering your account, you agree to our Services Agreement and the Stripe Connected Account Agreement.</div>
 					<input type="submit" value="Register" />
 					{% csrf_token %}
@@ -75,18 +91,49 @@
 		</table>
 	</form>
 	
+	{% if not personalIdProvided %}
+		<table>
+			<tr>
+				<td><p>Personal ID Number: <input type="text" id="personal-id-number" value="" /></p></td>
+			</tr>
+			<tr>
+				<td>
+					<form method="post" id="personal-id-number-verification">
+						<input type="hidden" name="piiStripeToken" />
+						<input type="submit" value="Verify Personal ID Number" />
+						{% csrf_token %}
+					</form>
+				</td>
+			</tr>
+		</table>
+	{% endif %}
+	
+	{% if legalEntityType == "company" and not businessTaxId  %}
+		<table>
+			<tr>
+				<td><p>Business Tax ID: <input type="text" id="business-tax-id" value="" /></p></td>
+			</tr>
+			<tr>
+				<td>
+					<form method="post" id="business-tax-id-verification">
+						<input type="hidden" name="piiBusinessTaxNumber" />
+						<input type="submit" value="Verify Business Tax ID Number" />
+						{% csrf_token %}
+					</form>
+				</td>
+			</tr>
+		</table>
+	{% endif %}
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://js.stripe.com/v3/"></script>
-	<script>
-		var InflowLib = {
-			ValidateAtLeastOneCharacter: function(str) { return str.length > 0; },
-			ValidateSocialSecurity: function(str) { return /^([0-9]{4})$/.test(str); },
-			ValidatePostalCode: function(str) { return /^([0-9]{5})$/.test(str); }
-		};
-	</script>
+	<script src="{% static 'js/inflow.utils.js' %}?d=20171019"></script>
 	<script>
 		jQuery(document).ready(function() {
+			var stripe = Stripe("pk_test_1jY0jXXrP4ov94DS1A1Ndfjp");
+			var elements = stripe.elements();
+			
 			jQuery("form#stripe-verification input#date-of-birth").datepicker({showOtherMonths:true,selectOtherMonths:true});
 			jQuery("form#stripe-verification input#date-of-birth").blur(function() {
 				val = jQuery(this).val();
@@ -100,6 +147,18 @@
 				jQuery("form#stripe-verification input#date-of-birth").datepicker("setDate", new Date({{ legalEntityDob.year }}, {{ legalEntityDob.zeroBasedIndexMonth }}, {{ legalEntityDob.day }}))
 			{% endif %}
 			
+			jQuery("select#legal-entity-type").change(function() {
+					var selectedLegalEntityType = jQuery(this).val();
+					
+					if (selectedLegalEntityType === "individual") {
+						jQuery("input#business-name").attr("disabled", "disabled");
+					}
+					else {
+						jQuery("input#business-name").removeAttr("disabled");
+					}
+				}
+			);
+				
 			jQuery("form#stripe-verification").submit(function() {
 				enteredDate = jQuery("form#stripe-verification input#date-of-birth").val();
 				val1 = Date.parse(enteredDate);
@@ -128,7 +187,64 @@
 		        	return false;
 		        }
 		        
+		        // Last 4 SSN Digits
+		        var lastFourSSN = jQuery("form#stripe-verification input#ssn-last-4").val();
+		        if (InflowLib.ValidateAtLeastOneCharacter(lastFourSSN) && !InflowLib.ValidateSocialSecurity(lastFourSSN)) {
+		        	alert("Must Enter A Valid Value For Last 4 SSN Digits");
+		        	return false;
+		        }
+		        
 				return true;
+			});
+			
+			jQuery("form#personal-id-number-verification").submit(function(e) {
+				e.preventDefault();
+				
+				var personalIdNumber = jQuery("input#personal-id-number").val();
+				if (InflowLib.ValidatePersonalIdNumber(personalIdNumber)) {
+					stripe.createToken('pii', {
+						personal_id_number: personalIdNumber,
+					}).then(function(result) {
+						if (result["error"]) {
+							alert(result["error"]["message"]);
+						}
+						if (result["token"]) {
+							jQuery("form#personal-id-number-verification input[name='piiStripeToken']").val(result["token"]["id"]);
+							var form = document.getElementById("personal-id-number-verification");
+							form.submit();
+						}
+					});
+				}
+				else {
+					alert("Need Full 9 Digit SSN");
+				}
+				
+				return false;
+			});
+			
+			jQuery("form#business-tax-id-verification").submit(function(e) {
+				e.preventDefault();
+				
+				var personalIdNumber = jQuery("input#business-tax-id").val();
+				if (InflowLib.ValidatePersonalIdNumber(personalIdNumber)) {
+					stripe.createToken('pii', {
+						personal_id_number: personalIdNumber,
+					}).then(function(result) {
+						if (result["error"]) {
+							alert(result["error"]["message"]);
+						}
+						if (result["token"]) {
+							jQuery("form#business-tax-id-verification input[name='piiBusinessTaxNumber']").val(result["token"]["id"]);
+							var form = document.getElementById("business-tax-id-verification");
+							form.submit();
+						}
+					});
+				}
+				else {
+					alert("Need Full 9 Digit SSN");
+				}
+				
+				return false;
 			});
 		});
 	</script>

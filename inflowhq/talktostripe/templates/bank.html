@@ -8,36 +8,81 @@
 <body>
 	<h1>Here Are Your Bank Accounts</h1>
 	
+	<h2>Enter Your Bank Account Information</h2>
+	<table>
+		<tr>
+			<td>
+				<p>Bank Account Routing Number: <input type="text" id="routing-number" name="routing-number" /></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>Bank Account Number: <input type="text" id="bank-account-number" name="bank-account-number" /></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<form method="post" id="enter-bank-account">
+					<input type="hidden" name="stripeToken" />
+					<input type="submit" value="Save Bank Account" />
+					{% csrf_token %}
+				</form>
+			</td>
+		</tr>
+	</table>
+	
+	<h2>Here Are Your Bank Accounts</h2>
+	{% for bankAcct in BankAccounts %}
+		<p>{{ bankAcct.account_holder_name }} - {{ bankAcct.bank_name }} - {{ bankAcct.last4 }}</p>
+	{% endfor %}
+	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://js.stripe.com/v3/"></script>
-	<script>
-		function stripeTokenHandler(token) {
-			// Insert the token ID into the form so it gets submitted to the server
-			var form = document.getElementById("bank-payment-form");
-		  	var hiddenInput = document.createElement("input");
-		  	hiddenInput.setAttribute("type", "hidden");
-		  	hiddenInput.setAttribute("name", "stripeToken");
-		  	hiddenInput.setAttribute("value", token.id);
-		  	form.appendChild(hiddenInput);
-
-		  	// Submit the form
-			form.submit();
-		}
-	</script>
+	<script src="{% static 'js/inflow.utils.js' %}?d=201710182037"></script>
 	<script>
 		jQuery(document).ready(function() {
-			if (false) {
+			var stripe = Stripe("pk_test_1jY0jXXrP4ov94DS1A1Ndfjp");
+			var elements = stripe.elements();
+			
+			jQuery("form#enter-bank-account").submit(function(e) {
+				e.preventDefault();
+				
+				var bankingRoutingNumber = jQuery("input#routing-number").val();
+				var bankingAccountNumber = jQuery("input#bank-account-number").val();
+				
+				if (!InflowLib.ValidateBankRoutingNumber(bankingRoutingNumber)) { 
+					alert("Invalid Bank Routing Number");
+					return false;
+				}
+				
+				if (!InflowLib.ValidateAtLeastOneCharacter(bankingAccountNumber)) { 
+					alert("Account Number Needed");
+					return false;
+				}
+				
 				stripe.createToken('bank_account', {
-				country: 'US',
-				currency: 'usd',
-				routing_number: '110000000',
-				account_number: '000123456789',
-				account_holder_name: 'Jenny Rosen',
-				account_holder_type: 'individual',
+					country: 'US',
+					currency: '{{ BaseCurrency }}',
+					routing_number: bankingRoutingNumber,
+					account_number: bankingAccountNumber,
+					account_holder_name: '{{ HolderName }}',
+					account_holder_type: '{{ legalEntityType }}',
 				}).then(function(result) {
-				console.log(result["token"]["id"]);
+					if (result["error"]) {
+						alert(result["error"]["message"]);
+					}
+					if (result["token"]) {
+						jQuery("form#enter-bank-account input[name='stripeToken']").val(result["token"]["id"]);
+						console.log("Returning True");
+						var form = document.getElementById("enter-bank-account");
+						form.submit();
+						return true;
+					}
+					else {
+						return false;
+					}
 				});
-			}
+			});
 		});
 	</script>
 </body>
