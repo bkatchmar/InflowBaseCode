@@ -61,8 +61,8 @@
 				}
 				
 				stripe.createToken('bank_account', {
-					country: 'US',
-					currency: '{{ BaseCurrency }}',
+					country: '{{ BaseCountry.Code }}',
+					currency: '{{ BaseCountry.PrimaryCurrency }}',
 					routing_number: bankingRoutingNumber,
 					account_number: bankingAccountNumber,
 					account_holder_name: '{{ HolderName }}',

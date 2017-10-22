@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils import timezone
-from inflowco.models import Currency
+from inflowco.models import Country, Currency
 
 PAYMENT_LEVELS = (
                   ('s', 'standard'),
@@ -15,7 +15,7 @@ class UserSettings(models.Model):
     UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount")
     Active = models.BooleanField(default=True,verbose_name="Active")
     Joined = models.DateTimeField(default=timezone.now,verbose_name="Joined")
-    BaseCurrency = models.ForeignKey(Currency,unique=False,verbose_name="IdBaseCurrency")
+    BaseCountry = models.ForeignKey(Country,unique=False,verbose_name="IdBaseCountry")
     PaymentLevel = models.CharField(max_length=1,
                             choices=PAYMENT_LEVELS,
                             default='s')
@@ -32,11 +32,18 @@ class UserSettings(models.Model):
             self.UserAccount = loggedin
             self.Active = UserSettings._meta.get_field('Active').get_default()
             self.Joined = UserSettings._meta.get_field('Joined').get_default()
-            self.BaseCurrency = Currency()
-            self.BaseCurrency.IdCurrency = Currency._meta.get_field('IdCurrency').get_default()
-            self.BaseCurrency.Country = Currency._meta.get_field('Country').get_default()
-            self.BaseCurrency.Name = Currency._meta.get_field('Name').get_default()
-            self.BaseCurrency.Code = Currency._meta.get_field('Code').get_default()
+            
+            BaseCurrency = Currency()
+            BaseCurrency.IdCurrency = Currency._meta.get_field('IdCurrency').get_default()
+            BaseCurrency.Country = Currency._meta.get_field('Country').get_default()
+            BaseCurrency.Name = Currency._meta.get_field('Name').get_default()
+            BaseCurrency.Code = Currency._meta.get_field('Code').get_default()
+            
+            self.BaseCountry = Country()
+            self.BaseCountry.IdCountry = Country._meta.get_field('IdCountry').get_default()
+            self.BaseCountry.Name = Country._meta.get_field('Name').get_default()
+            self.BaseCountry.Code = Country._meta.get_field('Code').get_default()
+            self.BaseCountry.PrimaryCurrency = BaseCurrency
             self.PaymentLevel = 's'
             self.UrlSlug = slugify('%s %s' % (loggedin.first_name, loggedin.last_name))
             super(UserSettings, self).save()

@@ -6,7 +6,7 @@ from django.conf import settings
 from django.test import TestCase, Client
 from django.utils import timezone
 from accounts.models import UserSettings
-from inflowco.models import Currency
+from inflowco.models import Country, Currency
 from talktostripe.stripecommunication import StripeCommunication
 import pytz
 import stripe
@@ -16,6 +16,13 @@ class StripeAccountCreationTests(TestCase):
     def setUp(self):
         stripe.api_key = settings.STRIPE_TEST_API_SECRET
         usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
         timezone.activate(pytz.timezone("America/New_York"))
         
         # Users
@@ -34,7 +41,7 @@ class StripeAccountCreationTests(TestCase):
         settings1 = UserSettings.objects.create(UserAccount=user1,
                                     Active=True,
                                     Joined=aware_datetime_first,
-                                    BaseCurrency=usd,
+                                    BaseCountry=USA,
                                     PaymentLevel='s')
         
         date_second = date(2017,10,10)
@@ -42,7 +49,7 @@ class StripeAccountCreationTests(TestCase):
         settings2 = UserSettings.objects.create(UserAccount=user2,
                                     Active=True,
                                     Joined=aware_datetime_second,
-                                    BaseCurrency=usd,
+                                    BaseCountry=USA,
                                     PaymentLevel='s')
         
         comm = StripeCommunication()

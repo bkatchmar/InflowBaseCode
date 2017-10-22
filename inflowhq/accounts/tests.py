@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
-from inflowco.models import Currency
+from inflowco.models import Country, Currency
 import pytz
 
 class BaseUserTestCase(TestCase):
@@ -27,6 +27,14 @@ class BaseUserTestCase(TestCase):
 class UserPaymentHistoryTestCase(TestCase):
     def setUp(self):
         usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        now = datetime.now()
     
         firstUser = User.objects.create(username="brian",
                                         email="brian@workinflow.co",
@@ -64,7 +72,7 @@ class UserPaymentHistoryTestCase(TestCase):
         UserSettings.objects.create(UserAccount=firstUser,
                                     Active=True,
                                     Joined=aware_datetime_first,
-                                    BaseCurrency=usd,
+                                    BaseCountry=USA,
                                     PaymentLevel='s')
         
         date_second = date(2017,9,21)
@@ -73,7 +81,7 @@ class UserPaymentHistoryTestCase(TestCase):
         UserSettings.objects.create(UserAccount=secondUser,
                                     Active=True,
                                     Joined=aware_datetime_second,
-                                    BaseCurrency=usd,
+                                    BaseCountry=USA,
                                     PaymentLevel='s')
         
         date_third = date(2017,9,21)
@@ -82,7 +90,7 @@ class UserPaymentHistoryTestCase(TestCase):
         UserSettings.objects.create(UserAccount=thirdUser,
                                     Active=False,
                                     Joined=aware_datetime_third,
-                                    BaseCurrency=usd,
+                                    BaseCountry=USA,
                                     PaymentLevel='s')
         
         # First User Payments
@@ -97,8 +105,8 @@ class UserPaymentHistoryTestCase(TestCase):
         
         # Second User Payments
         UserPaymentHistory.objects.create(UserAccount=secondUser,
-                                          DateCharged=date(2017,9,21),
-                                          NextBillingDate=date(2017,9,21)+relativedelta(months=+1),
+                                          DateCharged=date(now.year+1,9,21),
+                                          NextBillingDate=date(now.year+1,9,21)+relativedelta(months=+1),
                                           PaymentLevel='s')
         
         # Third User Payments
@@ -153,6 +161,13 @@ class UserPaymentHistoryTestCase(TestCase):
 class UserAuthenticationTestCase(TestCase):
     def setUp(self):
         usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
         testUser = User.objects.create(
                             username="brian",
                             email="brian@workinflow.co",

@@ -15,3 +15,15 @@ class Currency(models.Model):
     
     class Meta:
        db_table = 'Currency'
+       
+class Country(models.Model):
+    IdCountry = models.AutoField(primary_key=True,verbose_name="IdCountry",default=1)
+    Name = models.CharField(max_length=100,verbose_name="Name",default="United States")
+    Code = models.CharField(max_length=5,verbose_name="Code",default="US")
+    PrimaryCurrency = models.ForeignKey(Currency,unique=False,verbose_name="PrimaryCurrency")
+    
+    def __str__(self):
+        return self.Name
+    
+    class Meta:
+        db_table = 'Country'

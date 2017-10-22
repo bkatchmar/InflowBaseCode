@@ -61,7 +61,7 @@ class StripeCommunication():
                     formeta = {"Joined On" : ("%s" % userInformation.Joined),"Inflow Customer":userInformation.UserAccount.username}
                 
                 createdStripeAccount = stripe.Account.create(
-                                                               country="US",
+                                                               country=userInformation.BaseCountry.Code,
                                                                type="custom",
                                                                email=userInformation.UserAccount.email,
                                                                metadata=formeta

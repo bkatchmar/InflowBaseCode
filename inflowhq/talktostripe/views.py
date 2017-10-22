@@ -185,7 +185,7 @@ class UserBankAccounts(LoginRequiredMixin, TemplateView):
         userSettings = self.getUserSettings(request)
         stripeAccount = stripe.Account.retrieve(userSettings.StripeConnectAccountKey)
         
-        context["BaseCurrency"] = userSettings.BaseCurrency.Code
+        context["BaseCountry"] = userSettings.BaseCountry
         context["HolderName"] = ("%s %s" % (userSettings.UserAccount.first_name,userSettings.UserAccount.last_name))
         context["BankAccounts"] = stripeAccount.external_accounts
         
@@ -202,7 +202,7 @@ class UserBankAccounts(LoginRequiredMixin, TemplateView):
         userSettings = self.getUserSettings(request)
         stripeAccount = stripe.Account.retrieve(userSettings.StripeConnectAccountKey)
         
-        context["BaseCurrency"] = userSettings.BaseCurrency.Code
+        context["BaseCountry"] = userSettings.BaseCountry
         context["HolderName"] = ("%s %s" % (userSettings.UserAccount.first_name,userSettings.UserAccount.last_name))
         context["BankAccounts"] = stripeAccount.external_accounts
         
