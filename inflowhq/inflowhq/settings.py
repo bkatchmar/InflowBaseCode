@@ -25,7 +25,7 @@ SECRET_KEY = "[intentionally left out]"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["localhost","http://inflowwinstons-env.ji2ip3mpcu.us-east-1.elasticbeanstalk.com/"]
 
 STRIPE_TEST_API_SECRET = "[intentionally left out]"
 STRIPE_TEST_PUBLISHABLE_KEY = "[intentionally left out]"
