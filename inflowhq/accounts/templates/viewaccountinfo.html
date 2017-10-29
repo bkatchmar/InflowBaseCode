@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
 	<title>My Account - InFlow</title>
 </head>
 <body>
@@ -12,6 +12,11 @@
 	<p>{{ settings.Joined }}</p>
 	<p>{{ settings.BaseCountry }}</p>
 	<p>{{ settings.PaymentLevel }}</p>
+	
+	{% if linkedininfo %}
+		<div>LinkedIn Profile Information</div>
+		<p>{{linkedininfo}}</p>
+	{% endif %}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>
 </html>

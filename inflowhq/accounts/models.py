@@ -22,6 +22,7 @@ class UserSettings(models.Model):
     UrlSlug = models.SlugField(max_length=50,null=True)
     StripeApiCustomerKey = models.CharField(max_length=30,null=True)
     StripeConnectAccountKey = models.CharField(max_length=30,null=True)
+    LinkedInAccessToken = models.CharField(max_length=1000,null=True)
     
     def GetSettingsBasedOnUser(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()

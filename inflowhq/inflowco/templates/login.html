@@ -2,7 +2,7 @@
 <!doctype html>
 <html>
 <head>
-	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
 	<title>Welcome to InFlow - Please Log In</title>
 </head>
 <body>
@@ -27,6 +27,7 @@
 			</tr>
 		</table>
 	</form>
+	<p><a href="{% url 'login' %}?logout=1">Log Out</a></p>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </body>
 </html>

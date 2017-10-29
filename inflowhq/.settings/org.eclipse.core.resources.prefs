@@ -13,5 +13,6 @@ encoding//inflowco/models.py=utf-8
 encoding//inflowco/tests.py=utf-8
 encoding//inflowco/views.py=utf-8
 encoding//talktostripe/apps.py=utf-8
+encoding//talktostripe/models.py=utf-8
 encoding//talktostripe/tests.py=utf-8
 encoding//talktostripe/views.py=utf-8

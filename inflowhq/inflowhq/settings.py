@@ -25,10 +25,17 @@ SECRET_KEY = "[intentionally left out]"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","http://inflowwinstons-env.ji2ip3mpcu.us-east-1.elasticbeanstalk.com/"]
+ALLOWED_HOSTS = ["localhost","inflowwinstons-env.ji2ip3mpcu.us-east-1.elasticbeanstalk.com"]
 
+# Stripe Information
 STRIPE_TEST_API_SECRET = "[intentionally left out]"
 STRIPE_TEST_PUBLISHABLE_KEY = "[intentionally left out]"
+
+# LinkedIn Info
+LINKEDIN_CLIENT_ID = "[intentionally left out]"
+LINKEDIN_CLIENT_SECRET = "[intentionally left out]"
+LINKEDIN_CALL_STATE = "[intentionally left out]"
+LINKEDIN_REDIRECT_URL = "[intentionally left out]"
 
 # Application definition
 
@@ -90,7 +97,6 @@ DATABASES = {
         'PORT': '3306',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

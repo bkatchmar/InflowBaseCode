@@ -1,0 +1,19 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
+	<title>Welcome to InFlow - LinkedIn</title>
+</head>
+<body>
+	<h1>LinkedIn Redirect Will Go Here</h1>
+	{% if linkedinerorrmsg %}
+		<p>{{linkedinerorrmsg}}</p>
+	{% endif %}
+	<p>
+		Make LinkeIn Ask For Your Permission Here: 
+		<a href="https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=78ikt1qlinvfqg&redirect_uri=http%3A%2F%2Flocalhost%3A1234%2Finflow%2Flinkedinhandler%2F&state=BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH">Go To LinkedIn</a>
+	</p>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
