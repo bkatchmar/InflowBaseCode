@@ -1,0 +1,25 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
+	<title>Google Drive File Viewer</title>
+</head>
+<body>
+	<h1>Here Are Your Google Drive Files</h1>
+	
+	{% for name in bucketNames %}
+        <p>{{name}}</p>
+    {% endfor %}
+	
+	<p>Your folder name is: {{folderName}}</p>
+	
+	<form method="post" enctype="multipart/form-data">
+		<input type="file" name="deliverable" />
+		<input type="submit" value="Upload Your Deliverable" />
+		{% csrf_token %}
+	</form>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

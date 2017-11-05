@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from accounts.linkedincalls import LinkedInApi
-from accounts.models import UserSettings
+from accounts.models import UserLinkedInInformation, UserSettings
 
 class AccountInfoView(LoginRequiredMixin, TemplateView):
     template_name = 'viewaccountinfo.html'
@@ -20,10 +20,11 @@ class AccountInfoView(LoginRequiredMixin, TemplateView):
                    'settings':usersettings
                    }
         
-        if usersettings.LinkedInAccessToken is not None:
-            if usersettings.LinkedInAccessToken != "":
+        userLinkedInProfileInfo = UserLinkedInInformation.objects.filter(UserAccount=currentlyloggedinuser).first()
+        if userLinkedInProfileInfo is not None:
+            if userLinkedInProfileInfo.LinkedInAccessToken != "":
                 apiCaller = LinkedInApi()
-                apiLinkeIinInfo = apiCaller.GetBasicProfileInfo(usersettings.LinkedInAccessToken)
+                apiLinkeIinInfo = apiCaller.GetBasicProfileInfo(userLinkedInProfileInfo.LinkedInAccessToken)
                 context["linkedininfo"] = apiLinkeIinInfo
         
         return render(request, self.template_name, context)

@@ -22,7 +22,6 @@ class UserSettings(models.Model):
     UrlSlug = models.SlugField(max_length=50,null=True)
     StripeApiCustomerKey = models.CharField(max_length=30,null=True)
     StripeConnectAccountKey = models.CharField(max_length=30,null=True)
-    LinkedInAccessToken = models.CharField(max_length=1000,null=True)
     
     def GetSettingsBasedOnUser(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()
@@ -106,3 +105,11 @@ class UserPaymentHistory(models.Model):
     
     class Meta:
        db_table = 'UserPaymentHistory'
+       
+class UserLinkedInInformation(models.Model):
+    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount")
+    LinkedInProfileID = models.CharField(max_length=50,null=False)
+    LinkedInAccessToken = models.CharField(max_length=1000,null=False)
+    
+    class Meta:
+       db_table = 'UserLinkedInInformation'

@@ -5,4 +5,5 @@ urlpatterns = [
     url(r'^$', views.LoginView.as_view(), name='login'),
     url(r'^currencies/', views.CurrencyListView.as_view(), name='currencylistview'),
     url(r'^linkedinhandler/', views.LinkedInHandler.as_view(), name='linkedin'),
+    url(r'^amazonboto/', views.AmazonBotoExamples.as_view(), name='amazonboto'),
 ]

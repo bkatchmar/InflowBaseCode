@@ -1,14 +1,15 @@
 from __future__ import unicode_literals
 from accounts.linkedincalls import LinkedInApi
-from accounts.models import UserSettings
+from accounts.models import UserLinkedInInformation, UserSettings
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.utils.http import urlquote
 from django.views.generic import TemplateView
 from inflowco.models import Currency
-import requests
+import boto3
 
 class LoginView(TemplateView):
     template_name = "login.html"
@@ -75,23 +76,24 @@ class LinkedInHandler(TemplateView):
             
         # Next, we handle account create an authorization, if a user is already logged in, this LinkedIn info will be tied to that account
         # Otherwise, we are going to create a brand new user based on what we read from LinkedIn
+        apicaller = LinkedInApi()
+        apilinkedininfo = apicaller.GetBasicProfileInfo(collectedaccesstoken)
+        
         if collectedaccesstoken != "":
             if request.user.is_authenticated:
-                usersettings = UserSettings()
-                usersettings = usersettings.GetSettingsBasedOnUser(request.user)
-                usersettings.LinkedInAccessToken = collectedaccesstoken
-                usersettings.save()
+                userLinkedInProfileInfo = UserLinkedInInformation.objects.filter(UserAccount=request.user).first()
+                if userLinkedInProfileInfo is None:
+                    UserLinkedInInformation.objects.create(UserAccount=request.user,LinkedInProfileID=apilinkedininfo["id"],LinkedInAccessToken=collectedaccesstoken)
+                else:
+                    userLinkedInProfileInfo.LinkedInProfileID = apilinkedininfo["id"]
+                    userLinkedInProfileInfo.LinkedInAccessToken = collectedaccesstoken
+                    userLinkedInProfileInfo.save()
             else:
-                apicaller = LinkedInApi()
-                apilinkedininfo = apicaller.GetBasicProfileInfo(collectedaccesstoken)
                 newlycreateduser = User.objects.create(username=apilinkedininfo["emailAddress"],email=apilinkedininfo["emailAddress"],first_name=apilinkedininfo["firstName"],last_name=apilinkedininfo["lastName"],is_staff=False,is_active=True,is_superuser=False)
                 newlycreateduser.set_password("linkedinprofilenopasswordneeded")
                 newlycreateduser.save()
                 
-                usersettings = UserSettings()
-                usersettings = usersettings.GetSettingsBasedOnUser(newlycreateduser)
-                usersettings.LinkedInAccessToken = collectedaccesstoken
-                usersettings.save()
+                UserLinkedInInformation.objects.create(UserAccount=newlycreateduser,LinkedInProfileID=apilinkedininfo["id"],LinkedInAccessToken=collectedaccesstoken)
                 
                 user = authenticate(request, username=apilinkedininfo["emailAddress"], password="linkedinprofilenopasswordneeded")
                 if user is not None:
@@ -116,3 +118,31 @@ class CurrencyListView(LoginRequiredMixin, TemplateView):
         # Add in a QuerySet of all the currencies
         context['currencies'] = self.get_queryset()
         return context
+
+class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
+    template_name = "boto3.html"
+    
+    def get(self, request):
+        context = {"message":""}
+        amazonCaller = boto3.resource("s3")
+        bucketNames = []
+        deliverableBucket = amazonCaller.Bucket("inflow-deliverables")
+        
+        for bucket in amazonCaller.buckets.all():
+            bucketNames.append(bucket.name)
+            
+        context["bucketNames"] = bucketNames
+        context["folderName"] = request.user.username
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = {}
+        amazonCaller = boto3.resource("s3")
+        deliverableBucket = amazonCaller.Bucket("inflow-deliverables")
+        uploadedDeliverable = request.FILES.get("deliverable", False)
+        
+        if uploadedDeliverable != False:
+            deliverableBucket.put_object(Key=("%s/%s" % (request.user.username, uploadedDeliverable.__str__())), Body=uploadedDeliverable)
+        
+        return render(request, self.template_name, context)
