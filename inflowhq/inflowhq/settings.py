@@ -25,7 +25,7 @@ SECRET_KEY = "[intentionally left out]"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","inflowwinstons-env.ji2ip3mpcu.us-east-1.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com"]
 
 # Stripe Information
 STRIPE_TEST_API_SECRET = "[intentionally left out]"

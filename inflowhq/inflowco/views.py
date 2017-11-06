@@ -126,10 +126,10 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
         context = {"message":""}
         amazonCaller = boto3.resource("s3")
         bucketNames = []
-        deliverableBucket = amazonCaller.Bucket("inflow-deliverables")
+        deliverableBucket = amazonCaller.Bucket("inflow-deliverables-2")
         
-        for bucket in amazonCaller.buckets.all():
-            bucketNames.append(bucket.name)
+        for object in deliverableBucket.objects.all():
+            bucketNames.append(object.key)
             
         context["bucketNames"] = bucketNames
         context["folderName"] = request.user.username
@@ -139,7 +139,7 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
     def post(self, request):
         context = {}
         amazonCaller = boto3.resource("s3")
-        deliverableBucket = amazonCaller.Bucket("inflow-deliverables")
+        deliverableBucket = amazonCaller.Bucket("inflow-deliverables-2")
         uploadedDeliverable = request.FILES.get("deliverable", False)
         
         if uploadedDeliverable != False:
