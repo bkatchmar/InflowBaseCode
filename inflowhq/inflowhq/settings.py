@@ -137,3 +137,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 LOGIN_URL = '/inflow/'
+
+EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
+EMAIL_HOST_USER = "AKIAI6OO52H7X6ZFGGTQ"
+EMAIL_HOST_PASSWORD = "AqH6PVBIqsK2I3+sOwtB99YpRteS0NWB/X0tH/1BdWsD"
+EMAIL_USE_TLS = True

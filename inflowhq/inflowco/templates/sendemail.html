@@ -1,0 +1,17 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
+	<title>Send Email</title>
+</head>
+<body>
+	<h1>Here Are Your Google Drive Files</h1>
+	
+	<form method="post">
+		<input type="submit" value="Send An Email" />
+		{% csrf_token %}
+	</form>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
