@@ -6,5 +6,6 @@ urlpatterns = [
     url(r'^inflow/account/', include('accounts.urls')),
     url(r'^inflow/projects/', include('contractsandprojects.urls')),
     url(r'^inflow/stripe/', include('talktostripe.urls')),
+    url(r'^inflow/demo/', include('inflowdemo.urls')),
     url(r'^admin/', admin.site.urls),
 ]
