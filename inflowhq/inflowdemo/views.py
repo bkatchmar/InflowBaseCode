@@ -7,8 +7,14 @@ class DemoLoginView(TemplateView):
     def get(self, request):
         return render(request, self.template_name)
     
-class DemoLoginGmailOverlayView(TemplateView):
-    template_name = "gmal-overlay.html"
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class DemoMyProjectsScreen(TemplateView):
+    template_name = "myprojects.html"
     
     def get(self, request):
+        return render(request, self.template_name)
+    
+    def post(self, request):
         return render(request, self.template_name)

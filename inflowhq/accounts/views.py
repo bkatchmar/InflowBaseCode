@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
-from accounts.linkedincalls import LinkedInApi
+from accounts.externalapicalls import LinkedInApi
 from accounts.models import UserLinkedInInformation, UserSettings
 
 class AccountInfoView(LoginRequiredMixin, TemplateView):

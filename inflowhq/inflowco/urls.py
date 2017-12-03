@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^linkedinhandler/', views.LinkedInHandler.as_view(), name='linkedin'),
     url(r'^amazonboto/', views.AmazonBotoExamples.as_view(), name='amazonboto'),
     url(r'^sendmail/', views.SendEmail.as_view(), name='mailer'),
+    url(r'^googlehandler/', views.GoogleHandler.as_view(), name='gmail'),
 ]

@@ -1,7 +1,7 @@
 from __future__ import unicode_literals # I have no idea what this even is
 # References from our own library
-from accounts.linkedincalls import LinkedInApi
-from accounts.models import UserLinkedInInformation, UserSettings
+from accounts.externalapicalls import GoogleApi, LinkedInApi
+from accounts.models import UserGoogleInformation, UserLinkedInInformation, UserSettings
 from inflowco.models import Currency
 # Django references
 from django.conf import settings
@@ -110,6 +110,66 @@ class LinkedInHandler(TemplateView):
                     return redirect("/inflow/account/")
         
         return render(request, self.template_name, context)
+
+class GoogleHandler(TemplateView):
+    template_name = "googlelogin.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
+    
+    def post(self, request):
+        # Collect Post Information
+        google_id_token = request.POST.get("google-id-token", "")
+        
+        # First we need to send google_id_token for validation, make sure this request is legit
+        google_api_caller = GoogleApi()
+        google_api_response = google_api_caller.validate_google_token(google_id_token)
+        
+        # If something went wrong, it means something is fishy, perhaps a third party attack, abort and go back to the login screen
+        if google_api_response["response_ok"] == False:
+            return render(request, self.template_name)
+        if google_api_response["email"] is None:
+            return render(request, self.template_name)
+        if google_api_response["sub"] is None:
+            return render(request, self.template_name)
+        
+        # Call the Database to see if a user already exists for this Google User ID
+        # TO DO: It may be appropriate to further identify the variables to see if they match what we got back from Google, but for now that may be overkill
+        user_google_information = UserGoogleInformation.objects.filter(GoogleProfileID=google_api_response["sub"]).first()
+        
+        if user_google_information is None:
+            # Nothing found, I want to check the email address to see if this user already registered, if they did, we can just log them in 
+            user = User.objects.filter(email=google_api_response["email"]).first()
+            
+            if user is None:
+                # Create A New User
+                newly_created_user = User.objects.create(username=google_api_response["email"],
+                                                        email=google_api_response["email"],
+                                                        first_name=google_api_response["given_name"],
+                                                        last_name=google_api_response["family_name"],
+                                                        is_staff=False,
+                                                        is_active=True,
+                                                        is_superuser=False)
+                UserGoogleInformation.objects.create(UserAccount=newly_created_user,
+                                                     GoogleProfileID=google_api_response["sub"],
+                                                     GoogleProfileName=google_api_response["name"],
+                                                     GoogleImageUrl=google_api_response["picture"])
+                login(request, newly_created_user)
+                return redirect("/inflow/account/")
+            else:
+                # Link Google To Existing User
+                UserGoogleInformation.objects.create(UserAccount=user,
+                                                     GoogleProfileID=google_api_response["sub"],
+                                                     GoogleProfileName=google_api_response["name"],
+                                                     GoogleImageUrl=google_api_response["picture"])
+                login(request, newly_created_user)
+                return redirect("/inflow/account/")
+        else:
+            # User exists, go ahead and log them in
+            login(request, user_google_information.UserAccount)
+            return redirect("/inflow/account/")
+        
+        return render(request, self.template_name)
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
     template_name = 'listcurrencies.html'

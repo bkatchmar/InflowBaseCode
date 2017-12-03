@@ -32,3 +32,19 @@ class LinkedInApi():
             return {"LinkedInError":True,"LinkedInErrorMessage":"The Authorization Token Is No Longer Valid"}
         else:
             return r.json()
+        
+class GoogleApi():
+    def validate_google_token(self,token_value):
+        post_url = "https://www.googleapis.com/oauth2/v3/tokeninfo" # Set destination URL here
+        post_fields = { "id_token": token_value }
+        google_resp = requests.post(post_url, params=post_fields)
+        json_resp = google_resp.json()
+        
+        if google_resp.status_code == 200:
+            json_resp["response_ok"] = True
+            if json_resp["email_verified"] is None:
+                json_resp["email_verified"] = False
+        else:
+            json_resp["response_ok"] = False
+            
+        return json_resp

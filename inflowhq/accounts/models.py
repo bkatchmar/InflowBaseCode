@@ -45,7 +45,7 @@ class UserSettings(models.Model):
             self.BaseCountry.Code = Country._meta.get_field('Code').get_default()
             self.BaseCountry.PrimaryCurrency = BaseCurrency
             self.PaymentLevel = 's'
-            self.UrlSlug = slugify('%s %s' % (loggedin.first_name, loggedin.last_name))
+            self.UrlSlug = self.generate_slug_for_new_user(loggedin)
             super(UserSettings, self).save()
             
         return self
@@ -73,6 +73,15 @@ class UserSettings(models.Model):
             return (self.Active)
         else:
             return (lastPayment.NewMonthlyPaymentNeeded() and self.Active)
+        
+    def generate_slug_for_new_user(self,loggedin):
+        generated = slugify("%s %s" % (loggedin.first_name, loggedin.last_name))
+        slugs = UserSettings.objects.filter(UrlSlug=generated)
+        
+        if len(slugs) == 0:
+            return generated
+        else:
+            return ("%s-%d" % (generated, len(slugs)+1))
     
     def __str__(self):
         return self.UserAccount.username
@@ -112,4 +121,13 @@ class UserLinkedInInformation(models.Model):
     LinkedInAccessToken = models.CharField(max_length=1000,null=False)
     
     class Meta:
-       db_table = 'UserLinkedInInformation'
+       db_table = "UserLinkedInInformation"
+       
+class UserGoogleInformation(models.Model):
+    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount")
+    GoogleProfileID = models.CharField(max_length=50,null=False)
+    GoogleProfileName = models.CharField(max_length=150,null=False)
+    GoogleImageUrl = models.CharField(max_length=255,null=False)
+    
+    class Meta:
+       db_table = "UserGoogleInformation"

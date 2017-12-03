@@ -1,0 +1,110 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+<head>
+	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css?d=20171130" />
+	<title>Inflow Demo - Base Login Page</title>
+</head>
+<body>
+	<header>
+		<div class="company">InFlow</div>
+		<nav>
+			<ul>
+				<li>
+					<a href="#">Projects</a>
+				</li>
+				<li>
+					<a href="#">Transactions</a>
+				</li>
+				<li>
+					<a href="#">Profile</a>
+				</li>
+				<li>
+					<a href="#">FAQs</a>
+				</li>
+				<li>
+					<a href="#">Log Out</a>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	<main>
+		<div class="data-table">
+			<div class="header">Projects</div>
+			<div class="info-panel">
+				<div>Project YTD: 0</div>
+				<a href="#base-overlay">Start Project</a>
+			</div>
+			<div class="table">
+				<div class="header">
+					<span>Milestones</span>
+					<span>Placement Text 1</span>
+					<span>Placement Text 1</span>
+					<span>Status</span>
+				</div>
+				<div class="row">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row alt">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row alt">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row alt">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+				<div class="row alt">
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+					<span>--</span>
+				</div>
+			</div>
+		</div>
+		<div class="lean-modal-overlay welcome" id="base-overlay">
+			Xiaoming, put your stuff in this
+		</div>
+	</main>
+	<footer>
+	</footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://s3.us-east-2.amazonaws.com/inflowcssjs/jquery.leanModal.min.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("main div.data-table div.info-panel a").leanModal();
+		});
+	</script>
+</body>
+</html>

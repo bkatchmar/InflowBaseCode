@@ -1,0 +1,39 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css" />
+	<title>Welcome to InFlow - Google</title>
+	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
+</head>
+<body>
+	<h1>Google Redirect Will Go Here</h1>
+	<p>
+		Make Google Ask For Your Permission Here: 
+	</p>
+	<form method="post" id="google-sign-in">
+		<input type="hidden" name="google-id-token" value="" />
+		{% csrf_token %}
+	</form>
+	<div class="g-signin2" data-onsuccess="onSignIn"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script>
+		function onSignIn(googleUser) {
+			{% if request.method == "GET" %}
+				var google_id_token = googleUser.getAuthResponse().id_token;
+				
+				// Fill in the form
+				jQuery("form#google-sign-in input[type='hidden'][name='google-id-token']").val(google_id_token);
+				jQuery("form#google-sign-in").submit();
+			{% endif %}
+		}
+	</script>
+	<script>
+		function signOut() {
+			var auth2 = gapi.auth2.getAuthInstance();
+			auth2.signOut().then(function () { console.log('User signed out.'); });
+		}
+	</script>
+</body>
+</html>
