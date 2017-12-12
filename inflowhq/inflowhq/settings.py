@@ -28,14 +28,14 @@ DEBUG = True
 ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com"]
 
 # Stripe Information
-STRIPE_TEST_API_SECRET = "[intentionally left out]"
-STRIPE_TEST_PUBLISHABLE_KEY = "[intentionally left out]"
+STRIPE_TEST_API_SECRET = "sk_test_ZNyeY1kgGqIgitBn16rLqGNn"
+STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_1jY0jXXrP4ov94DS1A1Ndfjp"
 
 # LinkedIn Info
-LINKEDIN_CLIENT_ID = "[intentionally left out]"
-LINKEDIN_CLIENT_SECRET = "[intentionally left out]"
-LINKEDIN_CALL_STATE = "[intentionally left out]"
-LINKEDIN_REDIRECT_URL = "[intentionally left out]"
+LINKEDIN_CLIENT_ID = "78ikt1qlinvfqg"
+LINKEDIN_CLIENT_SECRET = "JxqIUYwOl3BbEDGz"
+LINKEDIN_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
+LINKEDIN_REDIRECT_URL = "http://localhost:1234/inflow/linkedinhandler/"
 
 # Application definition
 
@@ -89,7 +89,7 @@ SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': { 
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'winston',
         'USER': 'brian',
