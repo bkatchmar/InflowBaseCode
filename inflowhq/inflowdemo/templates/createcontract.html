@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=20171208" />
+	<link rel="stylesheet" href="{% static 'css/create.contract.css' %}?d=20171214" />
+	<title>Inflow Demo - Create New Contract</title>
+</head>
+<body>
+	<header>
+		<div class="label">Create Contract</div>
+	</header>
+	<main ng-app="createContractApp" ng-controller="createContractCtrl">
+		<form class="steps-container" action="/" method="post">
+			<div class="step one">
+				<div class="index">1</div>
+				<div class="name">Contract Name and Type</div>
+			</div>
+			<div class="step two">
+				<div class="index">2</div>
+				<div class="name">Client Information</div>
+			</div>
+		</form>
+	</main>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+		});
+	</script>
+	<script>
+		var app = angular.module("createContractApp", []);
+		app.controller("createContractCtrl", function($scope) {
+			$scope.milestones = [];
+			$scope.milestonesCounter = 1;
+			$scope.addMilestone = function() { }
+		});
+	</script>
+</body>
+</html>

@@ -2,9 +2,9 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-	<link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="https://s3.us-east-2.amazonaws.com/inflowcssjs/base.css?d=20171208" />
-	<title>Inflow Demo - Base Login Page</title>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=201712142115" />
+	<title>Inflow Demo - View My Projects</title>
 </head>
 <body>
 	<header>
@@ -34,7 +34,8 @@
 			<div class="header">Projects</div>
 			<div class="info-panel">
 				<div>Project YTD: 0</div>
-				<a href="#base-overlay">Start Project</a>
+				<a href="{% url 'htmldemos:demo_create_contract' %}">Start Project</a>
+				<a href="#base-overlay" class="hidden"></a>
 			</div>
 			<div class="table">
 				<div class="header">
@@ -202,7 +203,7 @@
 				lightboxes.push(jQuery(obj).attr("id"));
 			});
 			
-			jQuery("main div.data-table div.info-panel a").leanModal();
+			jQuery("main div.data-table div.info-panel a.hidden").leanModal();
 			jQuery("div.lean-modal-overlay span a.next").leanModal();
 			jQuery("a.skip").click(function() { jQuery("#lean_overlay").click(); });
 			jQuery("div.lean-modal-overlay span a.next").click(
@@ -215,6 +216,7 @@
 						}
 					}
 			);
+			jQuery("main div.data-table div.info-panel a.hidden").click();
 		});
 	</script>
 </body>

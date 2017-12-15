@@ -36,6 +36,9 @@ table tr th, table tr td { padding: 5px 15px 5px 5px; text-align: left; }
     display: none;
 }
 
+/* General Code For CSS Transitions */
+.transistor { -webkit-transition: all .3s ease; -moz-transition: all .3s ease; transition: all .3s ease; transition: all .3s ease; }
+
 /* My leanModal Overlay */
 div.lean-modal-overlay { background-color: #EEE; border-radius: 0px; display: none; height: 360px; padding: 0px; width: 500px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 div.lean-modal-overlay div.gmail-login-panel { padding: 0px 0px 0px 70px; width: 40%; }
@@ -57,7 +60,63 @@ div.lean-modal-overlay div.account-creation-panel form input[type=submit],
 div.lean-modal-overlay div.account-creation-panel form input[type=reset] { background-color: #EEE; border: 3px solid #000; border-radius: 0px; box-shadow: 5px 5px 0px #000; color: #111; cursor: pointer; font-size: 14px; margin: 0px 120px 15px; padding: 0px 30px; text-decoration: none; width: auto; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 div.lean-modal-overlay div.account-creation-panel form a.under-account-creation { margin: 0px 150px 15px; text-align: center; width: 320px; }
 
-div.lean-modal-overlay.welcome { border-radius: 10px; height: 200px; padding: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.welcome { border: 2px solid black; border-radius: 10px; height: 194px; padding: 0px; width: 300px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.welcome p.para1 { font-size: 18px; margin: 10px 50px 20px; text-align: center; }
+div.lean-modal-overlay.welcome p.para2 { margin: 10px 10px 0px; text-align: center; line-height: 24px; }
+div.lean-modal-overlay.welcome hr { margin: 60px 0px 10px; border: 1px solid black; }
+div.lean-modal-overlay.welcome span { border-right: 2px solid black; padding: 10px 0px 12px; width: 200px; }
+div.lean-modal-overlay.welcome span:last-child { border-right: none; }
+div.lean-modal-overlay.welcome span a { color: black;  text-decoration: none; overflow: auto; }
+div.lean-modal-overlay.welcome span a.skip { margin: 0px 60px 0px 60px; }
+div.lean-modal-overlay.welcome span a.next { margin: 0px 0px 0px 40px; }
+
+div.lean-modal-overlay.address { border: 2px solid black; border-radius: 10px; height: 310px; padding: 0px; padding: 0px; width: 490px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.address p.para1 { font-size: 18px; margin: 10px 50px 20px; text-align: center; }
+div.lean-modal-overlay.address img { height: 60px; width: 220px; background-color: #EEE; margin: 10px 145px; }
+div.lean-modal-overlay.address div.address-panel form { margin: 15px auto 33px; width: 310px; }
+div.lean-modal-overlay.address div.address-panel form input { border: 2px solid black; display: block; font-size: 17px; line-height: 20px; margin: 0px 0px 5px; width: 295px; }
+div.lean-modal-overlay.address div.address-panel form input.smaller { display: inline-block; width: 100px; }
+div.lean-modal-overlay.address div.address-panel form select { border: 2px solid black; border-radius: 0px; display: inline-block; font-size: 18px; line-height: 18px; }
+div.lean-modal-overlay.address div.address-panel form select:not([multiple]) { background-position: right 50%; background-repeat: no-repeat; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAMCAYAAABSgIzaAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDZFNDEwNjlGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NDZFNDEwNkFGNzFEMTFFMkJEQ0VDRTM1N0RCMzMyMkIiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo0NkU0MTA2N0Y3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo0NkU0MTA2OEY3MUQxMUUyQkRDRUNFMzU3REIzMzIyQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PuGsgwQAAAA5SURBVHjaYvz//z8DOYCJgUxAf42MQIzTk0D/M+KzkRGPoQSdykiKJrBGpOhgJFYTWNEIiEeAAAMAzNENEOH+do8AAAAASUVORK5CYII=); line-height: 22px; height: 26px; width: 80px; -webkit-appearance: none; -moz-appearance: none }
+div.lean-modal-overlay.address div.address-panel form select #mySelect { border-radius: 0px; }
+div.lean-modal-overlay.address hr { margin: 20px 0px 10px; border: 1px solid black; }
+div.lean-modal-overlay.address span { border-right: 2px solid black; padding: 10px 51px 12px; width: 200px; }
+div.lean-modal-overlay.address span:last-child { border-right: none; }
+div.lean-modal-overlay.address span a {  color: black;  text-decoration: none; overflow: auto; }
+div.lean-modal-overlay.address span a.skip { margin: 0px 55px 0px 70px; }
+div.lean-modal-overlay.address span a.next { margin: 0px 0px 0px 40px; }
+
+div.lean-modal-overlay.stripe { border: 2px solid black; border-radius: 10px; height: 320px; padding: 0px; width: 500px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.stripe p.para1 { font-size: 18px; margin: 10px 50px 20px; text-align: center; }
+div.lean-modal-overlay.stripe img { height: 60px; width: 220px; background-color: #EEE; margin: 25px 0px 20px 150px; }
+div.lean-modal-overlay.stripe a#btn { border-right: 2px solid black; color: black; padding: 10px 80px 18px 80px; text-decoration: none; overflow: auto; }
+div.lean-modal-overlay.stripe a#btn:link,
+div.lean-modal-overlay.stripe a#btn:visited,
+div.lean-modal-overlay.stripe a#btn:hover,
+div.lean-modal-overlay.stripe a#btn:active { border: 2px solid #000; box-shadow: 2px 2px 0px #000; color: #111; font-size: 14px; margin: 10px 0px 100px 165px; padding: 3px 50px; text-decoration: none; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; width: 500px; }
+div.lean-modal-overlay.stripe p.para2 { margin: 20px 0px 75px 150px; }
+div.lean-modal-overlay.stripe hr { margin: 0px 0px 10px; border: 1px solid black; }
+div.lean-modal-overlay.stripe span { border-right: 2px solid black; padding: 10px 51px 10px; width: 200px; }
+div.lean-modal-overlay.stripe span:last-child { border-right: none; }
+div.lean-modal-overlay.stripe span a { color: black;  text-decoration: none; overflow: auto; }
+div.lean-modal-overlay.stripe span a.skip { margin: 0px 58px 0px 70px; }
+div.lean-modal-overlay.stripe span a.next { margin: 0px 0px 0px 40px; }
+
+div.lean-modal-overlay.photo { border: 2px solid black; border-radius: 10px; height: 323px; padding: 0px; width: 500px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.photo p.para1 { font-size: 18px; margin: 10px 50px 20px; text-align: center; }
+div.lean-modal-overlay.photo img { height: 140px; width: 200px; background-color: #EEE; margin: 20px 0px 0px 160px; }
+div.lean-modal-overlay.photo a#upload { margin: 0px 0px 10px 230px; }
+div.lean-modal-overlay.photo hr { margin: 60px 0px 10px; border: 1px solid black; }
+div.lean-modal-overlay.photo span { border-right: 2px solid black; padding: 10px 51px 10px; width: 200px; }
+div.lean-modal-overlay.photo span:last-child { border-right: none; }
+div.lean-modal-overlay.photo span a { color: black;  text-decoration: none; overflow: auto; }
+div.lean-modal-overlay.photo span a.skip { margin: 0px 55px 0px 70px; }
+div.lean-modal-overlay.photo span a.next { margin: 0px 0px 0px 40px; }
+
+div.lean-modal-overlay.finish { border: 2px solid black; border-radius: 10px; height: 180px; padding: 0px; width: 370px; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+div.lean-modal-overlay.finish p.para1 { font-size: 18px; margin: 10px 50px 110px; text-align: center; width: 272px; }
+div.lean-modal-overlay.finish hr { margin: 60px 0px 12px; border: 1px solid black; }
+div.lean-modal-overlay.finish a { color: black; padding: 10px 170px 18px; text-align: center; text-decoration: none; }
 
 /* Demo Level CSS - Low Fidelity */
 body { background-color: #EEE; color: #111; font-family: Lato, Verdana, sans-serif; margin: 0px auto; width: 1024px; }
@@ -101,6 +160,7 @@ main div.data-table div.info-panel a:link,
 main div.data-table div.info-panel a:visited, 
 main div.data-table div.info-panel a:hover, 
 main div.data-table div.info-panel a:active { border: 3px solid #000; box-shadow: 5px 5px 0px #000; color: #111; float: right; font-size: 14px; margin: 10px 0px 0px 0px; padding: 3px 10px; text-decoration: none; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; }
+main div.data-table div.info-panel a.hidden, main div.data-table div.info-panel a.hidden:link { display: none; }
 main div.data-table div.table { float: right; }
 main div.data-table div.table div.header { background-color: #aaa; font-size: 16px; margin: 0px; }
 main div.data-table div.table div.row { background-color: #ddd; }
