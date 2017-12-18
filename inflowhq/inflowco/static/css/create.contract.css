@@ -24,7 +24,7 @@ main form.steps-container div.step div.controls a:hover,
 main form.steps-container div.step div.controls a:active { padding: 5px 10px; text-decoration: none; }
 main form.steps-container div.step div.controls.off { height: 0px; padding: 0px; }
 
-main form.steps-container div.step div.form span.clicker { background-color: #000; color: #FFF; cursor: pointer; display: inline-block; font-size: 34px; line-height: 20px; margin: 0px 10px; padding: 0px 20px 0px 5px; }
+main form.steps-container div.step div.form span.clicker { background-color: #000; border-radius: 5px; color: #FFF; cursor: pointer; display: inline-block; font-size: 34px; line-height: 20px; margin: 0px 10px; padding: 0px 20px 3px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 main form.steps-container div.step div.form span.clicker.on { background-color: #FFF; color: #000; padding: 0px 5px 0px 20px; }
 main form.steps-container div.step div.form span.clicker-status { display: inline-block; vertical-align: top; }
 
@@ -43,7 +43,7 @@ main form.steps-container div.step div.form div.frequency-container { margin: 25
 main form.steps-container div.step div.form span.radio { background-color: #000; color: #FFF; display: inline-block; margin: 0px 15px 10px 0px; padding: 10px 30px; text-align: center; width: 170px; }
 main form.steps-container div.step div.form span.radio input[type="radio"] { margin: 0px 20px 0px 0px; }
 
-main form.steps-container div.summary { background-color: #DDD; border: 1px solid #666; clear: both; float: left; margin: 30px 0px 0px 40px; padding: 10px 50px; width: 800px; }
+main form.steps-container div.summary { background-color: #DDD; border: 1px solid #666; clear: both; float: left; margin: 30px 0px 25px 40px; padding: 10px 50px; width: 800px; }
 main form.steps-container div.summary.off { display: none; }
 main form.steps-container div.summary div.line { padding: 0px 0px 10px; }
 main form.steps-container div.summary div.section { border-bottom: 1px solid #666; padding: 10px 0px; }
