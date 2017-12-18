@@ -3,38 +3,247 @@
 <html lang="en-US">
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=20171208" />
-	<link rel="stylesheet" href="{% static 'css/create.contract.css' %}?d=20171214" />
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/create.contract.css' %}?d=201712172019" />
 	<title>Inflow Demo - Create New Contract</title>
 </head>
 <body>
 	<header>
 		<div class="label">Create Contract</div>
 	</header>
-	<main ng-app="createContractApp" ng-controller="createContractCtrl">
-		<form class="steps-container" action="/" method="post">
+	<main ng-app="createContractApp" ng-controller="createContractCtrl" ng-init="contractBasis='deliverables';autoDistribute='Off';currentStep='One';billingAddressCountry='United States';step='one'">
+		<form class="steps-container" action="{% url 'htmldemos:demo_create_contract' %}" method="post">
 			<div class="step one">
 				<div class="index">1</div>
 				<div class="name">Contract Name and Type</div>
+				<div class="form transistor" ng-class="{'off': step!='one'}">
+					<input type="text" name="contract-name" placeholder="Contract Name" ng-model="contractName" />
+					<div class="form-label">This contract is based on:</div>
+					<div class="radio"><input type="radio" name="contract-basis" value="deliverables" checked="checked" ng-model="contractBasis" />Deliverables</div>
+					<div class="radio"><input type="radio" name="contract-basis" value="time" ng-model="contractBasis" />Time</div>
+				</div>
+				<div class="controls transistor" ng-class="{'off': step!='one'}">
+					<span class="cancel">Back</span>
+					<span class="forward" ng-click="changeStep('two')">Continue</span>
+				</div>
 			</div>
 			<div class="step two">
 				<div class="index">2</div>
 				<div class="name">Client Information</div>
+				<div class="form transistor off" ng-class="{'off': step!='two'}">
+					<div class="form-label">Client's Billing Name</div>
+					<input type="text" name="client-billing-name" placeholder="Full Name (e.g., AT&T, Sarah Beckinsworth, etc.)" class="whole-width" ng-model="billingName" />
+					<div class="form-label">Name on Contact (if different from above)</div>
+					<input type="text" name="client-contact-name" placeholder="Client Full Name (e.g., AT&T, Sarah Beckinsworth, etc.)" class="whole-width" ng-model="billingContactName" />
+					<div class="form-label">Email</div>
+					<input type="email" name="client-emai" placeholder="Email" class="whole-width" ng-model="billingContactEmail" />
+					<div class="form-label">Address</div>
+					<input type="text" name="client-address-1" placeholder="Address" class="whole-width" ng-model="billingAddress1" />
+					<input type="text" name="client-address-2" placeholder="Address 2" class="whole-width"  ng-model="billingAddress2" />
+					<input type="text" name="client-zip" placeholder="ZIP" class="zip"  ng-model="billingAddressZip" />
+					<input type="text" name="client-city" placeholder="City" class="city"  ng-model="billingAddressCity" />
+					<input type="text" name="client-state" placeholder="State" class="state"  ng-model="billingAddressState" />
+				</div>
+				<div class="controls transistor off" ng-class="{'off': step!='two'}">
+					<span class="cancel" ng-click="changeStep('one')">Back</span>
+					<span class="forward" ng-click="changeStep('three')">Continue</span>
+				</div>
 			</div>
+			<div class="step three">
+				<div class="index">3</div>
+				<div class="name">Terms</div>
+				<div class="form transistor off" ng-class="{'off': step!='three'}">
+					<div class="milestone-container" ng-class="{'off': contractBasis==='time'}">
+						<div ng-repeat="m in milestones">
+							<div class="form-label">Milestone <span ng-bind="m.index"></span></div>
+							<input type="text" name="milestone-nickname" placeholder="Milestone Nickname" class="nickname" ng-model="m.nickname" />
+							<input type="text" name="milestone-revisions" placeholder="# of Revisions" class="revisions" ng-model="m.revisions" />
+							<textarea name="milestone-description" rows="5" placeholder="Describe the Milestone" class="description" ng-model="m.description"></textarea>
+						</div>
+						<span class="add-milestone" ng-click="addMilestone()">Add Milestone</span>
+					</div>
+					<div class="time-container off" ng-class="{'off': contractBasis==='deliverables'}">
+						<div class="form-label">Contract Start Date</div>
+						<input type="text" name="time-start-date" placeholder="MM/DD/YY" />
+						<div class="form-label">Contract End Date</div>
+						<input type="text" name="time-end-date" placeholder="MM/DD/YY" />
+					</div>
+				</div>
+				<div class="controls transistor off" ng-class="{'off': step!='three'}">
+					<span class="cancel" ng-click="changeStep('two')">Back</span>
+					<span class="forward" ng-click="changeStep('four')">Continue</span>
+				</div>
+			</div>
+			<div class="step four">
+				<div class="index">4</div>
+				<div class="name">Payment</div>
+				<div class="form transistor off" ng-class="{'off': step!='four'}">
+					<div class="milestone-container" ng-class="{'off': contractBasis==='time'}">
+						<div class="form-label">Total Project Cost</div>
+						<input type="text" name="milestone-total-project-cost" placeholder="Enter Dollar Amount" ng-model="milestoneTotal" />
+						<div class="form-label">
+							<span class="clicker-status">Autodistribute</span>
+							<span class="clicker transistor" ng-class="{'on': autoDistribute==='On'}" ng-click="changeAutoDistribution()">&#183;</span>
+							<span class="clicker-status" ng-bind="autoDistribute"></span>
+						</div>
+						<table>
+							<tr ng-repeat="m in milestones">
+								<td><span ng-bind="m.nickname" class="nickname"></span></td>
+								<td><input type="text" name="milestone-distribution" placeholder="dollar amount" ng-model="m.distribution" /></td>
+							</tr>
+						</table>
+						<div class="form-label">Kill Fee</div>
+						<input type="text" name="milestone-kill-fee" placeholder="Enter Dollar Amount" ng-model="milestoneTimeKillFee" />
+						<div class="form-label">Extra Revision Fee</div>
+						<input type="text" name="extra-revision-fee" placeholder="Enter Dollar Amount" ng-model="milestoneExtraRevisionFee" />
+						<div class="form-label">Late Revision Fee</div>
+						<input type="text" name="late-revision-fee" placeholder="Enter Dollar Amount" ng-model="milestoneLateRevisionFee" />
+					</div>
+					<div class="time-container off" ng-class="{'off': contractBasis==='deliverables'}">
+						<div class="form-label">Total Project Cost</div>
+						<input type="text" name="time-total-project-cost" placeholder="Enter Dollar Amount" ng-model="timeTotal" />
+						<div class="form-label">Payment Frequency</div>
+						<div class="frequency-container">
+							<span class="radio"><input type="radio" name="payment-frequency" value="weekly" checked="checked" ng-model="contractTimeFrequency" />Weekly</span>
+							<span class="radio"><input type="radio" name="payment-frequency" value="monthly" ng-model="contractTimeFrequency" />Monthly</span>
+							<span class="radio"><input type="radio" name="payment-frequency" value="bi-weekly" ng-model="contractTimeFrequency" />Bi-Weekly</span>
+							<span class="radio"><input type="radio" name="payment-frequency" value="one-sum" ng-model="contractTimeFrequency" />One Sum</span>
+						</div>
+						<div class="form-label">Kill Fee</div>
+						<input type="text" name="time-kill-fee" placeholder="Enter Dollar Amount" ng-model="contractTimeKillFee" />
+					</div>
+				</div>
+				<div class="controls transistor off" ng-class="{'off': step!='four'}">
+					<span class="cancel"  ng-click="changeStep('three')">Back</span>
+					<span class="forward" ng-click="changeStep('five')">Continue</span>
+				</div>
+			</div>
+			<div class="step five">
+				<div class="index">5</div>
+				<div class="name">Review and Send</div>
+			</div>
+			<div class="summary transistor off" ng-class="{'off': step!='five'}">
+				<div class="section">
+					<div>
+						<span class="header">Contract Name</span>
+						<span class="value" ng-bind="contractName"></span>
+					</div>
+				</div>
+				<div class="section">
+					<div class="line">
+						<span class="header">Name of Contact</span>
+						<span class="value" ng-bind="billingContactName"></span>
+					</div>
+					<div class="line">
+						<span class="header">Billing Name</span>
+						<span class="value" ng-bind="billingName"></span>
+					</div>
+					<div class="line">
+						<span class="header">Email</span>
+						<span class="value" ng-bind="billingContactEmail"></span>
+					</div>
+					<div class="line">
+						<span class="header">Address</span>
+						<span class="value">
+							<span ng-bind="billingAddress1"></span><br />
+							<span ng-bind="billingAddress2" class="off" ng-class="{'off': billingAddress2===''}"></span><br class="off" ng-class="{'off': billingAddress2===''}" />
+							<span ng-bind="billingAddressCity"></span>,&nbsp;<span ng-bind="billingAddressState"></span>&nbsp;<span ng-bind="billingAddressZip"></span><br />
+							<span ng-bind="billingAddressCountry"></span>
+						</span>
+					</div>
+				</div>
+				<div class="section" ng-class="{'off': contractBasis==='time'}">
+					<div class="line">
+						<span class="header">Project Cost</span>
+						<span class="value" ng-bind="milestoneTotal"></span>
+					</div>
+					<div class="line milestones" ng-repeat="m in milestones">
+						<span class="header">Milestone <span ng-bind="m.index"></span></span>
+						<span class="value">
+							<span ng-bind="m.nickname"></span>
+							<span ng-bind="m.distribution"></span>
+							<span><a href="#">view description</a></span>
+						</span>
+					</div>
+					<div class="line">
+						<span class="header">Kill Fee</span>
+						<span class="value" ng-bind="milestoneTimeKillFee"></span>
+					</div>
+					<div class="line">
+						<span class="header">Extra Revision Fee</span>
+						<span class="value" ng-bind="milestoneExtraRevisionFee"></span>
+					</div>
+					<div class="line">
+						<span class="header">Late Revision Fee</span>
+						<span class="value" ng-bind="milestoneLateRevisionFee"></span>
+					</div>
+				</div>
+				<div class="section" ng-class="{'off': contractBasis==='deliverables'}">
+					<div class="line">
+						<span class="header">Project Cost</span>
+						<span class="value" ng-bind="timeTotal"></span>
+					</div>
+					<div class="line">
+						<span class="header">Payment Frequency</span>
+						<span class="value" ng-bind="contractTimeFrequency"></span>
+					</div>
+					<div class="line">
+						<span class="header">Kill Fee</span>
+						<span class="value" ng-bind="contractTimeKillFee"></span>
+					</div>
+				</div>
+				<div class="confirm">
+					<span>Selecting 'Fill Contract' means all the information you entered is accurate. <a href="#fill-contract-overlay">Fill Contract</a></span>
+				</div>
+			</div>
+			<div class="lean-modal-overlay" id="fill-contract-overlay">
+				<div class="header">Contract For <span ng-bind="billingName"></span></div>
+				<div class="sub-header">You Are using the Milestone Contract. Please read it to make sure everything is accurate.</div>
+				<textarea>Contract Lorem Ipsum 
+				
+				A. sit amet, consectetur adipiscing elit. Aenean et gravida nisl, at laoreet eros. Nam condimentum erat non sem lacinia, in mattis metus ullamcorper. Maecenas vel tortor sed enim ultricies tempor. Aenean eget neque et ante tempor elementum. Etiam ut consectetur lacus. Vestibulum ac lectus a tortor pellentesque ultrices in at lectus. Suspendisse potenti. In tempus, metus eu dictum mollis, elit risus auctor tortor, sagittis suscipit arcu tortor id eros. Duis commodo pulvinar efficitur. Aenean a urna sit amet tortor luctus pulvinar. Praesent auctor ut felis hendrerit aliquet.</textarea>
+				<input type="checkbox" name="acknowledgement" />
+				<span class="acknowledgement">I acknowledge that I have read the contract and agree that all etc etc etc</span>
+				<div class="electronic-signature-label">Electronic Signature</div>
+				<input type="text" name="electronic-signature" placeholder="Full Name" />
+				<div class="submisson">
+					<input type="submit" value="Send To Client" />
+					<span class="cancel">Cancel</span>
+				</div>
+			</div>
+			{% csrf_token %}
 		</form>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://s3.us-east-2.amazonaws.com/inflowcssjs/jquery.leanModal.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script>
 		jQuery(document).ready(function() {
+			jQuery("main form.steps-container div.step.three div.form div.time-container input[type='text']").datepicker({showOtherMonths:true,selectOtherMonths:true});
+			jQuery("main form.steps-container div.summary div.confirm a").leanModal({closeButton: "span.cancel"});
 		});
 	</script>
 	<script>
 		var app = angular.module("createContractApp", []);
 		app.controller("createContractCtrl", function($scope) {
-			$scope.milestones = [];
+			$scope.milestones = [{"index":1,"nickname":"","revisions":"","description":"","distribution":0}];
 			$scope.milestonesCounter = 1;
-			$scope.addMilestone = function() { }
+			$scope.addMilestone = function() {
+				$scope.milestonesCounter = $scope.milestonesCounter + 1;
+				$scope.milestones.push({"index":$scope.milestonesCounter,"nickname":"","revisions":"","description":"","distribution":0});
+			}
+			$scope.changeStep = function(stepNumber) {
+				$scope.step = stepNumber;
+			}
+			$scope.changeAutoDistribution = function() {
+				if ($scope.autoDistribute==="On") {
+					$scope.autoDistribute="Off";
+				} else {
+					$scope.autoDistribute="On";
+				}
+			}
 		});
 	</script>
 </body>
