@@ -7,7 +7,7 @@ main { margin: 0px auto; width: 1024px; }
 main form.steps-container { border-left: 1px #000 solid; margin: 70px 0px 0px; }
 main form.steps-container div.step { padding: 0px 0px 25px; }
 main form.steps-container div.step div.index { background-color: #000; border-radius: 25px; color: #FFF; float: left; margin: 0px 0px 0px -15px; padding: 7px 10px; -moz-border-radius: 25px; -webkit-border-radius: 25px; }
-main form.steps-container div.step div.name { padding: 0px 0px 0px 40px; }
+main form.steps-container div.step div.name { cursor: pointer; padding: 0px 0px 0px 40px; }
 main form.steps-container div.step div.form { color: #555; margin: 15px 0px 0px; overflow: hidden; padding: 0px 0px 0px 40px; }
 main form.steps-container div.step div.form div.milestone-container.off, main form.steps-container div.step div.form div.time-container.off { display: none; }
 main form.steps-container div.step div.form input[type="text"],
@@ -68,24 +68,31 @@ main form.steps-container div.summary div.line.milestones span.value span a:acti
 main form.steps-container div.step.one div.form { height: 120px; }
 main form.steps-container div.step.one div.form.off { height: 0px; margin: 0px; }
 main form.steps-container div.step.one div.form input[type="text"] { width: 175px; }
-main form.steps-container div.step.two div.form { height: auto; }
+main form.steps-container div.step.two div.form { height: 370px; }
 main form.steps-container div.step.two div.form.off { height: 0px; margin: 0px; }
 main form.steps-container div.step.two div.form input[type="text"].zip { margin: 0px 20px 0px 0px; width: 120px; }
 main form.steps-container div.step.two div.form input[type="text"].city { margin: 0px 20px 0px 0px; width: 150px; }
 main form.steps-container div.step.two div.form input[type="text"].state { width: 150px; }
-main form.steps-container div.step.three div.form { height: auto; }
 main form.steps-container div.step.three div.form.off { height: 0px; margin: 0px; }
+main form.steps-container div.step.three div.form div.milestone-container { height: auto; }
+main form.steps-container div.step.three div.form div.milestone-container.off { height: 0px; }
+main form.steps-container div.step.three div.form div.time-container { height: 120px; }
+main form.steps-container div.step.three div.form div.time-container.off { height: 0px; }
 main form.steps-container div.step.three div.form textarea { display: block; margin: 10px 0px; width: 300px; }
 main form.steps-container div.step.three div.form div.milestone-container span.add-milestone { color: #000; cursor: pointer; text-decoration: underline; }
 main form.steps-container div.step.three div.form input[type="text"].nickname { width: 170px; }
 main form.steps-container div.step.three div.form input[type="text"].revisions { width: 100px; }
-main form.steps-container div.step.four div.form { height: auto; }
 main form.steps-container div.step.four div.form.off { height: 0px; margin: 0px; }
+main form.steps-container div.step.four div.form div.milestone-container { height: auto; }
+main form.steps-container div.step.four div.form div.milestone-container.off { height: 0px; }
+main form.steps-container div.step.four div.form div.time-container { height: 280px; }
+main form.steps-container div.step.four div.form div.time-container.off { height: 0px; }
 main form.steps-container div.step.four div.form table span.nickname { display: inline-block; overflow: hidden; text-overflow: ellipsis; width: 200px; white-space: nowrap; }
 main form.steps-container div.step.five { padding: 0px; }
 main form.steps-container div.step.five div.form.off { height: 0px; margin: 0px; }
 
 div.lean-modal-overlay { background-color: #BBB; border: 1px #444 solid; height: 450px; padding: 25px; width: 600px; }
+div.lean-modal-overlay div.super-header { margin: 10px 0px 25px; font-size: 28px; font-weight: bold; }
 div.lean-modal-overlay div.header { font-weight: bold; margin: 0px 0px 15px; }
 div.lean-modal-overlay div.sub-header { font-size: 14px; }
 div.lean-modal-overlay textarea { display: block; height: 240px; margin: 25px 0px 10px; width: 100%; }
@@ -93,5 +100,7 @@ div.lean-modal-overlay span.acknowledgement { font-size: 12px; }
 div.lean-modal-overlay div.electronic-signature-label { font-size: 18px; margin: 10px 0px 5px; }
 div.lean-modal-overlay input[name="electronic-signature"] { padding: 5px 0px 5px 5px; width: 100%;  }
 div.lean-modal-overlay div.submisson { margin: 10px 0px; overflow: auto;  }
-div.lean-modal-overlay div.submisson span.cancel { background-color: #FFF; display: inline-block; float: right; margin: 0px 10px 0px 0px; padding: 3px 10px; }
+div.lean-modal-overlay div.submisson span.cancel { background-color: #FFF; cursor: pointer; display: inline-block; float: right; margin: 0px 10px 0px 0px; padding: 3px 10px; }
 div.lean-modal-overlay div.submisson input[type="submit"] { background-color: #000; border: none; color: #FFF; float: right; font-family: Lato, Verdana, sans-serif; font-size: 16px; }
+div.lean-modal-overlay.congrats { height: auto; text-align: center; }
+a.off { display: none; }

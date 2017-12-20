@@ -16,7 +16,7 @@
 		<form class="steps-container" action="{% url 'htmldemos:demo_create_contract' %}" method="post">
 			<div class="step one">
 				<div class="index">1</div>
-				<div class="name">Contract Name and Type</div>
+				<div class="name" ng-click="changeStep('one')">Contract Name and Type</div>
 				<div class="form transistor" ng-class="{'off': step!='one'}">
 					<input type="text" name="contract-name" placeholder="Contract Name" ng-model="contractName" />
 					<div class="form-label">This contract is based on:</div>
@@ -30,7 +30,7 @@
 			</div>
 			<div class="step two">
 				<div class="index">2</div>
-				<div class="name">Client Information</div>
+				<div class="name" ng-click="changeStep('two')">Client Information</div>
 				<div class="form transistor off" ng-class="{'off': step!='two'}">
 					<div class="form-label">Client's Billing Name</div>
 					<input type="text" name="client-billing-name" placeholder="Full Name (e.g., AT&T, Sarah Beckinsworth, etc.)" class="whole-width" ng-model="billingName" />
@@ -52,9 +52,9 @@
 			</div>
 			<div class="step three">
 				<div class="index">3</div>
-				<div class="name">Terms</div>
-				<div class="form transistor off" ng-class="{'off': step!='three'}">
-					<div class="milestone-container" ng-class="{'off': contractBasis==='time'}">
+				<div class="name" ng-click="changeStep('three')">Terms</div>
+				<div class="form off" ng-class="{'off': step!='three'}">
+					<div class="milestone-container transistor" ng-class="{'off': contractBasis==='time'}">
 						<div ng-repeat="m in milestones">
 							<div class="form-label">Milestone <span ng-bind="m.index"></span></div>
 							<input type="text" name="milestone-nickname" placeholder="Milestone Nickname" class="nickname" ng-model="m.nickname" />
@@ -63,7 +63,7 @@
 						</div>
 						<span class="add-milestone" ng-click="addMilestone()">Add Milestone</span>
 					</div>
-					<div class="time-container off" ng-class="{'off': contractBasis==='deliverables'}">
+					<div class="time-container transistor off" ng-class="{'off': contractBasis==='deliverables'}">
 						<div class="form-label">Contract Start Date</div>
 						<input type="text" name="time-start-date" placeholder="MM/DD/YY" />
 						<div class="form-label">Contract End Date</div>
@@ -77,9 +77,9 @@
 			</div>
 			<div class="step four">
 				<div class="index">4</div>
-				<div class="name">Payment</div>
-				<div class="form transistor off" ng-class="{'off': step!='four'}">
-					<div class="milestone-container" ng-class="{'off': contractBasis==='time'}">
+				<div class="name" ng-click="changeStep('four')">Payment</div>
+				<div class="form off" ng-class="{'off': step!='four'}">
+					<div class="milestone-container transistor" ng-class="{'off': contractBasis==='time'}">
 						<div class="form-label">Total Project Cost</div>
 						<input type="text" name="milestone-total-project-cost" placeholder="Enter Dollar Amount" ng-model="milestoneTotal" />
 						<div class="form-label">
@@ -100,7 +100,7 @@
 						<div class="form-label">Late Revision Fee</div>
 						<input type="text" name="late-revision-fee" placeholder="Enter Dollar Amount" ng-model="milestoneLateRevisionFee" />
 					</div>
-					<div class="time-container off" ng-class="{'off': contractBasis==='deliverables'}">
+					<div class="time-container transistor off" ng-class="{'off': contractBasis==='deliverables'}">
 						<div class="form-label">Total Project Cost</div>
 						<input type="text" name="time-total-project-cost" placeholder="Enter Dollar Amount" ng-model="timeTotal" />
 						<div class="form-label">Payment Frequency</div>
@@ -121,7 +121,7 @@
 			</div>
 			<div class="step five">
 				<div class="index">5</div>
-				<div class="name">Review and Send</div>
+				<div class="name" ng-click="changeStep('five')">Review and Send</div>
 			</div>
 			<div class="summary transistor off" ng-class="{'off': step!='five'}">
 				<div class="section">
@@ -214,6 +214,14 @@
 			</div>
 			{% csrf_token %}
 		</form>
+		<div class="lean-modal-overlay congrats" id="congrats-overlay">
+			<div class="header">Congratulations</div>
+			<div class="sub-header">Your contract has been sent to the client for review and a confirmation email has been sent to you at email@email.com. You may check the status of the review process any time in your <a href="{% url 'htmldemos:demo_my_projects' %}">dashboard</a>.</div>
+			<div class="submisson">
+				<span class="cancel">Close</span>
+			</div>
+		</div>
+		<a href="#congrats-overlay" class="off"></a>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -223,6 +231,11 @@
 		jQuery(document).ready(function() {
 			jQuery("main form.steps-container div.step.three div.form div.time-container input[type='text']").datepicker({showOtherMonths:true,selectOtherMonths:true});
 			jQuery("main form.steps-container div.summary div.confirm a").leanModal({closeButton: "span.cancel"});
+			jQuery("a.off").leanModal({closeButton: "span.cancel"});
+			
+			{% if request.method == "POST" %}
+				jQuery("a.off").click();
+			{% endif %}
 		});
 	</script>
 	<script>
