@@ -91,6 +91,11 @@ main form.steps-container div.step.four div.form table span.nickname { display: 
 main form.steps-container div.step.five { padding: 0px; }
 main form.steps-container div.step.five div.form.off { height: 0px; margin: 0px; }
 
+div.contract-header1 { color: #7b7c7e; font-size: 54px; font-weight: 200; margin: 130px 300px 25px; text-align: center;  }
+div.contract-header2 { color: #7b7c7e; font-size: 54px; font-weight: 200; margin: 50px 300px 25px; padding: 0px 0px 63px; text-align: center;  }
+div.para { margin: 80px auto 0px; width: 510px; }
+div.para p a { color: #000; }
+
 div.lean-modal-overlay { background-color: #BBB; border: 1px #444 solid; height: 450px; padding: 25px; width: 600px; }
 div.lean-modal-overlay div.super-header { margin: 10px 0px 25px; font-size: 28px; font-weight: bold; }
 div.lean-modal-overlay div.header { font-weight: bold; margin: 0px 0px 15px; }
