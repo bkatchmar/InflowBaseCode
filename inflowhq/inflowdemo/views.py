@@ -45,3 +45,12 @@ class DemoCreateContractFreelancer(TemplateView):
     
     def post(self, request):
         return render(request, self.template_name)
+    
+class DemoAmendContract(TemplateView):
+    template_name = "amendcontract.html"
+    
+    def get(self, request):
+        return render(request, self.template_name)
+    
+    def post(self, request):
+        return render(request, self.template_name)

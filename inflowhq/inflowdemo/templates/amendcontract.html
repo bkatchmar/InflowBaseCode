@@ -1,0 +1,154 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=20180106" />
+	<title>Inflow Demo - View My Projects</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="company">InFlow</div>
+			<nav>
+				<ul>
+					<li>
+						<a href="{% url 'htmldemos:demo_create_contract' %}">Projects</a>
+					</li>
+					<li>
+						<a href="#">Transactions</a>
+					</li>
+					<li>
+						<a href="#">Profile</a>
+					</li>
+					<li>
+						<a href="#">FAQs</a>
+					</li>
+					<li>
+						<a href="#">Log Out</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main ng-app="amendContractApp" ng-controller="amendContractCtrl" ng-init="contractBasis='deliverables';contractName='Sample Contract Name';contactName='Jake Jakerson';step='';origVal='';">
+		<div class="header">Contract<span class="sub-header">Josh Blank for AT&amp;T</span></div>
+		<div class="summary amend-contract-container">
+				<div class="section">
+					<div class="line" ng-class="{'off': step==='edit-name'}">
+						<span class="header">Contract Name</span>
+						<span class="value" ng-bind="contractName" ng-click="changeStep('edit-name',contractName)"></span>
+						<span class="edit-btn" ng-click="changeStep('edit-name',contractName)">Edit</span>
+					</div>
+					<div class="line" ng-class="{'off': step!='edit-name'}">
+						<span class="header">Contract Name</span>
+						<span class="edit-input"><input type="text" name="contract-name" placeholder="New Contract Name" ng-model="contractName" /></span>
+						<span class="buttons">
+							<span><a href="#" class="cancel" ng-click="cancelStep('contractName')">Cancel</a></span>
+							<span><a href="#" class="save" ng-click="changeStep('','')">Save</a></span>
+						</span>
+					</div>
+				</div>
+				<div class="section">
+					<div class="line">
+						<span class="header">Name of Contact</span>
+						<span class="value" ng-bind="contactName"></span>
+						<span class="edit-btn">Edit</span>
+					</div>
+					<div class="line">
+						<span class="header">Billing Name</span>
+						<span class="value">AT&amp;T</span>
+						<span class="edit-btn">Edit</span>
+					</div>
+					<div class="line">
+						<span class="header">Email</span>
+						<span class="value">contact@email.com</span>
+						<span class="edit-btn">Edit</span>
+					</div>
+					<div class="line">
+						<span class="header">Address</span>
+						<span class="value">
+							<span>123 Anywhere Lane</span><br />
+							<span>10th Floor</span><br />
+							<span>New York</span>,&nbsp;<span>NY</span>&nbsp;<span>10001</span><br />
+							<span>United States</span>
+						</span>
+					</div>
+				</div>
+				<div class="section" ng-class="{'off': contractBasis==='time'}">
+					<div class="line">
+						<span class="header">Project Cost</span>
+						<span class="value">$10,000</span>
+					</div>
+					<div class="line milestones" ng-repeat="m in milestones">
+						<span class="header">Milestone <span ng-bind="m.index"></span></span>
+						<span class="value">
+							<span ng-bind="m.nickname"></span>
+							<span ng-bind="m.distribution"></span>
+							<span><a href="#">view description</a></span>
+						</span>
+					</div>
+					<div class="line">
+						<span class="header">Kill Fee</span>
+						<span class="value">$500</span>
+					</div>
+					<div class="line">
+						<span class="header">Extra Revision Fee</span>
+						<span class="value">$500</span>
+					</div>
+					<div class="line">
+						<span class="header">Request For Change Fee</span>
+						<span class="value">$500</span>
+					</div>
+					<div class="line">
+						<span class="header">Late Revision Fee</span>
+						<span class="value">$500</span>
+					</div>
+				</div>
+				<div class="section" ng-class="{'off': contractBasis==='deliverables'}">
+					<div class="line">
+						<span class="header">Project Cost</span>
+						<span class="value">$10,000</span>
+					</div>
+					<div class="line">
+						<span class="header">Payment Frequency</span>
+						<span class="value">Weekly</span>
+					</div>
+					<div class="line">
+						<span class="header">Kill Fee</span>
+						<span class="value">$500</span>
+					</div>
+				</div>
+				<div class="confirm">
+					<span><a href="#">Back</a></span>
+					<span><a href="#">Previous Item</a></span>
+					<span><a href="#">Next Item</a></span>
+					<span><a href="#">Confirm</a></span>
+				</div>
+			</div>
+	</main>
+	<footer></footer>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://s3.us-east-2.amazonaws.com/inflowcssjs/jquery.leanModal.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script>
+		var app = angular.module("amendContractApp", []);
+		app.controller("amendContractCtrl", function($scope) {
+			$scope.milestones = [
+				{"index":1,"nickname":"Map","revisions":"1","description":"","distribution":"$3,333"},
+				{"index":2,"nickname":"Wires","revisions":"1","description":"","distribution":"$3,333"},
+				{"index":3,"nickname":"Designs","revisions":"1","description":"","distribution":"$3,333"}
+			];
+			$scope.changeStep = function(stepNumber,valToChange) {
+				$scope.step = stepNumber;
+				$scope.origVal = valToChange;
+			}
+			$scope.cancelStep = function(stepCanceled) {
+				$scope.step = "";
+				$scope[stepCanceled] = $scope.origVal;
+				$scope.origVal = "";
+			}
+		});
+	</script>
+</body>

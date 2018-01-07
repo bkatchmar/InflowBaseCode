@@ -119,19 +119,24 @@ div.lean-modal-overlay.finish hr { margin: 60px 0px 12px; border: 1px solid blac
 div.lean-modal-overlay.finish a { color: black; padding: 10px 170px 18px; text-align: center; text-decoration: none; }
 
 /* Demo Level CSS - Low Fidelity */
-body { background-color: #EEE; color: #111; font-family: Lato, Verdana, sans-serif; margin: 0px auto; width: 1024px; }
+body { background-color: #FFF; color: #111; font-family: Lato, Verdana, sans-serif; margin: 0px; width: auto; }
 a, a:link, a:visited, a:hover, a:active { color: #004080; }
 
-header { overflow: auto; padding: 0px 0px 10px; }
-header div.company { float: left; font-size: 30px; padding: 30px 25px 10px 10px; }
+header { background-color: #DDD; color: #666; overflow: auto; padding: 0px; }
+header div.container { margin: 0px auto; overflow: auto; padding: 0px 0px 10px; width: 1024px; }
+header div.company { float: left; font-size: 38px; font-weight: 300; padding: 30px 25px 10px 10px; }
 header nav { float: right; padding: 30px 0px 0px; }
 header nav ul li { display: inline-block; }
 header nav ul li a, 
 header nav ul li a:link, 
 header nav ul li a:visited, 
 header nav ul li a:hover, 
-header nav ul li a:active  { color: #111; font-size: 20px; padding: 0px 0px 0px 40px; text-decoration: none; }
+header nav ul li a:active  { color: #666; font-size: 20px; font-weight: 300; padding: 0px 0px 0px 40px; text-decoration: none; }
 
+main { margin: 0px auto; overflow: hidden; width: 1024px; }
+main div.header { color: #666; font-size: 38px; font-weight: 300; line-height: 40px; margin: 25px 0px 10px; }
+main div.header span.sub-header { display: inline-block; margin: 0px auto; text-align: center; width: 870px; }
+main a.hidden, main a.hidden:link { display: none; }
 main div.home-page-panels div.left-panel { float: left; padding: 65px 0px 0px; width: 60%; }
 main div.home-page-panels div.left-panel div { font-size: 24px; font-weight: 700; line-height: 44px; }
 main div.home-page-panels div.right-panel { float: left; padding: 65px 0px 0px; width: 40%; }
@@ -151,19 +156,63 @@ main div.home-page-panels div.right-panel div.social-media-login-btn a:visited,
 main div.home-page-panels div.right-panel div.social-media-login-btn a:hover, 
 main div.home-page-panels div.right-panel div.social-media-login-btn a:active { color: #111; display: block; font-size: 20px; padding: 10px 40px; text-decoration: none; }
 
-main div.data-table { border: 3px solid #000; margin: 60px 0px 0px; overflow: auto; padding: 10px 25px 10px 10px; }
-main div.data-table div.header { font-size: 24px; line-height: 28px; margin: 0px 0px 10px; }
-main div.data-table div.info-panel { float: left; font-size: 20px; margin: 0px 20px 0px 0px; }
-main div.data-table div.info-panel div { line-height: 28px; }
-main div.data-table div.info-panel a,
-main div.data-table div.info-panel a:link, 
-main div.data-table div.info-panel a:visited, 
-main div.data-table div.info-panel a:hover, 
-main div.data-table div.info-panel a:active { border: 3px solid #000; box-shadow: 5px 5px 0px #000; color: #111; float: right; font-size: 14px; margin: 10px 0px 0px 0px; padding: 3px 10px; text-decoration: none; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; }
-main div.data-table div.info-panel a.hidden, main div.data-table div.info-panel a.hidden:link { display: none; }
-main div.data-table div.table { float: right; }
-main div.data-table div.table div.header { background-color: #aaa; font-size: 16px; margin: 0px; }
-main div.data-table div.table div.row { background-color: #ddd; }
-main div.data-table div.table div.row.alt { background-color: #eee; }
-main div.data-table div.table div span { border-right: 2px solid #000; display: inline-block; padding: 0px 0px 0px 10px; width: 190px; }
-main div.data-table div.table div span:last-child { border-right: none; }
+main div.alert-table { clear: right; color: #666; float: right; margin: 60px 0px 0px; width: 750px; }
+main div.alert-table div { border: 2px solid #aaa; border-bottom: none; padding: 15px 10px; }
+main div.alert-table div a,
+main div.alert-table div a:link,
+main div.alert-table div a:visited, 
+main div.alert-table div a:hover, 
+main div.alert-table div a:active { color: #666; }
+main div.alert-table div.alert-table-header { background-color: #bbb; font-size: 18px; }
+main div.alert-table div:last-child { border-bottom: 2px solid #bbb; }
+
+main div.data-table { clear: right; float: right; margin: 30px 0px 0px; width: 750px; }
+main div.data-table div.data-table-header {}
+main div.data-table div.data-table-header span { background-color: #bbb; margin: 1px 0px; text-align: center; text-transform: uppercase; }
+main div.data-table div.row {}
+main div.data-table div.row.alt span { background-color: #bbb; }
+main div.data-table div span { border: 2px solid #bbb; color: #666; display: inline-block; padding: 5px 2px; width: 177px; }
+main div.data-table div span:last-child {}
+
+main div.amend-contract-container { background-color: #DDD; border: 1px solid #666; clear: both; float: left; margin: 30px 0px 25px 40px; padding: 10px 50px; width: 800px; }
+main div.amend-contract-container div.line { padding: 0px 0px 10px; }
+main div.amend-contract-container div.section { border-bottom: 1px solid #666; padding: 10px 0px; }
+main div.amend-contract-container div.section.off { display: none; }
+main div.amend-contract-container div.section span.header { display: inline-block; font-weight: bold; margin: 0px 50px 0px 10px; vertical-align: top; width: 150px; }
+main div.amend-contract-container div.section span.value { cursor: pointer; display: inline-block; }
+main div.amend-contract-container div.section span.edit-input { display: inline-block; }
+main div.amend-contract-container div.section span.edit-btn { border-bottom: 3px solid #006400; color: #006400; cursor: pointer; display: none; margin: 0px 0px 0px 15px; }
+
+main div.amend-contract-container div.section span.buttons a:link,
+main div.amend-contract-container div.section span.buttons a:visited,
+main div.amend-contract-container div.section span.buttons a:hover,
+main div.amend-contract-container div.section span.buttons a:active { background-color: #555; color: #FFF; display: inline-block; margin: 0px 0px 0px 10px; padding: 5px 10px; text-decoration: none; }
+
+main div.amend-contract-container div.section span.buttons a.cancel:link,
+main div.amend-contract-container div.section span.buttons a.cancel:visited,
+main div.amend-contract-container div.section span.buttons a.cancel:hover,
+main div.amend-contract-container div.section span.buttons a.cancel:active { background-color: transparent; color: #000; }
+main div.amend-contract-container div.section span.buttons a.save:link,
+main div.amend-contract-container div.section span.buttons a.save:visited,
+main div.amend-contract-container div.section span.buttons a.save:hover,
+main div.amend-contract-container div.section span.buttons a.save:active {}
+
+main div.amend-contract-container div.section div.line.off { display: none; }
+main div.amend-contract-container div.section div.line:hover span.value { border-bottom: 3px solid #006400; padding: 0px 0px; }
+main div.amend-contract-container div.section div.line:hover span.edit-btn { display: inline-block; }
+main div.amend-contract-container div.section span.value span.off { display: none; }
+main div.amend-contract-container div.section span.value br.off { display: none; }
+main div.amend-contract-container div.confirm { padding: 20px 0px; }
+main div.amend-contract-container div.confirm a:link,
+main div.amend-contract-container div.confirm a:visited,
+main div.amend-contract-container div.confirm a:hover,
+main div.amend-contract-container div.confirm a:active { background-color: #000; color: #FFF; display: inline-block; margin: 0px 0px 0px 10px; padding: 5px 10px; text-decoration: none; }
+main div.amend-contract-container div.section div.line input[type="text"],
+main div.amend-contract-container div.section div.line input[type="email"] { padding: 6px; width: 150px; }
+
+main div.amend-contract-container div.line.milestones span.value { width: 400px; }
+main div.amend-contract-container div.line.milestones span.value span { display: inline-block; overflow: hidden; padding: 0px 0px 15px; text-overflow: ellipsis; width: 180px; white-space: nowrap; }
+main div.amend-contract-container div.line.milestones span.value span a:link,
+main div.amend-contract-container div.line.milestones span.value span a:visited,
+main div.amend-contract-container div.line.milestones span.value span a:hover,
+main div.amend-contract-container div.line.milestones span.value span a:active { color: #000; }
