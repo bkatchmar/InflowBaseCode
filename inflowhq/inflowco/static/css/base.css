@@ -181,6 +181,7 @@ main div.amend-contract-container div.section.off { display: none; }
 main div.amend-contract-container div.section span.header { display: inline-block; font-weight: bold; margin: 0px 50px 0px 10px; vertical-align: top; width: 150px; }
 main div.amend-contract-container div.section span.value { cursor: pointer; display: inline-block; }
 main div.amend-contract-container div.section span.edit-input { display: inline-block; }
+main div.amend-contract-container div.section span.edit-input textarea { display: block; margin: 0px; padding: 6px; width: 150px; }
 main div.amend-contract-container div.section span.edit-btn { border-bottom: 3px solid #006400; color: #006400; cursor: pointer; display: none; margin: 0px 0px 0px 15px; }
 
 main div.amend-contract-container div.section span.buttons a:link,
@@ -209,6 +210,10 @@ main div.amend-contract-container div.confirm a:hover,
 main div.amend-contract-container div.confirm a:active { background-color: #000; color: #FFF; display: inline-block; margin: 0px 0px 0px 10px; padding: 5px 10px; text-decoration: none; }
 main div.amend-contract-container div.section div.line input[type="text"],
 main div.amend-contract-container div.section div.line input[type="email"] { padding: 6px; width: 150px; }
+main div.amend-contract-container div.section div.line input[type="text"].whole-line,
+main div.amend-contract-container div.section div.line input[type="email"].whole-line { margin: 0px 0px 5px 0px; width: 300px; }
+main div.amend-contract-container div.section div.line input[type="text"].smaller,
+main div.amend-contract-container div.section div.line input[type="email"].smaller { margin: 0px 5px 0px 0px; width: 84px; }
 
 main div.amend-contract-container div.line.milestones span.value { width: 400px; }
 main div.amend-contract-container div.line.milestones span.value span { display: inline-block; overflow: hidden; padding: 0px 0px 15px; text-overflow: ellipsis; width: 180px; white-space: nowrap; }
