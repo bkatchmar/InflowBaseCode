@@ -3,7 +3,7 @@
 <html lang="en-US">
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=201801100059" />
 	<title>Inflow Demo - View My Projects</title>
 </head>
 <body>
@@ -206,31 +206,95 @@
 							</span>
 						</div>
 					</div>
-					<div class="line">
+					<div class="line" ng-class="{'off': step==='edit-kill-fee'}">
 						<span class="header">Kill Fee</span>
-						<span class="value">$500</span>
-						<span class="edit-btn">Edit</span>
+						<span class="value" ng-bind="killFee" ng-click="changeStep('edit-kill-fee',killFee)"></span>
+						<span class="edit-btn" ng-click="changeStep('edit-kill-fee',killFee)">Edit</span>
 					</div>
-					<div class="line">
+					<div class="line" ng-class="{'off': step==='edit-kill-fee' || killFeeDescription===''}">
+						<span class="header">&nbsp;</span>
+						<span class="value" ng-bind="killFeeDescription"></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-kill-fee'}">
+						<span class="header">Kill Fee</span>
+						<span class="edit-input"><input type="text" name="milestone-kill-fee" placeholder="New Kill Fee" ng-model="killFee" /></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-kill-fee'}">
+						<span class="header">&nbsp;</span>
+						<span class="edit-input"><textarea name="milestone-kill-fee-description" rows="5" placeholder="* Please provide reason for change..." ng-model="killFeeDescription"></textarea></span>
+						<span class="buttons">
+							<span><a href="#" class="cancel" ng-click="cancelStep('killFee')">Cancel</a></span>
+							<span><a href="#" class="save" ng-click="changeStep('','')">Save</a></span>
+						</span>
+					</div>
+					<div class="line" ng-class="{'off': step==='edit-extra-revision-fee'}">
 						<span class="header">Extra Revision Fee</span>
-						<span class="value">$500</span>
-						<span class="edit-btn">Edit</span>
+						<span class="value" ng-bind="extraRevisionFee" ng-click="changeStep('edit-extra-revision-fee',extraRevisionFee)"></span>
+						<span class="edit-btn" ng-click="changeStep('edit-extra-revision-fee',extraRevisionFee)">Edit</span>
 					</div>
-					<div class="line">
+					<div class="line" ng-class="{'off': step==='edit-extra-revision-fee' || extraRevisionFeeDescription===''}">
+						<span class="header">&nbsp;</span>
+						<span class="value" ng-bind="extraRevisionFeeDescription"></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-extra-revision-fee'}">
+						<span class="header">Extra Revision Fee</span>
+						<span class="edit-input"><input type="text" name="milestone-extra-revision-fee" placeholder="New Extra Revision Fee" ng-model="extraRevisionFee" /></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-extra-revision-fee'}">
+						<span class="header">&nbsp;</span>
+						<span class="edit-input"><textarea name="milestone-kill-fee-description" rows="5" placeholder="* Please provide reason for change..." ng-model="extraRevisionFeeDescription"></textarea></span>
+						<span class="buttons">
+							<span><a href="#" class="cancel" ng-click="cancelStep('extraRevisionFee')">Cancel</a></span>
+							<span><a href="#" class="save" ng-click="changeStep('','')">Save</a></span>
+						</span>
+					</div>
+					<div class="line" ng-class="{'off': step==='edit-request-change-fee'}">
 						<span class="header">Request For Change Fee</span>
-						<span class="value">$500</span>
-						<span class="edit-btn">Edit</span>
+						<span class="value" ng-bind="requestForChangeFee" ng-click="changeStep('edit-request-change-fee',requestForChangeFee)"></span>
+						<span class="edit-btn" ng-click="changeStep('edit-request-change-fee',requestForChangeFee)">Edit</span>
 					</div>
-					<div class="line">
+					<div class="line" ng-class="{'off': step==='edit-request-change-fee' || requestChangeFeeDescription===''}">
+						<span class="header">&nbsp;</span>
+						<span class="value" ng-bind="requestChangeFeeDescription"></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-request-change-fee'}">
+						<span class="header">Request For Change Fee</span>
+						<span class="edit-input"><input type="text" name="milestone-edit-request-change-fee" placeholder="New Request For Change Fee" ng-model="requestForChangeFee" /></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-request-change-fee'}">
+						<span class="header">&nbsp;</span>
+						<span class="edit-input"><textarea name="milestone-kill-fee-description" rows="5" placeholder="* Please provide reason for change..." ng-model="requestChangeFeeDescription"></textarea></span>
+						<span class="buttons">
+							<span><a href="#" class="cancel" ng-click="cancelStep('requestForChangeFee')">Cancel</a></span>
+							<span><a href="#" class="save" ng-click="changeStep('','')">Save</a></span>
+						</span>
+					</div>
+					<div class="line" ng-class="{'off': step==='edit-late-revision-fee'}">
 						<span class="header">Late Revision Fee</span>
-						<span class="value">$500</span>
-						<span class="edit-btn">Edit</span>
+						<span class="value" ng-bind="lateRevisionFee" ng-click="changeStep('edit-late-revision-fee',lateRevisionFee)"></span>
+						<span class="edit-btn" ng-click="changeStep('edit-late-revision-fee',lateRevisionFee)">Edit</span>
+					</div>
+					<div class="line" ng-class="{'off': step==='edit-late-revision-fee' || lateRevisionFeeDescription===''}">
+						<span class="header">&nbsp;</span>
+						<span class="value" ng-bind="lateRevisionFeeDescription"></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-late-revision-fee'}">
+						<span class="header">Late Revision Fee</span>
+						<span class="edit-input"><input type="text" name="milestone-edit-request-change-fee" placeholder="New Late Revision Fee" ng-model="lateRevisionFee" /></span>
+					</div>
+					<div class="line off" ng-class="{'off': step!='edit-late-revision-fee'}">
+						<span class="header">&nbsp;</span>
+						<span class="edit-input"><textarea name="milestone-kill-fee-description" rows="5" placeholder="* Please provide reason for change..." ng-model="lateRevisionFeeDescription"></textarea></span>
+						<span class="buttons">
+							<span><a href="#" class="cancel" ng-click="cancelStep('lateRevisionFee')">Cancel</a></span>
+							<span><a href="#" class="save" ng-click="changeStep('','')">Save</a></span>
+						</span>
 					</div>
 				</div>
 				<div class="section" ng-class="{'off': contractBasis==='deliverables'}">
 					<div class="line">
 						<span class="header">Project Cost</span>
-						<span class="value">$10,000</span>
+						<span class="value" ng-bind="totalProjectCost"></span>
 					</div>
 					<div class="line">
 						<span class="header">Payment Frequency</span>
@@ -238,22 +302,41 @@
 					</div>
 					<div class="line">
 						<span class="header">Kill Fee</span>
-						<span class="value">$500</span>
+						<span class="value" ng-bind="killFee"></span>
 					</div>
 				</div>
 				<div class="confirm">
-					<span><a href="#">Back</a></span>
-					<span><a href="#">Previous Item</a></span>
-					<span><a href="#">Next Item</a></span>
-					<span><a href="#">Confirm</a></span>
+					<span><a href="#" class="back">Back</a></span>
+					<span><a href="#" class="previous">Previous Item</a></span>
+					<span><a href="#" class="next">Next Item</a></span>
+					<span><a href="#fill-contract-overlay" class="confirm">Confirm</a></span>
 				</div>
+		</div>
+		<div class="lean-modal-overlay sign" id="fill-contract-overlay">
+			<div class="header">Contract For <span ng-bind="billingName"></span></div>
+			<div class="sub-header">You Are using the Milestone Contract. Please read it to make sure everything is accurate.</div>
+			<textarea>Contract Lorem Ipsum 
+				A. sit amet, consectetur adipiscing elit. Aenean et gravida nisl, at laoreet eros. Nam condimentum erat non sem lacinia, in mattis metus ullamcorper. Maecenas vel tortor sed enim ultricies tempor. Aenean eget neque et ante tempor elementum. Etiam ut consectetur lacus. Vestibulum ac lectus a tortor pellentesque ultrices in at lectus. Suspendisse potenti. In tempus, metus eu dictum mollis, elit risus auctor tortor, sagittis suscipit arcu tortor id eros. Duis commodo pulvinar efficitur. Aenean a urna sit amet tortor luctus pulvinar. Praesent auctor ut felis hendrerit aliquet.</textarea>
+			<input type="checkbox" name="acknowledgement" />
+			<span class="acknowledgement">I acknowledge that I have read the contract and agree that all etc etc etc</span>
+			<div class="electronic-signature-label">Electronic Signature</div>
+			<input type="text" name="electronic-signature" placeholder="Full Name" />
+			<div class="submisson">
+				<input type="submit" value="Send To Client" />
+				<span class="cancel">Cancel</span>
 			</div>
+		</div>
 	</main>
 	<footer></footer>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<script src="https://s3.us-east-2.amazonaws.com/inflowcssjs/jquery.leanModal.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("main div.amend-contract-container div.confirm a.confirm").leanModal();
+		});
+	</script>
 	<script>
 		var app = angular.module("amendContractApp", []);
 		app.controller("amendContractCtrl", function($scope) {
@@ -281,6 +364,14 @@
 			$scope.addressDescription="";
 			$scope.totalProjectCost="$10,000";
 			$scope.totalProjectDescription="";
+			$scope.killFee = "$500";
+			$scope.extraRevisionFee = "$500";
+			$scope.requestForChangeFee = "$500";
+			$scope.lateRevisionFee = "$500";
+			$scope.killFeeDescription = "";
+			$scope.extraRevisionFeeDescription = "";
+			$scope.requestChangeFeeDescription = "";
+			$scope.lateRevisionFeeDescription = "";
 			$scope.changeStep = function(stepNumber,valToChange) {
 				$scope.step = stepNumber;
 				$scope.origVal = valToChange;

@@ -98,7 +98,7 @@ div.para p a { color: #000; }
 
 div.lean-modal-overlay { background-color: #BBB; border: 1px #444 solid; height: 450px; padding: 25px; width: 600px; }
 div.lean-modal-overlay div.super-header { margin: 10px 0px 25px; font-size: 28px; font-weight: bold; }
-div.lean-modal-overlay div.header { font-weight: bold; margin: 0px 0px 15px; }
+div.lean-modal-overlay div.header { color: #111; font-weight: bold; margin: 0px 0px 15px; font-size: 16px; line-height: 1em; }
 div.lean-modal-overlay div.sub-header { font-size: 14px; }
 div.lean-modal-overlay textarea { display: block; height: 240px; margin: 25px 0px 10px; width: 100%; }
 div.lean-modal-overlay span.acknowledgement { font-size: 12px; }

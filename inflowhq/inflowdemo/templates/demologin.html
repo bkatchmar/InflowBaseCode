@@ -3,7 +3,7 @@
 <html lang="en-US">
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/base.css' %}?" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?d=2018" />
 	<title>Inflow Demo - Base Login Page</title>
 </head>
 <body>
@@ -23,7 +23,7 @@
 						<a href="#">Forgot email?</a>
 						<input type="password" name="inflowsystempassword" />
 						<a href="#">Forgot password?</a>
-						<input type="submit" value="Login" />
+						<input type="submit" value="Sign in" />
 						<a href="#account-creation-overlay" class="under-login">Create account</a>
 						{% csrf_token %}
 					</form>

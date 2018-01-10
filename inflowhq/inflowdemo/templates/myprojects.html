@@ -204,7 +204,7 @@
 				lightboxes.push(jQuery(obj).attr("id"));
 			});
 			
-			jQuery("main div.data-table div.info-panel a.hidden").leanModal();
+			jQuery("main a.hidden").leanModal();
 			jQuery("div.lean-modal-overlay span a.next").leanModal();
 			jQuery("a.skip").click(function() { jQuery("#lean_overlay").click(); });
 			jQuery("div.lean-modal-overlay span a.next").click(
@@ -217,7 +217,7 @@
 						}
 					}
 			);
-			jQuery("main div.data-table div.info-panel a.hidden").click();
+			jQuery("main a.hidden").click();
 		});
 	</script>
 </body>
