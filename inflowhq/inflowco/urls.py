@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^amazonboto/', views.AmazonBotoExamples.as_view(), name='amazonboto'),
     url(r'^sendmail/', views.SendEmail.as_view(), name='mailer'),
     url(r'^googlehandler/', views.GoogleHandler.as_view(), name='gmail'),
+    url(r'^pdfview/', views.SavePdfTrials.as_view(), name='mypdf'),
 ]

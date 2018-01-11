@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'accounts',
     'contractsandprojects',
     'talktostripe',
-    'inflowdemo'
+    'inflowdemo',
+    'easy_pdf'
 ]
 
 MIDDLEWARE = [
@@ -134,13 +135,12 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
-
-LOGIN_URL = '/inflow/'
+STATIC_URL = "/static/"
+STATIC_ROOT = "/static/"
+LOGIN_URL = "/inflow/"
 
 EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
 EMAIL_HOST_USER = "AKIAI6OO52H7X6ZFGGTQ"

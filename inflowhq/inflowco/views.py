@@ -3,12 +3,14 @@ from __future__ import unicode_literals # I have no idea what this even is
 from accounts.externalapicalls import GoogleApi, LinkedInApi
 from accounts.models import UserGoogleInformation, UserLinkedInInformation, UserSettings
 from inflowco.models import Currency
+from easy_pdf.views import PDFTemplateView
 # Django references
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.utils.http import urlquote
 from django.views.generic import TemplateView
@@ -248,3 +250,6 @@ class SendEmail(LoginRequiredMixin, TemplateView):
             ["bkatchmar@gmail.com"],
             fail_silently=False)
         return render(request, self.template_name, context)
+
+class SavePdfTrials(PDFTemplateView):
+    template_name = "basepdftemplate.html"
