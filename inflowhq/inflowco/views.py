@@ -9,10 +9,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.mail import send_mail
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.utils.http import urlquote
 from django.views.generic import TemplateView
 # Entire Libraries where we are not extracting specific things
 import boto3
@@ -233,23 +230,5 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
     def generate_bucket_name(self,user):
         return ("inflow-user-bucket-%s" % (user.id))
     
-class SendEmail(LoginRequiredMixin, TemplateView):
-    template_name = "sendemail.html"
-    
-    def get(self, request):
-        # Set the Context
-        context = {}
-        return render(request, self.template_name, context)
-    
-    def post(self, request):
-        # Set the Context
-        context = {}
-        send_mail("Statement of Truth",
-            "I Like Chicken Fingers, Pizza, Bacon, Cereal, and Ice Cream",
-            "brian@workinflow.co",
-            ["bkatchmar@gmail.com"],
-            fail_silently=False)
-        return render(request, self.template_name, context)
-
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
