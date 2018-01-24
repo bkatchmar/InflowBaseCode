@@ -9,7 +9,9 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.sitemaps import Sitemap
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 # Entire Libraries where we are not extracting specific things
 import boto3
@@ -232,3 +234,31 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
     
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
+    
+class BaseSitemap(Sitemap):
+    def items(self):
+        return ["htmldemos:demo_home",
+                "htmldemos:demo_my_projects",
+                "htmldemos:demo_create_contract",
+                "htmldemos:demo_amend_contract",
+                "htmldemos:demo_create_contract_freelancer",
+                "htmldemos:demo_create_contract_client",
+                "htmldemos:demo_create_contract_received_email",
+                "htmldemos:demo_create_contract_client_email_signed",
+                "htmldemos:demo_create_contract_client_email_revision",
+                "htmldemos:demo_create_contract_freelance_email_signed",
+                "htmldemos:demo_create_contract_freelance_email_revision"]
+
+    def location(self, item):
+        return reverse(item)
+    
+    def changefreq(self, item):
+        if item == "htmldemos:demo_home":
+            return "daily"
+        elif item == "htmldemos:demo_my_projects":
+            return "yearly"
+        else: 
+            return "never"
+        
+    def priority(self, item):
+        return 0.5
