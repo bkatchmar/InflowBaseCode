@@ -4,6 +4,9 @@ from . import views
 app_name = "htmldemos"
 urlpatterns = [
     url(r'^$', views.DemoLoginView.as_view(), name='demo_home'),
+    url(r'^welcome', views.DemoWelcome.as_view(), name='demo_welcome'),
+    url(r'^address', views.DemoAddress.as_view(), name='demo_address'),
+    url(r'^congratulations', views.DemoCongratulation.as_view(), name='demo_congratulation'),
     url(r'^myprojects/create-contract/freelancer-msg', views.DemoCreateContractFreelancer.as_view(), name='demo_create_contract_freelancer'),
     url(r'^myprojects/create-contract/client-msg', views.DemoCreateContractClient.as_view(), name='demo_create_contract_freelancer'),
     url(r'^myprojects/create-contract/received-email', views.DemoCreateContractReceivedEmail.as_view(), name='demo_create_contract_received_email'),

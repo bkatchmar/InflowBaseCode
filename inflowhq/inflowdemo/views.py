@@ -99,3 +99,30 @@ class DemoCreateContractFreelanceEmailRevision(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+
+class DemoWelcome(TemplateView):
+    template_name = "welcome.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class DemoAddress(TemplateView):
+    template_name = "address.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class DemoCongratulation(TemplateView):
+    template_name = "congratulations.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
