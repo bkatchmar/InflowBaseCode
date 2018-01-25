@@ -250,7 +250,10 @@ class BaseSitemap(Sitemap):
                 "htmldemos:demo_create_contract_freelance_email_revision",
                 "htmldemos:demo_welcome",
                 "htmldemos:demo_address",
-                "htmldemos:demo_congratulation"]
+                "htmldemos:demo_congratulation",
+                "htmldemos:demo_stripe_connect",
+                "htmldemos:demo_stripe_thanks",
+                "htmldemos:demo_tos"]
 
     def location(self, item):
         return reverse(item)

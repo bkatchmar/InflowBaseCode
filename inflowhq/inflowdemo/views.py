@@ -126,3 +126,30 @@ class DemoCongratulation(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+    
+class DemoStripeConnect(TemplateView):
+    template_name = "stripe.connect.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class DemoStripeThanks(TemplateView):
+    template_name = "stripe.thanks.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class DemoTermsOfUse(TemplateView):
+    template_name = "accept.terms-of-use.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
