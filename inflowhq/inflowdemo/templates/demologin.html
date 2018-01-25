@@ -17,6 +17,9 @@
 				<div>get paid.</div>
 			</div>
 			<div class="right-panel">
+				<div class="social-media-login-btn gmail"><a href="#gmail-overlay">Sign in with Gmail</a></div>
+				<div class="social-media-login-btn linked"><a href="#linkedin-overlay">Sign in with LinkedIn</a></div>
+				<div class="option-text">or</div>
 				<div class="login-panel">
 					<form action="{% url 'htmldemos:demo_welcome' %}" method="post">
 						<input type="text" name="inflowusername" placeholder="login@email.com" />
@@ -28,9 +31,6 @@
 						{% csrf_token %}
 					</form>
 				</div>
-				<div class="option-text">or</div>
-				<div class="social-media-login-btn gmail"><a href="#gmail-overlay">Sign in with Gmail</a></div>
-				<div class="social-media-login-btn linked"><a href="#linkedin-overlay">Sign in with LinkedIn</a></div>
 			</div>
 		</div>
 		<div class="lean-modal-overlay" id="gmail-overlay">
