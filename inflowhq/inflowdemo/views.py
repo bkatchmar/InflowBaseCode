@@ -153,3 +153,30 @@ class DemoTermsOfUse(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+    
+class DemoProjectDetails(TemplateView):
+    template_name = "project.details.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class DemoUploadMilestone(TemplateView):
+    template_name = "project.upload.milestone.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class DemoPreviewMilestone(TemplateView):
+    template_name = "project.preview.milestone.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)

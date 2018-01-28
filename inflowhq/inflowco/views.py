@@ -239,8 +239,11 @@ class BaseSitemap(Sitemap):
     def items(self):
         return ["htmldemos:demo_home",
                 "htmldemos:demo_my_projects",
+                "htmldemos:demo_project_details",
                 "htmldemos:demo_create_contract",
                 "htmldemos:demo_amend_contract",
+                "htmldemos:demo_upload_milestone",
+                "htmldemos:demo_preview_milestone",
                 "htmldemos:demo_create_contract_freelancer",
                 "htmldemos:demo_create_contract_client",
                 "htmldemos:demo_create_contract_received_email",

@@ -125,12 +125,45 @@ main div.alert-table div.alert-table-header { background-color: #bbb; font-size:
 main div.alert-table div:last-child { border-bottom: 2px solid #bbb; }
 
 main div.data-table { clear: right; float: right; margin: 30px 0px 0px; width: 750px; }
-main div.data-table div.data-table-header {}
+main div.data-table div.data-table-title { background-color: #BBB; border: 2px solid #BBB; margin: 0px 1px 0px 0px; padding: 15px 0px 15px 15px; }
+main div.data-table div.data-table-title.active { background-color: #89CFF0; border: 2px solid #89CFF0; }
+main div.data-table div.data-table-title a:link,
+main div.data-table div.data-table-title a:visited,
+main div.data-table div.data-table-title a:hover,
+main div.data-table div.data-table-title a:active { font-size: 18px; color: #000; }
 main div.data-table div.data-table-header span { background-color: #bbb; margin: 1px 0px; text-align: center; text-transform: uppercase; }
-main div.data-table div.row {}
 main div.data-table div.row.alt span { background-color: #bbb; }
-main div.data-table div span { border: 2px solid #bbb; color: #666; display: inline-block; padding: 5px 2px; width: 177px; }
-main div.data-table div span:last-child {}
+main div.data-table div span { border: 2px solid #bbb; color: #000; display: inline-block; padding: 5px 2px; text-align: center; width: 177px; }
+
+main div.milestone-detail { clear: right; float: right; margin: 30px 0px 0px; width: 750px; }
+main div.milestone-detail div.milestone-detail-header { background-color: #bbb; border: 2px solid #aaa; }
+main div.milestone-detail div.milestone-detail-header a.upload:link,
+main div.milestone-detail div.milestone-detail-header a.upload:visited,
+main div.milestone-detail div.milestone-detail-header a.upload:hover,
+main div.milestone-detail div.milestone-detail-header a.upload:active { background-color: #89CFF0; color: #FFF; float: right; font-size: 12px; margin: 10px 10px 0px 0px; padding: 5px 10px; text-decoration: none; text-transform: uppercase; }
+main div.milestone-detail div.milestone-detail-header a.show-milestone:link,
+main div.milestone-detail div.milestone-detail-header a.show-milestone:visited,
+main div.milestone-detail div.milestone-detail-header a.show-milestone:hover,
+main div.milestone-detail div.milestone-detail-header a.show-milestone:active { color: #000; float: right; padding: 14px 12px 0px 0px; }
+main div.milestone-detail div.milestone-detail-header span { display: inline-block; font-size: 18px; padding: 15px 10px; }
+main div.milestone-detail div.milestone-detail-header span.paid { float: right; }
+main div.milestone-detail div.edit-milestone { clear: both; overflow: hidden; }
+main div.milestone-detail div.edit-milestone a:link,
+main div.milestone-detail div.edit-milestone a:visited,
+main div.milestone-detail div.edit-milestone a:hover,
+main div.milestone-detail div.edit-milestone a:active { color: #000; float: right; font-size: 14px; padding: 5px 10px 0px 0px; }
+main div.milestone-detail div.information { clear: both; color: #666; font-size: 18px; overflow: hidden; padding: 10px; }
+main div.milestone-detail div.information div.left { float: left; }
+main div.milestone-detail div.information div.right { float: right; }
+main div.milestone-detail div.description { color: #666; font-size: 18px; padding: 10px; }
+main div.milestone-detail div.description a:link,
+main div.milestone-detail div.description a:visited,
+main div.milestone-detail div.description a:hover,
+main div.milestone-detail div.description a:active { color: #666; }
+
+main div.milestone-detail.off div.edit-milestone { display: none; }
+main div.milestone-detail.off div.information { display: none; }
+main div.milestone-detail.off div.description { display: none; }
 
 main div.amend-contract-container { background-color: #DDD; border: 1px solid #666; clear: both; float: left; margin: 30px 0px 25px 40px; padding: 10px 50px; width: 800px; }
 main div.amend-contract-container div.line { padding: 0px 0px 10px; }

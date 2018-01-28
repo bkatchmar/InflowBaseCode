@@ -17,7 +17,10 @@ urlpatterns = [
     url(r'^myprojects/create-contract/client-email-revision', views.DemoCreateContractClientEmailRevision.as_view(), name='demo_create_contract_client_email_revision'),
     url(r'^myprojects/create-contract/freelance-email-signed', views.DemoCreateContractFreelanceEmailSigned.as_view(), name='demo_create_contract_freelance_email_signed'),
     url(r'^myprojects/create-contract/freelance-email-revision', views.DemoCreateContractFreelanceEmailRevision.as_view(), name='demo_create_contract_freelance_email_revision'),
+    url(r'^myprojects/project-details/', views.DemoProjectDetails.as_view(), name='demo_project_details'),
     url(r'^myprojects/create-contract/', views.DemoCreateNewContract.as_view(), name='demo_create_contract'),
     url(r'^myprojects/amend-contract/', views.DemoAmendContract.as_view(), name='demo_amend_contract'),
+    url(r'^myprojects/upload-milestone/', views.DemoUploadMilestone.as_view(), name='demo_upload_milestone'),
+    url(r'^myprojects/preview-milestone/', views.DemoPreviewMilestone.as_view(), name='demo_preview_milestone'),
     url(r'^myprojects/', views.DemoMyProjectsScreen.as_view(), name='demo_my_projects'),
 ]

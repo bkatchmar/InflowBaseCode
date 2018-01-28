@@ -1,0 +1,38 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<title>Inflow Demo - View My Projects</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="company">InFlow</div>
+			<nav>
+				<ul>
+					<li>
+						<a href="{% url 'htmldemos:demo_create_contract' %}">Projects</a>
+					</li>
+					<li>
+						<a href="#">Transactions</a>
+					</li>
+					<li>
+						<a href="#">Profile</a>
+					</li>
+					<li>
+						<a href="#">FAQs</a>
+					</li>
+					<li>
+						<a href="#">Log Out</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+	<main>
+		<div class="header">NFL Experience App</div>
+		<div>TO DO: Preview Stuff Goes Here</div>
+	</main>
+</body>
