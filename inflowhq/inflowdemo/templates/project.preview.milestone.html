@@ -5,6 +5,9 @@
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
 	<title>Inflow Demo - View My Projects</title>
+	<style>
+		div.img-preview { background: url('{{ imgData }}'); background-size: 800px auto; }
+	</style>
 </head>
 <body>
 	<header>
@@ -33,6 +36,13 @@
 	</header>
 	<main>
 		<div class="header">NFL Experience App</div>
-		<div>TO DO: Preview Stuff Goes Here</div>
+		<div class="img-preview">
+		</div>
 	</main>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("body").on("contextmenu", function(e) { return false; });
+		});
+	</script>
 </body>

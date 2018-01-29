@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
+import base64, urllib.request, mimetypes
+
 class DemoLoginView(TemplateView):
     template_name = "demologin.html"
 
@@ -175,8 +177,13 @@ class DemoUploadMilestone(TemplateView):
 class DemoPreviewMilestone(TemplateView):
     template_name = "project.preview.milestone.html"
 
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        return render(request, self.template_name)
+    def get_context_data(self, **kwargs):
+        path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
+        mime = mimetypes.guess_type(path)
+        image = urllib.request.urlopen(path)
+        image_64 = base64.encodestring(image.read())
+        
+        # Call the base implementation first to get a context
+        context = super(DemoPreviewMilestone, self).get_context_data(**kwargs)
+        context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
+        return context
