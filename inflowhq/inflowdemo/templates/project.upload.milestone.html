@@ -34,7 +34,12 @@
 	<main>
 		<div class="header">NFL Experience App</div>
 		<div>TO DO: Put Upload Stuff Here</div>
-		<div>Option to upload file from your computer</div>
+		<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
+			<div>Upload File From Your Computer</div>
+			<input type="file" name="deliverable" />
+			<input type="submit" value="Upload File" />
+			{% csrf_token %}
+		</form>
 		<div>Option to select file from Google Drive</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
