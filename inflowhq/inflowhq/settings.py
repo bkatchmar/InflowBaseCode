@@ -93,14 +93,14 @@ SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'mysql',
-        'USER': 'root',
-        'PASSWORD': '6526699',
-        'HOST': 'localhost',
-        'PORT': '8000',
+        'NAME': 'winston',
+        'USER': 'brian',
+        'PASSWORD': 's0m3thinggr34tl1k3th3m4nt155hr1mp',
+        'HOST': 'winston.c4xdpep5tg03.us-east-2.rds.amazonaws.com',
+        'PORT': '3306',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        }
+        },
     }
 }
 
