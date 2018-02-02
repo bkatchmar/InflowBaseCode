@@ -3,23 +3,22 @@
 <html lang="en-US">
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-	<style>
-		div.content p#title { font-size: 32px; margin: 50px 300px 0px; }
-		div.content p#congratulation { font-size: 18px; margin: 150px 400px 30px; }
-		div.content p#congratulation-para1 { font-size: 18px; margin: 0px 400px 8px; }
-		div.content button { border: 3px solid #000; border-radius: 0px; box-shadow: .5px .5px 0px #000; color: #111; cursor: pointer; font-size: 18px; margin: 80px 580px 0px; padding: 5px 20px; text-decoration: none; width: 170px; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
-	</style>
+	<link rel="stylesheet" href="{% static 'css/base.css' %}?=201802" />
+
 	<title>Congratulations</title>
 </head>
 <body>
 	<div class="content">
 		<p id="title">InFlow</p>
-		<p id="congratulation">Congratulations!</p>
+		<p class="congratulation">Congratulations!</p>
 		<br />
-		<p id="congratulation-para1">You have successfully set up your account on InFlow and</p>
-		<p id="congratulation-para1">are ready to start working and get paid!</p>
-		<button>Ok, Let's Go!</button>
+		<p class="congratulation-des">You have successfully set up your account on InFlow and</p>
+		<p class="congratulation-des">are ready to start working and get paid!</p>
+    </br>
+    </br>
+    <div class="ctas">
+			<a class="shade-btn" href="{% url 'htmldemos:demo_my_projects' %}">Ok, Let's Go!</a>
+		</div>
 	</div>
 </body>
 </html>

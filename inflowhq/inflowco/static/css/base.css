@@ -2,7 +2,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var, b, u, i, center,
 dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, 
+article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup,
 menu, nav, output, ruby, section, summary, time, mark, audio, video {
 	margin: 0px;
 	padding: 0px;
@@ -83,10 +83,10 @@ header div.container { margin: 0px auto; overflow: auto; padding: 0px 0px 10px; 
 header div.company { float: left; font-size: 38px; font-weight: 300; padding: 30px 25px 10px 10px; }
 header nav { float: right; padding: 30px 0px 0px; }
 header nav ul li { display: inline-block; }
-header nav ul li a, 
-header nav ul li a:link, 
-header nav ul li a:visited, 
-header nav ul li a:hover, 
+header nav ul li a,
+header nav ul li a:link,
+header nav ul li a:visited,
+header nav ul li a:hover,
 header nav ul li a:active  { color: #666; font-size: 20px; font-weight: 300; padding: 0px 0px 0px 40px; text-decoration: none; }
 
 main { margin: 0px auto; overflow: hidden; width: 1024px; }
@@ -102,24 +102,24 @@ main div.home-page-panels div.right-panel div.login-panel form input { border: 2
 main div.home-page-panels div.right-panel div.login-panel form a { display: block; margin: 3px auto 10px; width: 330px; }
 main div.home-page-panels div.right-panel div.login-panel form a.under-login { margin: 10px auto 10px; text-align: right; width: 320px; }
 main div.home-page-panels div.right-panel div.login-panel form input[type=button],
-main div.home-page-panels div.right-panel div.login-panel form input[type=submit], 
+main div.home-page-panels div.right-panel div.login-panel form input[type=submit],
 main div.home-page-panels div.right-panel div.login-panel form input[type=reset] { background-color: #EEE; border: 3px solid #000; border-radius: 0px; box-shadow: 5px 5px 0px #000; color: #111; cursor: pointer; font-size: 20px; margin: 0px 0px 0px 240px; padding: 5px 40px; text-decoration: none; width: auto; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 main div.home-page-panels div.right-panel div.option-text { font-size: 40px; padding: 30px 0px; text-align: center; text-transform: uppercase; }
 main div.home-page-panels div.right-panel div.social-media-login-btn { border: 3px solid #000; border-radius: 0px; box-shadow: 5px 5px 0px #000; margin: 0px 0px 25px; padding: 0px; text-align: center; -moz-box-shadow: 5px 5px 0px #000; -webkit-box-shadow: 5px 5px 0px #000; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 main div.home-page-panels div.right-panel div.social-media-login-btn.gmail { background-color: #6666FF; }
 main div.home-page-panels div.right-panel div.social-media-login-btn.linked { margin: 0px; }
 main div.home-page-panels div.right-panel div.social-media-login-btn a,
-main div.home-page-panels div.right-panel div.social-media-login-btn a:link, 
-main div.home-page-panels div.right-panel div.social-media-login-btn a:visited, 
-main div.home-page-panels div.right-panel div.social-media-login-btn a:hover, 
+main div.home-page-panels div.right-panel div.social-media-login-btn a:link,
+main div.home-page-panels div.right-panel div.social-media-login-btn a:visited,
+main div.home-page-panels div.right-panel div.social-media-login-btn a:hover,
 main div.home-page-panels div.right-panel div.social-media-login-btn a:active { color: #111; display: block; font-size: 20px; padding: 10px 40px; text-decoration: none; }
 
 main div.alert-table { clear: right; color: #666; float: right; margin: 60px 0px 0px; width: 750px; }
 main div.alert-table div { border: 2px solid #aaa; border-bottom: none; padding: 15px 10px; }
 main div.alert-table div a,
 main div.alert-table div a:link,
-main div.alert-table div a:visited, 
-main div.alert-table div a:hover, 
+main div.alert-table div a:visited,
+main div.alert-table div a:hover,
 main div.alert-table div a:active { color: #666; }
 main div.alert-table div.alert-table-header { background-color: #bbb; font-size: 18px; }
 main div.alert-table div:last-child { border-bottom: 2px solid #bbb; }
@@ -232,6 +232,10 @@ div.content p.step-num { font-size: 18px; margin: 0px auto 30px; width: 900px; }
 div.content div.welcome-padder { padding: 50px 0px; }
 div.content p.description { font-size: 18px; line-height: 20px; margin: 0px auto 30px; width: 900px; }
 div.content p.disclaimer { margin: 0px auto; padding: 5px 0px; width: 850px; }
+div.content p.congratulation { font-size: 18px; margin: 50px 150px 30px; }
+div.content p.congratulation-des { font-size: 18px; margin: 0px 150px 8px; }
+
+
 
 div.content a.shade-btn:link,
 div.content a.shade-btn:visited,
@@ -256,7 +260,7 @@ div.progress-bar span.number.on:after { background-color: #000; }
 
 div.img-preview { height: 800px; margin: 0px auto; width: 800px; }
 
-@media print { 
+@media print {
 	div.img-preview { background-color: #000; height: 200px; }
 	div.img-preview img { display: none; }
 }

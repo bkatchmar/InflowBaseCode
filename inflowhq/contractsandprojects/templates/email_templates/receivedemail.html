@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/create.contract.css' %}" />
+	<title>Inflow Demo - Received Email</title>
+</head>
+<body>
+	<header>
+		<div class="contract-header1">Contract from</div>
+		<div class="contract-header2">[FREELANCER NAME]</div>
+	</header>
+	<main>
+		<div class="para">
+			<p>Dear [CONTACT NAME],</p>
+			<br>
+			<p>The attached contract, [Contract Name] is from [FREELANCER </p>
+			<p>NAME]. Please review the contract with any corrections as soon as </p>
+			<p>possible; this contract will expire on [MM/DD/YY 7 business days from</p>
+      <p>send-date] if not received and signed. View your contract [CONTRACT</p>
+      <p>LINK] on InFlow to view and sign this contract. </p>
+			<br>
+			<p>Your lovers,</p>
+			<p>InFlow</p>
+	  </div>
+	</main>
+</body>
+</html>
