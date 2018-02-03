@@ -34,12 +34,5 @@ class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
         handler = EmailHandler()
         
         email_mode = request.POST.get("mode", "")
-        
-        if email_mode == "initial-freelancer":
-            handler.send_for_initial_freelancer(contract_to_send)
-        elif email_mode == "initial-client":
-            handler.send_for_initial_client(contract_to_send)
-        else:
-            handler.send_base_email(contract_to_send)
-        
+        handler.send_base_email(contract_to_send)
         return render(request, self.template_name, context)

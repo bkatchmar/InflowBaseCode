@@ -9,20 +9,6 @@
 	<h1>Contract Emails</h1>
 	<br />
 	<form method="post">
-		<h2>Send Initial Email For Client</h2>
-		<input type="hidden" name="mode" value="initial-client" />
-		<input type="submit" value="Send Client An Email" />
-		{% csrf_token %}
-	</form>
-	<br />
-	<form method="post">
-		<h2>Send Initial Email For Freelancer</h2>
-		<input type="hidden" name="mode" value="initial-freelancer" />
-		<input type="submit" value="Send Freelancer An Email" />
-		{% csrf_token %}
-	</form>
-	<br />
-	<form method="post">
 		<h2>Test from HTML Template</h2>
 		<input type="hidden" name="mode" value="snickity-snack" />
 		<input type="submit" value="Send Email" />
