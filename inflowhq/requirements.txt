@@ -1,13 +1,13 @@
 awscli==1.11.181
 awsebcli==3.12.0
 blessed==1.14.2
-boto3==1.4.7
-botocore==1.7.39
+boto3==1.5.22
+botocore==1.8.36
 cement==2.8.2
 certifi==2017.7.27.1
 chardet==3.0.4
 colorama==0.3.7
-Django==1.11.6
+Django==2.0.2
 django-easy-pdf==0.1.1
 docker-py==1.7.2
 dockerpty==0.4.1
@@ -31,7 +31,7 @@ rsa==3.4.2
 s3transfer==0.1.11
 semantic-version==2.5.0
 six==1.11.0
-stripe==1.69.0
+stripe==1.77.1
 tabulate==0.7.5
 termcolor==1.1.0
 urllib3==1.22
