@@ -271,3 +271,12 @@ class BaseSitemap(Sitemap):
         
     def priority(self, item):
         return 0.5
+    
+class GoogleDomainVerificationFile(TemplateView):
+    template_name = "google255e09f84b6b193b.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
