@@ -163,7 +163,7 @@ class GoogleHandler(TemplateView):
                                                      GoogleProfileID=google_api_response["sub"],
                                                      GoogleProfileName=google_api_response["name"],
                                                      GoogleImageUrl=google_api_response["picture"])
-                login(request, newly_created_user)
+                login(request, user)
                 return redirect("/inflow/account/")
         else:
             # User exists, go ahead and log them in

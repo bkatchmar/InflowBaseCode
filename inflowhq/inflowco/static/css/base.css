@@ -260,6 +260,8 @@ div.progress-bar span.number.on:after { background-color: #000; }
 
 div.img-preview { height: 800px; margin: 0px auto; width: 800px; }
 
+div.deliverable-upload form { margin: 25px 0px; }
+
 @media print {
 	div.img-preview { background-color: #000; height: 200px; }
 	div.img-preview img { display: none; }

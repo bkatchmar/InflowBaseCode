@@ -6,11 +6,7 @@
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
 	<title>Inflow Demo - View My Projects</title>
 	<style>
-		{% if useDefault == True %}
-			div.img-preview { background: url('{{ imgData }}'); background-size: 800px auto; background-repeat: no-repeat; }
-		{% else %}
-			div.img-preview { background: url('{{ imgData }}'); background-size: 800px auto; background-repeat: no-repeat; }
-		{% endif %}
+		div.img-preview { background: url('{{ imgData }}'); background-size: 800px auto; background-repeat: no-repeat; }
 	</style>
 </head>
 <body>

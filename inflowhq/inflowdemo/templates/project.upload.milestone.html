@@ -33,15 +33,103 @@
 	</header>
 	<main>
 		<div class="header">NFL Experience App</div>
-		<div>TO DO: Put Upload Stuff Here</div>
-		<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
-			<div>Upload File From Your Computer</div>
-			<input type="file" name="deliverable" />
-			<input type="submit" value="Upload File" />
-			{% csrf_token %}
-		</form>
-		<div>Option to select file from Google Drive</div>
+		<div class="deliverable-upload">
+			<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
+				<div>Select A File From Your Computer</div>
+				<input type="file" name="deliverable" />
+				<input type="hidden" name="drive-url" />
+				<input type="submit" value="Upload File" />
+				{% csrf_token %}
+			</form>
+			<div>Option to select file from Google Drive</div>
+			<div id="google-drive-picker"></div>
+			<button type="button" id="auth" disabled>Authenticate</button>
+		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script></script>
+	<script>
+		// The Browser API key obtained from the Google API Console.
+		var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";
+		
+		// The Client ID obtained from the Google API Console. Replace with your own Client ID.
+		var clientId = "664505544030-uba2jj5ipgovhctdruc06m6vt8ojp3ml.apps.googleusercontent.com";
+		
+		var appId = "664505544030";
+		
+		// Secret 
+		// Zc3K7MFQNvAUobl0cTUOfOEn
+		
+		// Scope to use to access user's drive files.
+		var scope = "https://www.googleapis.com/auth/drive";
+		
+		var pickerApiLoaded = false;
+		var oauthToken;
+		
+		// Use the API Loader script to load google.picker and gapi.auth.
+		function onApiLoad() {
+			gapi.load("auth2", onAuthApiLoad);
+			gapi.load("picker", onPickerApiLoad);
+		}
+		
+		function onAuthApiLoad() {
+			var authBtn = document.getElementById('auth');
+	        authBtn.disabled = false;
+	        authBtn.addEventListener('click', function() {
+				gapi.auth2.authorize({
+					client_id: clientId,
+					scope: scope
+				}, handleAuthResult);
+			});
+		}
+		
+		function onPickerApiLoad() {
+			pickerApiLoaded = true;
+	        createPicker();
+		}
+		
+		function handleAuthResult(authResult) {
+			if (authResult && !authResult.error) {
+				oauthToken = authResult.access_token;
+				createPicker();
+			}
+		}
+		
+		// Create and render a Picker object for searching images.
+		function createPicker() {
+			if (pickerApiLoaded && oauthToken) {
+				var view = new google.picker.View(google.picker.ViewId.DOCS);
+				view.setMimeTypes("image/png,image/jpeg,image/jpg");
+				var picker = new google.picker.PickerBuilder()
+					.enableFeature(google.picker.Feature.NAV_HIDDEN)
+					.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+					.setAppId(appId)
+					.setOAuthToken(oauthToken)
+					.addView(view)
+					.addView(new google.picker.DocsUploadView())
+					.setDeveloperKey(developerKey)
+					.setCallback(pickerCallback)
+					.build();
+				picker.setVisible(true);
+			}
+		}
+		
+		// A simple callback implementation.
+		function pickerCallback(data) {
+			if (data.action == google.picker.Action.PICKED) {
+				var fileId = data.docs[0].id;
+				var dataObject = {
+					"url" : "https://drive.google.com/uc?export=view&id=" + fileId,
+					"embedUrl" : data.docs[0].embedUrl,
+					"driveUrl" : data.docs[0].url,
+					"id" : data.docs[0].id,
+					"type" : data.docs[0].type
+				};
+				var message = "<p>You picked: " + dataObject["url"] + "</p>";
+		        document.getElementById("google-drive-picker").innerHTML = message;
+		        jQuery("div.deliverable-upload form input[type='hidden'][name='drive-url']").val(dataObject["url"]);
+		        jQuery("div.deliverable-upload form").submit();
+			}
+		}
+	</script>
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 </body>

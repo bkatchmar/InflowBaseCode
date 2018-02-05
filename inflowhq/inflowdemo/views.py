@@ -188,10 +188,11 @@ class DemoPreviewMilestone(TemplateView):
         
         # Get data from the POST
         uploaded_file = request.FILES.get("deliverable", False)
+        google_drive_file = request.POST.get("drive-url", "")
         
         # If we have an actual file, time to prepare it to be uploaded to AWS
         if uploaded_file != False:
-            context = { "useDefault" : False }
+            context = {}
             deliverable_key = uploaded_file.__str__()
             amazon_destination_bucket_name = "inflow-upload-demo"
             amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
@@ -214,9 +215,13 @@ class DemoPreviewMilestone(TemplateView):
             
             # Finally, get the newly created URL for the image and base64 encode it
             path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
-            print(path)
             mime = mimetypes.guess_type(path)
             image = urllib.request.urlopen(path)
+            image_64 = base64.encodestring(image.read())
+            context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
+        elif google_drive_file != "":
+            mime = mimetypes.guess_type(google_drive_file)
+            image = urllib.request.urlopen(google_drive_file)
             image_64 = base64.encodestring(image.read())
             context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
         else:
@@ -232,6 +237,5 @@ class DemoPreviewMilestone(TemplateView):
         
         # Call the base implementation first to get a context
         context = super(DemoPreviewMilestone, self).get_context_data(**kwargs)
-        context["useDefault"] = True
         context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
         return context
