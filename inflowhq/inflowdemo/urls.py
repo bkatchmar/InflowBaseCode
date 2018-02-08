@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^myprojects/create-contract/', views.DemoCreateNewContract.as_view(), name='demo_create_contract'),
     url(r'^myprojects/amend-contract/', views.DemoAmendContract.as_view(), name='demo_amend_contract'),
     url(r'^myprojects/upload-milestone/', views.DemoUploadMilestone.as_view(), name='demo_upload_milestone'),
+    url(r'^myprojects/upload-milestone-drag/', views.DemoUploadMilestoneDrag.as_view(), name='demo_upload_milestone_drag'),
     url(r'^myprojects/preview-milestone/', views.DemoPreviewMilestone.as_view(), name='demo_preview_milestone'),
     url(r'^myprojects/', views.DemoMyProjectsScreen.as_view(), name='demo_my_projects'),
 ]

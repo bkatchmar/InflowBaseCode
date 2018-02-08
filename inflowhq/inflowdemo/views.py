@@ -189,6 +189,7 @@ class DemoPreviewMilestone(TemplateView):
         # Get data from the POST
         uploaded_file = request.FILES.get("deliverable", False)
         google_drive_file = request.POST.get("drive-url", "")
+        dropzone_files = request.FILES.getlist("freelancer-deliverables")
         
         # If we have an actual file, time to prepare it to be uploaded to AWS
         if uploaded_file != False:
@@ -224,6 +225,39 @@ class DemoPreviewMilestone(TemplateView):
             image = urllib.request.urlopen(google_drive_file)
             image_64 = base64.encodestring(image.read())
             context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
+        elif len(dropzone_files) > 0:
+            context = {}
+            
+            # Initial AWS Variables
+            amazon_destination_bucket_name = "inflow-upload-demo"
+            amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+            amazon_caller_client = boto3.client("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+            
+            # Determine if we have to create a new bucket
+            bucket_list = amazon_caller_client.list_buckets()
+            need_to_create_bucket = True
+            for bucket in bucket_list["Buckets"]:
+                if bucket["Name"] == amazon_destination_bucket_name:
+                    need_to_create_bucket = False
+            
+            # If we need to create a new bucket, do so
+            # TO DO: Make this a more streamlined process
+            if need_to_create_bucket:
+                amazon_caller_resource.create_bucket(Bucket=amazon_destination_bucket_name)
+            
+            path = ""
+            
+            for dropzone_file in dropzone_files:
+                deliverable_key = dropzone_file.__str__()
+                
+                # Place the uploaded file in Amazon
+                amazon_caller_resource.Bucket(amazon_destination_bucket_name).put_object(ACL="public-read", Key=deliverable_key, Body=dropzone_file)
+                path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
+            
+            mime = mimetypes.guess_type(path)
+            image = urllib.request.urlopen(path)
+            image_64 = base64.encodestring(image.read())
+            context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
         else:
             context = self.get_context_data(request)
         
@@ -239,3 +273,12 @@ class DemoPreviewMilestone(TemplateView):
         context = super(DemoPreviewMilestone, self).get_context_data(**kwargs)
         context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
         return context
+
+class DemoUploadMilestoneDrag(TemplateView):
+    template_name = "project.upload.drag.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)

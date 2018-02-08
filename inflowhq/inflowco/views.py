@@ -256,7 +256,8 @@ class BaseSitemap(Sitemap):
                 "htmldemos:demo_congratulation",
                 "htmldemos:demo_stripe_connect",
                 "htmldemos:demo_stripe_thanks",
-                "htmldemos:demo_tos"]
+                "htmldemos:demo_tos",
+                "htmldemos:demo_upload_milestone_drag"]
 
     def location(self, item):
         return reverse(item)

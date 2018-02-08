@@ -235,8 +235,6 @@ div.content p.disclaimer { margin: 0px auto; padding: 5px 0px; width: 850px; }
 div.content p.congratulation { font-size: 18px; margin: 50px 150px 30px; }
 div.content p.congratulation-des { font-size: 18px; margin: 0px 150px 8px; }
 
-
-
 div.content a.shade-btn:link,
 div.content a.shade-btn:visited,
 div.content a.shade-btn:hover,
@@ -261,6 +259,11 @@ div.progress-bar span.number.on:after { background-color: #000; }
 div.img-preview { height: 800px; margin: 0px auto; width: 800px; }
 
 div.deliverable-upload form { margin: 25px 0px; }
+
+/* DropZone Styles For Drag and Drop */
+form#inflow-dropzone { border: 2px solid #666; margin: 25px 0px; overflow: auto; padding: 100px 10px; }
+form#inflow-dropzone div.dz-default.dz-message { text-align: center; }
+form#inflow-dropzone div.dz-preview { float: left; margin: 0px 10px; }
 
 @media print {
 	div.img-preview { background-color: #000; height: 200px; }
