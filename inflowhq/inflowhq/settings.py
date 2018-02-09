@@ -25,7 +25,7 @@ SECRET_KEY = "7t=&8c9%(9%piw_q%pqr_5gis*4dy1^=z47=e+x-uzjv6m!5+e"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com", "workinflow.co"]
 
 # Stripe Information
 STRIPE_TEST_API_SECRET = "sk_test_ZNyeY1kgGqIgitBn16rLqGNn"
