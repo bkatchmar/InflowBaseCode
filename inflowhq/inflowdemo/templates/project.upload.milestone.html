@@ -4,6 +4,10 @@
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<style>
+		img{ max-width:300px; display: inline-block; }
+		input[type=file]{ padding:10px; float: left; }
+	</style>
 	<title>Inflow Demo - View My Projects</title>
 </head>
 <body>
@@ -36,8 +40,8 @@
 		<div class="deliverable-upload">
 			<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
 				<div>Select A File From Your Computer</div>
-				<input type="file" name="deliverable" />
-				<input type="hidden" name="drive-url" />
+				<input type='file' onchange="readURL(this);" />
+        <img id="blah" src="http://placehold.it/300" alt="your image" />
 				<input type="submit" value="Upload File" />
 				{% csrf_token %}
 			</form>
@@ -48,29 +52,43 @@
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
+		function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#blah')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+	   }
+	</script>
+	<script>
 		// The Browser API key obtained from the Google API Console.
 		var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";
-		
+
 		// The Client ID obtained from the Google API Console. Replace with your own Client ID.
 		var clientId = "664505544030-uba2jj5ipgovhctdruc06m6vt8ojp3ml.apps.googleusercontent.com";
-		
+
 		var appId = "664505544030";
-		
-		// Secret 
+
+		// Secret
 		// Zc3K7MFQNvAUobl0cTUOfOEn
-		
+
 		// Scope to use to access user's drive files.
 		var scope = "https://www.googleapis.com/auth/drive";
-		
+
 		var pickerApiLoaded = false;
 		var oauthToken;
-		
+
 		// Use the API Loader script to load google.picker and gapi.auth.
 		function onApiLoad() {
 			gapi.load("auth2", onAuthApiLoad);
 			gapi.load("picker", onPickerApiLoad);
 		}
-		
+
 		function onAuthApiLoad() {
 			var authBtn = document.getElementById('auth');
 	        authBtn.disabled = false;
@@ -81,19 +99,19 @@
 				}, handleAuthResult);
 			});
 		}
-		
+
 		function onPickerApiLoad() {
 			pickerApiLoaded = true;
 	        createPicker();
 		}
-		
+
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
 				oauthToken = authResult.access_token;
 				createPicker();
 			}
 		}
-		
+
 		// Create and render a Picker object for searching images.
 		function createPicker() {
 			if (pickerApiLoaded && oauthToken) {
@@ -112,7 +130,7 @@
 				picker.setVisible(true);
 			}
 		}
-		
+
 		// A simple callback implementation.
 		function pickerCallback(data) {
 			if (data.action == google.picker.Action.PICKED) {
