@@ -140,9 +140,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = "/static/"
-STATIC_ROOT = "/static/"
-LOGIN_URL = "/inflow/"
+STATIC_URL = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
+STATIC_ROOT = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
+LOGIN_URL = "/"
 
 EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
 EMAIL_HOST_USER = "AKIAI6OO52H7X6ZFGGTQ"
