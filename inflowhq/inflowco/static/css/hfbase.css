@@ -1,0 +1,58 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, b, u, i, center,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0px;
+	padding: 0px;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, main { display: block; }
+body { line-height: 1em; }
+ol, ul { list-style: none; }
+blockquote, q { quotes: none; }
+blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
+table { border-collapse: collapse; border-spacing: 0px; }
+strong { font-weight: bold; }
+
+/* The Beginning of InFlow Base CSS Overrides */
+/* High Level Styles */
+body { background-color: #FFF; font-family: Lato, Verdana, sans-serif; }
+header { background-color: #3E5A7C; height: 147px; }
+main {}
+footer {}
+a, a:link, a:visited, a:hover, a:active { text-decoration: none; }
+
+/* High level elements */
+div.content { margin: 0px auto; width: 1280px; }
+
+/* Header Navigation Elements */
+header div.content { clear: both; overflow: hidden; }
+header div.logo { background-color: #E6833B; color: #FFF; float: left; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
+header div.logo a,
+header div.logo a:link,
+header div.logo a:visited,
+header div.logo a:hover,
+header div.logo a:active { color: #FFF; }
+header nav { float: right; margin: 64px 50px 0px 0px; }
+header nav a,
+header nav a:link,
+header nav a:visited,
+header nav a:hover,
+header nav a:active { color: #FFF; font-size: 20px; font-weight: 500; padding: 6px 25px; }
+header nav a.alt,
+header nav a.alt:link,
+header nav a.alt:visited,
+header nav a.alt:hover,
+header nav a.alt:active { background-color: #E6833B; border: solid 1px #979797; border-radius: 8px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+/* High Level Main Elements */
+main div.content { margin: 48px auto 0px; width: 1280px; }
+
+/* Main Elements */
+main h1 { font-size: 36px; line-height: 36px; text-align: center; }
