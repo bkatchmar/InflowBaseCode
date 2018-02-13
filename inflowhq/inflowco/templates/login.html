@@ -4,6 +4,7 @@
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<title>Welcome to InFlow - Please Log In</title>
 </head>
 <body>
@@ -24,12 +25,21 @@
 	<main>
 		<div class="content">
 			<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
-			<form method="post">
-				<input type="text" name="username" placeholder="E-mail address" />
+			<div class="login-buttons">
+				<a href="#" class="inflow-btn">Log in with Google</a>
+				<a href="#" class="inflow-btn">Log in with LinkedIn</a>
+			</div>
+			<div class="separator">or</div>
+			<form method="post" class="login-form">
+				<input type="email" name="username" placeholder="E-mail address" />
 				<input type="password" name="password" placeholder="Password" />
-				<input type="submit" value="Login" />
+				<div class="under-textboxes">
+					<input type="checkbox" name="acknowledgement" /><span class="checkbox-text">Stay signed in</span><a href="#" class="forgot">Forgot password?</a>
+				</div>
+				<input type="submit" value="Log in" />
 				{% csrf_token %}
 			</form>
+			<div class="signup-link"><a href="#">Don’t have an account? Sign up!</a></div>
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

@@ -22,14 +22,23 @@ strong { font-weight: bold; }
 
 /* The Beginning of InFlow Base CSS Overrides */
 /* High Level Styles */
-body { background-color: #FFF; font-family: Lato, Verdana, sans-serif; }
+body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
 header { background-color: #3E5A7C; height: 147px; }
 main {}
 footer {}
-a, a:link, a:visited, a:hover, a:active { text-decoration: none; }
+a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 
 /* High level elements */
 div.content { margin: 0px auto; width: 1280px; }
+a.inflow-btn,
+a.inflow-btn:link,
+a.inflow-btn:visited,
+a.inflow-btn:hover,
+a.inflow-btn:active { background-color: #E6833B; border-radius: 8px; color: #FFF; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+input { border: solid 1px #979797; display: block; margin: 9px 0px; }
+input[type="text"], input[type="email"], input[type="password"] { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+input[type="checkbox"] { display: inline-block; height: 21px; margin: 0px 3px 0px 0px; width: 21px; }
+input[type="submit"] { background-color: #3E5A7C; border-radius: 8px; color: #FFF; font-size: 24px; font-weight: bold; margin: 0px auto; padding: 9px 0px; width: 300px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 /* Header Navigation Elements */
 header div.content { clear: both; overflow: hidden; }
@@ -56,3 +65,14 @@ main div.content { margin: 48px auto 0px; width: 1280px; }
 
 /* Main Elements */
 main h1 { font-size: 36px; line-height: 36px; text-align: center; }
+main div.login-buttons { margin: 48px auto 15px; width: 200px; }
+main div.login-buttons a.inflow-btn { display: inline-block; margin: 0px 0px 7px; padding: 10px 0px; text-align: center; width: 193px; }
+main div.separator { color: #000000; font-size: 14px; font-weight: 300; margin: 15px 0px; text-align: center; }
+main form.login-form { margin: 0px auto; width: 365px; }
+main form.login-form input[type="text"], main form.login-form input[type="email"], main form.login-form input[type="password"] { width: 330px; }
+main form.login-form div.under-textboxes input[type="checkbox"] { float: left; }
+main form.login-form div.under-textboxes a { font-size: 14px; font-weight: 300; }
+main form.login-form div.under-textboxes a.forgot { float: right; }
+main div.under-textboxes { margin: 0px 0px 17px; }
+main div.under-textboxes span.checkbox-text { font-size: 14px; font-weight: 300; }
+main div.signup-link { margin: 7px auto; text-align: center; }
