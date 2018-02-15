@@ -76,3 +76,5 @@ main form.login-form div.under-textboxes a.forgot { float: right; }
 main div.under-textboxes { margin: 0px 0px 17px; }
 main div.under-textboxes span.checkbox-text { font-size: 14px; font-weight: 300; }
 main div.signup-link { margin: 7px auto; text-align: center; }
+main div.g-signin2 { margin: 0px 0px 7px; }
+main div.error-msg { color: #800000; text-align: center; }

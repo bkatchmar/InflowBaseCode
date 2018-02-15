@@ -22,23 +22,92 @@ class LoginView(TemplateView):
     template_name = "login.html"
     
     def get(self, request):
+        context = {}
+        
         # Log out current user if the query string has "logout" on it
         if request.GET.get("logout","") != "":
+            context["try_process_login"] = False
             logout(request)
+        else:
+            context["try_process_login"] = True
             
-        return render(request, self.template_name)
+        return render(request, self.template_name, context)
     
     def post(self, request):
+        context = {}
+        
         # Collect POST data
         user_name = request.POST.get("username", "")
         password = request.POST.get("password", "")
+        google_id_token = request.POST.get("google-id-token", "")
+        
+        if google_id_token != "":
+            return self.handle_google_login_attempt(request,google_id_token)
+        
+        # If we get here, means Google and LinkedIn do not apply to this post
         user = authenticate(request, username=user_name, password=password)
         
         if user is not None:
             login(request, user)
             return redirect("/inflow/currencies/")
+        else:
+            context["error_msg"] = "Username and Password Combination Are Not Correct"
         
-        return render(request, self.template_name)
+        return render(request, self.template_name, context)
+    
+    def handle_google_login_attempt(self,request,google_id_token):
+        # First we need to send google_id_token for validation, make sure this request is legit
+        login_attempt_failed = False
+        google_api_caller = GoogleApi()
+        google_api_response = google_api_caller.validate_google_token(google_id_token)
+        
+        # If something went wrong, it means something is fishy, perhaps a third party attack, abort and go back to the login screen
+        if google_api_response["response_ok"] == False:
+            login_attempt_failed = True
+        if google_api_response["email"] is None:
+            login_attempt_failed = True
+        if google_api_response["sub"] is None:
+            login_attempt_failed = True
+        
+        # We don't need to continue if the login attempt faield
+        if login_attempt_failed:
+            logout(request)
+            return render(request, self.template_name)
+        
+        # Call the Database to see if a user already exists for this Google User ID
+        # TO DO: It may be appropriate to further identify the variables to see if they match what we got back from Google, but for now that may be overkill
+        user_google_information = UserGoogleInformation.objects.filter(GoogleProfileID=google_api_response["sub"]).first()
+        
+        if user_google_information is None:
+            # Nothing found, I want to check the email address to see if this user already registered, if they did, we can just log them in 
+            user = User.objects.filter(email=google_api_response["email"]).first()
+            
+            if user is None:
+                # Create A New User
+                newly_created_user = User.objects.create(username=google_api_response["email"],
+                                                        email=google_api_response["email"],
+                                                        first_name=google_api_response["given_name"],
+                                                        last_name=google_api_response["family_name"],
+                                                        is_staff=False,
+                                                        is_active=True,
+                                                        is_superuser=False)
+                UserGoogleInformation.objects.create(UserAccount=newly_created_user,
+                                                     GoogleProfileID=google_api_response["sub"],
+                                                     GoogleProfileName=google_api_response["name"],
+                                                     GoogleImageUrl=google_api_response["picture"])
+                login(request, newly_created_user)
+            else:
+                # Link Google To Existing User
+                UserGoogleInformation.objects.create(UserAccount=user,
+                                                     GoogleProfileID=google_api_response["sub"],
+                                                     GoogleProfileName=google_api_response["name"],
+                                                     GoogleImageUrl=google_api_response["picture"])
+                login(request, user)
+        else:
+            # User exists, go ahead and log them in
+            login(request, user_google_information.UserAccount)
+        
+        return redirect("/inflow/currencies/")
     
 class LinkedInHandler(TemplateView):
     template_name = 'linkedin.html'
@@ -111,66 +180,6 @@ class LinkedInHandler(TemplateView):
                     return redirect("/inflow/account/")
         
         return render(request, self.template_name, context)
-
-class GoogleHandler(TemplateView):
-    template_name = "googlelogin.html"
-    
-    def get(self, request):
-        return render(request, self.template_name)
-    
-    def post(self, request):
-        # Collect Post Information
-        google_id_token = request.POST.get("google-id-token", "")
-        
-        # First we need to send google_id_token for validation, make sure this request is legit
-        google_api_caller = GoogleApi()
-        google_api_response = google_api_caller.validate_google_token(google_id_token)
-        
-        # If something went wrong, it means something is fishy, perhaps a third party attack, abort and go back to the login screen
-        if google_api_response["response_ok"] == False:
-            return render(request, self.template_name)
-        if google_api_response["email"] is None:
-            return render(request, self.template_name)
-        if google_api_response["sub"] is None:
-            return render(request, self.template_name)
-        
-        # Call the Database to see if a user already exists for this Google User ID
-        # TO DO: It may be appropriate to further identify the variables to see if they match what we got back from Google, but for now that may be overkill
-        user_google_information = UserGoogleInformation.objects.filter(GoogleProfileID=google_api_response["sub"]).first()
-        
-        if user_google_information is None:
-            # Nothing found, I want to check the email address to see if this user already registered, if they did, we can just log them in 
-            user = User.objects.filter(email=google_api_response["email"]).first()
-            
-            if user is None:
-                # Create A New User
-                newly_created_user = User.objects.create(username=google_api_response["email"],
-                                                        email=google_api_response["email"],
-                                                        first_name=google_api_response["given_name"],
-                                                        last_name=google_api_response["family_name"],
-                                                        is_staff=False,
-                                                        is_active=True,
-                                                        is_superuser=False)
-                UserGoogleInformation.objects.create(UserAccount=newly_created_user,
-                                                     GoogleProfileID=google_api_response["sub"],
-                                                     GoogleProfileName=google_api_response["name"],
-                                                     GoogleImageUrl=google_api_response["picture"])
-                login(request, newly_created_user)
-                return redirect("/inflow/account/")
-            else:
-                # Link Google To Existing User
-                UserGoogleInformation.objects.create(UserAccount=user,
-                                                     GoogleProfileID=google_api_response["sub"],
-                                                     GoogleProfileName=google_api_response["name"],
-                                                     GoogleImageUrl=google_api_response["picture"])
-                login(request, user)
-                return redirect("/inflow/account/")
-        else:
-            # User exists, go ahead and log them in
-            login(request, user_google_information.UserAccount)
-            return redirect("/inflow/account/")
-        
-        return render(request, self.template_name)
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
     template_name = 'listcurrencies.html'
@@ -237,7 +246,8 @@ class SavePdfTrials(PDFTemplateView):
     
 class BaseSitemap(Sitemap):
     def items(self):
-        return ["htmldemos:demo_home",
+        return ["login",
+                "htmldemos:demo_home",
                 "htmldemos:demo_my_projects",
                 "htmldemos:demo_project_details",
                 "htmldemos:demo_create_contract",

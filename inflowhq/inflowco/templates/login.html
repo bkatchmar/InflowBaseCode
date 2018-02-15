@@ -3,8 +3,9 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=2018" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
 	<title>Welcome to InFlow - Please Log In</title>
 </head>
 <body>
@@ -26,16 +27,20 @@
 		<div class="content">
 			<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
 			<div class="login-buttons">
-				<a href="#" class="inflow-btn">Log in with Google</a>
+				<div class="g-signin2" id="google-signin" data-onsuccess="InflowGoogleSignIn"></div>
 				<a href="#" class="inflow-btn">Log in with LinkedIn</a>
 			</div>
 			<div class="separator">or</div>
+			{% if error_msg != "" %}
+				<div class="error-msg">{{error_msg}}</div>
+			{% endif %}
 			<form method="post" class="login-form">
 				<input type="email" name="username" placeholder="E-mail address" />
 				<input type="password" name="password" placeholder="Password" />
 				<div class="under-textboxes">
 					<input type="checkbox" name="acknowledgement" /><span class="checkbox-text">Stay signed in</span><a href="#" class="forgot">Forgot password?</a>
 				</div>
+				<input type="hidden" name="google-id-token" value="" />
 				<input type="submit" value="Log in" />
 				{% csrf_token %}
 			</form>
@@ -43,5 +48,7 @@
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="{% static 'js/inflow.google.signin.handler.js' %}"></script>
+	<script src="https://apis.google.com/js/platform.js?onload=InflowRenderGoogleButton" async defer></script>
 </body>
 </html>
