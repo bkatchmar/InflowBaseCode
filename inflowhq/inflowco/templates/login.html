@@ -27,7 +27,7 @@
 		<div class="content">
 			<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
 			<div class="login-buttons">
-				<div class="g-signin2" id="google-signin" data-onsuccess="InflowGoogleSignIn"></div>
+				<div class="g-signin2" data-width="193" data-height="36" data-theme="dark" data-longtitle="true" data-onsuccess="InflowGoogleSignIn"></div>
 				<a href="#" class="inflow-btn">Log in with LinkedIn</a>
 			</div>
 			<div class="separator">or</div>
@@ -48,7 +48,15 @@
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="{% static 'js/inflow.google.signin.handler.js' %}"></script>
-	<script src="https://apis.google.com/js/platform.js?onload=InflowRenderGoogleButton" async defer></script>
+	<script src="https://apis.google.com/js/platform.js" async defer></script>
+	<script>
+		function InflowGoogleSignIn(googleUser) {
+			var google_id_token = googleUser.getAuthResponse().id_token;
+			
+			// Fill in the form
+			jQuery("form.login-form input[type='hidden'][name='google-id-token']").val(google_id_token);
+			jQuery("form.login-form").submit();
+		}
+	</script>
 </body>
 </html>
