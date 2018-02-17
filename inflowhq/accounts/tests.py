@@ -1,10 +1,8 @@
 from __future__ import unicode_literals
-from accounts.models import UserSettings, UserPaymentHistory
-from datetime import date, datetime, time
-from dateutil.relativedelta import relativedelta
+from accounts.models import UserSettings
+from accounts.signupvalidation import UserCreationBaseValidators
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from django.utils import timezone
 from inflowco.models import Country, Currency
 import pytz
 
@@ -23,140 +21,6 @@ class BaseUserTestCase(TestCase):
     def test_did_user_get_created(self):
         superuser = User.objects.get(username="brian")
         self.assertEqual(superuser.first_name, "Brian")
-        
-class UserPaymentHistoryTestCase(TestCase):
-    def setUp(self):
-        usd = Currency.objects.create()
-        
-        USA = Country()
-        USA.PrimaryCurrency = usd
-        USA.Name = "United States"
-        USA.Code = "US"
-        USA.save()
-        
-        now = datetime.now()
-    
-        firstUser = User.objects.create(username="brian",
-                                        email="brian@workinflow.co",
-                                        password="ilikechickenfingersandpizza",
-                                        first_name="Brian",
-                                        last_name="Katchmar",
-                                        is_staff=True,
-                                        is_active=True,
-                                        is_superuser=True)
-        secondUser = User.objects.create(username="brian2",
-                                        email="brian2@workinflow.co",
-                                        password="ilikechickenfingersandpizza",
-                                        first_name="Brian",
-                                        last_name="Katchmar",
-                                        is_staff=True,
-                                        is_active=True,
-                                        is_superuser=True)
-        
-        thirdUser = User.objects.create(username="brian3",
-                                        email="brian3@workinflow.co",
-                                        password="ilikechickenfingersandpizza",
-                                        first_name="Brian",
-                                        last_name="Katchmar",
-                                        is_staff=True,
-                                        is_active=True,
-                                        is_superuser=True)
-        
-        # Time Zone Setting
-        timezone.activate(pytz.timezone("America/New_York"))
-        
-        # Get Settings
-        date_first = date(2017,9,20)
-        time_first = time(12, 0, 0, tzinfo=timezone.get_current_timezone())
-        aware_datetime_first = datetime.combine(date_first, time_first)
-        UserSettings.objects.create(UserAccount=firstUser,
-                                    Active=True,
-                                    Joined=aware_datetime_first,
-                                    BaseCountry=USA,
-                                    PaymentLevel='s')
-        
-        date_second = date(2017,9,21)
-        time_second = time(12, 0, 0, tzinfo=timezone.get_current_timezone())
-        aware_datetime_second = datetime.combine(date_second, time_second)
-        UserSettings.objects.create(UserAccount=secondUser,
-                                    Active=True,
-                                    Joined=aware_datetime_second,
-                                    BaseCountry=USA,
-                                    PaymentLevel='s')
-        
-        date_third = date(2017,9,21)
-        time_third = time(12, 0, 0, tzinfo=timezone.get_current_timezone())
-        aware_datetime_third = datetime.combine(date_third, time_third)
-        UserSettings.objects.create(UserAccount=thirdUser,
-                                    Active=False,
-                                    Joined=aware_datetime_third,
-                                    BaseCountry=USA,
-                                    PaymentLevel='s')
-        
-        # First User Payments
-        UserPaymentHistory.objects.create(UserAccount=firstUser,
-                                          DateCharged=date(2017,9,20),
-                                          NextBillingDate=date(2017,9,20)+relativedelta(days=+1),
-                                          PaymentLevel='s')
-        UserPaymentHistory.objects.create(UserAccount=firstUser,
-                                          DateCharged=date(2017,9,21),
-                                          NextBillingDate=date(2017,9,21)+relativedelta(days=+1),
-                                          PaymentLevel='s')
-        
-        # Second User Payments
-        UserPaymentHistory.objects.create(UserAccount=secondUser,
-                                          DateCharged=date(now.year+1,9,21),
-                                          NextBillingDate=date(now.year+1,9,21)+relativedelta(months=+1),
-                                          PaymentLevel='s')
-        
-        # Third User Payments
-        UserPaymentHistory.objects.create(UserAccount=thirdUser,
-                                          DateCharged=date(2017,9,22),
-                                          NextBillingDate=date(2017,9,22)+relativedelta(days=+1),
-                                          PaymentLevel='s')
-        UserPaymentHistory.objects.create(UserAccount=thirdUser,
-                                          DateCharged=date(2017,9,23),
-                                          NextBillingDate=date(2017,9,23)+relativedelta(days=+1),
-                                          PaymentLevel='s')
-        UserPaymentHistory.objects.create(UserAccount=thirdUser,
-                                          DateCharged=date(2017,9,24),
-                                          NextBillingDate=date(2017,9,24)+relativedelta(days=+1),
-                                          PaymentLevel='s')
-        
-    def test_did_user_get_payment_histories(self):
-        firstUser = User.objects.get(username="brian") 
-        firstUserPayments = UserPaymentHistory.objects.filter(UserAccount=firstUser)
-        self.assertEqual(firstUserPayments.count(), 2)
-        
-        secondUser = User.objects.get(username="brian2") 
-        secondUserPayments = UserPaymentHistory.objects.filter(UserAccount=secondUser)
-        self.assertEqual(secondUserPayments.count(), 1)
-        
-    def test_correct_determination_that_new_payment_is_needed(self):
-        firstUser = User.objects.get(username="brian")
-        firstUserPayments = UserPaymentHistory.objects.filter(UserAccount=firstUser).last()
-        self.assertEqual(firstUserPayments.NewMonthlyPaymentNeeded(), True)
-        
-        secondUser = User.objects.get(username="brian2") 
-        secondUserPayments = UserPaymentHistory.objects.filter(UserAccount=secondUser).last()
-        self.assertEqual(secondUserPayments.NewMonthlyPaymentNeeded(), False)
-        
-        thirdUser = User.objects.get(username="brian3") 
-        thirdUserPayments = UserPaymentHistory.objects.filter(UserAccount=thirdUser).last()
-        self.assertEqual(thirdUserPayments.NewMonthlyPaymentNeeded(), True)
-    
-    def test_usersettings_monthly_payment_check(self):
-        firstUser = User.objects.get(username="brian")
-        firstUserSettings = UserSettings.objects.get(UserAccount=firstUser)
-        self.assertEqual(firstUserSettings.CheckIfNewMonthlyPaymentIsNeeded(), True)
-        
-        secondUser = User.objects.get(username="brian2") 
-        secondUserSettings = UserSettings.objects.get(UserAccount=secondUser)
-        self.assertEqual(secondUserSettings.CheckIfNewMonthlyPaymentIsNeeded(), False)
-        
-        thirdUser = User.objects.get(username="brian3")
-        thirdUserSettings = UserSettings.objects.get(UserAccount=thirdUser)
-        self.assertEqual(thirdUserSettings.CheckIfNewMonthlyPaymentIsNeeded(), False)
         
 class UserAuthenticationTestCase(TestCase):
     def setUp(self):
@@ -201,3 +65,24 @@ class UserAuthenticationTestCase(TestCase):
         self.assertEqual(response.context["settings"].UserAccount.username, "brian")
         self.assertEqual(response.context["settings"].UserAccount.first_name, "Brian")
         self.assertEqual(response.context["settings"].UserAccount.last_name, "Katchmar")
+
+class SignUpValidationTests(TestCase):
+    def setUp(self):
+        User.objects.create(
+            username="brian",
+            email="brian@workinflow.co",
+            password="ilikechickenfingersandpizza",
+            first_name="Brian",
+            last_name="Katchmar",
+            is_staff=True,
+            is_active=True,
+            is_superuser=True)
+        
+    def test_validation(self):
+        validator = UserCreationBaseValidators()
+        validator.attempt_to_create_user("","","arandompassword",True)
+        self.assertEqual(validator.error_thrown, False)
+        
+        validator1 = UserCreationBaseValidators()
+        validator1.attempt_to_create_user("useremail@email.com","Brian","Apple",False)
+        self.assertEqual(validator1.error_thrown, False)

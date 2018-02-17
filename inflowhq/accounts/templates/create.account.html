@@ -3,10 +3,10 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201802" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
-	<title>Welcome to InFlow - Please Log In</title>
+	<title>Welcome to InFlow - Sign Up To Get Started</title>
 </head>
 <body>
 	<header>
@@ -35,16 +35,17 @@
 				<div class="error-msg">{{error_msg}}</div>
 			{% endif %}
 			<form method="post" class="login-form">
-				<input type="email" name="username" placeholder="E-mail address" />
-				<input type="password" name="password" placeholder="Password" />
-				<div class="under-textboxes">
-					<input type="checkbox" name="acknowledgement" /><span class="checkbox-text">Stay signed in</span><a href="#" class="forgot">Forgot password?</a>
+				<input type="email" name="username" placeholder="E-mail address" required />
+				<input type="text" name="name" placeholder="Name" required />
+				<input type="password" name="password" placeholder="Password" required />
+				<div class="agree-to-terms-of-service">
+					<input type="checkbox" name="agree" /><span class="checkbox-text">I agree to the terms and services.</span>
 				</div>
 				<input type="hidden" name="google-id-token" value="" />
-				<input type="submit" value="Log in" />
+				<input type="submit" value="Sign up" />
 				{% csrf_token %}
 			</form>
-			<div class="signup-link"><a href="{% url 'accounts:create' %}">Don’t have an account? Sign up!</a></div>
+			<div class="signup-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
