@@ -30,7 +30,14 @@ class LoginView(TemplateView):
             logout(request)
         else:
             context["try_process_login"] = True
-            
+        
+        # For LinkedIn
+        context["linkedin"] = self.set_linkedin_params()
+        
+        # If this page was hit from LinkedIn, go ahead and handle to log the user in
+        if self.is_this_a_linkedin_request(request):
+            return self.handle_linkedin_request(request)
+        
         return render(request, self.template_name, context)
     
     def post(self, request):
@@ -53,6 +60,7 @@ class LoginView(TemplateView):
         else:
             context["error_msg"] = "Username and Password Combination Are Not Correct"
         
+        context["linkedin"] = self.set_linkedin_params()
         return render(request, self.template_name, context)
     
     def handle_google_login_attempt(self,request,google_id_token):
@@ -109,76 +117,77 @@ class LoginView(TemplateView):
         
         return redirect("/inflow/currencies/")
     
-class LinkedInHandler(TemplateView):
-    template_name = 'linkedin.html'
+    def set_linkedin_params(self):
+        linkedin_params = {
+            "response_type" : "code",
+            "client_id" : settings.LINKEDIN_CLIENT_ID,
+            "state" : settings.LINKEDIN_CALL_STATE,
+            "redirect_uri" : settings.LINKEDIN_REDIRECT_URL
+        }
+        return urllib.parse.urlencode(linkedin_params)
     
-    def get(self, request):
+    def is_this_a_linkedin_request(self,request):
+        responsestate = request.GET.get("state", "")
+        return responsestate != ""
+    
+    def handle_linkedin_request(self,request):
         context = {}
         
         # Getting info from the request
-        linkedinerror = request.GET.get('error', '')
-        linkedinerorrmsg = request.GET.get('error_description', '')
-        responsestate = request.GET.get('state', '')
-        authtokencode = request.GET.get('code', '')
+        linkedin_error = request.GET.get("error", "")
+        linkedin_error_msg = request.GET.get("error_description", "")
+        response_state = request.GET.get("state", "")
+        authtoken_code = request.GET.get("code", "")
         
         # Validation Checks
-        returnstatematches = False
-        propercodehasbeenreturned = False
-        collectedaccesstoken = ""
+        return_state_matches = False
+        proper_code_has_been_returned = False
+        collected_access_token = ""
         
-        if linkedinerror is not None:
-            context["linkedinerorrmsg"] = linkedinerorrmsg
+        if linkedin_error is not None:
+            context["error_msg"] = linkedin_error_msg
             
-        if responsestate != "":
-            if responsestate != settings.LINKEDIN_CALL_STATE:
-                context["linkedinerorrmsg"] = "State does not match, something fishy is going on"
+        if response_state != "":
+            if response_state != settings.LINKEDIN_CALL_STATE:
+                context["error_msg"] = "LinkedIn State does not match"
             else:
-                returnstatematches = True
+                return_state_matches = True
                 
-        if authtokencode is not None:
-            propercodehasbeenreturned = True
+        if authtoken_code is not None:
+            proper_code_has_been_returned = True
             
         # If everything checks out, time to ROCK AND ROLL
-        if returnstatematches and propercodehasbeenreturned:
-            apiCaller = LinkedInApi()
-            json = apiCaller.RequestAuthorizationToken(authtokencode)
+        if return_state_matches and proper_code_has_been_returned:
+            api_caller = LinkedInApi()
+            json = api_caller.request_authorization_token(authtoken_code)
             
             if json.get("access_token") is not None:
                 context["message"] = "You Have Successfully Authorized"
-                collectedaccesstoken = json.get("access_token")
+                collected_access_token = json.get("access_token")
             if json.get("error_description") is not None:
-                context["linkedinerorrmsg"] = json["error_description"]
-                
-            context["linkedinresponsebody"] = json
+                context["error_msg"] = json["error_description"]
             
         # Next, we handle account create an authorization, if a user is already logged in, this LinkedIn info will be tied to that account
         # Otherwise, we are going to create a brand new user based on what we read from LinkedIn
-        apicaller = LinkedInApi()
-        apilinkedininfo = apicaller.GetBasicProfileInfo(collectedaccesstoken)
+        api_caller = LinkedInApi()
+        api_linkedin_info = api_caller.get_basic_profile_info(collected_access_token)
         
-        if collectedaccesstoken != "":
-            if request.user.is_authenticated:
-                userLinkedInProfileInfo = UserLinkedInInformation.objects.filter(UserAccount=request.user).first()
-                if userLinkedInProfileInfo is None:
-                    UserLinkedInInformation.objects.create(UserAccount=request.user,LinkedInProfileID=apilinkedininfo["id"],LinkedInAccessToken=collectedaccesstoken)
-                else:
-                    userLinkedInProfileInfo.LinkedInProfileID = apilinkedininfo["id"]
-                    userLinkedInProfileInfo.LinkedInAccessToken = collectedaccesstoken
-                    userLinkedInProfileInfo.save()
+        if collected_access_token != "":
+            linkedin_profile_information = UserLinkedInInformation.objects.filter(LinkedInProfileID=api_linkedin_info["id"]).first()
+            linkedin_user = User.objects.filter(email=api_linkedin_info["emailAddress"]).first()
+            
+            if linkedin_user is None:
+                linkedin_user = User.objects.create(username=api_linkedin_info["emailAddress"],email=api_linkedin_info["emailAddress"],first_name=api_linkedin_info["firstName"],last_name=api_linkedin_info["lastName"],is_staff=False,is_active=True,is_superuser=False)
+            
+            if linkedin_profile_information is None:
+                UserLinkedInInformation.objects.create(UserAccount=linkedin_user,LinkedInProfileID=api_linkedin_info["id"],LinkedInAccessToken=collected_access_token)
             else:
-                linkedin_profile_information = UserLinkedInInformation.objects.filter(LinkedInProfileID=apilinkedininfo["id"]).first()
-                
-                if linkedin_profile_information is None:
-                    newlycreateduser = User.objects.create(username=apilinkedininfo["emailAddress"],email=apilinkedininfo["emailAddress"],first_name=apilinkedininfo["firstName"],last_name=apilinkedininfo["lastName"],is_staff=False,is_active=True,is_superuser=False)
-                    newlycreateduser.set_password("linkedinprofilenopasswordneeded")
-                    newlycreateduser.save()
-                    UserLinkedInInformation.objects.create(UserAccount=newlycreateduser,LinkedInProfileID=apilinkedininfo["id"],LinkedInAccessToken=collectedaccesstoken)
-                
-                user = authenticate(request, username=apilinkedininfo["emailAddress"], password="linkedinprofilenopasswordneeded")
-                if user is not None:
-                    login(request, user)
-                    return redirect("/inflow/account/")
+                linkedin_user = linkedin_profile_information.UserAccount
+            
+            login(request, linkedin_user)
+            return redirect("/inflow/currencies/")
         
+        context["linkedin"] = self.set_linkedin_params()
         return render(request, self.template_name, context)
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
