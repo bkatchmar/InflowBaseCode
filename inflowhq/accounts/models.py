@@ -13,8 +13,6 @@ PAYMENT_LEVELS = (
 
 class UserSettings(models.Model):
     UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
-    Active = models.BooleanField(default=True,verbose_name="Active")
-    Joined = models.DateTimeField(default=timezone.now,verbose_name="Joined")
     BaseCountry = models.ForeignKey(Country,unique=False,verbose_name="IdBaseCountry",on_delete=models.CASCADE)
     PaymentLevel = models.CharField(max_length=1,
                             choices=PAYMENT_LEVELS,
@@ -30,8 +28,6 @@ class UserSettings(models.Model):
             # We will create a new instance of user settings (probably first time log in)
             self = UserSettings()
             self.UserAccount = loggedin
-            self.Active = UserSettings._meta.get_field('Active').get_default()
-            self.Joined = UserSettings._meta.get_field('Joined').get_default()
 
             BaseCurrency = Currency()
             BaseCurrency.IdCurrency = Currency._meta.get_field('IdCurrency').get_default()
@@ -60,7 +56,7 @@ class UserSettings(models.Model):
             lastPayment.UserAccount = self.UserAccount
             lastPayment.PaymentLevel = self.PaymentLevel
             super(UserPaymentHistory, lastPayment).save()
-        elif (lastPayment.NewMonthlyPaymentNeeded() and self.Active):
+        elif (lastPayment.NewMonthlyPaymentNeeded()):
             lastPayment = UserPaymentHistory.objects.create(UserAccount=self.UserAccount,
                                                             DateCharged=timezone.now().date(),
                                                             NextBillingDate=timezone.now().date()+relativedelta(months=+1),
@@ -70,9 +66,9 @@ class UserSettings(models.Model):
         lastPayment = UserPaymentHistory.objects.filter(UserAccount=self.UserAccount).last()
 
         if (lastPayment is None):
-            return (self.Active)
+            return (True)
         else:
-            return (lastPayment.NewMonthlyPaymentNeeded() and self.Active)
+            return (lastPayment.NewMonthlyPaymentNeeded())
 
     def generate_slug_for_new_user(self,loggedin):
         generated = slugify("%s %s" % (loggedin.first_name, loggedin.last_name))
@@ -87,7 +83,7 @@ class UserSettings(models.Model):
         return self.UserAccount.username
 
     class Meta:
-       db_table = 'UserSettings'
+       db_table = "UserSettings"
 
 class UserPaymentHistory(models.Model):
     UserAccount = models.ForeignKey(User,unique=False,verbose_name="IdAccount",on_delete=models.CASCADE)
@@ -113,7 +109,7 @@ class UserPaymentHistory(models.Model):
             return False
 
     class Meta:
-       db_table = 'UserPaymentHistory'
+       db_table = "UserPaymentHistory"
 
 class UserLinkedInInformation(models.Model):
     UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
@@ -131,3 +127,15 @@ class UserGoogleInformation(models.Model):
 
     class Meta:
        db_table = "UserGoogleInformation"
+
+class UserType(models.Model):
+    Name = models.CharField(max_length=50,null=False)
+    
+    class Meta:
+       db_table = "UserType"
+       
+class UserAssociatedTypes(models.Model):
+    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
+    
+    class Meta:
+       db_table = "UserAssociatedTypes"

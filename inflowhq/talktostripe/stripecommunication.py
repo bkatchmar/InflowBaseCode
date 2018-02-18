@@ -13,9 +13,9 @@ class StripeCommunication():
                 stripe.api_key = self.apiKey
                 
                 if (testargs.get("fromtestcase")):
-                    formeta = {"Joined On" : ("%s" % userInformation.Joined),"From Test Case":"Yes"}
+                    formeta = {"Joined On" : ("%s" % "(removed)"),"From Test Case":"Yes"}
                 else:
-                    formeta = {"Joined On" : ("%s" % userInformation.Joined)}
+                    formeta = {"Joined On" : ("%s" % "(removed)")}
                 
                 createdStripeUser = stripe.Customer.create(
                                        description="Inflow Customer %s" % userInformation.UserAccount.username,
@@ -56,9 +56,9 @@ class StripeCommunication():
                 stripe.api_key = self.apiKey
                 
                 if (testargs.get("fromtestcase")):
-                    formeta = {"Joined On" : ("%s" % userInformation.Joined),"Inflow Customer":userInformation.UserAccount.username,"From Test Case":"Yes"}
+                    formeta = {"Joined On" : ("%s" % "(removed)"),"Inflow Customer":userInformation.UserAccount.username,"From Test Case":"Yes"}
                 else:
-                    formeta = {"Joined On" : ("%s" % userInformation.Joined),"Inflow Customer":userInformation.UserAccount.username}
+                    formeta = {"Joined On" : ("%s" % "(removed)"),"Inflow Customer":userInformation.UserAccount.username}
                 
                 createdStripeAccount = stripe.Account.create(
                                                                country=userInformation.BaseCountry.Code,
