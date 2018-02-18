@@ -124,6 +124,7 @@ class SavePdfTrials(PDFTemplateView):
 class BaseSitemap(Sitemap):
     def items(self):
         return ["login",
+                "accounts:create",
                 "htmldemos:demo_home",
                 "htmldemos:demo_my_projects",
                 "htmldemos:demo_project_details",
