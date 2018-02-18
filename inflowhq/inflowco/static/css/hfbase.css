@@ -62,6 +62,12 @@ header nav a.alt:active { background-color: #E6833B; border: solid 1px #979797; 
 
 /* High Level Main Elements */
 main div.content { margin: 48px auto 0px; width: 1280px; }
+form div.checkbox-list { margin: 15px 0px; }
+form div.checkbox-list span.checkbox { display: inline-block; }
+form div.checkbox-list span.checkbox input[type="checkbox"] { margin: 0px 7px 0px 0px; }
+form div.radio-list { margin: 15px 0px; }
+form div.radio-list span.button { display: inline-block; }
+form div.radio-list span.button input[type="radio"] { display: inline-block; margin: 9px 7px 9px 0px; }
 
 /* Main Elements */
 main h1 { font-size: 36px; line-height: 36px; text-align: center; }
@@ -84,3 +90,21 @@ main div.signup-link a:active { text-decoration: underline; }
 main div.g-signin2 { margin: 0px 0px 7px; }
 main div.error-msg { color: #800000; text-align: center; }
 main div.agree-to-terms-of-service { font-size: 16px; font-weight: 400; margin: 12px 0px; text-align: center; }
+
+/* Main Element - Progress Bar */
+main div.progress-bar { margin: 25px auto 15px; width: 358px; }
+main div.progress-bar div.bar { border-top: 1px solid #979797; }
+main div.progress-bar span.number { display: inline-block; padding: 0px 0px 8px 5px; position: relative; }
+main div.progress-bar span.number.two { margin: 0px 155px; }
+main div.progress-bar span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 18px; bottom: -18px; content: ""; left: 0px; padding: 15px; position: absolute; -moz-border-radius: 18px; -webkit-border-radius: 18px; }
+main div.progress-bar span.number.on:after { background-color: #E6833B; }
+
+/* Onboarding Form */
+main form.onboarding-form { margin: 50px auto; width: 700px; }
+main form.onboarding-form div.question-text { font-size: 22px; line-height: 24px; padding: 15px 0px; text-align: center; }
+main form.onboarding-form div.question-text span.sub-text { font-size: 16px; }
+main form.onboarding-form div.checkbox-list { text-align: center; }
+main form.onboarding-form div.checkbox-list span.checkbox { font-size: 18px; margin: 0px 80px; text-align: left; width: 150px; }
+main form.onboarding-form div.radio-list { margin: 5px auto 15px; text-align: left; width: 225px; }
+main form.onboarding-form div.radio-list span.button { display: block; }
+main form.onboarding-form div.radio-list span.button input[type="radio"] {}

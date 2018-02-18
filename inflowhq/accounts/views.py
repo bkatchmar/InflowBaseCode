@@ -2,13 +2,14 @@ from __future__ import unicode_literals
 # From Accounts App
 from accounts.externalapicalls import LinkedInApi
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import UserLinkedInInformation, UserSettings
+from accounts.models import UserLinkedInInformation, UserSettings, UserType, UserAssociatedTypes, FREELANCER_ANSWER_FREQUENCY
 from accounts.signupvalidation import UserCreationBaseValidators
 # Django references
 from django.contrib.auth import login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
+from django.urls import reverse
 
 class CreateAccountView(TemplateView, InflowLoginView):
     template_name = "create.account.html"
@@ -46,8 +47,78 @@ class CreateAccountView(TemplateView, InflowLoginView):
             context["error_msg"] = validator.error_message
         else:
             login(request, validator.created_user)
-            return redirect("/inflow/currencies/")
+            return redirect(reverse("accounts:onboarding_1"))
         
+        return render(request, self.template_name, context)
+
+class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
+    template_name = "onboarding.step1.html"
+    all_user_types = UserType.objects.all()
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = self.get_context_data(request)
+        
+        selected_frequency = request.POST.get("frequency", UserSettings._meta.get_field("FreelancerFrequency").get_default())
+        
+        # Go through each UserType and see what was selected, add that to the DB
+        # Remove anything that was previously selected
+        UserAssociatedTypes.objects.filter(UserAccount=request.user).delete()
+        for type in self.all_user_types:
+            current_type = request.POST.get(type.Name, "")
+            
+            if current_type == "on":
+                UserAssociatedTypes.objects.create(UserAccount=request.user,UserFreelanceType=type)
+            
+        # Build up user settings or fetch previously saved ones, then save what was selected as the freelancer frequency type
+        usersettings = UserSettings()
+        usersettings = usersettings.get_settings_based_on_user(request.user)
+        usersettings.FreelancerFrequency = selected_frequency
+        usersettings.save()
+        
+        return redirect(reverse("accounts:onboarding_2"))
+    
+    def get_context_data(self, request, **kwargs):
+        context = {}
+        
+        # Set context for view
+        context["name"] = request.user.first_name
+        context["user_types"] = self.all_user_types
+        context["frequencies"] = FREELANCER_ANSWER_FREQUENCY
+
+        return context
+    
+class OnboardingStepTwoView(LoginRequiredMixin,TemplateView):
+    template_name = "onboarding.step2.html"
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        context = {}
+        
+        # Set context for view
+        context["name"] = request.user.first_name
+
+        return context
+
+class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
+    template_name = "onboarding.step3.html"
+    
+    def get(self, request):
+        context = {}
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = {}
         return render(request, self.template_name, context)
 
 class AccountInfoView(LoginRequiredMixin, TemplateView):
@@ -60,7 +131,7 @@ class AccountInfoView(LoginRequiredMixin, TemplateView):
         if request.user.is_authenticated:
             currentlyloggedinuser = request.user
 
-        usersettings = usersettings.GetSettingsBasedOnUser(currentlyloggedinuser)
+        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         context = {
                    'settings':usersettings
                    }

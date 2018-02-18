@@ -23,7 +23,7 @@ class BaseTalk(LoginRequiredMixin, TemplateView):
         if request.user.is_authenticated:
             currentlyloggedinuser = request.user
             
-        usersettings = usersettings.GetSettingsBasedOnUser(currentlyloggedinuser)
+        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         
         comm = StripeCommunication()
         comm.CreateNewStripeCustomerWithId(usersettings)
@@ -132,7 +132,7 @@ class UserEntersBasicStripeAccountInformationAndAcceptsTerms(LoginRequiredMixin,
         if request.user.is_authenticated:
             currentlyloggedinuser = request.user
 
-        usersettings = usersettings.GetSettingsBasedOnUser(currentlyloggedinuser)
+        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         return usersettings
     
 class UserCards(LoginRequiredMixin, TemplateView):
@@ -173,7 +173,7 @@ class UserCards(LoginRequiredMixin, TemplateView):
         if request.user.is_authenticated:
             currentlyloggedinuser = request.user
 
-        usersettings = usersettings.GetSettingsBasedOnUser(currentlyloggedinuser)
+        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         return usersettings
     
 class UserBankAccounts(LoginRequiredMixin, TemplateView):
@@ -228,5 +228,5 @@ class UserBankAccounts(LoginRequiredMixin, TemplateView):
         if request.user.is_authenticated:
             currentlyloggedinuser = request.user
             
-        usersettings = usersettings.GetSettingsBasedOnUser(currentlyloggedinuser)
+        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         return usersettings

@@ -11,6 +11,12 @@ PAYMENT_LEVELS = (
                   ('s', 'standard'),
                   )
 
+FREELANCER_ANSWER_FREQUENCY = (
+    ("f", "Full-Time"),
+    ("p", "Part-Time"),
+    ("n", "Not currently freelancing")
+    )
+
 class UserSettings(models.Model):
     UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
     BaseCountry = models.ForeignKey(Country,unique=False,verbose_name="IdBaseCountry",on_delete=models.CASCADE)
@@ -20,8 +26,11 @@ class UserSettings(models.Model):
     UrlSlug = models.SlugField(max_length=50,null=True)
     StripeApiCustomerKey = models.CharField(max_length=30,null=True)
     StripeConnectAccountKey = models.CharField(max_length=30,null=True)
+    FreelancerFrequency = models.CharField(max_length=1,
+                            choices=FREELANCER_ANSWER_FREQUENCY,
+                            default="n")
 
-    def GetSettingsBasedOnUser(self,loggedin):
+    def get_settings_based_on_user(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()
 
         if self is None:
@@ -41,6 +50,11 @@ class UserSettings(models.Model):
             self.BaseCountry.Code = Country._meta.get_field('Code').get_default()
             self.BaseCountry.PrimaryCurrency = BaseCurrency
             self.PaymentLevel = 's'
+            self.UrlSlug = self.generate_slug_for_new_user(loggedin)
+            super(UserSettings, self).save()
+        
+        # In the rare even a slug wasn't created because of much older users, I rather just have the server side code handle it here    
+        if self.UrlSlug == "":
             self.UrlSlug = self.generate_slug_for_new_user(loggedin)
             super(UserSettings, self).save()
 
@@ -86,7 +100,7 @@ class UserSettings(models.Model):
        db_table = "UserSettings"
 
 class UserPaymentHistory(models.Model):
-    UserAccount = models.ForeignKey(User,unique=False,verbose_name="IdAccount",on_delete=models.CASCADE)
+    UserAccount = models.ForeignKey(User,unique=False,verbose_name="IdAccount",on_delete=models.DO_NOTHING)
     DateCharged = models.DateField(auto_now=False,verbose_name="DateCharged")
     NextBillingDate = models.DateField(verbose_name="NextBillingDate")
     PaymentLevel = models.CharField(max_length=1,
@@ -112,7 +126,7 @@ class UserPaymentHistory(models.Model):
        db_table = "UserPaymentHistory"
 
 class UserLinkedInInformation(models.Model):
-    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
+    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.DO_NOTHING)
     LinkedInProfileID = models.CharField(max_length=50,null=False)
     LinkedInAccessToken = models.CharField(max_length=1000,null=False)
 
@@ -120,7 +134,7 @@ class UserLinkedInInformation(models.Model):
        db_table = "UserLinkedInInformation"
 
 class UserGoogleInformation(models.Model):
-    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
+    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.DO_NOTHING)
     GoogleProfileID = models.CharField(max_length=50,null=False)
     GoogleProfileName = models.CharField(max_length=150,null=False)
     GoogleImageUrl = models.CharField(max_length=255,null=False)
@@ -135,7 +149,8 @@ class UserType(models.Model):
        db_table = "UserType"
        
 class UserAssociatedTypes(models.Model):
-    UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
+    UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.DO_NOTHING)
+    UserFreelanceType = models.ForeignKey(UserType,on_delete=models.DO_NOTHING)
     
     class Meta:
        db_table = "UserAssociatedTypes"

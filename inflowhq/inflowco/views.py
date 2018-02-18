@@ -51,7 +51,7 @@ class LoginView(TemplateView,InflowLoginView):
         
         if user is not None:
             login(request, user)
-            return redirect("/inflow/currencies/")
+            return redirect(reverse("accounts:onboarding_1"))
         else:
             context["error_msg"] = "Username and Password Combination Are Not Correct"
         
