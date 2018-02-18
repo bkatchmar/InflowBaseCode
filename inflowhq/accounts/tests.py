@@ -81,8 +81,20 @@ class SignUpValidationTests(TestCase):
     def test_validation(self):
         validator = UserCreationBaseValidators()
         validator.attempt_to_create_user("","","arandompassword",True)
-        self.assertEqual(validator.error_thrown, False)
+        self.assertEqual(validator.error_thrown, True)
         
         validator1 = UserCreationBaseValidators()
         validator1.attempt_to_create_user("useremail@email.com","Brian","Apple",False)
-        self.assertEqual(validator1.error_thrown, False)
+        self.assertEqual(validator1.error_thrown, True)
+        
+        validator2 = UserCreationBaseValidators()
+        validator2.attempt_to_create_user("useremail@email.com","Brian","Brian",False)
+        self.assertEqual(validator2.error_thrown, True)
+        
+        validator3 = UserCreationBaseValidators()
+        validator3.attempt_to_create_user("VideoXPG@gmail.com","Brian","Th3l10nk1ng",True)
+        self.assertEqual(validator3.error_thrown, False)
+        
+        validator4 = UserCreationBaseValidators()
+        validator4.attempt_to_create_user("VideoXPG@gmail.com","Brian","Th3l10nk1ng",False)
+        self.assertEqual(validator4.error_thrown, True)

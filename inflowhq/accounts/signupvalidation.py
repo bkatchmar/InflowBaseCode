@@ -16,7 +16,7 @@ class UserCreationBaseValidators:
         if not agreed:
             self.error_thrown = True
             self.error_message = "You must agree to the terms of service in order to proceed"
-        elif username == "" and name == "" and password == "":
+        elif username == "" or name == "" or password == "":
             self.error_thrown = True
             self.error_message = "All fields are required"
         
