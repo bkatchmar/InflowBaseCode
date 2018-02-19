@@ -35,8 +35,8 @@ a.inflow-btn:link,
 a.inflow-btn:visited,
 a.inflow-btn:hover,
 a.inflow-btn:active { background-color: #E6833B; border-radius: 8px; color: #FFF; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-input { border: solid 1px #979797; display: block; margin: 9px 0px; }
-input[type="text"], input[type="email"], input[type="password"] { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+input, select { border: solid 1px #979797; display: block; margin: 9px 0px; }
+input[type="text"], input[type="email"], input[type="password"], select { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 input[type="checkbox"] { display: inline-block; height: 21px; margin: 0px 3px 0px 0px; width: 21px; }
 input[type="submit"] { background-color: #3E5A7C; border-radius: 8px; color: #FFF; font-size: 24px; font-weight: bold; margin: 0px auto; padding: 9px 0px; width: 300px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
@@ -108,3 +108,8 @@ main form.onboarding-form div.checkbox-list span.checkbox { font-size: 18px; mar
 main form.onboarding-form div.radio-list { margin: 5px auto 15px; text-align: left; width: 225px; }
 main form.onboarding-form div.radio-list span.button { display: block; }
 main form.onboarding-form div.radio-list span.button input[type="radio"] {}
+main form.onboarding-form input[type="submit"] { font-size: 20px; }
+main form.onboarding-form input[type="text"],
+main form.onboarding-form input[type="email"],
+main form.onboarding-form input[type="password"], select {  margin: 9px auto; width: 300px; }
+main form.onboarding-form select { height: 39px; width: 332px; }

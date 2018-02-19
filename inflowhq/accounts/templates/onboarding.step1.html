@@ -29,7 +29,11 @@
 				<div class="checkbox-list">
 					{% for type in user_types %}
 						<span class="checkbox">
-							<input type="checkbox" name="{{type.Name}}" /><span>{{type.Name}}</span>
+							{% if type.Selected %}
+								<input type="checkbox" name="{{type.Name}}" checked="checked" /><span>{{type.Name}}</span>
+							{% else %}
+								<input type="checkbox" name="{{type.Name}}" /><span>{{type.Name}}</span>
+							{% endif %}
 						</span>
 					{% endfor %}
 				</div>

@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=2018" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<title>Welcome to InFlow - On Boarding Step 3</title>
 </head>
@@ -17,16 +17,37 @@
 	</header>
 	<main>
 		<div class="content">
-			<h1>Welcome, [[name]]!</h1>
+			<h1>Welcome, {{name}}!</h1>
 			<div class="progress-bar">
-				<span class="number one on"></span>
-				<span class="number two on"></span>
+				<span class="number one"></span>
+				<span class="number two"></span>
 				<span class="number three on"></span>
 				<div class="bar"></div>
 			</div>
-			<form method="post" class="onboarding-form">
-				<input type="submit" value="Continue" />
+			<form method="post" class="onboarding-form" data-currency="{{selected_country_currency}}">
+				<input type="text" name="business-name" placeholder="Business Name" required />
+				<select name="country" disabled>
+					{% for c in country %}
+						{% if c.IdCountry == selected_country %}
+							<option value="{{c.IdCountry}}" selected="selected">{{c.Name}}</option>
+						{% else %}
+							<option value="{{c.IdCountry}}">{{c.Name}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<input type="text" name="region" placeholder="Region" required />
+				<select name="currency" disabled>
+					{% for c in currency %}
+						{% if c.IdCurrency == selected_country_currency %}
+							<option value="{{c.IdCurrency}}" selected="selected">{{c.Code}}</option>
+						{% else %}
+							<option value="{{c.IdCurrency}}">{{c.Code}}</option>
+						{% endif %}
+					{% endfor %}
+				</select>
+				<input type="submit" value="Let's get started!" />
 				{% csrf_token %}
+				<div class="signup-link"><a href="{% url 'accounts:onboarding_2' %}">Go back</a></div>
 			</form>
 		</div>
 	</main>

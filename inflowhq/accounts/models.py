@@ -17,6 +17,18 @@ FREELANCER_ANSWER_FREQUENCY = (
     ("n", "Not currently freelancing")
     )
 
+FREELANCER_WORK_WITH = (
+    ("s", "Me, myself, and I"),
+    ("t", "Studio/team")
+    )
+
+FREELANCER_INTERESTED_IN = (
+    ("m", "Milestone Tracking"),
+    ("p", "Proposals and Contracts"),
+    ("i", "Invoices"),
+    ("a", "All of them")
+    )
+
 class UserSettings(models.Model):
     UserAccount = models.ForeignKey(User,unique=True,verbose_name="IdAccount",on_delete=models.CASCADE)
     BaseCountry = models.ForeignKey(Country,unique=False,verbose_name="IdBaseCountry",on_delete=models.CASCADE)
@@ -29,6 +41,14 @@ class UserSettings(models.Model):
     FreelancerFrequency = models.CharField(max_length=1,
                             choices=FREELANCER_ANSWER_FREQUENCY,
                             default="n")
+    FreelancerWorkWith = models.CharField(max_length=1,
+                            choices=FREELANCER_WORK_WITH,
+                            default="s")
+    FreelancerInterestedIn = models.CharField(max_length=1,
+                            choices=FREELANCER_INTERESTED_IN,
+                            default="a")
+    BusinessName = models.CharField(max_length=50,null=True)
+    Region = models.CharField(max_length=50,null=True)
 
     def get_settings_based_on_user(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()
@@ -144,6 +164,12 @@ class UserGoogleInformation(models.Model):
 
 class UserType(models.Model):
     Name = models.CharField(max_length=50,null=False)
+    
+    # View Utility Fields
+    Selected = False
+    
+    def __str__(self):
+        return self.Name
     
     class Meta:
        db_table = "UserType"
