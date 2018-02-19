@@ -90,6 +90,7 @@ class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
         # Go through each UserType and see what was selected, add a dictionary set to True for each
         user_types = self.all_user_types
         associated_types = UserAssociatedTypes.objects.filter(UserAccount=request.user)
+        
         for type in user_types:
             for associated_type in associated_types:
                 if type.id == associated_type.UserFreelanceType.id:
