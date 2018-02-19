@@ -39,6 +39,7 @@ input, select { border: solid 1px #979797; display: block; margin: 9px 0px; }
 input[type="text"], input[type="email"], input[type="password"], select { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 input[type="checkbox"] { display: inline-block; height: 21px; margin: 0px 3px 0px 0px; width: 21px; }
 input[type="submit"] { background-color: #3E5A7C; border-radius: 8px; color: #FFF; font-size: 24px; font-weight: bold; margin: 0px auto; padding: 9px 0px; width: 300px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+span.oval { background-color: #F6F4F0; border: solid 1px #979797; border-radius: 25px; display: inline-block; height: auto; padding: 8px 0px; text-align: center; vertical-align: middle; width: 35px; -moz-border-radius: 25px; -webkit-border-radius: 25px; }
 
 /* Header Navigation Elements */
 header div.content { clear: both; overflow: hidden; }

@@ -1,0 +1,147 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=2018" />
+	<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?d=201802" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+	<title>InFlow - My Dashboard</title>
+</head>
+<body>
+	<div class="dashboard-container">
+		<header>
+			<div class="content">
+				<div class="logo">
+					<a href="/">InFlow</a>
+				</div>
+				<nav>
+					<ul>
+						<li><a href="{% url 'base:dashboard' %}">Home</a></li>
+						<li><a href="#">Projects</a></li>
+						<li><a href="#">Clients</a></li>
+						<li><a href="#">Activity</a></li>
+					</ul>
+				</nav>
+				<nav class="alt">
+					<ul>
+						<li><a href="#">Profile</a></li>
+						<li>
+							<span class="oval">!</span>
+							<a href="#">Settings</a>
+						</li>
+						<li><a href="#">FAQs/Help</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<main>
+			<div class="alert">Get paid by integrating your Stripe account</div>
+			<div class="dashboard-data">
+				<div class="data-table">
+					<div class="header">Upcoming Milestones</div>
+					<div class="view-all-link"><a href="#">View All</a></div>
+					<div class="table">
+						<div class="data-table-header">
+							<span class="date">DATE</span>
+							<span class="milestone-name">MILESTONE</span>
+							<span class="project-name">PROJECT</span>
+							<span class="total">TOTAL</span>
+						</div>
+						<div class="row">
+							<span class="date">JAN 30 2017</span>
+							<span class="milestone-name">Photographs Due For Post</span>
+							<span class="project-name">Coca-Cola</span>
+							<span class="total">$50</span>
+						</div>
+						<div class="row alt">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row alt">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+					</div>
+				</div>
+				<div class="data-table recent-activity">
+					<div class="header">Recent Activity</div>
+					<div class="view-all-link"><a href="#">View All</a></div>
+					<div class="table">
+						<div class="data-table-header">
+							<span class="date">DATE</span>
+							<span class="task">TASK</span>
+						</div>
+						<div class="row">
+							<span class="date">JAN 28 2017</span>
+							<span class="task">Created Contract for Client</span>
+						</div>
+						<div class="row alt">
+							<span class="date">JAN 30 2017</span>
+							<span class="task">Created Contract for Client</span>
+						</div>
+					</div>
+				</div>
+				<div class="data-table clear">
+					<div class="header">Milestones Reached</div>
+					<div class="view-all-link"><a href="#">View All</a></div>
+					<div class="table">
+						<div class="data-table-header">
+							<span class="date">DATE</span>
+							<span class="milestone-name">MILESTONE</span>
+							<span class="project-name">PROJECT</span>
+							<span class="total">TOTAL</span>
+						</div>
+						<div class="row">
+							<span class="date">JAN 30 2017</span>
+							<span class="milestone-name">Photographs Due For Post</span>
+							<span class="project-name">Coca-Cola</span>
+							<span class="total">$50</span>
+						</div>
+						<div class="row alt">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row alt">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+						<div class="row">
+							<span class="date"></span>
+							<span class="milestone-name"></span>
+							<span class="project-name"></span>
+							<span class="total"></span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</body>
+</html>

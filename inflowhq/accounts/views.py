@@ -157,7 +157,7 @@ class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
         usersettings.Region = region
         usersettings.save()
         
-        return redirect(reverse("currencylistview"))
+        return redirect(reverse("base:dashboard"))
     
     def get_context_data(self, request, **kwargs):
         context = {}

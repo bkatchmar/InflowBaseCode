@@ -1,0 +1,36 @@
+body, html { height: 100%; }
+div.dashboard-container { height: 100%; margin: 0px auto; min-width: 1280px; }
+div.dashboard-container header div.content { width: 100%; }
+div.dashboard-container header { float: left; height: 100%; position: fixed; width: 236px; }
+div.dashboard-container header div.logo { float: none; }
+div.dashboard-container header nav { float: none; margin: 70px 0px 15px; text-align: center; }
+div.dashboard-container header nav ul li { border-top: solid 1px #F6F4F0; padding: 19px 0px; }
+div.dashboard-container header nav ul li:last-child { border-bottom: solid 1px #F6F4F0; }
+div.dashboard-container header nav.alt ul li { border-top: none; padding: 6px 0px; position: relative; }
+div.dashboard-container header nav.alt ul li span.oval { left: 25px; position: absolute; top: -3px; }
+div.dashboard-container header nav.alt ul li span.oval:after { border: 14px solid transparent; border-bottom: none; border-left-color: #F6F4F0; border-right: none; content: ""; height: 0px; left: 26px; position: absolute; top: 16px; width: 0px; }
+div.dashboard-container header nav.alt ul li:last-child { border-bottom: none; }
+div.dashboard-container main { height: 100%; }
+
+div.dashboard-container div.alert { background-blend-mode: overlay, normal; background-image: linear-gradient(105deg, rgba(225, 230, 59, 0.5), rgba(230, 131, 59, 0.5)), linear-gradient(#e6833b, #e6833b); color: #F6F4F0; margin: 0px 0px 0px 235px; padding: 17px 0px; text-align: center; }
+div.dashboard-container div.dashboard-data { margin: 80px 0px 0px 265px; }
+div.dashboard-container div.dashboard-data div.data-table { color: #211F1B; float: left; font-weight: 400; width: 640px; }
+div.dashboard-container div.dashboard-data div.data-table div.header { font-size: 24px; line-height: 24px; padding: 15px 0px 15px 10px; }
+div.dashboard-container div.dashboard-data div.data-table div.view-all-link { padding: 3px 0px; }
+div.dashboard-container div.dashboard-data div.data-table.recent-activity { margin: 0px 0px 0px 35px; width: 270px; }
+
+div.dashboard-container div.dashboard-data div.data-table.clear { clear: both; }
+div.dashboard-container div.dashboard-data div.data-table div.table { border-left: solid 1px #979797; border-top: solid 1px #979797; border-right: solid 1px #979797; }
+div.dashboard-container div.dashboard-data div.data-table div.table span { display: inline-block; padding: 10px 0px; text-align: center; }
+div.dashboard-container div.dashboard-data div.data-table div.table span:last-child { border-right: none; }
+div.dashboard-container div.dashboard-data div.data-table div.table span.date { width: 105px; }
+div.dashboard-container div.dashboard-data div.data-table div.table span.task { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 155px; vertical-align: middle; }
+div.dashboard-container div.dashboard-data div.data-table div.table span.milestone-name { width: 235px; }
+div.dashboard-container div.dashboard-data div.data-table div.table span.project-name { width: 170px; }
+div.dashboard-container div.dashboard-data div.data-table div.table span.total { width: 115px; }
+div.dashboard-container div.dashboard-data div.data-table div.table div.data-table-header { background-color: #3E5A7C; }
+div.dashboard-container div.dashboard-data div.data-table div.table div.data-table-header span { color: #F6F4F0; }
+div.dashboard-container div.dashboard-data div.data-table div.table div.row { border-bottom: solid 1px #979797; }
+div.dashboard-container div.dashboard-data div.data-table div.table div.row span {}
+div.dashboard-container div.dashboard-data div.data-table div.table div.row.alt {}
+div.dashboard-container div.dashboard-data div.data-table div.table div.row.alt span {}

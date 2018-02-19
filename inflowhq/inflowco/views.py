@@ -120,6 +120,15 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
     
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
+
+class UserDashboardView(TemplateView):
+    template_name = "dashboard.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
     
 class BaseSitemap(Sitemap):
     def items(self):
