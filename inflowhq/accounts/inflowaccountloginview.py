@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.urls import reverse
 # Other Python Libraries
 import urllib.parse
 
@@ -78,7 +79,7 @@ class InflowLoginView:
                 linkedin_user = linkedin_profile_information.UserAccount
             
             login(request, linkedin_user)
-            return redirect("/inflow/currencies/")
+            return redirect(reverse("accounts:onboarding_1"))
         
         context["linkedin"] = self.set_linkedin_params()
         return render(request, self.template_name, context)
@@ -135,4 +136,4 @@ class InflowLoginView:
             # User exists, go ahead and log them in
             login(request, user_google_information.UserAccount)
         
-        return redirect("/inflow/currencies/")
+        return redirect(reverse("accounts:onboarding_1"))
