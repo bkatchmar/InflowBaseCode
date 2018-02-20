@@ -20,14 +20,8 @@ class LoginView(TemplateView,InflowLoginView):
     template_name = "login.html"
     
     def get(self, request):
+        logout(request)
         context = { "linkedin" : self.set_linkedin_params() }
-        
-        # Log out current user if the query string has "logout" on it
-        if request.GET.get("logout","") != "":
-            context["try_process_login"] = False
-            logout(request)
-        else:
-            context["try_process_login"] = True
         
         # If this page was hit from LinkedIn, go ahead and handle to log the user in
         if self.is_this_a_linkedin_request(request):
@@ -51,7 +45,11 @@ class LoginView(TemplateView,InflowLoginView):
         
         if user is not None:
             login(request, user)
-            return redirect(reverse("accounts:onboarding_1"))
+            
+            if self.determine_if_user_needs_onboarding(user):
+                return redirect(reverse("accounts:onboarding_1"))
+            else:
+                return redirect(reverse("base:dashboard"))
         else:
             context["error_msg"] = "Username and Password Combination Are Not Correct"
         
@@ -121,7 +119,7 @@ class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
 
-class UserDashboardView(TemplateView):
+class UserDashboardView(LoginRequiredMixin,TemplateView):
     template_name = "dashboard.html"
 
     def get(self, request):

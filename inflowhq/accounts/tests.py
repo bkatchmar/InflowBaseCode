@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
-from accounts.models import UserSettings
+from accounts.inflowaccountloginview import InflowLoginView
+from accounts.models import UserSettings, UserType, UserAssociatedTypes
 from accounts.signupvalidation import UserCreationBaseValidators
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
@@ -98,3 +99,57 @@ class SignUpValidationTests(TestCase):
         validator4 = UserCreationBaseValidators()
         validator4.attempt_to_create_user("VideoXPG@gmail.com","Brian","Th3l10nk1ng",False)
         self.assertEqual(validator4.error_thrown, True)
+        
+class UserNeedsOnBoardingTest(TestCase):
+    def setUp(self):
+        # Necessary Currency Objects
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        # Types
+        u1 = UserType.objects.create(Name="Type 1")
+        u2 = UserType.objects.create(Name="Type 2")
+        u3 = UserType.objects.create(Name="Type 3")
+        
+        brian = User.objects.create(username="brian",email="brian@workinflow.co",first_name="Brian",last_name="Katchmar") # Passes
+        settings_brian = UserSettings()
+        settings_brian = settings_brian.get_settings_based_on_user(brian)
+        settings_brian.BusinessName = "MIAC"
+        settings_brian.Region = "New York"
+        settings_brian.save()
+        UserAssociatedTypes.objects.create(UserAccount=brian,UserFreelanceType=u1)
+        
+        josh = User.objects.create(username="josh",email="josh@workinflow.co",first_name="Josh",last_name="Blank") # No User Settings
+        
+        kenny = User.objects.create(username="kenny",email="Kenny@workinflow.co",first_name="Kenny",last_name="Kim") # Has User Settings, has associated types, neither of the two fields we check
+        settings_kenny = UserSettings()
+        settings_kenny = settings_brian.get_settings_based_on_user(kenny)
+        settings_kenny.save()
+        UserAssociatedTypes.objects.create(UserAccount=kenny,UserFreelanceType=u2)
+        UserAssociatedTypes.objects.create(UserAccount=kenny,UserFreelanceType=u3)
+        
+        clara = User.objects.create(username="clara",email="Clara@workinflow.co",first_name="Clara",last_name="Chang") # Has User Settings, no associated types
+        settings_clara = UserSettings()
+        settings_clara = settings_brian.get_settings_based_on_user(clara)
+        settings_clara.BusinessName = "InFlow"
+        settings_clara.Region = "New York"
+        settings_clara.save()
+    
+    def test_needs_onboarding(self):
+        login_view = InflowLoginView()
+        brian = User.objects.get(username="brian")
+        self.assertEqual(login_view.determine_if_user_needs_onboarding(brian), False)
+        
+        josh = User.objects.get(username="josh")
+        self.assertEqual(login_view.determine_if_user_needs_onboarding(josh), True)
+        
+        kenny = User.objects.get(username="kenny")
+        self.assertEqual(login_view.determine_if_user_needs_onboarding(kenny), True)
+        
+        clara = User.objects.get(username="clara")
+        self.assertEqual(login_view.determine_if_user_needs_onboarding(clara), True)

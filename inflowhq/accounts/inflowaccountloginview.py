@@ -1,6 +1,6 @@
 # Account App References
 from accounts.externalapicalls import GoogleApi, LinkedInApi
-from accounts.models import UserGoogleInformation, UserLinkedInInformation
+from accounts.models import UserGoogleInformation, UserLinkedInInformation, UserSettings, UserAssociatedTypes
 # Django references
 from django.conf import settings
 from django.contrib.auth import login, logout
@@ -79,7 +79,11 @@ class InflowLoginView:
                 linkedin_user = linkedin_profile_information.UserAccount
             
             login(request, linkedin_user)
-            return redirect(reverse("accounts:onboarding_1"))
+            
+            if self.determine_if_user_needs_onboarding(linkedin_user):
+                return redirect(reverse("accounts:onboarding_1"))
+            else:
+                return redirect(reverse("base:dashboard"))
         
         context["linkedin"] = self.set_linkedin_params()
         return render(request, self.template_name, context)
@@ -136,4 +140,22 @@ class InflowLoginView:
             # User exists, go ahead and log them in
             login(request, user_google_information.UserAccount)
         
-        return redirect(reverse("accounts:onboarding_1"))
+        if self.determine_if_user_needs_onboarding(user_google_information.UserAccount):
+            return redirect(reverse("accounts:onboarding_1"))
+        else:
+            return redirect(reverse("base:dashboard"))
+    
+    def determine_if_user_needs_onboarding(self,user):
+        rtn_val = False # For now, assume the user has gone through this onboarding process already
+        
+        user_settings = UserSettings.objects.filter(UserAccount=user).first()
+        user_selected_types = UserAssociatedTypes.objects.filter(UserAccount=user)
+        
+        if user_settings is None: # First is a basic check, does the user even have any settings?
+            rtn_val = True
+        elif len(user_selected_types) == 0: # User has not selected types
+            rtn_val = True
+        elif user_settings.BusinessName is None and user_settings.Region is None:
+            rtn_val = True
+        
+        return rtn_val
