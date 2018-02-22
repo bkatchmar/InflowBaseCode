@@ -1,9 +1,17 @@
+from django.http import Http404
 from django.shortcuts import render
 from django.views.generic import TemplateView
 
 import base64, mimetypes
 import boto3
 import urllib.request
+
+# Error Pages
+def server_error(request):
+    return render(request, "errors/500.html")
+ 
+def not_found(request):
+    return render(request, "errors/404.html")
 
 class DemoLoginView(TemplateView):
     template_name = "demologin.html"

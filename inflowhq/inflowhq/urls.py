@@ -18,3 +18,6 @@ urlpatterns = [
     url(r'^inflow/demo/', include('inflowdemo.urls')),
     url(r'^admin/', admin.site.urls)
 ]
+
+handler404 = 'inflowdemo.views.not_found'
+handler500 = 'inflowdemo.views.server_error'
