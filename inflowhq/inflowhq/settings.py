@@ -26,6 +26,7 @@ SECRET_KEY = "7t=&8c9%(9%piw_q%pqr_5gis*4dy1^=z47=e+x-uzjv6m!5+e"
 DEBUG = False
 
 ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com", "workinflow.co"]
+ADMINS = [("Brian", "brian@workinflow.co"),]
 
 # Stripe Information
 STRIPE_TEST_API_SECRET = "sk_test_ZNyeY1kgGqIgitBn16rLqGNn"
@@ -148,3 +149,4 @@ EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
 EMAIL_HOST_USER = "AKIAI6OO52H7X6ZFGGTQ"
 EMAIL_HOST_PASSWORD = "AqH6PVBIqsK2I3+sOwtB99YpRteS0NWB/X0tH/1BdWsD"
 EMAIL_USE_TLS = True
+SERVER_EMAIL = "brian@workinflow.co"
