@@ -7,6 +7,7 @@
 	<title>Inflow Demo - View My Projects</title>
 	<style>
 		div.img-preview { background: url('{{ imgData }}'); background-size: 800px auto; background-repeat: no-repeat; }
+		div.img-preview img {}
 	</style>
 </head>
 <body>
@@ -38,12 +39,13 @@
 		<a href="{% url 'htmldemos:demo_upload_milestone' %}">Return To File Upload Screen</a>
 		<div class="header">NFL Experience App</div>
 		<div class="img-preview">
+			<img src="https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png" />
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
 		jQuery(document).ready(function() {
-			jQuery("body").on("contextmenu", function(e) { return false; });
+			// jQuery("body").on("contextmenu", function(e) { return false; });
 		});
 	</script>
 </body>

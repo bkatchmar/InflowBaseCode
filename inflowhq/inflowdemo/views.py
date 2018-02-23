@@ -5,6 +5,7 @@ from django.views.generic import TemplateView
 import base64, mimetypes
 import boto3
 import urllib.request
+from PIL import Image
 
 # Error Pages
 def server_error(request):
