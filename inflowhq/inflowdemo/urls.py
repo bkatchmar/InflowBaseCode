@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^myprojects/upload-milestone-drag/', views.DemoUploadMilestoneDrag.as_view(), name='demo_upload_milestone_drag'),
     url(r'^myprojects/preview-milestone/', views.DemoPreviewMilestone.as_view(), name='demo_preview_milestone'),
     url(r'^myprojects/', views.DemoMyProjectsScreen.as_view(), name='demo_my_projects'),
+    url(r'^client-active-use', views.ClientActiveUseLoFiHome.as_view(), name='client_active_use'),
 ]

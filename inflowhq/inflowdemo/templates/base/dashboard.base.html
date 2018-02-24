@@ -1,0 +1,41 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="en-US">
+	<head>
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=201802" />
+		<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+		<title>{% block title %}{% endblock %}</title>
+	</head>
+	<body>
+		<header>
+			<div class="logo">
+				<a href="#">InFlow</a>
+			</div>
+			<div class="content">
+				<nav>
+					<ul>
+						<li><a href="#">Home</a></li>
+						<li class="arrow"><a href="#">Projects</a></li>
+						<li><a href="#">Clients</a></li>
+						<li><a href="#">Activity</a></li>
+					</ul>
+				</nav>
+				<nav class="alt">
+					<ul>
+						<li><a href="#">Profile</a></li>
+						<li><a href="#">Settings</a></li>
+						<li><a href="#">FAQs/Help</a></li>
+						<li><a href="#">Sign Out</a></li>
+					</ul>
+				</nav>
+			</div>
+		</header>
+		<main>
+			{% block main_tag %}{% endblock %}
+		</main>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		{% block bottom_scripts %}{% endblock %}
+	</body>
+</html>

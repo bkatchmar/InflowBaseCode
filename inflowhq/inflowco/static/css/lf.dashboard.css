@@ -1,0 +1,40 @@
+body, html { height: 100%; }
+a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
+body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
+header { border-right: solid 1px #979797; float: left; height: 100%; width: 236px; }
+main { height: 100%; margin: 0px 25px 0px 255px; }
+
+header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
+header nav { float: none; margin: 70px 0px 15px; text-align: center; }
+header nav ul li { border-top: solid 1px #979797; padding: 19px 0px; position: relative; }
+header nav ul li.arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; bottom: auto; content: ""; display: block; left: auto; position: absolute; right: -16px; top: 15px; width: 0px; }
+header nav ul li.arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; bottom: auto; content: ""; display: block; left: auto; position: absolute; right: -15px; top: 16px; width: 0px; }
+header nav ul li:last-child { border-bottom: solid 1px #979797; }
+header nav.alt { bottom: 0px; margin: 0px 0px 15px; position: absolute; width: 236px; }
+header nav.alt ul li { border-top: none; padding: 6px 0px; position: relative; }
+header nav.alt ul li span.oval { left: 25px; position: absolute; top: -3px; }
+header nav.alt ul li span.oval:after { border: 14px solid transparent; border-bottom: none; border-left-color: #F6F4F0; border-right: none; content: ""; height: 0px; left: 26px; position: absolute; top: 16px; width: 0px; }
+header nav.alt ul li:last-child { border-bottom: none; }
+
+main div.back-links { padding: 55px 0px; }
+main div.content { border: solid 1px #979797; min-width: 800px; padding: 0px 0px 25px; }
+main div.content > div { margin: 0px auto; width: 740px; }
+main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32px; margin: 20px auto 0px; }
+main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; }
+main div.content div.right-facing-button a,
+main div.content div.right-facing-button a:link,
+main div.content div.right-facing-button a:visited,
+main div.content div.right-facing-button a:hover,
+main div.content div.right-facing-button a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; float: right; font-size: 20px; padding: 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content div.list { border: solid 1px #979797; }
+main div.content div.list div.label { border-bottom: solid 1px #979797; font-size: 16px; font-weight: 700; padding: 5px 15px; }
+main div.content div.list div.item { border-bottom: solid 1px #979797; overflow: hidden; }
+main div.content div.list div.item:last-child { border-bottom: none; }
+main div.content div.list div.item div.info { float: left; padding: 10px 0px 10px 14px; }
+main div.content div.list div.item div.info div.title { font-size: 20px; font-weight: 700; line-height: 28px; }
+main div.content div.list div.item div.info div.description { font-size: 20px; line-height: 22px; }
+main div.content div.list div.item div.icon { border-left: solid 1px #979797; float: right; padding: 30px 5px; }
+
+@media screen and (max-height: 550px) {
+	header { height: 550px; position: relative; }
+}

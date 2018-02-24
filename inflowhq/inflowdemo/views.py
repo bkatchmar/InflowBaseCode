@@ -291,3 +291,12 @@ class DemoUploadMilestoneDrag(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+    
+class ClientActiveUseLoFiHome(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.home.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)

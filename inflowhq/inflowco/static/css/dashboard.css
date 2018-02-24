@@ -3,7 +3,7 @@ div.dashboard-container { height: 100%; margin: 0px auto; min-width: 1280px; }
 div.dashboard-container header div.content { width: 100%; }
 div.dashboard-container header { float: left; height: 100%; position: fixed; width: 236px; }
 div.dashboard-container header div.logo { float: none; }
-div.dashboard-container header nav { float: none; margin: 70px 0px 15px; text-align: center; }
+div.dashboard-container header nav { float: none; margin: 70px 0px 15px; position: relative; text-align: center; }
 div.dashboard-container header nav ul li { border-top: solid 1px #F6F4F0; padding: 19px 0px; }
 div.dashboard-container header nav ul li:last-child { border-bottom: solid 1px #F6F4F0; }
 div.dashboard-container header nav.alt ul li { border-top: none; padding: 6px 0px; position: relative; }
