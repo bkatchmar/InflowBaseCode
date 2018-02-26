@@ -86,6 +86,14 @@ main div.content div.milestone-detail-list div.milestone-information div.payment
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:hover,
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:active { font-size: 14px; line-height: 16px; text-decoration: underline; }
 
+main div.content div.milestone-contacts { border: solid 1px #979797; }
+main div.content div.milestone-contacts div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
+main div.content div.milestone-contacts div.header a,
+main div.content div.milestone-contacts div.header a:link,
+main div.content div.milestone-contacts div.header a:visited,
+main div.content div.milestone-contacts div.header a:hover,
+main div.content div.milestone-contacts div.header a:active { display: inline-block; float: right; font-size: 16px; font-weight: 400; text-decoration: underline; }
+
 main div.content div.list div.data-table { margin: 0px 0px 15px; }
 main div.content div.list div.data-table div.table { border-color: #979797; border-style: solid; border-width: 0px 1px; }
 main div.content div.list div.data-table div.table span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; padding: 10px 0px; text-align: center; }
