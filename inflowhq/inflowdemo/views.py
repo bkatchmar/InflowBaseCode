@@ -327,3 +327,21 @@ class ClientActiveUseLoFiSpecificProjectOverview(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectInvoices(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.invoices.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectFiles(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.files.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)

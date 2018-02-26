@@ -45,10 +45,18 @@ main div.content div.list div.item div.info div.description { font-size: 20px; l
 main div.content div.list div.item div.icon { border-left: solid 1px #979797; float: right; padding: 30px 5px; }
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 
-main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; }
-main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 25%; }
+main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; overflow: hidden; }
+main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 25%; }
 main div.content div.ribbon span.on { background-color: #d8d8d8; }
-main div.content div.ribbon span:last-child { border-width: 0px; width: 23%; }
+main div.content div.ribbon span:last-child { border-width: 0px; width: 24%; }
+
+main div.content div.inner-details { border: solid 1px #979797; }
+main div.content div.inner-details div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
+main div.content div.inner-details div.buttons a,
+main div.content div.inner-details div.buttons a:link,
+main div.content div.inner-details div.buttons a:visited,
+main div.content div.inner-details div.buttons a:hover,
+main div.content div.inner-details div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 main div.content div.milestone-detail-list { border: solid 1px #979797; }
 main div.content div.milestone-detail-list div.milestone-name-upload { border: solid 1px #979797; margin: 10px; }
@@ -88,11 +96,38 @@ main div.content div.milestone-detail-list div.milestone-information div.payment
 
 main div.content div.milestone-contacts { border: solid 1px #979797; }
 main div.content div.milestone-contacts div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
+main div.content div.milestone-contacts div.header.secondary { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; margin: 0px auto; padding: 20px; }
+main div.content div.milestone-contacts div.header.secondary a,
+main div.content div.milestone-contacts div.header.secondary a:link,
+main div.content div.milestone-contacts div.header.secondary a:visited,
+main div.content div.milestone-contacts div.header.secondary a:hover,
+main div.content div.milestone-contacts div.header.secondary a:active { float: none; }
 main div.content div.milestone-contacts div.header a,
 main div.content div.milestone-contacts div.header a:link,
 main div.content div.milestone-contacts div.header a:visited,
 main div.content div.milestone-contacts div.header a:hover,
 main div.content div.milestone-contacts div.header a:active { display: inline-block; float: right; font-size: 16px; font-weight: 400; text-decoration: underline; }
+main div.content div.milestone-contacts div.line { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; font-size: 18px; overflow: hidden; padding: 10px 15px; }
+main div.content div.milestone-contacts div.line span { display: inline-block; float: left; font-weight: 700; padding: 0px 10px 0px 0px; }
+main div.content div.milestone-contacts div.line span.data { font-weight: normal; }
+main div.content div.milestone-contacts div.footer { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; padding: 10px 0px; text-align: center; }
+
+main div.content div.list.invoices div.data-table { margin: 0px auto 15px; width: 600px; }
+main div.content div.list.invoices div.data-table div.table span { width: 24%; }
+main div.content div.list.invoices div.buttons { margin: 10px 0px; text-align: center; }
+
+main div.content div.files div.file-listing { padding: 0px; }
+main div.content div.files div.file-listing div.header.row span a { text-decoration: underline; }
+main div.content div.files div.file-listing div.header.row span.download { border-width: 0px; width: 125px; }
+main div.content div.files div.file-listing div.header.row span.date-uploaded { width: 225px; }
+main div.content div.files div.file-listing div.row { border-color: #979797; border-style: solid; border-width: 0px 0px 1px; line-height: 18px; margin: 0px; padding: 0px 0px 0px 25px; }
+main div.content div.files div.file-listing div.row span { display: inline-block; font-size: 16px; font-weight: 400; padding: 10px 0px; }
+main div.content div.files div.file-listing div.row span.file-name { width: 250px; }
+main div.content div.files div.file-listing div.row span.file-size { width: 100px; }
+main div.content div.files div.file-listing div.row span.date-uploaded { width: 270px; }
+main div.content div.files div.file-listing div.row span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; text-align: center; width: 40px; }
+main div.content div.files div.file-listing div.row span.delete { text-align: center; width: 40px; }
+main div.content div.files div.buttons { margin: 15px 0px; text-align: center; }
 
 main div.content div.list div.data-table { margin: 0px 0px 15px; }
 main div.content div.list div.data-table div.table { border-color: #979797; border-style: solid; border-width: 0px 1px; }
