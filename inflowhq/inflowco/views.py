@@ -134,6 +134,7 @@ class BaseSitemap(Sitemap):
                 "accounts:create",
                 "htmldemos:demo_home",
                 "htmldemos:client_active_use",
+                "htmldemos:client_active_use_quick_view",
                 "htmldemos:demo_my_projects",
                 "htmldemos:demo_project_details",
                 "htmldemos:demo_create_contract",

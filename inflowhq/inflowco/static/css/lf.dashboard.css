@@ -1,7 +1,7 @@
-body, html { height: 100%; }
+body, html { min-height: 100%; }
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
-header { border-right: solid 1px #979797; float: left; height: 100%; width: 236px; }
+header { border-right: solid 1px #979797; float: left; height: 100%; position: relative; width: 236px; }
 main { height: 100%; margin: 0px 25px 0px 255px; }
 
 header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
@@ -20,21 +20,85 @@ main div.back-links { padding: 55px 0px; }
 main div.content { border: solid 1px #979797; min-width: 800px; padding: 0px 0px 25px; }
 main div.content > div { margin: 0px auto; width: 740px; }
 main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32px; margin: 20px auto 0px; }
+main div.content div.sub-header { font-size: 16px; }
+main div.content div.heading-elements { overflow: hidden; }
+main div.content div.heading-elements div.header { clear: left; float: left; }
+main div.content div.heading-elements div.sub-header { clear: left; float: left; }
+main div.content div.heading-elements div.table { border: solid 1px #979797; float: right; margin: 20px 10px 0px 0px; text-align: center; width: 180px; }
+main div.content div.heading-elements div.table div.table-header { border-bottom: solid 1px #979797; padding: 3px; }
+main div.content div.heading-elements div.table div.table-content { padding: 5px 0px; }
+main div.content div.heading-elements div.table div.table-content.split { overflow: hidden; padding: 0px; }
+main div.content div.heading-elements div.table div.table-content.split div.cleared { background-color: #D8D8D8; float: left; padding: 5px 10px; }
+main div.content div.heading-elements div.table div.table-content.split div.in-progress { float: right; padding: 5px 10px; }
 main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; }
 main div.content div.right-facing-button a,
 main div.content div.right-facing-button a:link,
 main div.content div.right-facing-button a:visited,
 main div.content div.right-facing-button a:hover,
 main div.content div.right-facing-button a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; float: right; font-size: 20px; padding: 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.content div.list { border: solid 1px #979797; }
-main div.content div.list div.label { border-bottom: solid 1px #979797; font-size: 16px; font-weight: 700; padding: 5px 15px; }
-main div.content div.list div.item { border-bottom: solid 1px #979797; overflow: hidden; }
-main div.content div.list div.item:last-child { border-bottom: none; }
+main div.content div.list div.label { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; font-size: 16px; font-weight: 700; padding: 5px 15px; }
+main div.content div.list div.item { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; overflow: hidden; }
+main div.content div.list div.item:last-child { border-bottom: solid 1px #979797; }
 main div.content div.list div.item div.info { float: left; padding: 10px 0px 10px 14px; }
 main div.content div.list div.item div.info div.title { font-size: 20px; font-weight: 700; line-height: 28px; }
 main div.content div.list div.item div.info div.description { font-size: 20px; line-height: 22px; }
 main div.content div.list div.item div.icon { border-left: solid 1px #979797; float: right; padding: 30px 5px; }
+main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
+
+main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; }
+main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 25%; }
+main div.content div.ribbon span.on { background-color: #d8d8d8; }
+main div.content div.ribbon span:last-child { border-width: 0px; width: 23%; }
+
+main div.content div.milestone-detail-list { border: solid 1px #979797; }
+main div.content div.milestone-detail-list div.milestone-name-upload { border: solid 1px #979797; margin: 10px; }
+main div.content div.milestone-detail-list div.milestone-name-upload span.name { display: inline-block; font-size: 18px; font-weight: 700; line-height: 18px; padding: 10px; }
+main div.content div.milestone-detail-list div.milestone-name-upload span.upload { border-left: solid 1px #979797; display: inline-block; float: right; font-size: 14px; font-weight: 400; padding: 11px 10px;  }
+main div.content div.milestone-detail-list div.milestone-name-upload span.upload.on { background-color: #D8D8D8; }
+main div.content div.milestone-detail-list div.milestone-information { margin: 10px; overflow: hidden; }
+main div.content div.milestone-detail-list div.milestone-information div.due-date { float: left; text-align: center; width: 10%; }
+main div.content div.milestone-detail-list div.milestone-information div.due-date div.due { font-size: 14px; font-weight: 700; padding: 5px 0px; }
+main div.content div.milestone-detail-list div.milestone-information div.due-date div.date-box { border: solid 1px #979797; }
+main div.content div.milestone-detail-list div.milestone-information div.due-date div.date-box div.month { border-bottom: solid 1px #979797; }
+main div.content div.milestone-detail-list div.milestone-information div.due-date div.date-box div.day { font-size: 35px; line-height: 60px; }
+main div.content div.milestone-detail-list div.milestone-information div.status { float: left; padding: 25px 0px; width: 75%; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.status-bar { padding: 0px 10px 15px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.task-bar { padding: 0px 10px 15px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table { border: solid 1px #979797; margin: 0px 10px 15px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.header { border-bottom: solid 1px #979797; font-size: 12px; line-height: 18px; margin: 0px; padding: 0px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line { font-size: 12px; padding: 0px 0px 0px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span { display: inline-block; padding: 10px 0px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.file-name {}
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; float: right; padding: 10px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.delete { float: right; padding: 10px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons { padding: 0px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a,
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a:link,
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a:visited,
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a:hover,
+main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details { float: left; text-align: center; width: 15%; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details div.paid { font-size: 14px; font-weight: 700; padding: 5px 0px; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details div.amount { border: solid 1px #979797; font-size: 20px; padding: 20px 0px; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details a,
+main div.content div.milestone-detail-list div.milestone-information div.payment-details a:link,
+main div.content div.milestone-detail-list div.milestone-information div.payment-details a:visited,
+main div.content div.milestone-detail-list div.milestone-information div.payment-details a:hover,
+main div.content div.milestone-detail-list div.milestone-information div.payment-details a:active { font-size: 14px; line-height: 16px; text-decoration: underline; }
+
+main div.content div.list div.data-table { margin: 0px 0px 15px; }
+main div.content div.list div.data-table div.table { border-color: #979797; border-style: solid; border-width: 0px 1px; }
+main div.content div.list div.data-table div.table span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; padding: 10px 0px; text-align: center; }
+main div.content div.list div.data-table div.table span:last-child { border-right: none; }
+main div.content div.list div.data-table div.table span.date { width: 20%; }
+main div.content div.list div.data-table div.table span.milestone-name { width: 20%; }
+main div.content div.list div.data-table div.table span.total { width: 17%; }
+main div.content div.list div.data-table div.table span.milestone-status { width: 20%; }
+main div.content div.list div.data-table div.table span.paid-on { width: 20%; }
+main div.content div.list div.data-table div.table div.data-table-header { background-color: #FFF; border-color: #979797; border-style: solid; border-width: 1px 0px; }
+main div.content div.list div.data-table div.table div.data-table-header span { font-size: 16px; font-weight: 700; }
+main div.content div.list div.data-table div.table div.row { border-bottom: solid 1px #979797; }
 
 @media screen and (max-height: 550px) {
-	header { height: 550px; position: relative; }
+	header { position: relative; }
 }

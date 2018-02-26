@@ -24,5 +24,8 @@ urlpatterns = [
     url(r'^myprojects/upload-milestone-drag/', views.DemoUploadMilestoneDrag.as_view(), name='demo_upload_milestone_drag'),
     url(r'^myprojects/preview-milestone/', views.DemoPreviewMilestone.as_view(), name='demo_preview_milestone'),
     url(r'^myprojects/', views.DemoMyProjectsScreen.as_view(), name='demo_my_projects'),
+    url(r'^client-active-use/specific-project/milestones', views.ClientActiveUseLoFiSpecificProjectMilestone.as_view(), name='client_active_use_specific_project_milestones'),
+    url(r'^client-active-use/specific-project/overview', views.ClientActiveUseLoFiSpecificProjectOverview.as_view(), name='client_active_use_specific_project_overview'),
+    url(r'^client-active-use/quick-view', views.ClientActiveUseLoFiQuickView.as_view(), name='client_active_use_quick_view'),
     url(r'^client-active-use', views.ClientActiveUseLoFiHome.as_view(), name='client_active_use'),
 ]
