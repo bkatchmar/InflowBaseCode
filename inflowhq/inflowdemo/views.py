@@ -319,6 +319,24 @@ class ClientActiveUseLoFiSpecificProjectMilestone(TemplateView):
     def post(self, request):
         return render(request, self.template_name)
 
+class ClientActiveUseLoFiSpecificProjectMilestoneUploadIdle(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.upload-idle.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectMilestoneUploadProgress(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.upload-progress.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
 class ClientActiveUseLoFiSpecificProjectOverview(TemplateView):
     template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.overview.html"
 

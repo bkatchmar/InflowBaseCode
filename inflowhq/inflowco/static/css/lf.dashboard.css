@@ -2,7 +2,7 @@ body, html { min-height: 100%; }
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
 header { border-right: solid 1px #979797; float: left; height: 100%; position: relative; width: 236px; }
-main { height: 100%; margin: 0px 25px 0px 255px; }
+main { height: 100%; margin: 0px 25px 0px 255px; position: relative; }
 
 header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
 header nav { float: none; margin: 70px 0px 15px; text-align: center; }
@@ -141,6 +141,49 @@ main div.content div.list div.data-table div.table span.paid-on { width: 20%; }
 main div.content div.list div.data-table div.table div.data-table-header { background-color: #FFF; border-color: #979797; border-style: solid; border-width: 1px 0px; }
 main div.content div.list div.data-table div.table div.data-table-header span { font-size: 16px; font-weight: 700; }
 main div.content div.list div.data-table div.table div.row { border-bottom: solid 1px #979797; }
+
+main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; height: 420px; left: -75px; position: absolute; top: 10px; width: 900px; }
+main div.upload-modal div.main-upload { overflow: hidden; }
+main div.upload-modal div.main-upload div.content-reciever { float: left; padding: 80px 50px 0px 100px; text-align: center; width: 350px; }
+main div.upload-modal div.main-upload div.content-reciever div.content { border-style: dashed; min-width: auto; padding: 45px 0px; }
+main div.upload-modal div.main-upload div.content-reciever div.content div.instructions { font-size: 18px; line-height: 20px; width: 300px; }
+main div.upload-modal div.main-upload div.content-reciever div.content div.or-separator { padding: 20px 0px 0px; }
+main div.upload-modal div.main-upload div.content-reciever div.content a,
+main div.upload-modal div.main-upload div.content-reciever div.content a:link,
+main div.upload-modal div.main-upload div.content-reciever div.content a:visited,
+main div.upload-modal div.main-upload div.content-reciever div.content a:hover,
+main div.upload-modal div.main-upload div.content-reciever div.content a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 25px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal div.main-upload div.content-reciever div.content div { width: 100%; }
+main div.upload-modal div.main-upload div.content-reciever div.disclaimer { font-size: 14px; margin: 5px 0px 0px; }
+main div.upload-modal div.main-upload div.other-upload-options { float: left; padding: 80px 0px 0px 0px; text-align: center; width: 225px; }
+main div.upload-modal div.main-upload div.other-upload-options a,
+main div.upload-modal div.main-upload div.other-upload-options a:link,
+main div.upload-modal div.main-upload div.other-upload-options a:visited,
+main div.upload-modal div.main-upload div.other-upload-options a:hover,
+main div.upload-modal div.main-upload div.other-upload-options a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: block; margin: 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal div.main-actions { padding: 15px 0px 0px 460px; }
+main div.upload-modal div.main-actions span { display: inline-block; font-size: 14px; }
+main div.upload-modal div.main-actions a,
+main div.upload-modal div.main-actions a:link,
+main div.upload-modal div.main-actions a:visited,
+main div.upload-modal div.main-actions a:hover,
+main div.upload-modal div.main-actions a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 14px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+main div.upload-modal div.modal-header { font-size: 18px; font-weight: 700; padding: 50px 25px; }
+main div.upload-modal div.upload-line { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 10px; }
+main div.upload-modal div.upload-line span { display: inline-block; }
+main div.upload-modal div.upload-line span.file-name { width: 400px; }
+main div.upload-modal div.upload-line span.file-size { width: 150px; }
+main div.upload-modal div.upload-line span.upload-status { text-align: center; width: 280px; }
+main div.upload-modal div.upload-line span.upload-status span.progress-bar {}
+main div.upload-modal div.upload-line span.upload-status span.status {}
+main div.upload-modal div.upload-line span.upload-delete { text-align: center; width: 15px; }
+main div.upload-modal div.buttons { padding: 160px 0px 0px 530px; }
+main div.upload-modal div.buttons a,
+main div.upload-modal div.buttons a:link,
+main div.upload-modal div.buttons a:visited,
+main div.upload-modal div.buttons a:hover,
+main div.upload-modal div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 @media screen and (max-height: 550px) {
 	header { position: relative; }

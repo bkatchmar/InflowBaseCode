@@ -139,6 +139,8 @@ class BaseSitemap(Sitemap):
                 "htmldemos:client_active_use_specific_project_overview",
                 "htmldemos:client_active_use_specific_project_invoices",
                 "htmldemos:client_active_use_specific_project_files",
+                "htmldemos:client_active_use_specific_project_milestones_upload_idle",
+                "htmldemos:client_active_use_specific_project_milestones_upload_progress",
                 "htmldemos:demo_my_projects",
                 "htmldemos:demo_project_details",
                 "htmldemos:demo_create_contract",
