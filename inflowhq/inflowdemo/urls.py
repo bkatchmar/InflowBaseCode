@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^myprojects/', views.DemoMyProjectsScreen.as_view(), name='demo_my_projects'),
     url(r'^client-active-use/specific-project/milestones/upload-idle', views.ClientActiveUseLoFiSpecificProjectMilestoneUploadIdle.as_view(), name='client_active_use_specific_project_milestones_upload_idle'),
     url(r'^client-active-use/specific-project/milestones/upload-progress', views.ClientActiveUseLoFiSpecificProjectMilestoneUploadProgress.as_view(), name='client_active_use_specific_project_milestones_upload_progress'),
+    url(r'^client-active-use/specific-project/milestones/preview', views.ClientActiveUseLoFiSpecificProjectMilestonePreview.as_view(), name='client_active_use_specific_project_milestones_preview'),
     url(r'^client-active-use/specific-project/milestones', views.ClientActiveUseLoFiSpecificProjectMilestone.as_view(), name='client_active_use_specific_project_milestones'),
     url(r'^client-active-use/specific-project/overview', views.ClientActiveUseLoFiSpecificProjectOverview.as_view(), name='client_active_use_specific_project_overview'),
     url(r'^client-active-use/specific-project/invoices', views.ClientActiveUseLoFiSpecificProjectInvoices.as_view(), name='client_active_use_specific_project_invoices'),

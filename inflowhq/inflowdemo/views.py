@@ -363,3 +363,12 @@ class ClientActiveUseLoFiSpecificProjectFiles(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectMilestonePreview(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)    

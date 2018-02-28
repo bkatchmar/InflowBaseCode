@@ -30,6 +30,8 @@ main div.content div.heading-elements div.table div.table-content { padding: 5px
 main div.content div.heading-elements div.table div.table-content.split { overflow: hidden; padding: 0px; }
 main div.content div.heading-elements div.table div.table-content.split div.cleared { background-color: #D8D8D8; float: left; padding: 5px 10px; }
 main div.content div.heading-elements div.table div.table-content.split div.in-progress { float: right; padding: 5px 10px; }
+main div.content div.heading-elements div.buttons { float: right; }
+main div.content div.heading-elements div.buttons a { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 20px auto 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; }
 main div.content div.right-facing-button a,
 main div.content div.right-facing-button a:link,
@@ -169,13 +171,18 @@ main div.upload-modal div.main-actions a:visited,
 main div.upload-modal div.main-actions a:hover,
 main div.upload-modal div.main-actions a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 14px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
+main div.content div.preview-window { margin: 25px auto 0px; }
+main div.content div.preview-window div.file-name { font-size: 18px; font-weight: 300; margin: 0px 0px 15px; }
+main div.content div.preview-window div.preview-area { border: solid 1px #979797; padding: 125px 0px; text-align: center; }
+main div.content div.preview-window div.preview-area span {}
+
 main div.upload-modal div.modal-header { font-size: 18px; font-weight: 700; padding: 50px 25px; }
 main div.upload-modal div.upload-line { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 10px; }
-main div.upload-modal div.upload-line span { display: inline-block; }
+main div.upload-modal div.upload-line span { display: inline-block; vertical-align: middle; }
 main div.upload-modal div.upload-line span.file-name { width: 400px; }
 main div.upload-modal div.upload-line span.file-size { width: 150px; }
 main div.upload-modal div.upload-line span.upload-status { text-align: center; width: 280px; }
-main div.upload-modal div.upload-line span.upload-status span.progress-bar {}
+main div.upload-modal div.upload-line span.upload-status span.progress-bar { background-color: #d8d8d8; border: solid 1px #979797; border-radius: 8px; display: block; margin: 0px auto 5px; padding: 7px; width: 184px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.upload-modal div.upload-line span.upload-status span.status {}
 main div.upload-modal div.upload-line span.upload-delete { text-align: center; width: 15px; }
 main div.upload-modal div.buttons { padding: 160px 0px 0px 530px; }
