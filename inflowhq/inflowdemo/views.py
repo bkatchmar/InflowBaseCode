@@ -371,4 +371,31 @@ class ClientActiveUseLoFiSpecificProjectMilestonePreview(TemplateView):
         return render(request, self.template_name)
 
     def post(self, request):
+        return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectMilestonePreviewNote(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.note.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)    
+
+class ClientActiveUseLoFiSpecificProjectMilestoneScheduleDelivery(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.schedule-delivery.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+
+class ClientActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSend(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.schedule-delivery.confirm-send.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
         return render(request, self.template_name)    

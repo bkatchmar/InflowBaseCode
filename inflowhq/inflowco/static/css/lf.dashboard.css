@@ -59,6 +59,12 @@ main div.content div.inner-details div.buttons a:link,
 main div.content div.inner-details div.buttons a:visited,
 main div.content div.inner-details div.buttons a:hover,
 main div.content div.inner-details div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content div.inner-details div.buttons a.alt,
+main div.content div.inner-details div.buttons a.alt:link,
+main div.content div.inner-details div.buttons a.alt:visited,
+main div.content div.inner-details div.buttons a.alt:hover,
+main div.content div.inner-details div.buttons a.alt:active { background-color: #FFF; }
+main div.content div.inner-details.footer { border: none; margin: 15px auto; text-align: center; }
 
 main div.content div.milestone-detail-list { border: solid 1px #979797; }
 main div.content div.milestone-detail-list div.milestone-name-upload { border: solid 1px #979797; margin: 10px; }
@@ -78,7 +84,6 @@ main div.content div.milestone-detail-list div.milestone-information div.status 
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.header { border-bottom: solid 1px #979797; font-size: 12px; line-height: 18px; margin: 0px; padding: 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line { font-size: 12px; padding: 0px 0px 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span { display: inline-block; padding: 10px 0px; }
-main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.file-name {}
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; float: right; padding: 10px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.delete { float: right; padding: 10px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.buttons { padding: 0px 10px; }
@@ -174,7 +179,28 @@ main div.upload-modal div.main-actions a:active { background-color: #D8D8D8; bor
 main div.content div.preview-window { margin: 25px auto 0px; }
 main div.content div.preview-window div.file-name { font-size: 18px; font-weight: 300; margin: 0px 0px 15px; }
 main div.content div.preview-window div.preview-area { border: solid 1px #979797; padding: 125px 0px; text-align: center; }
-main div.content div.preview-window div.preview-area span {}
+main div.content div.feedback-due { font-size: 22px; line-height: 24px; margin: 25px auto; }
+main div.content div.feedback-due span { font-weight: 900; padding: 0px 15px 0px 0px; }
+main div.content div.schedule-delivery { border: solid 1px #979797; margin: 25px auto; }
+main div.content div.schedule-delivery div.header { font-size: 24px; padding: 0px 25px; }
+main div.content div.schedule-delivery div.calendar { margin: 15px auto; width: 400px; }
+div.ui-datepicker-inline { border: solid 1px #979797; padding: 15px 10px 25px; }
+div.ui-datepicker-inline div.ui-datepicker-header { padding: 5px 0px 15px 15px; font-size: 22px; position: relative; }
+div.ui-datepicker-inline div.ui-datepicker-header a { cursor: pointer; font-size: 28px; position: absolute; }
+div.ui-datepicker-inline div.ui-datepicker-header a.ui-datepicker-next { left: 220px; }
+div.ui-datepicker-inline div.ui-datepicker-header div.ui-datepicker-title { padding: 0px 0px 0px 25px; }
+div.ui-datepicker-inline table.ui-datepicker-calendar { width: 100%; }
+div.ui-datepicker-inline table.ui-datepicker-calendar thead tr th { padding: 0px 0px 15px; }
+div.ui-datepicker-inline table.ui-datepicker-calendar tbody td { padding: 10px 0px; text-align: center; }
+div.ui-datepicker-inline table.ui-datepicker-calendar tbody td.ui-datepicker-current-day { background-color: #B5B3B3; }
+
+main div.content div.info-window { border: solid 1px #979797; margin: 25px auto; text-align: center; }
+main div.content div.info-window div { font-size: 24px; line-height: 32px; font-weight: 300; padding: 25px 0px; }
+main div.content div.info-window a,
+main div.content div.info-window a:link,
+main div.content div.info-window a:visited,
+main div.content div.info-window a:hover,
+main div.content div.info-window a:active { display: block; margin: 10px 0px; text-decoration: underline; }
 
 main div.upload-modal div.modal-header { font-size: 18px; font-weight: 700; padding: 50px 25px; }
 main div.upload-modal div.upload-line { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 10px; }

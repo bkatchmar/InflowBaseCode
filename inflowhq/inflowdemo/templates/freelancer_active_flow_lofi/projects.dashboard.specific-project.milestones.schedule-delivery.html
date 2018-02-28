@@ -1,0 +1,43 @@
+{% extends 'base/dashboard.base.html' %}
+{% block title %}Inflow My Project Dashboard{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'htmldemos:client_active_use' %}">Return to Projects</a></div>
+	<div class="content">
+		<div class="heading-elements">
+			<div class="header">NFL EXPERIENCE APP</div>
+			<div class="buttons"><a href="#">Upload another milestone</a></div>
+			<div class="sub-header">National Football League</div>
+		</div>
+		<div class="preview-window"><div class="file-name">Wireframes_NFL_3.20.18.pdf</div></div>
+		<div class="schedule-delivery">
+			<div class="header">Deliver your milestone on:</div>
+			<div class="calendar"></div>
+			<div class="inner-details footer">
+				<div class="buttons">
+					<a href="#">Cancel</a>
+					<a href="#">Schedule</a>
+				</div>
+			</div>
+		</div>
+		<div class="inner-details footer">
+			<div class="buttons">
+				<a href="#" class="alt">Schedule Delivery Date</a>
+				<a href="#">Send Milestones to Client</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("div.calendar").datepicker({
+				showOtherMonths : false,
+				selectOtherMonths : true,
+				nextText : "&gt;",
+				prevText : "&lt;",
+				minDate : 0,
+				dayNamesMin: ["SUN", "MON", "TUES", "WED", "THU", "FRI", "SAT"]
+			});
+		});
+	</script>
+{% endblock %}
