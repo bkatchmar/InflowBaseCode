@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^client-active-use/specific-project/milestones/upload-progress', views.ClientActiveUseLoFiSpecificProjectMilestoneUploadProgress.as_view(), name='client_active_use_specific_project_milestones_upload_progress'),
     url(r'^client-active-use/specific-project/milestones/preview/note', views.ClientActiveUseLoFiSpecificProjectMilestonePreviewNote.as_view(), name='client_active_use_specific_project_milestones_preview_note'),
     url(r'^client-active-use/specific-project/milestones/preview', views.ClientActiveUseLoFiSpecificProjectMilestonePreview.as_view(), name='client_active_use_specific_project_milestones_preview'),
+    url(r'^client-active-use/specific-project/milestones/schedule/confirm-now', views.ClientActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSendNow.as_view(), name='client_active_use_specific_project_milestones_schedule_send_now'),
     url(r'^client-active-use/specific-project/milestones/schedule/confirm', views.ClientActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSend.as_view(), name='client_active_use_specific_project_milestones_schedule_send'),
     url(r'^client-active-use/specific-project/milestones/schedule', views.ClientActiveUseLoFiSpecificProjectMilestoneScheduleDelivery.as_view(), name='client_active_use_specific_project_milestones_schedule'),
     url(r'^client-active-use/specific-project/milestones', views.ClientActiveUseLoFiSpecificProjectMilestone.as_view(), name='client_active_use_specific_project_milestones'),
@@ -35,5 +36,7 @@ urlpatterns = [
     url(r'^client-active-use/specific-project/invoices', views.ClientActiveUseLoFiSpecificProjectInvoices.as_view(), name='client_active_use_specific_project_invoices'),
     url(r'^client-active-use/specific-project/files', views.ClientActiveUseLoFiSpecificProjectFiles.as_view(), name='client_active_use_specific_project_files'),
     url(r'^client-active-use/quick-view', views.ClientActiveUseLoFiQuickView.as_view(), name='client_active_use_quick_view'),
+    url(r'^client-active-use/email-confirm/freelancer', views.ClientActiveUseLoFiSpecificProjectEmailConfirmFreelancer.as_view(), name='client_active_use_email_confirm_freelancer'),
+    url(r'^client-active-use/email-confirm/client', views.ClientActiveUseLoFiSpecificProjectEmailConfirmClient.as_view(), name='client_active_use_email_confirm_client'),
     url(r'^client-active-use', views.ClientActiveUseLoFiHome.as_view(), name='client_active_use'),
 ]

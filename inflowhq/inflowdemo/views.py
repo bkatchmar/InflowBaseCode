@@ -398,4 +398,31 @@ class ClientActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSend(Tem
         return render(request, self.template_name)
 
     def post(self, request):
-        return render(request, self.template_name)    
+        return render(request, self.template_name)
+    
+class ClientActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSendNow(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.schedule-delivery.confirm-send-now.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class ClientActiveUseLoFiSpecificProjectEmailConfirmFreelancer(TemplateView):
+    template_name = "freelancer_active_flow_lofi/email.confirm.freelancer.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
+    
+class ClientActiveUseLoFiSpecificProjectEmailConfirmClient(TemplateView):
+    template_name = "freelancer_active_flow_lofi/email.confirm.client.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)

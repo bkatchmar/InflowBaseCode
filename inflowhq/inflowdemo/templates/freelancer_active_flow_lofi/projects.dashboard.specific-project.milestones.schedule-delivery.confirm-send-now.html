@@ -1,0 +1,15 @@
+{% extends 'base/dashboard.base.html' %}
+{% block title %}Inflow My Project Dashboard{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'htmldemos:client_active_use' %}">Return to Projects</a></div>
+	<div class="content">
+		<div class="info-window">
+			<div>Your milestone is on its way!<br />You and your client will receive an email confirmation.</div>
+			<a href="#">Resend email confirmations</a>
+		</div>
+		<div class="inner-details footer">
+			<div class="buttons"><a href="#" class="alt">Return to Milestones</a></div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

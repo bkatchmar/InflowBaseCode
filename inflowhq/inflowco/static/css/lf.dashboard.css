@@ -39,12 +39,15 @@ main div.content div.right-facing-button a:visited,
 main div.content div.right-facing-button a:hover,
 main div.content div.right-facing-button a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; float: right; font-size: 20px; padding: 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.content div.list div.label { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; font-size: 16px; font-weight: 700; padding: 5px 15px; }
+main div.content div.list div.label span { display: inline-block; text-align: center; width: 125px; }
+main div.content div.list div.label span.col1 { text-align: left; width: 240px; }
 main div.content div.list div.item { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; overflow: hidden; }
 main div.content div.list div.item:last-child { border-bottom: solid 1px #979797; }
-main div.content div.list div.item div.info { float: left; padding: 10px 0px 10px 14px; }
+main div.content div.list div.item div.info { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; float: left; padding: 10px 0px 10px 14px; width: 240px; }
 main div.content div.list div.item div.info div.title { font-size: 20px; font-weight: 700; line-height: 28px; }
 main div.content div.list div.item div.info div.description { font-size: 20px; line-height: 22px; }
-main div.content div.list div.item div.icon { border-left: solid 1px #979797; float: right; padding: 30px 5px; }
+main div.content div.list div.item div.empty-tile { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; float: left; padding: 35px 5px; width: 122px; }
+main div.content div.list div.item div.icon { border-left: solid 1px #979797; float: right; padding: 27px 5px; }
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 
 main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; overflow: hidden; }
