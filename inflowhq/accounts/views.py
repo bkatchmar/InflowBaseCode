@@ -19,7 +19,7 @@ class CreateAccountView(TemplateView, InflowLoginView):
     
     def get(self, request):
         logout(request)
-        context = { "linkedin" : self.set_linkedin_params() }
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
         
         # If this page was hit from LinkedIn, go ahead and handle to log the user in
         if self.is_this_a_linkedin_request(request):
@@ -28,7 +28,7 @@ class CreateAccountView(TemplateView, InflowLoginView):
         return render(request, self.template_name, context)
     
     def post(self, request):
-        context = { "linkedin" : self.set_linkedin_params() }
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
         
         google_id_token = request.POST.get("google-id-token", "")
         

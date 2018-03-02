@@ -1,49 +1,31 @@
-{% load staticfiles %}
-<!doctype html>
-<html>
-<head>
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201802" />
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
-	<title>Welcome to InFlow - On Boarding Step 2</title>
-</head>
-<body>
-	<header>
-		<div class="content">
-			<div class="logo">
-				<a href="/">InFlow</a>
-			</div>
+{% extends 'base/header.no.sidebar.html' %}
+{% block title %}Welcome to InFlow - On Boarding Step 2{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<h1>Welcome, {{name}}!</h1>
+		<div class="progress-bar">
+			<span class="number one"></span>
+			<span class="number two on"></span>
+			<span class="number three"></span>
+			<div class="bar"></div>
 		</div>
-	</header>
-	<main>
-		<div class="content">
-			<h1>Welcome, {{name}}!</h1>
-			<div class="progress-bar">
-				<span class="number one"></span>
-				<span class="number two on"></span>
-				<span class="number three"></span>
-				<div class="bar"></div>
+		<form method="post" class="onboarding-form">
+			<div class="question-text">Who do you work with?</div>
+			<div class="radio-list">
+				{% for work in work_with %}
+					<span class="button"><input type="radio" name="work-with" value="{{work.0}}" />{{work.1}}</span>
+				{% endfor %}
 			</div>
-			<form method="post" class="onboarding-form">
-				<div class="question-text">Who do you work with?</div>
-				<div class="radio-list">
-					{% for work in work_with %}
-						<span class="button"><input type="radio" name="work-with" value="{{work.0}}" />{{work.1}}</span>
-					{% endfor %}
-				</div>
-				<div class="question-text">What features are you interested in?</div>
-				<div class="radio-list">
-					{% for interested in interested_in %}
-						<span class="button"><input type="radio" name="feature" value="{{interested.0}}" />{{interested.1}}</span>
-					{% endfor %}
-				</div>
-				<input type="submit" value="Continue" />
-				{% csrf_token %}
-				<div class="signup-link"><a href="{% url 'accounts:onboarding_1' %}">Go back</a></div>
-			</form>
-		</div>
-	</main>
-	<script src="https://apis.google.com/js/platform.js"></script>
-	<script src="{% static 'js/inflow.google.signout.handler.js' %}"></script>
-</body>
-</html>
+			<div class="question-text">What features are you interested in?</div>
+			<div class="radio-list">
+				{% for interested in interested_in %}
+					<span class="button"><input type="radio" name="feature" value="{{interested.0}}" />{{interested.1}}</span>
+				{% endfor %}
+			</div>
+			<input type="submit" value="Continue" />
+			{% csrf_token %}
+			<div class="signup-link"><a href="{% url 'accounts:onboarding_1' %}">Go back</a></div>
+		</form>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

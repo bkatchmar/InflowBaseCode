@@ -1,55 +1,28 @@
-{% load staticfiles %}
-<!doctype html>
-<html>
-<head>
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201802" />
-	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
-	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
-	<title>Welcome to InFlow - Sign Up To Get Started</title>
-</head>
-<body>
-	<header>
-		<div class="content">
-			<div class="logo">
-				<a href="/">InFlow</a>
-			</div>
-			<nav>
-				<a href="#">Features</a>
-				<a href="#">Pricing</a>
-				<a href="#">Blog</a>
-				<a href="{% url 'login' %}">Sign In</a>
-				<a href="{% url 'accounts:create' %}" class="alt">Sign Up</a>
-			</nav>
+{% extends 'base/header.no.sidebar.html' %}
+{% block title %}Welcome to InFlow - Sign Up To Get Started{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
+		<div class="login-buttons">
+			<div class="g-signin2" id="google-signin"></div>
+			<a href="https://www.linkedin.com/oauth/v2/authorization?{{linkedin}}" class="inflow-btn">Log in with LinkedIn</a>
 		</div>
-	</header>
-	<main>
-		<div class="content">
-			<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
-			<div class="login-buttons">
-				<div class="g-signin2" id="google-signin"></div>
-				<a href="https://www.linkedin.com/oauth/v2/authorization?{{linkedin}}" class="inflow-btn">Log in with LinkedIn</a>
+		<div class="separator">or</div>
+		{% if error_msg != "" %}
+			<div class="error-msg">{{error_msg}}</div>
+		{% endif %}
+		<form method="post" class="login-form">
+			<input type="email" name="username" placeholder="E-mail address" required />
+			<input type="text" name="name" placeholder="Name" required />
+			<input type="password" name="password" placeholder="Password" required />
+			<div class="agree-to-terms-of-service">
+				<input type="checkbox" name="agree" /><span class="checkbox-text">I agree to the terms and services.</span>
 			</div>
-			<div class="separator">or</div>
-			{% if error_msg != "" %}
-				<div class="error-msg">{{error_msg}}</div>
-			{% endif %}
-			<form method="post" class="login-form">
-				<input type="email" name="username" placeholder="E-mail address" required />
-				<input type="text" name="name" placeholder="Name" required />
-				<input type="password" name="password" placeholder="Password" required />
-				<div class="agree-to-terms-of-service">
-					<input type="checkbox" name="agree" /><span class="checkbox-text">I agree to the terms and services.</span>
-				</div>
-				<input type="hidden" name="google-id-token" value="" />
-				<input type="submit" value="Sign up" />
-				{% csrf_token %}
-			</form>
-			<div class="signup-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
-		</div>
-	</main>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="{% static 'js/inflow.google.signin.handler.js' %}"></script>
-	<script src="https://apis.google.com/js/platform.js?onload=InflowRenderGoogleButton" async defer></script>
-</body>
-</html>
+			<input type="hidden" name="google-id-token" value="" />
+			<input type="submit" value="Sign up" />
+			{% csrf_token %}
+		</form>
+		<div class="signup-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
