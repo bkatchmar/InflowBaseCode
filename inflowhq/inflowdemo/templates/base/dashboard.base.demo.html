@@ -17,8 +17,18 @@
 				<nav>
 					<ul>
 						<li><a href="#">Home</a></li>
-						<li class="arrow"><a href="#">Projects</a></li>
-						<li><a href="#">Clients</a></li>
+						{% if exclude_arrow %}
+							<li><a href="#">Projects</a></li>
+						{% else %}
+							<li class="arrow"><a href="#">Projects</a></li>
+						{% endif %}
+						<li>
+							{% if is_client %}
+								<a href="#">Contractors</a>
+							{% else %}
+								<a href="#">Clients</a>
+							{% endif %}
+						</li>
 						<li><a href="#">Activity</a></li>
 					</ul>
 				</nav>
