@@ -148,6 +148,7 @@ class BaseSitemap(Sitemap):
                 "htmldemos:client_active_use_specific_project_milestones_schedule_send_now",
                 "htmldemos:client_active_use_email_confirm_freelancer",
                 "htmldemos:client_active_use_email_confirm_client",
+                "htmldemos:contract_creation",
                 "htmldemos:demo_my_projects",
                 "htmldemos:demo_project_details",
                 "htmldemos:demo_create_contract",

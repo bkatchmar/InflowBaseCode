@@ -39,4 +39,5 @@ urlpatterns = [
     url(r'^client-active-use/email-confirm/freelancer', views.ClientActiveUseLoFiSpecificProjectEmailConfirmFreelancer.as_view(), name='client_active_use_email_confirm_freelancer'),
     url(r'^client-active-use/email-confirm/client', views.ClientActiveUseLoFiSpecificProjectEmailConfirmClient.as_view(), name='client_active_use_email_confirm_client'),
     url(r'^client-active-use', views.ClientActiveUseLoFiHome.as_view(), name='client_active_use'),
+    url(r'^contract-creation', views.CreateContractStepOneDemo.as_view(), name='contract_creation'),
 ]

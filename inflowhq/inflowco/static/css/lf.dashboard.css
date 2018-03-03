@@ -16,7 +16,15 @@ header nav.alt ul li span.oval { left: 25px; position: absolute; top: -3px; }
 header nav.alt ul li span.oval:after { border: 14px solid transparent; border-bottom: none; border-left-color: #F6F4F0; border-right: none; content: ""; height: 0px; left: 26px; position: absolute; top: 16px; width: 0px; }
 header nav.alt ul li:last-child { border-bottom: none; }
 
+main div.progress-bar { padding: 10px 15px; }
+main div.progress-bar div.bar { border-top: 1px solid #979797; }
+main div.progress-bar span.number { display: inline-block; padding: 0px 0px 8px 5px; position: relative; width: 150px; }
+main div.progress-bar span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 10px; bottom: -15px; content: ""; left: 0px; padding: 10px; position: absolute; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+main div.progress-bar span.number.on:after { background-color: #979797; }
+main div.progress-bar span.number span.text { color: #373737; font-size: 16px; left: 0px; position: absolute; top: 25px; }
+
 main div.back-links { padding: 55px 0px; }
+main div.back-links.smaller { padding: 15px 0px; }
 main div.content { border: solid 1px #979797; min-width: 800px; padding: 0px 0px 25px; }
 main div.content > div { margin: 0px auto; width: 740px; }
 main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32px; margin: 20px auto 0px; }
@@ -220,6 +228,15 @@ main div.upload-modal div.buttons a:link,
 main div.upload-modal div.buttons a:visited,
 main div.upload-modal div.buttons a:hover,
 main div.upload-modal div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+main div.create-contract-super-window { border-color: #979797; border-style: solid; border-width: 1px; padding: 25px; }
+main div.create-contract-super-window div.header { font-size: 30px; font-weight: 700; line-height: 32px; padding: 0px 15px 20px; }
+main div.create-contract-super-window div.progress-bar {}
+main div.create-contract-super-window div.progress-bar div.bar {}
+main div.create-contract-super-window div.progress-bar span.number {}
+main div.create-contract-super-window div.progress-bar span.number:after {}
+main div.create-contract-super-window div.progress-bar span.number.on:after {}
+main div.create-contract-super-window div.progress-bar span.number span.text {}
 
 @media screen and (max-height: 550px) {
 	header { position: relative; }
