@@ -426,3 +426,12 @@ class ClientActiveUseLoFiSpecificProjectEmailConfirmClient(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+    
+class CreateContractStepOneDemo(TemplateView):
+    template_name = "contract_creation/create.contract.step-1.html"
+
+    def get(self, request):
+        return render(request, self.template_name)
+
+    def post(self, request):
+        return render(request, self.template_name)
