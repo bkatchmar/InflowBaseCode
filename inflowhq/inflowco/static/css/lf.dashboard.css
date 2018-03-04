@@ -23,9 +23,15 @@ main div.progress-bar span.number:after { background-color: #FFF; border: 1px so
 main div.progress-bar span.number.on:after { background-color: #979797; }
 main div.progress-bar span.number span.text { color: #373737; font-size: 16px; left: 0px; position: absolute; top: 25px; }
 
-main div.back-links { padding: 55px 0px; }
+main div.back-links { padding: 55px 30px; }
 main div.back-links.smaller { padding: 15px 0px; }
-main div.content { border: solid 1px #979797; min-width: 800px; padding: 0px 0px 25px; }
+main div.content { border: solid 1px #979797; margin: 0px 25px; min-width: 800px; padding: 0px 0px 25px; position: relative; }
+main div.content.project-arrow {}
+main div.content select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 137px; width: 0px; }
+main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 138px; width: 0px; }
+main div.content.project-arrow.more-top-padding:before { top: 121px; }
+main div.content.project-arrow.more-top-padding:after { top: 122px; }
 main div.content > div { margin: 0px auto; width: 740px; }
 main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32px; margin: 20px auto 0px; }
 main div.content div.sub-header { font-size: 16px; }
@@ -50,8 +56,10 @@ main div.content div.list div.label { border-color: #979797; border-style: solid
 main div.content div.list div.label span { display: inline-block; text-align: center; width: 125px; }
 main div.content div.list div.label span.col1 { text-align: left; width: 240px; }
 main div.content div.list div.item { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; overflow: hidden; }
+main div.content div.list div.item.selected { background-color: #D8D8D8; }
 main div.content div.list div.item:last-child { border-bottom: solid 1px #979797; }
 main div.content div.list div.item div.info { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; float: left; padding: 10px 0px 10px 14px; width: 240px; }
+main div.content div.list div.item div.info.no-border { border: none; }
 main div.content div.list div.item div.info div.title { font-size: 20px; font-weight: 700; line-height: 28px; }
 main div.content div.list div.item div.info div.description { font-size: 20px; line-height: 22px; }
 main div.content div.list div.item div.empty-tile { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; float: left; padding: 35px 5px; width: 122px; }
@@ -59,9 +67,9 @@ main div.content div.list div.item div.icon { border-left: solid 1px #979797; fl
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 
 main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; overflow: hidden; }
-main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 25%; }
+main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 185px; }
 main div.content div.ribbon span.on { background-color: #d8d8d8; }
-main div.content div.ribbon span:last-child { border-width: 0px; width: 24%; }
+main div.content div.ribbon span:last-child { border-width: 0px; width: 182px; }
 
 main div.content div.inner-details { border: solid 1px #979797; }
 main div.content div.inner-details div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
@@ -76,6 +84,9 @@ main div.content div.inner-details div.buttons a.alt:visited,
 main div.content div.inner-details div.buttons a.alt:hover,
 main div.content div.inner-details div.buttons a.alt:active { background-color: #FFF; }
 main div.content div.inner-details.footer { border: none; margin: 15px auto; text-align: center; }
+main div.content div.inner-details.footer select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content div.inner-details.footer div.reason { font-size: 16px; padding: 15px 0px; }
+main div.content div.inner-details.footer input[type="text"] { display: block; margin: 15px auto; padding: 10px; width: 400px; }
 
 main div.content div.milestone-detail-list { border: solid 1px #979797; }
 main div.content div.milestone-detail-list div.milestone-name-upload { border: solid 1px #979797; margin: 10px; }
@@ -105,7 +116,8 @@ main div.content div.milestone-detail-list div.milestone-information div.status 
 main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.content div.milestone-detail-list div.milestone-information div.payment-details { float: left; text-align: center; width: 15%; }
 main div.content div.milestone-detail-list div.milestone-information div.payment-details div.paid { font-size: 14px; font-weight: 700; padding: 5px 0px; }
-main div.content div.milestone-detail-list div.milestone-information div.payment-details div.amount { border: solid 1px #979797; font-size: 20px; padding: 20px 0px; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details div.amount { border: solid 1px #979797; font-size: 20px; padding: 20px 0px; position: relative; }
+main div.content div.milestone-detail-list div.milestone-information div.payment-details div.amount span.checkmark { background-color: #FFF; border: 3px solid #000; border-radius: 20px; left: -13px; padding: 5px; position: absolute; top: -14px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a,
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:link,
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:visited,
@@ -258,3 +270,5 @@ main div.client-tables div.data-table div.table div.row span.milestone { width: 
 main div.client-tables div.data-table div.table div.row span.project { width: 200px; }
 main div.client-tables div.data-table div.table div.row span.amount { width: 120px; }
 main div.client-tables.right div.data-table div.table div.row span { font-size: 14px; padding: 0px 10px; text-align: left; }
+
+main div.footer { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; padding: 25px; text-align: center; }

@@ -308,7 +308,7 @@ class FreelancerActiveUseLoFiQuickView(TemplateView):
         return render(request, self.template_name)
 
     def post(self, request):
-        return render(request, self.template_name)    
+        return render(request, self.template_name)
 
 class FreelancerActiveUseLoFiSpecificProjectMilestone(TemplateView):
     template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.html"
@@ -436,6 +436,105 @@ class ClientActiveUseLoFiHome(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : True }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiProjectsHome(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.home.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiQuickView(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.quick-view.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class ClientActiveUseLoFiSpecificProjectMilestone(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.milestones.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class ClientActiveUseLoFiSpecificProjectOverview(TemplateView):
+    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.overview.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiSpecificProjectInvoices(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.invoices.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiSpecificProjectFiles(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.files.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiSpecificProjectMilestonePreview(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class ClientActiveUseLoFiSpecificProjectMilestonePreviewDecline(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.decline.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class ClientActiveUseLoFiSpecificProjectMilestonePreviewDeclineSend(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.decline.send.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
         return render(request, self.template_name, context)
     
 class CreateContractStepOneDemo(TemplateView):

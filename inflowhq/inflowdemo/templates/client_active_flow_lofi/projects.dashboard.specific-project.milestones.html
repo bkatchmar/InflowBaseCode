@@ -1,0 +1,115 @@
+{% extends 'base/dashboard.base.demo.html' %}
+{% block title %}Inflow My Project Dashboard{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'htmldemos:client_active_use' %}">Return to Projects</a></div>
+	<div class="content project-arrow more-top-padding">
+		<div class="heading-elements">
+			<div class="header">NFL EXPERIENCE APP</div>
+			<div class="table">
+				<div class="table-header">PAYMENT PROGRESS</div>
+				<div class="table-content split">
+					<div class="cleared">$500</div>
+					<div class="in-progress">$2,500</div>
+				</div>
+			</div>
+			<div class="table">
+				<div class="table-header">PROJECT STATUS</div>
+				<div class="table-content">In Progress</div>
+			</div>
+			<div class="sub-header">National Football League</div>
+		</div>
+		<div class="ribbon">
+			<span class="on">MILESTONES</span>
+			<span>OVERVIEW</span>
+			<span>INVOICES</span>
+			<span>FILES</span>
+		</div>
+		<div class="milestone-detail-list">
+			<div class="milestone-name-upload">
+				<span class="name">CURRENT WIREFRAMES</span>
+			</div>
+			<div class="milestone-name-upload">
+				<span class="name">Milestone: Wireframes</span>
+				<span class="upload on">View Milestone</span>
+			</div>
+			<div class="milestone-information">
+				<div class="due-date">
+					<div class="due">DUE</div>
+					<div class="date-box">
+						<div class="month">MAR</div>
+						<div class="day">20</div>
+					</div>
+				</div>
+				<div class="status">
+					<div class="status-bar"><strong>Status</strong>: Completed</div>
+					<div class="task-bar"><strong>Task</strong>: Complete research for NFL Experience App and determine user persona and competitive analysis.</div>
+					<div class="uploaded-table">
+						<div class="header">UPLOADED MILESTONES</div>
+						<div class="line">
+							<span class="file-name">Research_NFL_2.4.18.doc</span>
+							<span class="delete">&times;</span>
+							<span class="download">DL</span>
+						</div>
+					</div>
+				</div>
+				<div class="payment-details">
+					<div class="paid">PAID</div>
+					<div class="amount">$500<span class="checkmark">&#10003;</span></div>
+					<a href="#">View payment details</a>
+				</div>
+			</div>
+			<div class="milestone-name-upload">
+				<span class="name">UPCOMING WIREFRAMES</span>
+			</div>
+			<div class="milestone-name-upload">
+				<span class="name">Milestone: Wireframes</span>
+				<span class="upload on">Upload Milestone</span>
+			</div>
+			<div class="milestone-information">
+				<div class="due-date">
+					<div class="due">DUE</div>
+					<div class="date-box">
+						<div class="month">APRIL</div>
+						<div class="day">1</div>
+					</div>
+				</div>
+				<div class="status">
+					<div class="status-bar"><strong>Status</strong>: In Progress</div>
+					<div class="task-bar"><strong>Task</strong>: Create wireframes in Sketch using user persona.</div>
+				</div>
+				<div class="payment-details">
+					<div class="paid">PAID</div>
+					<div class="amount">$1,200</div>
+					<a href="#">View payment details</a>
+				</div>
+			</div>
+			<div class="milestone-name-upload">
+				<span class="name">PAST WIREFRAMES</span>
+			</div> 
+			<div class="milestone-name-upload">
+				<span class="name">Milestone: Design Drafts</span>
+				<span class="upload on">Upload Milestone</span>
+			</div>
+			<div class="milestone-information">
+				<div class="due-date">
+					<div class="due">DUE</div>
+					<div class="date-box">
+						<div class="month">FEB</div>
+						<div class="day">4</div>
+					</div>
+				</div>
+				<div class="status">
+					<div class="status-bar"><strong>Status</strong>: Not Started</div>
+					<div class="task-bar"><strong>Task</strong>: Mock up design drafts using wireframes.</div>
+				</div>
+				<div class="payment-details">
+					<div class="paid">PAID</div>
+					<div class="amount">$800</div>
+					<a href="#">View payment details</a>
+				</div>
+			</div>
+			<div class="footer">Numer of Revisions Remaining: 2</div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
