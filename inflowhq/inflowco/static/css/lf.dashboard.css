@@ -4,6 +4,12 @@ body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-ser
 header { border-right: solid 1px #979797; float: left; height: 100%; position: relative; width: 236px; }
 main { height: 100%; margin: 0px 0px 0px 236px; position: relative; }
 
+a.btn,
+a.btn:link,
+a.btn:visited,
+a.btn:hover,
+a.btn:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
 header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
 header nav { float: none; margin: 70px 0px 15px; text-align: center; }
 header nav ul li { border-top: solid 1px #979797; padding: 19px 0px; position: relative; }
@@ -23,11 +29,12 @@ main div.progress-bar span.number:after { background-color: #FFF; border: 1px so
 main div.progress-bar span.number.on:after { background-color: #979797; }
 main div.progress-bar span.number span.text { color: #373737; font-size: 16px; left: 0px; position: absolute; top: 25px; }
 
+main select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
 main div.back-links { padding: 55px 30px; }
 main div.back-links.smaller { padding: 15px 0px; }
 main div.content { border: solid 1px #979797; margin: 0px 25px; min-width: 800px; padding: 0px 0px 25px; position: relative; }
 main div.content.project-arrow {}
-main div.content select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 137px; width: 0px; }
 main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 138px; width: 0px; }
 main div.content.project-arrow.more-top-padding:before { top: 121px; }
@@ -276,13 +283,20 @@ main div.footer { border-color: #979797; border-style: solid; border-width: 1px 
 main div.accept-milestone { padding: 100px 0px; }
 main div.accept-milestone div.header { font-size: 30px; font-weight: 900; line-height: 32px; padding: 0px 50px; }
 main div.accept-milestone div.milestone-preview { border: solid 1px #979797; height: 240px; margin: 25px 50px; width: 400px; }
-main div.accept-milestone div.cost-breakdown {}
-main div.accept-milestone div.cost-breakdown div.line {}
-main div.accept-milestone div.cost-breakdown div.line.total {}
-main div.accept-milestone div.cost-breakdown div.line div.description {}
-main div.accept-milestone div.cost-breakdown div.line div.amount {}
-main div.accept-milestone div.payment-options {}
-main div.accept-milestone div.payment-options textarea {}
-main div.accept-milestone div.payment-options div.options {}
-main div.accept-milestone div.payment-options div.options div.header {}
-main div.accept-milestone div.payment-options div.options select {}
+main div.accept-milestone div.cost-breakdown { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 15px 40px; }
+main div.accept-milestone div.cost-breakdown div.line { border-color: #979797; border-style: solid; border-width: 0px 0px 1px; overflow: hidden; padding: 10px 0px; }
+main div.accept-milestone div.cost-breakdown div.line.total { border-width: 0px; font-weight: 700; }
+main div.accept-milestone div.cost-breakdown div.line div.description { float: left; font-size: 22px; line-height: 24px; }
+main div.accept-milestone div.cost-breakdown div.line div.amount { float: right; font-size: 22px; line-height: 24px; }
+main div.accept-milestone div.payment-options { overflow: hidden; padding: 15px 25px; }
+main div.accept-milestone div.payment-options textarea { display: block; float: left; }
+main div.accept-milestone div.payment-options div.options { float: left; padding: 0px 0px 0px 25px; }
+main div.accept-milestone div.payment-options div.options div.header { font-size: 22px; font-weight: 700; padding: 0px 0px 15px; }
+main div.accept-milestone div.payment-options div.options select { margin: 5px 0px; width: 230px; }
+
+main div.accept-milestone div.payment-actions { text-align: right; }
+main div.accept-milestone div.payment-actions a { display: inline-block; margin: 0px 15px 20px 0px; }
+main div.accept-milestone div.payment-actions a.cancel { font-size: 16px; line-height: 18px; text-decoration: underline; }
+main div.accept-milestone div.payment-actions a.contact-us { color: #8c8c8c; font-size: 14px; text-decoration: underline; }
+main div.accept-milestone div.payment-actions div.payment-terms { font-size: 16px; line-height: 18px; padding: 0px 10px; }
+main div.accept-milestone div.payment-actions div.details { color: #8c8c8c; font-size: 14px; line-height: 16px; padding: 5px 10px 25px; }

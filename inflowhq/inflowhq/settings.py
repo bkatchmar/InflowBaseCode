@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = "7t=&8c9%(9%piw_q%pqr_5gis*4dy1^=z47=e+x-uzjv6m!5+e"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com", "workinflow.co"]
 ADMINS = [("Brian", "brian@workinflow.co"),]
@@ -92,13 +92,12 @@ SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+    'default': { 
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'winston',
-        'USER': 'brian',
-        'PASSWORD': 's0m3thinggr34tl1k3th3m4nt155hr1mp',
-        'HOST': 'winston.c4xdpep5tg03.us-east-2.rds.amazonaws.com',
-        'PORT': '3306',
+        'NAME': 'brianpersonal',
+        'USER': 'root',
+        'PASSWORD': 'th3l10nk1ng',
+        'HOST': 'localhost',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         }
@@ -141,8 +140,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
-STATIC_ROOT = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
+STATIC_URL = "/static/"
+STATIC_ROOT = "/static/"
 LOGIN_URL = "/"
 
 EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
