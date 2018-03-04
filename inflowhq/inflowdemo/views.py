@@ -536,7 +536,18 @@ class ClientActiveUseLoFiSpecificProjectMilestonePreviewDeclineSend(TemplateView
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
         return render(request, self.template_name, context)
-    
+
+class ClientActiveUseLoFiSpecificProjectMilestoneAccept(TemplateView):
+    template_name = "client_active_flow_lofi/projects.dashboard.specific-project.milestones.accept.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
 class CreateContractStepOneDemo(TemplateView):
     template_name = "contract_creation/create.contract.step-1.html"
 

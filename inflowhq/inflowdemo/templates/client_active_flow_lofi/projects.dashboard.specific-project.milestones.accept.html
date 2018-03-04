@@ -1,0 +1,37 @@
+{% extends 'base/dashboard.base.demo.html' %}
+{% block title %}Inflow My Project Dashboard{% endblock %}
+{% block main_tag %}
+	<div class="accept-milestone">
+		<div class="header">Payment for Milestone #2</div>
+		<div class="milestone-preview"></div>
+		<div class="cost-breakdown">
+			<div class="line">
+				<div class="description">Milestone #2 Cost</div>
+				<div class="amount">$1,200.00</div>
+			</div>
+			<div class="line">
+				<div class="description">Stripe Transaction Fee (2.9%)</div>
+				<div class="amount">$34.80</div>
+			</div>
+			<div class="line">
+				<div class="description">Sales Tax (8.875%)</div>
+				<div class="amount">$105.00</div>
+			</div>
+			<div class="line total">
+				<div class="description">Total (USD)</div>
+				<div class="amount">$1,339.80</div>
+			</div>
+		</div>
+		<div class="payment-options">
+			<textarea rows="5" cols="50" name="comments"></textarea>
+			<div class="options">
+				<div class="header">Payment Method</div>
+				<select>
+					<option>Chase Checking *0123</option>
+					<option>Mastercard *5454</option>
+				</select>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

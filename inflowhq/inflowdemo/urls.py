@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^freelancer-active-use/email-confirm/freelancer', views.FreelancerActiveUseLoFiSpecificProjectEmailConfirmFreelancer.as_view(), name='freelancer_active_use_email_confirm_freelancer'),
     url(r'^freelancer-active-use/email-confirm/client', views.FreelancerActiveUseLoFiSpecificProjectEmailConfirmClient.as_view(), name='freelancer_active_use_email_confirm_client'),
     url(r'^freelancer-active-use', views.FreelancerActiveUseLoFiHome.as_view(), name='freelancer_active_use'),
+    url(r'^client-active-use/projects-home/preview/accept', views.ClientActiveUseLoFiSpecificProjectMilestoneAccept.as_view(), name='client_active_use_projects_preview_accept'),
     url(r'^client-active-use/projects-home/preview/decline/send', views.ClientActiveUseLoFiSpecificProjectMilestonePreviewDeclineSend.as_view(), name='client_active_use_projects_preview_decline_send'),
     url(r'^client-active-use/projects-home/preview/decline', views.ClientActiveUseLoFiSpecificProjectMilestonePreviewDecline.as_view(), name='client_active_use_projects_preview_decline'),
     url(r'^client-active-use/projects-home/preview', views.ClientActiveUseLoFiSpecificProjectMilestonePreview.as_view(), name='client_active_use_projects_preview'),
