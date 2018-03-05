@@ -25,9 +25,9 @@ header nav.alt ul li:last-child { border-bottom: none; }
 main div.progress-bar { padding: 10px 15px; }
 main div.progress-bar div.bar { border-top: 1px solid #979797; }
 main div.progress-bar span.number { display: inline-block; padding: 0px 0px 8px 5px; position: relative; width: 150px; }
-main div.progress-bar span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 10px; bottom: -15px; content: ""; left: 0px; padding: 10px; position: absolute; -moz-border-radius: 10px; -webkit-border-radius: 10px; }
+main div.progress-bar span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 10px; bottom: -20px; content: ""; left: 0px; padding: 18px; position: absolute; -moz-border-radius: 18px; -webkit-border-radius: 18px; }
 main div.progress-bar span.number.on:after { background-color: #979797; }
-main div.progress-bar span.number span.text { color: #373737; font-size: 16px; left: 0px; position: absolute; top: 25px; }
+main div.progress-bar span.number span.text { color: #373737; font-size: 16px; left: 0px; position: absolute; top: 30px; }
 
 main select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
@@ -248,14 +248,49 @@ main div.upload-modal div.buttons a:visited,
 main div.upload-modal div.buttons a:hover,
 main div.upload-modal div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
-main div.create-contract-super-window { border-color: #979797; border-style: solid; border-width: 1px; padding: 25px; }
+main div.create-contract-super-window { border-color: #979797; border-style: solid; border-width: 1px; margin: 0px 25px; min-width: 928px; padding: 25px; position: relative; }
+main div.create-contract-super-window:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; bottom: auto; content: ""; display: block; left: -1px; position: absolute; top: 215px; width: 0px; }
+main div.create-contract-super-window:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; bottom: auto; content: ""; display: block; left: -1px; position: absolute; top: 216px; width: 0px; }
+
 main div.create-contract-super-window div.header { font-size: 30px; font-weight: 700; line-height: 32px; padding: 0px 15px 20px; }
-main div.create-contract-super-window div.progress-bar {}
-main div.create-contract-super-window div.progress-bar div.bar {}
-main div.create-contract-super-window div.progress-bar span.number {}
-main div.create-contract-super-window div.progress-bar span.number:after {}
-main div.create-contract-super-window div.progress-bar span.number.on:after {}
-main div.create-contract-super-window div.progress-bar span.number span.text {}
+main div.create-contract-super-window div.progress-bar { padding: 10px 40px 55px; }
+main div.create-contract-super-window div.progress-bar span.number { width: 195px; }
+main div.create-contract-super-window div.progress-bar span.number.one span.text { left: -45px; }
+main div.create-contract-super-window div.progress-bar span.number.two span.text { left: -16px; }
+main div.create-contract-super-window div.progress-bar span.number.three span.text { left: -30px; }
+main div.create-contract-super-window div.progress-bar span.number.four span.text { left: -32px; }
+main div.create-contract-super-window div.progress-bar span.number.five { width: 1px; }
+main div.create-contract-super-window div.progress-bar span.number.five span.text { left: -48px; width: 132px; }
+main div.create-contract-super-window div.progress-bar span.number span.text { top: 35px; }
+
+main div.create-contract-super-window form.contract-creation { margin: 15px auto 0px; width: 900px; }
+main div.create-contract-super-window form.contract-creation div.header { font-size: 24px; font-weight: 700; line-height: 26px; padding: 0px 0px 20px; }
+main div.create-contract-super-window form.contract-creation div.header.sub { font-size: 22px; }
+main div.create-contract-super-window form.contract-creation div.input-field { padding: 15px 0px; }
+main div.create-contract-super-window form.contract-creation div.input-field span { display: inline-block; }
+main div.create-contract-super-window form.contract-creation div.input-field span.label { font-size: 20px; line-height: 22px; padding: 0px 15px 0px 0px; text-align: right; width: 260px; }
+main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line span.label { vertical-align: top; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field {}
+main div.create-contract-super-window form.contract-creation div.input-field span.field input[type="text"],
+main div.create-contract-super-window form.contract-creation div.input-field span.field input[type="number"],
+main div.create-contract-super-window form.contract-creation div.input-field span.field input[type="email"] { font-size: 18px; padding: 12px; width: 456px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field textarea { font-size: 18px; padding: 12px; width: 456px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio {}
+main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio input[type="radio"] { height: 20px; width: 20px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio span.label { width: auto; }
+main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="number"] { width: 60px; }
+main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field span.hyphen {}
+main div.create-contract-super-window form.contract-creation div.addition-buttons { padding: 15px 0px; text-align: center; }
+main div.create-contract-super-window form.contract-creation div.addition-buttons a,
+main div.create-contract-super-window form.contract-creation div.addition-buttons a:link,
+main div.create-contract-super-window form.contract-creation div.addition-buttons a:visited,
+main div.create-contract-super-window form.contract-creation div.addition-buttons a:hover,
+main div.create-contract-super-window form.contract-creation div.addition-buttons a:active { display: block; font-size: 18px; line-height: 20px; margin: 0px auto; padding: 15px 0px; position: relative; width: 250px; }
+main div.create-contract-super-window form.contract-creation div.addition-buttons a:after { border: solid 1px #979797; border-radius: 20px; content: "+"; left: 0px; padding: 5px 10px; position: absolute; top: 8px; -moz-border-radius: 20px; -webkit-border-radius: 20px; }
+main div.create-contract-super-window form.contract-creation div.submit-buttons { padding: 0px 0px 25px; text-align: center; }
+main div.create-contract-super-window form.contract-creation div.submit-buttons input[type="submit"] { background-color: #FFF; border: solid 1px #979797; border-radius: 8px; font-size: 24px; margin: 0px 10px; padding: 10px 75px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.create-contract-super-window form.contract-creation div.submit-buttons input[type="submit"].continue { background-color: #d8d8d8; }
+main div.create-contract-super-window form.contract-creation div.submit-buttons input[type="submit"].later { border: none; text-decoration: underline; }
 
 main div.news-ribbon { border: solid 1px #979797; font-size: 24px; font-weight: 700; line-height: 26px; padding: 15px 0px; text-align: center; }
 main div.news-ribbon a, main div.news-ribbon a:link, main div.news-ribbon a:visited, main div.news-ribbon a:hover, main div.news-ribbon a:active { font-size: 20px; font-weight: 300; line-height: 20px; text-decoration: underline; }

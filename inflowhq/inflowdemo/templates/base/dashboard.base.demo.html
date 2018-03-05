@@ -4,7 +4,7 @@
 	<head>
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=20180304" />
+		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=201803041900" />
 		<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 		<title>{% block title %}{% endblock %}</title>
 	</head>
@@ -16,12 +16,14 @@
 			<div class="content">
 				<nav>
 					<ul>
-						<li><a href="#">Home</a></li>
-						{% if exclude_arrow %}
-							<li><a href="#">Projects</a></li>
-						{% else %}
-							<li class="arrow"><a href="#">Projects</a></li>
-						{% endif %}
+						<li>
+							{% if is_client %}
+								<a href="{% url 'htmldemos:client_active_use' %}">Home</a>
+							{% else %}
+								<a href="{% url 'htmldemos:freelancer_active_use' %}">Home</a>
+							{% endif %}
+						</li>
+						<li {% if exclude_arrow %}class="arrow"{% endif %}><a href="#">Projects</a></li>
 						<li>
 							{% if is_client %}
 								<a href="#">Contractors</a>

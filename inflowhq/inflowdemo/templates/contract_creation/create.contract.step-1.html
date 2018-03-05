@@ -12,6 +12,64 @@
 			<span class="number five"><span class="text">Preview and Send</span></span>
 			<div class="bar"></div>
 		</div>
+		<form class="contract-creation" method="post">
+			<div class="header">Project Information</div>
+			<div class="input-field text-single-line">
+				<span class="label">Project Name:</span>
+				<span class="field"><input type="text" placeholder="Name of Project" name="project-name" required /></span>
+			</div>
+			<div class="input-field radio-list">
+				<span class="label">This project is based on:</span>
+				<span class="field">
+					<span class="radio">
+						<input type="radio" name="contract-type" value="milestones" checked="checked" />
+						<span class="label">Milestones/Deliverables</span>
+					</span>
+					<span class="radio">
+						<input type="radio" name="contract-type" value="time" />
+						<span class="label">Time</span>
+					</span>
+				</span>
+			</div>
+			<div class="input-field text-multi-line">
+				<span class="label">Project Description:</span>
+				<span class="field"><textarea name="description" placeholder="Describe the project"></textarea></span>
+			</div>
+			<div class="header sub">Client Information</div>
+			<div class="input-field text-single-line">
+				<span class="label">Company Name:</span>
+				<span class="field"><input type="text" placeholder="Company Name" name="company-name" /></span>
+			</div>
+			<div class="input-field text-single-line">
+				<span class="label">Client’s Billing Name*:</span>
+				<span class="field"><input type="text" placeholder="Full Name" name="client-biling-name" required /></span>
+			</div>
+			<div class="input-field text-single-line">
+				<span class="label">Email*:</span>
+				<span class="field"><input type="email" placeholder="Email Address" name="client-email" required /></span>
+			</div>
+			<div class="input-field text-single-line phone-number">
+				<span class="label">Phone Number:</span>
+				<span class="field">
+					<input type="number" name="area-code" maxlength="3" placeholder="xxx" />
+					<span class="hyphen">&mdash;</span>
+					<input type="number" name="first-part" maxlength="3"" placeholder="xxx" />
+					<span class="hyphen">&mdash;</span>
+					<input type="number" name="second-part" maxlength="4" placeholder="xxxx" />
+				</span>
+			</div>
+			<div class="addition-buttons">
+				<a href="#">Add another contact</a>
+				<a href="#">Add business location</a>
+			</div>
+			<div class="submit-buttons">
+				<input type="submit" name="action" value="Back" />
+				<input type="submit" name="action" value="Continue" class="continue" />
+			</div>
+			<div class="submit-buttons alt">
+				<input type="submit" name="action" value="Save for Later" class="later" />
+			</div>
+		</form>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}{% endblock %}
