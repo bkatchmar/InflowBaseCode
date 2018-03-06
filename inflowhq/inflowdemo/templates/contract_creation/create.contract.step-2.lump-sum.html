@@ -1,0 +1,100 @@
+{% extends 'base/dashboard.base.demo.html' %}
+{% block title %}Inflow My Project Dashboard - Contract Creation - Milestones Lump Sum{% endblock %}
+{% block main_tag %}
+	<div class="back-links smaller"></div>
+	<div class="create-contract-super-window">
+		<div class="header">Create Contract</div>
+		<div class="progress-bar">
+			<span class="number one done"><span class="text">Project Information</span></span>
+			<span class="number two on"><span class="text">Milestones</span></span>
+			<span class="number three"><span class="text">Optional Fees</span></span>
+			<span class="number four"><span class="text">Work Overview</span></span>
+			<span class="number five"><span class="text">Preview and Send</span></span>
+			<div class="bar"></div>
+		</div>
+		<form class="contract-creation" method="post">
+			<div class="header">Milestones</div>
+			<div class="mini-field-line">
+				<div class="input-field mini-field date">
+					<span class="label">Contract Start Date*:</span>
+					<span class="field"><input type="text" placeholder="MM/DD/YY" name="contract-start-date" required /></span>
+				</div>
+				<div class="input-field mini-field date">
+					<span class="label">Contract End Date*:</span>
+					<span class="field"><input type="text" placeholder="MM/DD/YY" name="contract-end-date" required /></span>
+				</div>
+			</div>
+			<div class="mini-field-line">
+				<div class="input-field mini-field switch">
+					<span class="label">How would you like to charge?</span>
+					<span class="switch">
+						<span class="on">Lump Sum</span>
+						<span class="border">Hourly Rate</span>
+					</span>
+				</div>
+				<div class="input-field mini-field switch">
+					<span class="label">Auto-add processing fee charge?</span>
+					<span class="switch">
+						<span class="on">Yes</span>
+						<span class="border">No</span>
+					</span>
+				</div>
+			</div>
+			<div class="milestone-block">
+				<div class="header">Milestone #1</div>
+				<div class="input-field text-single-line">
+					<span class="field"><input type="text" placeholder="Milestone Name" name="milestone-name" required /></span>
+				</div>
+				<div class="input-field text-multi-line">
+					<span class="label">Task Description:</span>
+					<span class="field"><textarea name="milestone-description" placeholder="Describe the milestone"></textarea></span>
+				</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Milestone Amount*:</span>
+						<span class="field"><input type="number" placeholder="$0.00" name="milestone-amount" required /></span>
+					</div>
+					<div class="input-field mini-field date">
+						<span class="label">Milestone Deadline*:</span>
+						<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestone-deadline" required /></span>
+					</div>
+				</div>
+			</div>
+			<div class="addition-buttons left border">
+				<a href="#">Add another Milestone</a>
+			</div>
+			<div class="milestone-totals mini-field-line">
+				<div class="input-field mini-field">
+					<span class="label">Milestone Total Amount:<br /><span>(Total Project Amount)</span></span>
+					<span class="field"><input type="number" placeholder="$0.00" name="milestone-amount" required /></span>
+				</div>
+				<div class="input-field mini-field switch">
+					<span class="label">Down Payment (optional):</span>
+					<span class="switch custom-down-payment">
+						<span>5%</span>
+						<span class="border">10%</span>
+						<span class="border">15%</span>
+						<span class="on border">Custom</span>
+					</span>
+				</div>
+				<div class="input-field mini-field custom-down-payment">
+					<span class="field"><input type="number" placeholder="$0.00" name="down-payment-amount" /></span>
+				</div>
+			</div>
+			<div class="milestone-totals mini-field-line">
+				<div class="input-field mini-field clear">
+					<span class="label">Total Number of Revisions:</span>
+					<span class="field"><input type="number" placeholder="# of Revisions" name="total-number-of-revisions" required /></span>
+				</div>
+			</div>
+			<div class="submit-buttons">
+				<input type="submit" name="action" value="Back" />
+				<input type="submit" name="action" value="Continue" class="continue" />
+			</div>
+			<div class="submit-buttons alt">
+				<input type="submit" name="action" value="Save for Later" class="later" />
+			</div>
+		</form>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

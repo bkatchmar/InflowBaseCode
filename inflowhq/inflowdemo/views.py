@@ -419,7 +419,31 @@ class CreateContractStepOneDemo(TemplateView):
     template_name = "contract_creation/create.contract.step-1.html"
 
     def get(self, request):
-        return render(request, self.template_name)
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
 
     def post(self, request):
-        return render(request, self.template_name)
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+    
+class CreateContractStepTwoLumpSum(TemplateView):
+    template_name = "contract_creation/create.contract.step-2.lump-sum.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class CreateContractStepTwoHourly(TemplateView):
+    template_name = "contract_creation/create.contract.step-2.hourly.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)

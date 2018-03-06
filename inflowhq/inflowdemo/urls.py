@@ -35,5 +35,7 @@ urlpatterns = [
     url(r'^client-active-use/projects-home/quick-view', views.ClientActiveUseLoFiQuickView.as_view(), name='client_active_use_projects_quick_view'),
     url(r'^client-active-use/projects-home', views.ClientActiveUseLoFiProjectsHome.as_view(), name='client_active_use_projects_home'),
     url(r'^client-active-use', views.ClientActiveUseLoFiHome.as_view(), name='client_active_use'),
+    url(r'^contract-creation/step-2/lump-sum', views.CreateContractStepTwoLumpSum.as_view(), name='contract_creation_lump_sum'),
+    url(r'^contract-creation/step-2/hourly', views.CreateContractStepTwoHourly.as_view(), name='contract_creation_hourly'),
     url(r'^contract-creation', views.CreateContractStepOneDemo.as_view(), name='contract_creation'),
 ]

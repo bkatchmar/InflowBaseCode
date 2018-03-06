@@ -158,6 +158,8 @@ class BaseSitemap(Sitemap):
                 "htmldemos:client_active_use_projects_preview",
                 "htmldemos:client_active_use_projects_preview_accept_send",
                 "htmldemos:contract_creation",
+                "htmldemos:contract_creation_lump_sum",
+                "htmldemos:contract_creation_hourly",
                 "htmldemos:demo_upload_milestone_drag"]
 
     def location(self, item):
