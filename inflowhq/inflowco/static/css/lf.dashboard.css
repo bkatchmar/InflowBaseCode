@@ -305,7 +305,7 @@ main div.create-contract-super-window form.contract-creation div.milestone-block
 main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line {}
 main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line span { display: block; }
 main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line span.label { text-align: left; padding: 0px 0px 10px 2px; }
-main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line span.field {}
+main div.create-contract-super-window form.contract-creation div.milestone-block div.mini-field-line div.input-field.mini-field span.label { height: 44px; }
 
 main div.create-contract-super-window form.contract-creation div.addition-buttons { padding: 15px 0px; text-align: center; }
 main div.create-contract-super-window form.contract-creation div.addition-buttons.left { text-align: left; }

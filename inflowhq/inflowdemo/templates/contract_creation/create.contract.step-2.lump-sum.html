@@ -97,4 +97,10 @@
 		</form>
 	</div>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}
+{% block bottom_scripts %}
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("div.input-field.date input[type='text']").datepicker({showOtherMonths:true,selectOtherMonths:true});
+		});
+	</script>
+{% endblock %}
