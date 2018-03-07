@@ -1,0 +1,57 @@
+{% extends 'base/dashboard.base.demo.html' %}
+{% block title %}Inflow My Project Dashboard - Contract Creation - Overview - Lump Sum{% endblock %}
+{% block main_tag %}
+	<div class="back-links smaller"></div>
+	<div class="create-contract-super-window">
+		<div class="header">Work Overview</div>
+		<div class="progress-bar">
+			<span class="number one done"><span class="text">Project Information</span></span>
+			<span class="number two done"><span class="text">Milestones</span></span>
+			<span class="number three done"><span class="text">Optional Fees</span></span>
+			<span class="number four on"><span class="text">Work Overview</span></span>
+			<span class="number five"><span class="text">Preview and Send</span></span>
+			<div class="bar"></div>
+		</div>
+		<form class="contract-creation" method="post">
+			<div class="header">Work Overview</div>
+			<div class="overview-section">
+				<div class="header">Project Information<a href="#">Edit</a></div>
+				<div class="input-field text-single-line">
+					<span class="label">Project Name:</span>
+					<span class="field"><span class="text">Sample Project Name</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Project Description:</span>
+					<span class="field"><span class="text">Sample Project Description Sample</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Name of Contact:</span>
+					<span class="field"><span class="text">Contact Name</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Company Name:</span>
+					<span class="field"><span class="text">AT&amp;T</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Email:</span>
+					<span class="field"><span class="text">client@email.com</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Phone:</span>
+					<span class="field"><span class="text">(123) 555-5555</span></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Address:</span>
+					<span class="field"><span class="text">3434 Goldenrod Road<br />Apartment 3C<br />Orlando, FL 32792<br />United States</span></span>
+				</div>
+			</div>
+			<div class="overview-section">
+				<div class="header">Milestones<a href="#">Edit</a></div>
+				<div class="input-field text-single-line">
+					<span class="label">Total Milestone/Project Cost:</span>
+					<span class="field"><span class="text">$10,290.90</span></span>
+				</div>
+			</div>
+		</form>
+	</div>
+{% endblock %}
