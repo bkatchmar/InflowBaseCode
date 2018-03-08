@@ -265,8 +265,10 @@ main div.create-contract-super-window div.progress-bar span.number span.text { t
 main div.create-contract-super-window div.progress-bar span.number.done:before { content: "✓"; font-size: 20px; left: 11px; position: absolute; top: 1px; z-index: 50; }
 
 main div.create-contract-super-window form.contract-creation { margin: 15px auto 0px; width: 900px; }
+main div.create-contract-super-window form.contract-creation div.buttons { text-align: center; }
 main div.create-contract-super-window form.contract-creation div.header { font-size: 24px; font-weight: 700; line-height: 26px; padding: 0px 0px 20px; }
 main div.create-contract-super-window form.contract-creation div.header.sub { font-size: 22px; }
+main div.create-contract-super-window form.contract-creation div.header.instruction { font-size: 18px; font-weight: 300; }
 main div.create-contract-super-window form.contract-creation div.input-field { padding: 15px 0px; }
 main div.create-contract-super-window form.contract-creation div.input-field span { display: inline-block; }
 main div.create-contract-super-window form.contract-creation div.input-field span.label { font-size: 20px; line-height: 22px; padding: 0px 15px 0px 0px; text-align: right; width: 260px; }
@@ -334,11 +336,29 @@ main div.create-contract-super-window form.contract-creation div.overview-sectio
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:visited,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:hover,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:active { display: block; float: right; font-size: 16px; font-weight: 300; text-decoration: underline; }
+main div.create-contract-super-window form.contract-creation div.overview-section div.header.sub { font-size: 20px; font-style: italic; padding: 20px 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.input-field span.label { font-weight: 700; vertical-align: top; width: 50%; }
+
+main div.create-contract-super-window form.contract-creation div.disclaimer { font-size: 15px; font-weight: 900; padding: 25px 0px; text-align: center; }
+main div.create-contract-super-window form.contract-creation div.disclaimer input { margin: 0px 10px 0px 0px; }
 
 main div.create-contract-super-window form.contract-creation div.milestone-totals { margin: 30px 0px; }
 main div.create-contract-super-window form.contract-creation div.milestone-totals div.input-field.switch { padding: 38px 0px 0px; width: 275px; }
 main div.create-contract-super-window form.contract-creation div.milestone-totals div.input-field.custom-down-payment { padding: 69px 0px 0px; width: 130px; }
+
+main div.create-contract-super-window form.contract-creation div.contract-preview-window { background-color: #D8D8D8; border: solid 1px #979797; height: 900px; margin: 25px 0px; overflow: scroll; padding: 10px; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window { background-color: #FFF; padding: 15px 25px; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p { font-size: 22px; line-height: 24px; padding: 5px 0px 25px; }
+
+main div.content.contract {}
+main div.content.contract div.info-window { padding: 0px 25px; }
+main div.content.contract div.info-window div.header { margin: 0px; font-weight: 900; }
+main div.content.contract div.info-window div.sub-header { font-weight: 900; }
+main div.content.contract div.info-window a, 
+main div.content.contract div.info-window a:link, 
+main div.content.contract div.info-window a:visited, 
+main div.content.contract div.info-window a:hover, 
+main div.content.contract div.info-window a:active { font-weight: 900; margin: 0px auto; text-decoration: none; width: 230px; }
 
 main div.news-ribbon { border: solid 1px #979797; font-size: 24px; font-weight: 700; line-height: 26px; padding: 15px 0px; text-align: center; }
 main div.news-ribbon a, main div.news-ribbon a:link, main div.news-ribbon a:visited, main div.news-ribbon a:hover, main div.news-ribbon a:active { font-size: 20px; font-weight: 300; line-height: 20px; text-decoration: underline; }
