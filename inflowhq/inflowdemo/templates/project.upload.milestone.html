@@ -4,10 +4,6 @@
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-	<style>
-		img{ max-width:300px; display: inline-block; }
-		input[type=file]{ padding:10px; float: left; }
-	</style>
 	<title>Inflow Demo - View My Projects</title>
 </head>
 <body>
@@ -40,8 +36,8 @@
 		<div class="deliverable-upload">
 			<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
 				<div>Select A File From Your Computer</div>
-				<input type='file' onchange="readURL(this);" />
-        <img id="blah" src="http://placehold.it/300" alt="your image" />
+				<input type="file" name="deliverable" />
+ 				<input type="hidden" name="drive-url" />
 				<input type="submit" value="Upload File" />
 				{% csrf_token %}
 			</form>
@@ -51,20 +47,6 @@
 		</div>
 	</main>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script>
-		function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#blah')
-                    .attr('src', e.target.result);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-	   }
-	</script>
 	<script>
 		// The Browser API key obtained from the Google API Console.
 		var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";

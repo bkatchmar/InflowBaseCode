@@ -4,8 +4,11 @@ from django.views.generic import TemplateView
 
 import base64, mimetypes
 import boto3
+import requests
 import urllib.request
 from PIL import Image
+from io import BytesIO
+
 
 # Error Pages
 def server_error(request):
@@ -129,6 +132,8 @@ class DemoPreviewMilestone(TemplateView):
         return render(request, self.template_name, context)
 
     def get_context_data(self, request, **kwargs):
+        self.watermark_image_and_upload_to_s3()
+        
         path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
         mime = mimetypes.guess_type(path)
         image = urllib.request.urlopen(path)
@@ -138,6 +143,32 @@ class DemoPreviewMilestone(TemplateView):
         context = super(DemoPreviewMilestone, self).get_context_data(**kwargs)
         context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
         return context
+    
+    def watermark_image_and_upload_to_s3(self):
+        print("Lets start the process")
+        
+        primary_image_path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
+        watermark_image_path = "https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png"
+        
+        primary_image_response = requests.get(primary_image_path)
+        watermark_image_response = requests.get(watermark_image_path)
+        
+        primary_image = Image.open(BytesIO(primary_image_response.content))
+        watermark_image = Image.open(BytesIO(watermark_image_response.content))
+        
+        watermark_image_resized = watermark_image.resize((primary_image.width, primary_image.height))
+        
+        primary_image_copy = primary_image.copy()
+        
+        position = (0, 0)
+        primary_image_copy.paste(watermark_image_resized, position, watermark_image_resized)
+        
+        imgByteArr = BytesIO()
+        primary_image_copy.save(imgByteArr, format="JPEG")
+        imgByteArr.seek(0)  # Without this line it fails
+        
+        amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+        amazon_caller_resource.Bucket("inflow-upload-demo").put_object(ACL="public-read", Key="my_watermark.jpg", Body=imgByteArr)
 
 class DemoUploadMilestoneDrag(TemplateView):
     template_name = "project.upload.drag.html"
