@@ -1,4 +1,5 @@
 {% extends 'base/dashboard.base.demo.html' %}
+{% load staticfiles %}
 {% block title %}Inflow My Project Dashboard{% endblock %}
 {% block main_tag %}
 	<div class="back-links"><a href="{% url 'htmldemos:client_active_use' %}">Return to Projects</a></div>
@@ -106,27 +107,138 @@
 		</div>
 	</div>
 	<div class="upload-modal">
-		<div class="main-upload">
-			<div class="content-reciever">
-				<div class="content">
-					<div class="instructions">Drag a jpeg, png, .doc, .pdf, or .pages file here </div>
-					<div class="or-separator">or</div>
-					<a href="#">Upload a File</a>
+		<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_upload_idle' %}" class="dropzone" id="inflow-dropzone">
+			<div class="main-upload">
+				<div class="content-reciever">
+					<div class="content">
+						<div class="instructions">Drag a jpeg, png, .doc, .pdf, or .pages file here </div>
+						<div class="or-separator">or</div>
+						<a href="#">Upload a File</a>
+					</div>
+					<div class="disclaimer">You have used 8MB of your 25MB limit<br />Upgrade now</div>
 				</div>
-				<div class="disclaimer">You have used 8MB of your 25MB limit<br />Upgrade now</div>
+				<div class="other-upload-options">
+					<div>Other ways to upload:</div>
+					<a href="#">InFlow Files</a>
+					<a href="#" id="google-drive-authorization">Google Drive</a>
+					<a href="#">OneDrive</a>
+					<a href="#">URL</a>
+				</div>
 			</div>
-			<div class="other-upload-options">
-				<div>Other ways to upload:</div>
-				<a href="#">InFlow Files</a>
-				<a href="#">Google Drive</a>
-				<a href="#">OneDrive</a>
-				<a href="#">URL</a>
+			<div class="main-actions">
+				<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
+				<a href="#">Cancel</a>
 			</div>
-		</div>
-		<div class="main-actions">
-			<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
-			<a href="#">Cancel</a>
-		</div>
+			<input type="hidden" name="drive-url" />
+			{% csrf_token %}
+		</form>
 	</div>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/dropzone.js' %}"></script>
+	<script>
+		Dropzone.options.inflowDropzone = {
+			paramName: "freelancer-deliverables", // The name that will be used to transfer the file
+			clickable: true,
+			addRemoveLinks: true,
+			autoProcessQueue : false,
+			accept: function(file, done) {
+				console.log("Found File " + file);
+				jQuery("form#inflow-dropzone").submit();
+			},
+			init : function() {
+				var submitButton = document.querySelector("#dropzone-uploader");
+                myDropzone = this;
+			}
+		};
+		Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drag Your Files Here To Upload";
+		Dropzone.prototype.defaultOptions.dictFallbackText = "You are using a much older browser, using a standard HTML file input";
+	</script>
+	<script>
+		// The Browser API key obtained from the Google API Console.
+		var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";
+
+		// The Client ID obtained from the Google API Console. Replace with your own Client ID.
+		var clientId = "664505544030-uba2jj5ipgovhctdruc06m6vt8ojp3ml.apps.googleusercontent.com";
+
+		var appId = "664505544030";
+
+		// Secret
+		// Zc3K7MFQNvAUobl0cTUOfOEn
+
+		// Scope to use to access user's drive files.
+		var scope = "https://www.googleapis.com/auth/drive";
+
+		var pickerApiLoaded = false;
+		var oauthToken;
+
+		// Use the API Loader script to load google.picker and gapi.auth.
+		function onApiLoad() {
+			gapi.load("auth2", onAuthApiLoad);
+			gapi.load("picker", onPickerApiLoad);
+		}
+
+		function onAuthApiLoad() {
+			var authBtn = document.getElementById('google-drive-authorization');
+	        authBtn.disabled = false;
+	        authBtn.addEventListener('click', function() {
+				gapi.auth2.authorize({
+					client_id: clientId,
+					scope: scope
+				}, handleAuthResult);
+			});
+		}
+
+		function onPickerApiLoad() {
+			pickerApiLoaded = true;
+	        createPicker();
+		}
+
+		function handleAuthResult(authResult) {
+			if (authResult && !authResult.error) {
+				oauthToken = authResult.access_token;
+				createPicker();
+			}
+		}
+
+		// Create and render a Picker object for searching images.
+		function createPicker() {
+			if (pickerApiLoaded && oauthToken) {
+				var view = new google.picker.View(google.picker.ViewId.DOCS);
+				view.setMimeTypes("image/png,image/jpeg,image/jpg");
+				var picker = new google.picker.PickerBuilder()
+					.enableFeature(google.picker.Feature.NAV_HIDDEN)
+					.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+					.setAppId(appId)
+					.setOAuthToken(oauthToken)
+					.addView(view)
+					.addView(new google.picker.DocsUploadView())
+					.setDeveloperKey(developerKey)
+					.setCallback(pickerCallback)
+					.build();
+				picker.setVisible(true);
+			}
+		}
+		
+		// A simple callback implementation.
+		function pickerCallback(data) {
+			if (data.action == google.picker.Action.PICKED) {
+				var fileId = data.docs[0].id;
+				var dataObject = {
+					"url" : "https://drive.google.com/uc?export=view&id=" + fileId,
+					"embedUrl" : data.docs[0].embedUrl,
+					"driveUrl" : data.docs[0].url,
+					"id" : data.docs[0].id,
+					"type" : data.docs[0].type,
+					"mimeType" : data.docs[0].mimeType,
+					"name" : data.docs[0].name
+				};
+				
+				console.log(data.docs[0]);
+				jQuery("form#inflow-dropzone input[type='hidden'][name='drive-url']").val(dataObject["url"]);
+				jQuery("form#inflow-dropzone").submit();
+			}
+		}
+	</script>
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+{% endblock %}

@@ -4,6 +4,7 @@
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<title>Inflow Demo - View My Projects</title>
 </head>
 <body>
@@ -34,7 +35,7 @@
 	<main>
 		<div class="header">NFL Experience App</div>
 		<div class="deliverable-upload">
-			<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}">
+			<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:demo_preview_milestone' %}" id="regular">
 				<div>Select A File From Your Computer</div>
 				<input type="file" name="deliverable" />
  				<input type="hidden" name="drive-url" />
@@ -49,15 +50,12 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<script>
 		// The Browser API key obtained from the Google API Console.
-		var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";
+		var developerKey = "AIzaSyDh1SVHDc59w3e0B4wDtkrkGjE5AdD4_Ac";
 
 		// The Client ID obtained from the Google API Console. Replace with your own Client ID.
-		var clientId = "664505544030-uba2jj5ipgovhctdruc06m6vt8ojp3ml.apps.googleusercontent.com";
+		var clientId = "484516298114-e129ldgcrevrivqmvn82osnj0iu93bts.apps.googleusercontent.com";
 
-		var appId = "664505544030";
-
-		// Secret
-		// Zc3K7MFQNvAUobl0cTUOfOEn
+		var appId = "484516298114";
 
 		// Scope to use to access user's drive files.
 		var scope = "https://www.googleapis.com/auth/drive";
@@ -122,12 +120,19 @@
 					"embedUrl" : data.docs[0].embedUrl,
 					"driveUrl" : data.docs[0].url,
 					"id" : data.docs[0].id,
-					"type" : data.docs[0].type
+					"type" : data.docs[0].type,
+					"mimeType" : data.docs[0].mimeType,
+					"name" : data.docs[0].name
 				};
-				var message = "<p>You picked: " + dataObject["url"] + "</p>";
+				
+				var urlElements = data.docs[0].url.split("file/d/");
+				dataObject["webContentLink"] = urlElements + "uc?id=" + fileId + "&export=download";
+				
+				var message = "<p>You picked: " + dataObject["webContentLink"] + "</p>";
 		        document.getElementById("google-drive-picker").innerHTML = message;
-		        jQuery("div.deliverable-upload form input[type='hidden'][name='drive-url']").val(dataObject["url"]);
-		        jQuery("div.deliverable-upload form").submit();
+		        jQuery("div.deliverable-upload form#regular input[type='hidden'][name='drive-url']").val(dataObject["url"]);
+		        jQuery("div.deliverable-upload form#regular input[type='hidden'][name='drive-id']").val(dataObject["id"]);
+		        // jQuery("div.deliverable-upload form#regular").submit();
 			}
 		}
 	</script>

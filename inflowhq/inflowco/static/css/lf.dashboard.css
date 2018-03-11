@@ -205,10 +205,13 @@ main div.upload-modal div.main-actions a:link,
 main div.upload-modal div.main-actions a:visited,
 main div.upload-modal div.main-actions a:hover,
 main div.upload-modal div.main-actions a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 14px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal div.dz-default { display: none; }
+main div.upload-modal div.dz-preview { display: none; }
 
 main div.content div.preview-window { margin: 25px auto 0px; }
 main div.content div.preview-window div.file-name { font-size: 18px; font-weight: 300; margin: 0px 0px 15px; }
-main div.content div.preview-window div.preview-area { border: solid 1px #979797; padding: 125px 0px; text-align: center; }
+main div.content div.preview-window div.preview-area { border: solid 1px #979797; padding: 0px; text-align: center; }
+main div.content div.preview-window div.preview-area img { height: auto; width: 100%; }
 main div.content div.feedback-due { font-size: 22px; line-height: 24px; margin: 25px auto; }
 main div.content div.feedback-due span { font-weight: 900; padding: 0px 15px 0px 0px; }
 main div.content div.schedule-delivery { border: solid 1px #979797; margin: 25px auto; }

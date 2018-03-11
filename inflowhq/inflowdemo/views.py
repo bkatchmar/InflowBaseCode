@@ -1,5 +1,5 @@
-from django.http import Http404
-from django.shortcuts import render
+from django.http import Http404, JsonResponse
+from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 
 import base64, mimetypes
@@ -9,6 +9,13 @@ import urllib.request
 from PIL import Image
 from io import BytesIO
 
+import httplib2
+from apiclient import discovery
+from oauth2client import client
+from oauth2client import tools
+from oauth2client.contrib import gce
+from oauth2client.file import Storage
+from oauth2client.client import OAuth2WebServerFlow 
 
 # Error Pages
 def server_error(request):
@@ -132,7 +139,7 @@ class DemoPreviewMilestone(TemplateView):
         return render(request, self.template_name, context)
 
     def get_context_data(self, request, **kwargs):
-        self.watermark_image_and_upload_to_s3()
+        self.find_bucket_files()
         
         path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
         mime = mimetypes.guess_type(path)
@@ -145,8 +152,6 @@ class DemoPreviewMilestone(TemplateView):
         return context
     
     def watermark_image_and_upload_to_s3(self):
-        print("Lets start the process")
-        
         primary_image_path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
         watermark_image_path = "https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png"
         
@@ -169,6 +174,13 @@ class DemoPreviewMilestone(TemplateView):
         
         amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
         amazon_caller_resource.Bucket("inflow-upload-demo").put_object(ACL="public-read", Key="my_watermark.jpg", Body=imgByteArr)
+        
+    def find_bucket_files(self):
+        amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+        amazon_caller_resource.Bucket("inflow-upload-demo")
+        
+        for object in amazon_caller_resource.Bucket("inflow-upload-demo").objects.all():
+            print(object.__getattribute__("key"))
 
 class DemoUploadMilestoneDrag(TemplateView):
     template_name = "project.upload.drag.html"
