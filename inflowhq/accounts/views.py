@@ -14,6 +14,46 @@ from django.urls import reverse
 # Base InFlow Models
 from inflowco.models import Country, Currency
 
+class AccountLoginView(TemplateView,InflowLoginView):
+    template_name = "account.login.html"
+    
+    def get(self, request):
+        logout(request)
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        
+        # If this page was hit from LinkedIn, go ahead and handle to log the user in
+        if self.is_this_a_linkedin_request(request):
+            return self.handle_linkedin_request(request)
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        
+        # Collect POST data
+        user_name = request.POST.get("username", "")
+        password = request.POST.get("password", "")
+        google_id_token = request.POST.get("google-id-token", "")
+        
+        if google_id_token != "":
+            return self.handle_google_login_attempt(request,google_id_token)
+        
+        # If we get here, means Google and LinkedIn do not apply to this post
+        user = authenticate(request, username=user_name, password=password)
+        
+        if user is not None:
+            login(request, user)
+            
+            if self.determine_if_user_needs_onboarding(user):
+                return redirect(reverse("accounts:onboarding_1"))
+            else:
+                return redirect(reverse("base:dashboard"))
+        else:
+            context["error_msg"] = "Username and Password Combination Are Not Correct"
+        
+        context["linkedin"] = self.set_linkedin_params()
+        return render(request, self.template_name, context)
+
 class CreateAccountView(TemplateView, InflowLoginView):
     template_name = "create.account.html"
     
@@ -174,27 +214,3 @@ class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
         context["selected_country_currency"] = usersettings.BaseCountry.PrimaryCurrency.IdCurrency
 
         return context
-
-class AccountInfoView(LoginRequiredMixin, TemplateView):
-    template_name = 'viewaccountinfo.html'
-    
-    def get(self, request):
-        currentlyloggedinuser = ""
-        usersettings = UserSettings()
-        
-        if request.user.is_authenticated:
-            currentlyloggedinuser = request.user
-
-        usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
-        context = {
-                   'settings':usersettings
-                   }
-        
-        userLinkedInProfileInfo = UserLinkedInInformation.objects.filter(UserAccount=currentlyloggedinuser).first()
-        if userLinkedInProfileInfo is not None:
-            if userLinkedInProfileInfo.LinkedInAccessToken != "":
-                apiCaller = LinkedInApi()
-                apiLinkeIinInfo = apiCaller.GetBasicProfileInfo(userLinkedInProfileInfo.LinkedInAccessToken)
-                context["linkedininfo"] = apiLinkeIinInfo
-        
-        return render(request, self.template_name, context)

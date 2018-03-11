@@ -1,0 +1,27 @@
+{% extends 'base/header.no.sidebar.html' %}
+{% block title %}Welcome to InFlow - Please Log In{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
+		<div class="login-buttons">
+			<div class="g-signin2" id="google-signin"></div>
+			<a href="https://www.linkedin.com/oauth/v2/authorization?{{linkedin}}" class="inflow-btn">Log in with LinkedIn</a>
+		</div>
+		<div class="separator">or</div>
+		{% if error_msg != "" %}
+			<div class="error-msg">{{error_msg}}</div>
+		{% endif %}
+		<form method="post" class="login-form">
+			<input type="email" name="username" placeholder="E-mail address" />
+			<input type="password" name="password" placeholder="Password" />
+			<div class="under-textboxes">
+				<input type="checkbox" name="acknowledgement" /><span class="checkbox-text">Stay signed in</span><a href="#" class="forgot">Forgot password?</a>
+			</div>
+			<input type="hidden" name="google-id-token" value="" />
+			<input type="submit" value="Log in" />
+			{% csrf_token %}
+		</form>
+		<div class="signup-link"><a href="{% url 'accounts:create' %}">Don’t have an account? Sign up!</a></div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

@@ -124,14 +124,14 @@ class InflowLoginView:
                                                         is_staff=False,
                                                         is_active=True,
                                                         is_superuser=False)
-                UserGoogleInformation.objects.create(UserAccount=newly_created_user,
+                user_google_information = UserGoogleInformation.objects.create(UserAccount=newly_created_user,
                                                      GoogleProfileID=google_api_response["sub"],
                                                      GoogleProfileName=google_api_response["name"],
                                                      GoogleImageUrl=google_api_response["picture"])
                 login(request, newly_created_user)
             else:
                 # Link Google To Existing User
-                UserGoogleInformation.objects.create(UserAccount=user,
+                user_google_information = UserGoogleInformation.objects.create(UserAccount=user,
                                                      GoogleProfileID=google_api_response["sub"],
                                                      GoogleProfileName=google_api_response["name"],
                                                      GoogleImageUrl=google_api_response["picture"])
