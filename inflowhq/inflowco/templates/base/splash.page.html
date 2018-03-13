@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<!doctype html>
+<html>
+<head>
+	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201802" />
+	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
+	<title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+	<header>
+		<div class="content">
+			<div class="logo">
+				<a href="/">InFlow</a>
+			</div>
+			<nav>
+				<a href="#">How it Works</a>
+				<a href="#">About Us</a>
+				<a href="#">Blog</a>
+				<a href="{% url 'accounts:create' %}" class="alt">Sign Up</a>
+			</nav>
+		</div>
+	</header>
+	<main>
+		{% block main_tag %}{% endblock %}
+	</main>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	{% block bottom_scripts %}{% endblock %}
+</body>
+</html>
