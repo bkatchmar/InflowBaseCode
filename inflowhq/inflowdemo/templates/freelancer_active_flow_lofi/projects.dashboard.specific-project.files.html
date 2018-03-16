@@ -19,10 +19,10 @@
 			<div class="sub-header">National Football League</div>
 		</div>
 		<div class="ribbon">
-			<span>MILESTONES</span>
-			<span>OVERVIEW</span>
-			<span>INVOICES</span>
-			<span class="on">FILES</span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones' %}">MILESTONES</a></span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_overview' %}">OVERVIEW</a></span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_invoices' %}">INVOICES</a></span>
+			<span class="on"><a href="{% url 'htmldemos:freelancer_active_use_specific_project_files' %}">FILES</a></span>
 		</div>
 		<div class="list inner-details files">
 			<div class="header">All Files</div>
@@ -55,7 +55,7 @@
 					<span class="delete">&times;</span>
 				</div>
 			</div>
-			<div class="buttons"><a href="#">Upload a File</a></div>
+			<div class="buttons"><a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_upload_idle' %}">Upload a File</a></div>
 		</div>
 	</div>
 {% endblock %}

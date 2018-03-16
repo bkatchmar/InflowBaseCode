@@ -19,10 +19,10 @@
 			<div class="sub-header">National Football League</div>
 		</div>
 		<div class="ribbon">
-			<span class="on">MILESTONES</span>
-			<span>OVERVIEW</span>
-			<span>INVOICES</span>
-			<span>FILES</span>
+			<span class="on"><a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones' %}">MILESTONES</a></span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_overview' %}">OVERVIEW</a></span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_invoices' %}">INVOICES</a></span>
+			<span><a href="{% url 'htmldemos:freelancer_active_use_specific_project_files' %}">FILES</a></span>
 		</div>
 		<div class="milestone-detail-list">
 			<div class="milestone-name-upload">
@@ -49,7 +49,7 @@
 						</div>
 					</div>
 					<div class="buttons">
-						<a href="#">View Milestone</a>
+						<a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_preview' %}">View Milestone</a>
 						<a href="#">Resend Milestone to Client</a>
 					</div>
 				</div>
