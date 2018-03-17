@@ -40,6 +40,8 @@
 			<div class="submit-buttons alt">
 				<input type="submit" name="action" value="Save for Later" class="later" />
 			</div>
+			<input type="hidden" name="mode" value="{{ contract_mode }}" />
+			{% csrf_token %}
 		</form>
 	</div>
 {% endblock %}

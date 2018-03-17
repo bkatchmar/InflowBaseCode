@@ -97,6 +97,8 @@
 			<div class="submit-buttons alt">
 				<input type="submit" name="action" value="Save for Later" class="later" />
 			</div>
+			<input type="hidden" name="mode" value="lump-sum" />
+			{% csrf_token %}
 		</form>
 	</div>
 {% endblock %}

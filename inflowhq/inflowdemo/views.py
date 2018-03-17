@@ -1,5 +1,6 @@
 from django.http import Http404, JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.views.generic import TemplateView
 
 import base64, mimetypes
@@ -16,6 +17,7 @@ from oauth2client import tools
 from oauth2client.contrib import gce
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow 
+import re
 
 # Error Pages
 def server_error(request):
@@ -467,6 +469,18 @@ class CreateContractStepOneDemo(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        contract_type = request.POST.get("contract-type", "milestones")
+        
+        if action == "Continue":
+            if contract_type == "milestones":
+                return redirect(reverse("htmldemos:contract_creation_lump_sum"))
+            else:
+                return redirect(reverse("htmldemos:contract_creation_hourly"))
+        else:
+            return redirect(reverse("htmldemos:freelancer_active_use"))
+        
         return render(request, self.template_name, context)
     
 class CreateContractStepTwoLumpSum(TemplateView):
@@ -478,6 +492,15 @@ class CreateContractStepTwoLumpSum(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        contract_type = request.POST.get("contract-type", "milestones")
+        
+        if action == "Continue":
+            return redirect(reverse("htmldemos:contract_creation_extra_fees"))
+        else:
+            return redirect(reverse("htmldemos:contract_creation"))
+        
         return render(request, self.template_name, context)
 
 class CreateContractStepTwoHourly(TemplateView):
@@ -489,6 +512,15 @@ class CreateContractStepTwoHourly(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        contract_type = request.POST.get("contract-type", "milestones")
+        
+        if action == "Continue":
+            return redirect(reverse("htmldemos:contract_creation_extra_fees"))
+        else:
+            return redirect(reverse("htmldemos:contract_creation"))
+        
         return render(request, self.template_name, context)
 
 class CreateContractStepThreeHourly(TemplateView):
@@ -496,10 +528,42 @@ class CreateContractStepThreeHourly(TemplateView):
 
     def get(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        referer_mode = "lump-sum"
+        
+        referer = request.META.get('HTTP_REFERER')
+        if not referer:
+            referer_mode = "lump-sum"
+            context["contract_mode"] = referer_mode
+            return render(request, self.template_name, context)
+
+        # remove the protocol and split the url at the slashes
+        referer = re.sub('^https?:\/\/', '', referer).split('/')
+        referer_mode = referer[len(referer)-1]
+        
+        # add the slash at the relative path's view and finished
+        referer = u'/' + u'/'.join(referer[1:])
+        
+        context["contract_mode"] = referer_mode
+        
         return render(request, self.template_name, context)
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        mode = request.POST.get("mode", "milestones")
+        
+        if action == "Continue":
+            if mode == "lump-sum":
+                return redirect(reverse("htmldemos:contract_overview_lump_sum"))
+            else:
+                return redirect(reverse("htmldemos:contract_overview_hourly"))
+        else:
+            if mode == "lump-sum":
+                return redirect(reverse("htmldemos:contract_creation_lump_sum"))
+            else:
+                return redirect(reverse("htmldemos:contract_creation_hourly"))
+        
         return render(request, self.template_name, context)
 
 class CreateContractStepFourLumpSum(TemplateView):
@@ -511,6 +575,15 @@ class CreateContractStepFourLumpSum(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        contract_type = request.POST.get("contract-type", "milestones")
+        
+        if action == "Continue":
+            return redirect(reverse("htmldemos:contract_overview_preview_send"))
+        else:
+            return redirect(reverse("htmldemos:contract_creation_extra_fees"))
+        
         return render(request, self.template_name, context)
 
 class CreateContractStepFourHourly(TemplateView):
@@ -522,6 +595,14 @@ class CreateContractStepFourHourly(TemplateView):
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        
+        if action == "Continue":
+            return redirect(reverse("htmldemos:contract_overview_preview_send"))
+        else:
+            return redirect(reverse("htmldemos:contract_creation_extra_fees"))
+        
         return render(request, self.template_name, context)
     
 class CreateContractStepFive(TemplateView):
@@ -529,10 +610,40 @@ class CreateContractStepFive(TemplateView):
 
     def get(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        referer_mode = "lump-sum"
+        
+        referer = request.META.get('HTTP_REFERER')
+        if not referer:
+            referer_mode = "lump-sum"
+            context["contract_mode"] = referer_mode
+            return render(request, self.template_name, context)
+
+        # remove the protocol and split the url at the slashes
+        referer = re.sub('^https?:\/\/', '', referer).split('/')
+        referer_mode = referer[len(referer)-1]
+        
+        # add the slash at the relative path's view and finished
+        referer = u'/' + u'/'.join(referer[1:])
+        
+        context["contract_mode"] = referer_mode
+        
         return render(request, self.template_name, context)
 
     def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
+        
+        action = request.POST.get("action", "")
+        mode = request.POST.get("mode", "lump-sum")
+        
+        if action == "Continue":
+            return redirect(reverse("htmldemos:contract_overview_final"))
+        else:
+            if mode == "lump-sum":
+                return redirect(reverse("htmldemos:contract_overview_lump_sum"))
+            else:
+                return redirect(reverse("htmldemos:contract_overview_hourly"))
+        
         return render(request, self.template_name, context)
     
 class CreateContractCongrats(TemplateView):
