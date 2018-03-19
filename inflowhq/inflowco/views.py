@@ -1,7 +1,7 @@
 from __future__ import unicode_literals # I have no idea what this even is
 # References from our own library
 from accounts.inflowaccountloginview import InflowLoginView
-from inflowco.models import Currency
+from inflowco.models import Currency, EmailSignup
 from easy_pdf.views import PDFTemplateView
 # Django references
 from django.contrib.auth import authenticate, login, logout
@@ -22,6 +22,21 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         return context
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = self.get_context_data()
+        
+        entered_email_address = request.POST.get("email-address", "")
+        
+        if entered_email_address != "":
+            EmailSignup.objects.create(Address=entered_email_address,Group="g")
+            context["sign_up_msg"] = "Thank You For Signing Up"
+        
+        return render(request, self.template_name, context)
 
 class LoginView(TemplateView,InflowLoginView):
     template_name = "login.html"
@@ -61,6 +76,29 @@ class LoginView(TemplateView,InflowLoginView):
             context["error_msg"] = "Username and Password Combination Are Not Correct"
         
         context["linkedin"] = self.set_linkedin_params()
+        return render(request, self.template_name, context)
+    
+class HowItWorksView(TemplateView):
+    template_name = "how-it-works.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(HowItWorksView, self).get_context_data(**kwargs)
+        context["active_link"] = "how it works"
+        return context
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = self.get_context_data()
+        
+        entered_email_address = request.POST.get("email-address", "")
+        
+        if entered_email_address != "":
+            EmailSignup.objects.create(Address=entered_email_address,Group="g")
+            context["sign_up_msg"] = "Thank You For Signing Up"
+        
         return render(request, self.template_name, context)
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
@@ -137,7 +175,9 @@ class UserDashboardView(LoginRequiredMixin,TemplateView):
     
 class BaseSitemap(Sitemap):
     def items(self):
-        return ["accounts:login",
+        return ["index",
+                "how_it_works",
+                "accounts:login",
                 "accounts:create",
                 "htmldemos:freelancer_active_use_specific_project_milestones_upload_idle",
                 "htmldemos:freelancer_active_use_specific_project_milestones_upload_progress",

@@ -22,7 +22,7 @@
 			<input type="submit" value="Sign up" />
 			{% csrf_token %}
 		</form>
-		<div class="signup-link">Already have an account? <a href="{% url 'login' %}">Sign in</a></div>
+		<div class="signup-link">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></div>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}{% endblock %}

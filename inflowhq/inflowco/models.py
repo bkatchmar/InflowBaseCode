@@ -1,6 +1,11 @@
 from __future__ import unicode_literals
 from django.db import models
 
+EMAIL_COLLECTION_GROUP = (
+    ("g", "General"),
+    ("b", "Blog")
+    )
+
 class Currency(models.Model):
     IdCurrency = models.AutoField(primary_key=True,verbose_name="IdCurrency",default=1)
     Country = models.CharField(max_length=100,verbose_name="Country",default="United States")
@@ -27,3 +32,11 @@ class Country(models.Model):
 
     class Meta:
         db_table = 'Country'
+        
+class EmailSignup(models.Model):
+    Address = models.EmailField()
+    Group = models.CharField(max_length=1,
+                            choices=EMAIL_COLLECTION_GROUP,
+                            default="g")
+    class Meta:
+        db_table = 'EmailSignups'

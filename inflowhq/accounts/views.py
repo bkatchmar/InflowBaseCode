@@ -6,7 +6,7 @@ from accounts.models import UserLinkedInInformation, UserSettings, UserType, Use
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
 # Django references
-from django.contrib.auth import login, logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView

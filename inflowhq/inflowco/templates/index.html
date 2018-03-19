@@ -1,7 +1,79 @@
 {% extends 'base/splash.page.html' %}
 {% block title %}Welcome to InFlow{% endblock %}
 {% block main_tag %}
-	<div class="content">
-		<p>&nbsp;</p>
+	<div class="home-top">
+		<h1>Get paid by the milestone.</h1>
+		<h2>We make it easy to get paid for your freelance work.</h2>
+		{% if sign_up_msg != "" %}
+			<p>{{sign_up_msg}}</p>
+		{% endif %}
+		<form class="sign-up" method="post">
+			<input type="email" name="email-address" placeholder="Email address" required />
+			<input type="submit" value="Start your free trial" />
+			{% csrf_token %}
+		</form>
+	</div>
+	<div class="home-tile alt">
+		<h3>How You Benefit</h3>
+		<div class="points">
+			<span class="number one">Benefit 1</span>
+			<span class="number two">Benefit 2</span>
+			<span class="number three">Benefit 3</span>
+		</div>
+	</div>
+	<div class="home-tile">
+		<h3>How InFlow Works</h3>
+		<div class="how-it-works-tile">
+			<div class="text left">
+				<h4>How it works title</h4>
+				<p>Easily onboard clients so you can get to work faster. More in this blurb.</p>
+				<a href="#" class="inflow-btn">Get Started</a>
+			</div>
+			<div class="photo"></div>
+		</div>
+		<div class="how-it-works-tile">
+			<div class="photo"></div>
+			<div class="text right">
+				<h4>How it works title</h4>
+				<p>Set up projects by milestones, so you get paid more frequently.</p>
+				<a href="#" class="inflow-btn">Learn More</a>
+			</div>
+		</div>
+		<div class="how-it-works-tile">
+			<div class="text left">
+				<h4>How it works title</h4>
+				<p>Pay and get paid easily with Stripe.</p>
+				<a href="{% url 'accounts:create' %}" class="inflow-btn">Sign Up</a>
+			</div>
+			<div class="photo"></div>
+		</div>
+	</div>
+	<div class="home-tile alt">
+		<h3>Did You Know?</h3>
+		<div class="home-stats">
+			<div class="stat one">
+				<div class="header">34%</div>
+				<div class="description">Freelancers who don’t get paid for completed client work annually.</div>
+			</div>
+			<div class="stat two">
+				<div class="header">%</div>
+				<div class="description">Stat phrase.</div>
+			</div>
+			<div class="stat three">
+				<div class="header">%</div>
+				<div class="description">Stat phrase.</div>
+			</div>
+		</div>
+	</div>
+	<div class="home-top">
+		<p>Sign up to receive free updates as soon as they hit!</p>
+		{% if sign_up_msg != "" %}
+			<p>{{sign_up_msg}}</p>
+		{% endif %}
+		<form class="sign-up" method="post">
+			<input type="email" name="email-address" placeholder="Email address" required />
+			<input type="submit" value="Start your free trial" />
+			{% csrf_token %}
+		</form>
 	</div>
 {% endblock %}

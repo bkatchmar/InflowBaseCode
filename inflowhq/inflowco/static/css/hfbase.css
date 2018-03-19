@@ -29,7 +29,7 @@ footer {}
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 
 /* High level elements */
-div.content { margin: 0px auto; width: 1280px; }
+div.content { margin: 0px auto; max-width: 1280px; }
 a.inflow-btn,
 a.inflow-btn:link,
 a.inflow-btn:visited,
@@ -55,6 +55,11 @@ header nav a:link,
 header nav a:visited,
 header nav a:hover,
 header nav a:active { color: #FFF; font-size: 20px; font-weight: 500; padding: 6px 25px; }
+header nav a.on,
+header nav a.on:link,
+header nav a.on:visited,
+header nav a.on:hover,
+header nav a.on:active { border-bottom: solid 3px #F8F8F8; }
 header nav a.alt,
 header nav a.alt:link,
 header nav a.alt:visited,
@@ -114,3 +119,69 @@ main form.onboarding-form input[type="text"],
 main form.onboarding-form input[type="email"],
 main form.onboarding-form input[type="password"], select {  margin: 9px auto; width: 300px; }
 main form.onboarding-form select { height: 39px; width: 332px; }
+
+/* Splash Page */
+main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 50px 0px; position: relative; text-align: center; }
+main div.home-top h1 { font-size: 36px; font-weight: 700; line-height: 38px; padding: 80px 0px 20px; }
+main div.home-top h1.standalone { padding: 80px 0px; }
+main div.home-top h2 { font-size: 36px; font-weight: 300; line-height: 38px; padding: 0px 0px 45px; }
+main div.home-top p { font-size: 28px; font-weight: 500; line-height: 30px; padding: 40px 0px 25px; }
+main div.home-top div.downward-arrow { padding: 25px 0px; position: relative; width: 100%; }
+main div.home-top div.downward-arrow div { height: 100%; position: absolute; top: 0px; width: 40%; }
+main div.home-top div.downward-arrow div.left { background-color: #3E5A7C; left: 0px; }
+main div.home-top div.downward-arrow div.right { background-color: #3E5A7C; left: 60%; }
+main div.home-tile { border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
+main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
+
+main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 440px; }
+main div.home-tile div.points span.number { display: inline-block; left: 0px; padding: 0px; position: absolute; top: 50px; }
+main div.home-tile div.points span.number.one {}
+main div.home-tile div.points span.number.two { left: 180px; }
+main div.home-tile div.points span.number.three { left: 370px; }
+main div.home-tile div.points span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 30px; bottom: 25px; content: ""; left: 4px; padding: 25px; position: absolute; -moz-border-radius: 30px; -webkit-border-radius: 30px; }
+main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
+
+/* Email Sign Up */
+main form.sign-up { padding: 15px 0px 60px; }
+main form.sign-up input { display: inline-block; font-size: 18px; line-height: 20px; }
+main form.sign-up input[type="text"],
+main form.sign-up input[type="email"],
+main form.sign-up input[type="password"] { margin: 0px 10px 0px 0px; width: 330px; }
+main form.sign-up input[type="submit"] { padding: 10px 0px; }
+
+/* How It Works */
+div.how-it-works-tile { color: #3E5A7C; margin: 85px auto; overflow: hidden; width: 1024px; }
+div.how-it-works-tile div { float: left; }
+div.how-it-works-tile div.text { padding: 35px 0px; width: 220px; }
+div.how-it-works-tile div.text.left { margin: 0px 240px 0px 0px; }
+div.how-it-works-tile div.text.right { margin: 0px 0px 0px 240px; }
+div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 300; line-height: 28px; }
+div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 22px; padding: 20px 0px; }
+div.how-it-works-tile div.text a.inflow-btn { background-color: #3E5A7C; display: block; text-align: center; }
+div.how-it-works-tile div.photo { background-color: #D8D8D8; border: solid 1px #979797; height: 287px; width: 552px; }
+
+/* Home Page Stats */
+div.home-stats { margin: 0px auto; padding: 75px 0px; position: relative; width: 1024px; }
+div.home-stats div.stat { color: #F6F4F0; left: 0px; position: absolute; text-align: center; top: 0px; width: 250px; }
+div.home-stats div.stat.one {}
+div.home-stats div.stat.two { left: 385px; }
+div.home-stats div.stat.three { left: 765px; }
+div.home-stats div.stat div.header { font-size: 35px; font-weight: 700; line-height: 36px; padding: 0px 0px 15px; }
+div.home-stats div.stat div.description { font-size: 22px; font-weight: 300; line-height: 24px; }
+
+/* Footer */
+footer { background-color: #3E5A7C; height: 200px; }
+footer div.line { overflow: hidden; }
+footer div.line div.left { float: left; }
+footer div.line div.left p { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 0px 15px; width: 430px; }
+footer div.line div.right { float: right; }
+footer div.line div.right p { padding: 0px 25px 0px 0px; }
+footer div.line div.right p a { color: #FFF; display: inline-block; font-size: 15px; font-weight: 300; line-height: 16px; padding: 0px 10px; }
+footer div.line div.right p a.sign-in { color: #e6833b; }
+footer div.logo { background-color: #E6833B; color: #FFF; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
+footer div.logo a,
+footer div.logo a:link,
+footer div.logo a:visited,
+footer div.logo a:hover,
+footer div.logo a:active { color: #FFF; }
+footer div.social-media { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 45px 25px 0px 0px; }

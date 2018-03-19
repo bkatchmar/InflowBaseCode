@@ -36,7 +36,7 @@ STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_1jY0jXXrP4ov94DS1A1Ndfjp"
 LINKEDIN_CLIENT_ID = "78ikt1qlinvfqg"
 LINKEDIN_CLIENT_SECRET = "JxqIUYwOl3BbEDGz"
 LINKEDIN_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
-LINKEDIN_REDIRECT_URL = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/inflow/account/login"
+LINKEDIN_REDIRECT_URL = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/account/login"
 
 # Application definition
 

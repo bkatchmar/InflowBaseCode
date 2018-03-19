@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201802" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180319" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
 	<title>{% block title %}{% endblock %}</title>
@@ -12,12 +12,17 @@
 	<header>
 		<div class="content">
 			<div class="logo">
-				<a href="/">InFlow</a>
+				<a href="{% url 'index' %}">InFlow</a>
 			</div>
 			<nav>
-				<a href="#">How it Works</a>
+				{% if active_link == "how it works" %}
+					<a href="{% url 'how_it_works' %}" class="on">How it Works</a>
+				{% else %}
+					<a href="{% url 'how_it_works' %}">How it Works</a>
+				{% endif %}
 				<a href="#">About Us</a>
 				<a href="#">Blog</a>
+				<a href="{% url 'accounts:login' %}">Sign In</a>
 				<a href="{% url 'accounts:create' %}" class="alt">Sign Up</a>
 			</nav>
 		</div>
@@ -25,6 +30,34 @@
 	<main>
 		{% block main_tag %}{% endblock %}
 	</main>
+	<footer>
+		<div class="content">
+			<div class="line">
+				<div class="left">
+					<div class="logo">
+						<a href="{% url 'index' %}">InFlow</a>
+					</div>
+				</div>
+				<div class="right">
+					<div class="social-media">Twitter 1024 | Facebook 562 | LinkedIn 356</div>
+				</div>
+			</div>
+			<div class="line">
+				<div class="left">
+					<p>&copy; 2018 InFlow Inc. All rights reserved. <br />Inflow is a registered trademark of Inflow Inc. Terms and conditions, features, support, pricing and service options subject to change without notice.</p>
+				</div>
+				<div class="right">
+					<p>
+						<a href="{% url 'index' %}">Home</a>
+						<a href="{% url 'how_it_works' %}">How it works</a>
+						<a href="#">About Us</a>
+						<a href="#">Blog</a>
+						<a href="{% url 'accounts:login' %}" class="sign-in">Sign in</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	{% block bottom_scripts %}{% endblock %}
 </body>
