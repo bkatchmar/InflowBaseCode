@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180319" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=201803192042" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
 	<title>{% block title %}{% endblock %}</title>
@@ -20,8 +20,16 @@
 				{% else %}
 					<a href="{% url 'how_it_works' %}">How it Works</a>
 				{% endif %}
-				<a href="#">About Us</a>
-				<a href="#">Blog</a>
+				{% if active_link == "about us" %}
+					<a href="{% url 'about_us' %}" class="on">About Us</a>
+				{% else %}
+					<a href="{% url 'about_us' %}">About Us</a>
+				{% endif %}
+				{% if active_link == "blog" %}
+					<a href="{% url 'blog' %}" class="on">Blog</a>
+				{% else %}
+					<a href="{% url 'blog' %}">Blog</a>
+				{% endif %}
 				<a href="{% url 'accounts:login' %}">Sign In</a>
 				<a href="{% url 'accounts:create' %}" class="alt">Sign Up</a>
 			</nav>
@@ -50,8 +58,8 @@
 					<p>
 						<a href="{% url 'index' %}">Home</a>
 						<a href="{% url 'how_it_works' %}">How it works</a>
-						<a href="#">About Us</a>
-						<a href="#">Blog</a>
+						<a href="{% url 'about_us' %}">About Us</a>
+						<a href="{% url 'blog' %}">Blog</a>
 						<a href="{% url 'accounts:login' %}" class="sign-in">Sign in</a>
 					</p>
 				</div>

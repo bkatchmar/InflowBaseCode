@@ -35,6 +35,11 @@ a.inflow-btn:link,
 a.inflow-btn:visited,
 a.inflow-btn:hover,
 a.inflow-btn:active { background-color: #E6833B; border-radius: 8px; color: #FFF; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+a.inflow-btn.alt,
+a.inflow-btn.alt:link,
+a.inflow-btn.alt:visited,
+a.inflow-btn.alt:hover,
+a.inflow-btn.alt:active { background-color: #3E5A7C; }
 input, select { border: solid 1px #979797; display: block; margin: 9px 0px; }
 input[type="text"], input[type="email"], input[type="password"], select { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 input[type="checkbox"] { display: inline-block; height: 21px; margin: 0px 3px 0px 0px; width: 21px; }
@@ -130,7 +135,7 @@ main div.home-top div.downward-arrow { padding: 25px 0px; position: relative; wi
 main div.home-top div.downward-arrow div { height: 100%; position: absolute; top: 0px; width: 40%; }
 main div.home-top div.downward-arrow div.left { background-color: #3E5A7C; left: 0px; }
 main div.home-top div.downward-arrow div.right { background-color: #3E5A7C; left: 60%; }
-main div.home-tile { border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
+main div.home-tile { background-color: #F8F8F8; border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
 main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
 
 main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 440px; }
@@ -140,6 +145,13 @@ main div.home-tile div.points span.number.two { left: 180px; }
 main div.home-tile div.points span.number.three { left: 370px; }
 main div.home-tile div.points span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 30px; bottom: 25px; content: ""; left: 4px; padding: 25px; position: absolute; -moz-border-radius: 30px; -webkit-border-radius: 30px; }
 main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
+
+main div.home-tile h2 { font-size: 40px; font-weight: 700; line-height: 42px; padding: 25px 0px 45px; text-align: center; }
+main div.home-tile h2.alt { color: #3E5A7C; }
+main div.home-tile.text-alt { color: #424753; }
+main div.home-tile p.heading { font-size: 28px; line-height: 30px; margin: 0px auto; padding: 25px 0px; text-align: center; width: 980px; }
+main div.home-tile div.buttons { padding: 50px 0px; text-align: center; }
+main div.home-tile div.buttons a { font-size: 18px; margin: 0px 40px; }
 
 /* Email Sign Up */
 main form.sign-up { padding: 15px 0px 60px; }
@@ -159,6 +171,19 @@ div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 300; line-heig
 div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 22px; padding: 20px 0px; }
 div.how-it-works-tile div.text a.inflow-btn { background-color: #3E5A7C; display: block; text-align: center; }
 div.how-it-works-tile div.photo { background-color: #D8D8D8; border: solid 1px #979797; height: 287px; width: 552px; }
+
+main div.how-it-works-feature { color: #000; margin: 50px auto; overflow: hidden; width: 980px; }
+main div.how-it-works-feature div.image { float: left; width: 200px; }
+main div.how-it-works-feature div.text { float: left; width: 770px; }
+main div.how-it-works-feature div.text h3 { font-size: 35px; line-height: 36px; padding: 0px 0px 30px; text-align: left; }
+main div.how-it-works-feature div.text p { font-size: 25px; line-height: 26px; text-align: left; }
+
+main div.human { margin: 0px auto; overflow: hidden; padding: 25px 0px; width: 1024px; }
+main div.human div.portrait { border: solid 1px #979797; box-shadow: 0 2px 4px 0 rgba(246, 244, 240, 0.5); float: left; height: 292px; width: 450px; }
+main div.human div.bio { float: left; text-align: center; width: 570px; }
+main div.human div.bio div.heading { font-size: 28px; font-weight: 700; line-height: 30px; padding: 0px 0px 35px; }
+main div.human div.bio div.heading span.title { font-style: italic; }
+main div.human div.bio div.text { font-size: 24px; line-height: 26px; }
 
 /* Home Page Stats */
 div.home-stats { margin: 0px auto; padding: 75px 0px; position: relative; width: 1024px; }

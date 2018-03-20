@@ -100,6 +100,22 @@ class HowItWorksView(TemplateView):
             context["sign_up_msg"] = "Thank You For Signing Up"
         
         return render(request, self.template_name, context)
+
+class AboutUsView(TemplateView):
+    template_name = "about-us.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(AboutUsView, self).get_context_data(**kwargs)
+        context["active_link"] = "about us"
+        return context
+
+class BlogHomeView(TemplateView):
+    template_name = "blog.home.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super(BlogHomeView, self).get_context_data(**kwargs)
+        context["active_link"] = "blog"
+        return context
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
     template_name = 'listcurrencies.html'
@@ -114,53 +130,6 @@ class CurrencyListView(LoginRequiredMixin, TemplateView):
         context["currencies"] = self.get_queryset()
         return context
 
-class AmazonBotoExamples(LoginRequiredMixin, TemplateView):
-    template_name = "boto3.html"
-    
-    def get(self, request):
-        # Set the Context
-        context = self.get_context_data(request)
-        return render(request, self.template_name, context)
-    
-    def post(self, request):
-        # Set the Context
-        context = self.get_context_data(request)
-        
-        # Get data from the POST
-        uploaded_deliverable = request.FILES.get("deliverable", False)
-        
-        # If the user actually send something over, lets capture it and upload it to S3
-        if uploaded_deliverable != False:
-            deliverable_key = uploaded_deliverable.__str__()
-            context["deliverable_bucket"].put_object(Key=deliverable_key, Body=uploaded_deliverable)
-            context["file_names"].append({"key":deliverable_key,"qs":urllib.parse.quote_plus(deliverable_key)})
-        
-        return render(request, self.template_name, context)
-    
-    def get_context_data(self, request, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(AmazonBotoExamples, self).get_context_data(**kwargs)
-        
-        # Instantiate items related to the context
-        file_names = []
-        amazon_caller = boto3.resource("s3")
-        deliverable_bucket_name = self.generate_bucket_name(request.user)
-        amazon_caller.create_bucket(Bucket=deliverable_bucket_name)
-        deliverable_bucket = amazon_caller.Bucket(deliverable_bucket_name)
-        
-        # Fill in the bucket key names
-        for object in deliverable_bucket.objects.all():
-            file_names.append({"key":object.key,"qs":urllib.parse.quote_plus(object.key)})
-            object.Acl().put(ACL="public-read")
-        
-        context["file_names"] = file_names
-        context["deliverable_bucket"] = deliverable_bucket
-        
-        return context
-    
-    def generate_bucket_name(self,user):
-        return ("inflow-user-bucket-%s" % (user.id))
-    
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
 
@@ -177,6 +146,8 @@ class BaseSitemap(Sitemap):
     def items(self):
         return ["index",
                 "how_it_works",
+                "about_us",
+                "blog",
                 "accounts:login",
                 "accounts:create",
                 "htmldemos:freelancer_active_use_specific_project_milestones_upload_idle",
