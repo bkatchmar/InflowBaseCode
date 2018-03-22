@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
@@ -29,6 +28,7 @@ ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticb
 ADMINS = [("Brian", "brian@workinflow.co"),]
 
 # Stripe Information
+
 STRIPE_TEST_API_SECRET = "sk_test_ZNyeY1kgGqIgitBn16rLqGNn"
 STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_1jY0jXXrP4ov94DS1A1Ndfjp"
 

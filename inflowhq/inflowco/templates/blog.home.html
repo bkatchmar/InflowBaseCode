@@ -4,4 +4,72 @@
 	<div class="home-top">
 		<h1 class="standalone">The InFlow Blog</h1>
 	</div>
+	<div class="home-tile">
+		<div class="blog-container">
+			<div class="blogs">
+				<article>
+					<div class="img-header"></div>
+					<h2>Title of blog post.</h2>
+					<p>Title of blog post.</p>
+					<a href="#" class="inflow-btn">Read More</a>
+				</article>
+				<article>
+					<div class="img-header"></div>
+					<h2>Title of blog post.</h2>
+					<p>Title of blog post.</p>
+					<a href="#" class="inflow-btn">Read More</a>
+				</article>
+				<article>
+					<div class="img-header"></div>
+					<h2>Title of blog post.</h2>
+					<p>Title of blog post.</p>
+					<a href="#" class="inflow-btn">Read More</a>
+				</article>
+			</div>
+			<div class="nav-elements">
+				<div class="sign-up">
+					<div class="heading">Get Even More</div>
+					<div class="sub-heading">Get all the latest content delivered straight to your inbox.</div>
+					{% if sign_up_msg != "" %}
+						<div class="sub-heading">{{sign_up_msg}}</div>
+					{% endif %}
+					<form class="sign-up" method="post">
+						<input type="email" name="email-address" placeholder="Email address" required />
+						<input type="submit" value="Sign up" />
+						{% csrf_token %}
+					</form>
+					<div class="disclaimer">We don't spam, promise.</div>
+				</div>
+				<div class="blog-highlights">
+					<div class="header">
+						<div class="row">
+							<a href="#" class="first on">POPULAR</a>
+							<a href="#" class="second">RECENT</a>
+						</div>
+						<div class="row">
+							<a href="#" class="first">COMMENTS</a>
+							<a href="#" class="second">TAGS</a>
+						</div>
+					</div>
+					<div class="container">
+						<article>
+							<div class="img-header"></div>
+							<h3>Blog post.</h3>
+							<div class="date">March 12, 2018</div>
+						</article>
+						<article>
+							<div class="img-header"></div>
+							<h3>Blog post.</h3>
+							<div class="date">March 12, 2018</div>
+						</article>
+						<article>
+							<div class="img-header"></div>
+							<h3>Blog post.</h3>
+							<div class="date">March 12, 2018</div>
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
