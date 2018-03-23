@@ -26,8 +26,26 @@ class BaseTalk(LoginRequiredMixin, TemplateView):
         usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         
         comm = StripeCommunication()
-        comm.CreateNewStripeCustomerWithId(usersettings)
-        comm.CreateNewStripeCustomAccount(usersettings)
+        # comm.CreateNewStripeCustomerWithId(usersettings)
+        # comm.CreateNewStripeCustomAccount(usersettings)
+        
+        # Call Stripe Settings For The Link Generation
+        context["call_state"] = settings.STRIPE_CALL_STATE
+        context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
+        
+        # If this is from a Stripe Auth Page
+        response_code = request.GET.get("code", "")
+        json_response = {}
+        
+        if response_code != "":
+            json_response = comm.create_new_stripe_custom_account(response_code)
+            
+        if "stripe_user_id" in json_response:
+            print("Found Stripe User ID")
+            print(json_response["stripe_user_id"])
+            
+        if "error_description" in json_response:
+            context["error_description"] = json_response["error_description"]
         
         return render(request, self.template_name, context)
     
@@ -68,50 +86,31 @@ class UserEntersBasicStripeAccountInformationAndAcceptsTerms(LoginRequiredMixin,
     def post(self, request):
         userSettings = self.getUserSettings(request)
         context = {}
-        stripe.api_key = settings.STRIPE_TEST_API_SECRET
-        stripeAccount = stripe.Account.retrieve(userSettings.StripeConnectAccountKey)
-        
-        if (stripeAccount and request.POST.get("piiBusinessTaxNumber", "")):
-            stripeAccount.legal_entity.business_tax_id = request.POST.get("piiBusinessTaxNumber", "")
-            stripeAccount.save()
-        elif (stripeAccount and request.POST.get("piiStripeToken", "")):
-            stripeAccount.legal_entity.personal_id_number = request.POST.get("piiStripeToken", "")
-            stripeAccount.save()
-        elif (stripeAccount):
-            parsedDateTime = parse(request.POST.get("date-of-birth", ""))
-            stripeAccount.legal_entity.dob.day = parsedDateTime.day
-            stripeAccount.legal_entity.dob.month = parsedDateTime.month
-            stripeAccount.legal_entity.dob.year = parsedDateTime.year
-            stripeAccount.legal_entity.type = request.POST.get("legal-entity-type", "")
-            stripeAccount.legal_entity.address.line1 = request.POST.get("address-1", "")
-            stripeAccount.legal_entity.address.city = request.POST.get("address-city", "")
-            stripeAccount.legal_entity.address.state = request.POST.get("address-state", "")
-            stripeAccount.legal_entity.address.postal_code = request.POST.get("address-zip", "")
-            
-            if request.POST.get("ssn-last-4", ""):
-                stripeAccount.legal_entity.ssn_last_4 = request.POST.get("ssn-last-4", "")
-                
-            if request.POST.get("legal-entity-type", "") == "company":
-                stripeAccount.legal_entity.business_name = request.POST.get("business-name", "")
-                context["legalEntityBusinessName"] = stripeAccount.legal_entity.business_name
-            
-            if not (stripeAccount.tos_acceptance.date):
-                stripeAccount.tos_acceptance.date = int(time.time())
-                stripeAccount.tos_acceptance.ip = self.getClientIP(request)
-                
-            stripeAccount.save()
-        
         context["settings"] = userSettings
-        context["successMessage"] = "Account Successfully Verified"
-        context["legalEntityType"] = stripeAccount.legal_entity.type
-        context["ssnLastFourProvided"] = stripeAccount.legal_entity.ssn_last_4_provided
-        context["personalIdProvided"] = stripeAccount.legal_entity.personal_id_number_provided
-        context["legalEntityDob"] = stripeAccount.legal_entity.dob
-        context["legalEntityDob"]["zeroBasedIndexMonth"] = stripeAccount.legal_entity.dob.month-1
-        context["legalEntityAddress"] = stripeAccount.legal_entity.address
         
-        if (stripeAccount.legal_entity.type == "company"):
-            context["businessTaxId"] = stripeAccount.legal_entity.business_tax_id_provided
+        try:
+            # Check if this account even exists in stripe
+            stripe.api_key = settings.STRIPE_TEST_API_SECRET
+            stripeAccount = stripe.Account.retrieve(userSettings.StripeConnectAccountKey)
+            
+            if (stripeAccount.legal_entity.type):
+                context["legalEntityType"] = stripeAccount.legal_entity.type
+                context["ssnLastFourProvided"] = stripeAccount.legal_entity.ssn_last_4_provided
+                context["personalIdProvided"] = stripeAccount.legal_entity.personal_id_number_provided
+                
+                if (stripeAccount.legal_entity.type == "company"):
+                   context["businessTaxId"] = stripeAccount.legal_entity.business_tax_id_provided
+            if (stripeAccount.legal_entity.address):
+                context["legalEntityAddress"] = stripeAccount.legal_entity.address
+            if (stripeAccount.legal_entity.dob and stripeAccount.legal_entity.dob.month):
+                context["legalEntityDob"] = stripeAccount.legal_entity.dob
+                context["legalEntityDob"]["zeroBasedIndexMonth"] = stripeAccount.legal_entity.dob.month-1
+            if (stripeAccount.legal_entity.business_name):
+                context["legalEntityBusinessName"] = stripeAccount.legal_entity.business_name
+        except stripe.error.PermissionError as e:
+            return redirect('stripebasepoint')
+        except Exception as e:
+            return redirect('stripebasepoint')
         
         return render(request, self.template_name, context)
     

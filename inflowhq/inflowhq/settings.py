@@ -31,6 +31,8 @@ ADMINS = [("Brian", "brian@workinflow.co"),]
 
 STRIPE_TEST_API_SECRET = "sk_test_ZNyeY1kgGqIgitBn16rLqGNn"
 STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_1jY0jXXrP4ov94DS1A1Ndfjp"
+STRIPE_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
+STRIPE_ACCOUNT_ID = "ca_BZ2S2qzm663IIsbO9ObrkG3k6sbXAyIV"
 
 # LinkedIn Info
 LINKEDIN_CLIENT_ID = "78ikt1qlinvfqg"
@@ -105,7 +107,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
@@ -123,7 +124,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/

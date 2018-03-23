@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from accounts.models import UserSettings
 import stripe
+import requests
 
 class StripeCommunication():
     apiKey = settings.STRIPE_TEST_API_SECRET
@@ -98,3 +99,15 @@ class StripeCommunication():
                 pass
             
         # TO DO - Find a way to alert us a problem happened
+        
+    def create_new_stripe_custom_account(self,bearer_token):
+        post_url = "https://connect.stripe.com/oauth/token" # Set destination URL here
+        headers = {"Connection":"Keep-Alive","Authorization":"Bearer %s" % self.apiKey}
+        post_fields = { "client_secret": settings.STRIPE_ACCOUNT_ID, "code": bearer_token, "grant_type": "authorization_code" }
+        resp = requests.post(post_url, headers=headers, params=post_fields)
+        
+        if resp.status_code == 200:
+            json_resp = resp.json()
+            return json_resp
+        else:
+            return { "error" : "Bad Response Code", "error_description" : "Response Code Was %s" % resp.status_code }
