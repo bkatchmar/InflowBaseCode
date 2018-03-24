@@ -1,14 +1,18 @@
 from __future__ import unicode_literals
-from dateutil.parser import parse
+# InFlow Libraries
+from accounts.models import UserSettings
+from talktostripe.stripecommunication import StripeCommunication
+# Django Libraries
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
-from accounts.models import UserSettings
-from talktostripe.stripecommunication import StripeCommunication
+# External Libraries
+from dateutil.parser import parse
 import requests
 import stripe
 import time
+import urllib.parse
 
 class BaseTalk(LoginRequiredMixin, TemplateView):
     template_name = 'base.html'
@@ -25,15 +29,39 @@ class BaseTalk(LoginRequiredMixin, TemplateView):
             
         usersettings = usersettings.get_settings_based_on_user(currentlyloggedinuser)
         
-        comm = StripeCommunication()
-        # comm.CreateNewStripeCustomerWithId(usersettings)
-        # comm.CreateNewStripeCustomAccount(usersettings)
-        
         # Call Stripe Settings For The Link Generation
         context["call_state"] = settings.STRIPE_CALL_STATE
         context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
         
         # If this is from a Stripe Auth Page
+        comm = StripeCommunication()
+        response_code = request.GET.get("code", "")
+        json_response = {}
+        
+        if response_code != "":
+            json_response = comm.create_new_stripe_custom_account(response_code)
+            
+        if "stripe_user_id" in json_response:
+            print("Found Stripe User ID")
+            print(json_response["stripe_user_id"])
+            
+        if "error_description" in json_response:
+            context["error_description"] = json_response["error_description"]
+        
+        return render(request, self.template_name, context)
+    
+class BaseExpressTalk(LoginRequiredMixin, TemplateView):
+    template_name = "base-express.html"
+    
+    def get(self, request):
+        context = {
+            "redirect_uri" : urllib.parse.quote(settings.STRIPE_REDIRECT_URI),
+            "client_id" : settings.STRIPE_ACCOUNT_ID,
+            "state" : settings.STRIPE_CALL_STATE
+        }
+        
+        # If this is from a Stripe Auth Page
+        comm = StripeCommunication()
         response_code = request.GET.get("code", "")
         json_response = {}
         
