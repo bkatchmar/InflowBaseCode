@@ -32,7 +32,7 @@ STRIPE_TEST_API_SECRET = "sk_test_PfUWHnbzVYVNQdc1pFC3u3iJ"
 STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_tMPznJe4OlrOWublp14JFfi0"
 STRIPE_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
 STRIPE_ACCOUNT_ID = "ca_CYMWKoSmtNrYvVDOG6e3FvCAxGnPf1sk"
-STRIPE_REDIRECT_URI = "http://localhost:1234/stripe/express-setup"
+STRIPE_REDIRECT_URI = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/stripe/express-setup"
 
 # LinkedIn Info
 LINKEDIN_CLIENT_ID = "78ikt1qlinvfqg"

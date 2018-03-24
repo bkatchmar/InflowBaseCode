@@ -140,10 +140,10 @@ main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
 
 main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 440px; }
 main div.home-tile div.points span.number { display: inline-block; left: 0px; padding: 0px; position: absolute; top: 50px; }
+main div.home-tile div.points span.number img { height: 52px; left: 5px; position: absolute; top: -65px; width: auto; }
 main div.home-tile div.points span.number.one {}
 main div.home-tile div.points span.number.two { left: 180px; }
 main div.home-tile div.points span.number.three { left: 370px; }
-main div.home-tile div.points span.number:after { background-color: #FFF; border: 1px solid #979797; border-radius: 30px; bottom: 25px; content: ""; left: 4px; padding: 25px; position: absolute; -moz-border-radius: 30px; -webkit-border-radius: 30px; }
 main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
 
 main div.home-tile h2 { font-size: 40px; font-weight: 700; line-height: 42px; padding: 25px 0px 45px; text-align: center; }
@@ -170,11 +170,14 @@ div.how-it-works-tile div.text.right { margin: 0px 0px 0px 240px; }
 div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 300; line-height: 28px; }
 div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 22px; padding: 20px 0px; }
 div.how-it-works-tile div.text a.inflow-btn { background-color: #3E5A7C; display: block; text-align: center; }
-div.how-it-works-tile div.photo { background-color: #D8D8D8; border: solid 1px #979797; height: 287px; width: 552px; }
+div.how-it-works-tile div.photo { height: 287px; width: 552px; }
+div.how-it-works-tile div.photo img { height: 287px; padding: 0px 134px; width: auto; }
+div.how-it-works-tile div.photo img.stripe { height: auto; padding: 0px; width: 552px; }
 
 main div.how-it-works-feature { color: #000; margin: 50px auto; overflow: hidden; width: 980px; }
 main div.how-it-works-feature div.image { float: left; width: 200px; }
-main div.how-it-works-feature div.text { float: left; width: 770px; }
+main div.how-it-works-feature div.image img { height: auto; width: 100%; }
+main div.how-it-works-feature div.text { float: left; padding: 0px 40px; width: 695px; }
 main div.how-it-works-feature div.text h3 { font-size: 35px; line-height: 36px; padding: 0px 0px 30px; text-align: left; }
 main div.how-it-works-feature div.text p { font-size: 25px; line-height: 26px; text-align: left; }
 
@@ -239,3 +242,4 @@ footer div.logo a:visited,
 footer div.logo a:hover,
 footer div.logo a:active { color: #FFF; }
 footer div.social-media { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 45px 25px 0px 0px; }
+footer div.social-media img { height: auto; width: 20px; }

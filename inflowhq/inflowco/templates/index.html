@@ -1,4 +1,5 @@
 {% extends 'base/splash.page.html' %}
+{% load staticfiles %}
 {% block title %}Welcome to InFlow{% endblock %}
 {% block main_tag %}
 	<div class="home-top">
@@ -16,9 +17,18 @@
 	<div class="home-tile alt">
 		<h3>How You Benefit</h3>
 		<div class="points">
-			<span class="number one">Benefit 1</span>
-			<span class="number two">Benefit 2</span>
-			<span class="number three">Benefit 3</span>
+			<span class="number one">
+				<img src="{% static 'img/if_paid_invoice_stamp_bills_2986415.png' %}" alt="InFlow Benefit 1" />
+				Benefit 1
+			</span>
+			<span class="number two">
+				<img src="{% static 'img/if_alarm_on_2897845.png' %}" alt="InFlow Benefit 2" />
+				Benefit 2
+			</span>
+			<span class="number three">
+				<img src="{% static 'img/if_075_402140.png' %}" alt="InFlow Benefit 3" />
+				Benefit 3
+			</span>
 		</div>
 	</div>
 	<div class="home-tile">
@@ -29,10 +39,14 @@
 				<p>Easily onboard clients so you can get to work faster. More in this blurb.</p>
 				<a href="#" class="inflow-btn">Get Started</a>
 			</div>
-			<div class="photo"></div>
+			<div class="photo">
+				<img src="{% static 'img/if_d36_1121663.png' %}" alt="InFlow allows to easily onboard clients faster" />
+			</div>
 		</div>
 		<div class="how-it-works-tile">
-			<div class="photo"></div>
+			<div class="photo">
+				<img src="{% static 'img/if_milestone_flag_check_project_management_business_office_working_1472183.png' %}" alt="Milestone Based Payment Solution" />
+			</div>
 			<div class="text right">
 				<h4>How it works title</h4>
 				<p>Set up projects by milestones, so you get paid more frequently.</p>
@@ -45,7 +59,9 @@
 				<p>Pay and get paid easily with Stripe.</p>
 				<a href="{% url 'accounts:create' %}" class="inflow-btn">Sign Up</a>
 			</div>
-			<div class="photo"></div>
+			<div class="photo">
+				<img src="{% static 'img/stripe-logo.png' %}" alt="Get paid on InFlow with Stripe" class="stripe" />
+			</div>
 		</div>
 	</div>
 	<div class="home-tile alt">
