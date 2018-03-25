@@ -41,7 +41,6 @@ LINKEDIN_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
 LINKEDIN_REDIRECT_URL = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/account/login"
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -92,7 +91,6 @@ SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -109,7 +107,6 @@ DATABASES = {
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -127,7 +124,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'America/New_York'
@@ -140,7 +136,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
 STATIC_URL = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
 STATIC_ROOT = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
 LOGIN_URL = "/"

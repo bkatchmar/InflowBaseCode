@@ -5,13 +5,18 @@
 	<div class="content">
 		<div class="heading-elements">
 			<div class="header">NFL EXPERIENCE APP</div>
-			<div class="buttons"><a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones' %}">Upload another milestone</a></div>
+			<div class="buttons"><a href="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_upload_idle' %}">Upload another milestone</a></div>
 			<div class="sub-header">National Football League</div>
 		</div>
 		<div class="preview-window">
 			<div class="file-name">Wireframes_NFL_3.20.18.pdf</div>
+			<div>Preview Path {{preview_path}}</div>
 			<div class="preview-area">
-				<img src="https://s3.amazonaws.com/inflow-upload-demo/my_watermark.jpg" alt="freelancer preview with watermark" />
+				{% if preview_path != "" %}
+					<img src="{{preview_path}}" alt="freelancer preview with watermark" />
+				{% else %}
+					<img src="https://s3.amazonaws.com/inflow-upload-demo/my_watermark.jpg" alt="freelancer preview with watermark" />
+				{% endif %}
 			</div>
 		</div>
 		<div class="feedback-due"><span>Feedback from client due:</span>March 23, 2018</div>

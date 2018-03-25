@@ -199,8 +199,7 @@ class BaseSitemap(Sitemap):
                 "htmldemos:contract_overview_hourly",
                 "htmldemos:contract_overview_preview_send",
                 "htmldemos:contract_overview_final",
-                "htmldemos:contract_creation",
-                "htmldemos:demo_upload_milestone_drag"]
+                "htmldemos:contract_creation"]
 
     def location(self, item):
         return reverse(item)

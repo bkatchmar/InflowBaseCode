@@ -107,13 +107,13 @@
 		</div>
 	</div>
 	<div class="upload-modal">
-		<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_upload_idle' %}" class="dropzone" id="inflow-dropzone">
+		<form method="post" enctype="multipart/form-data" action="{% url 'htmldemos:freelancer_active_use_specific_project_milestones_preview' %}" class="dropzone" id="inflow-dropzone">
 			<div class="main-upload">
 				<div class="content-reciever">
 					<div class="content">
 						<div class="instructions">Drag a jpeg, png, .doc, .pdf, or .pages file here </div>
 						<div class="or-separator">or</div>
-						<a href="#">Upload a File</a>
+						<input type="file" name="deliverable" />
 					</div>
 					<div class="disclaimer">You have used 8MB of your 25MB limit<br />Upgrade now</div>
 				</div>
@@ -130,6 +130,7 @@
 				<a href="#">Cancel</a>
 			</div>
 			<input type="hidden" name="drive-url" />
+			<input type="hidden" name="drive-name" />
 			{% csrf_token %}
 		</form>
 	</div>
@@ -143,8 +144,10 @@
 			addRemoveLinks: true,
 			autoProcessQueue : false,
 			accept: function(file, done) {
-				console.log("Found File " + file);
-				jQuery("form#inflow-dropzone").submit();
+				done();
+				myDropzone = this;
+				myDropzone.processQueue();
+				jQuery("main div.upload-modal form").submit();
 			},
 			init : function() {
 				var submitButton = document.querySelector("#dropzone-uploader");
@@ -234,11 +237,18 @@
 					"name" : data.docs[0].name
 				};
 				
-				console.log(data.docs[0]);
-				jQuery("form#inflow-dropzone input[type='hidden'][name='drive-url']").val(dataObject["url"]);
-				jQuery("form#inflow-dropzone").submit();
+				jQuery("main div.upload-modal form input[type='hidden'][name='drive-url']").val(dataObject["url"]);
+				jQuery("main div.upload-modal form input[type='hidden'][name='drive-name']").val(dataObject["name"]);
+				jQuery("main div.upload-modal form").submit();
 			}
 		}
+	</script>
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("main div.upload-modal div.main-upload div.content-reciever div.content input[type='file']").change(function() {
+				jQuery("main div.upload-modal form").submit();
+			});
+		});
 	</script>
 	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 {% endblock %}

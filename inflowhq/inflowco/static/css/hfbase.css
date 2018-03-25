@@ -23,8 +23,8 @@ strong { font-weight: bold; }
 /* The Beginning of InFlow Base CSS Overrides */
 /* High Level Styles */
 body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
-header { background-color: #3E5A7C; height: 147px; }
-main {}
+header { background-color: #3E5A7C; height: 147px; position: fixed; width: 100%; z-index: 50; }
+main { padding: 147px 0px 0px; }
 footer {}
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 

@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 
+import os
 import base64, mimetypes
 import boto3
 import requests
@@ -11,12 +12,13 @@ from PIL import Image
 from io import BytesIO
 
 import httplib2
+import urllib.parse
 from apiclient import discovery
 from oauth2client import client
 from oauth2client import tools
 from oauth2client.contrib import gce
 from oauth2client.file import Storage
-from oauth2client.client import OAuth2WebServerFlow 
+from oauth2client.client import OAuth2WebServerFlow
 import re
 
 # Error Pages
@@ -52,137 +54,6 @@ class DemoUploadMilestone(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
-    
-class DemoPreviewMilestone(TemplateView):
-    template_name = "project.preview.milestone.html"
-
-    def get(self, request):
-        context = self.get_context_data(request)
-        return render(request, self.template_name, context)
-
-    def post(self, request):
-        context = {}
-        
-        # Get data from the POST
-        uploaded_file = request.FILES.get("deliverable", False)
-        google_drive_file = request.POST.get("drive-url", "")
-        dropzone_files = request.FILES.getlist("freelancer-deliverables")
-        
-        # If we have an actual file, time to prepare it to be uploaded to AWS
-        if uploaded_file != False:
-            context = {}
-            deliverable_key = uploaded_file.__str__()
-            amazon_destination_bucket_name = "inflow-upload-demo"
-            amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-            amazon_caller_client = boto3.client("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-            
-            # Determine if we have to create a new bucket
-            bucket_list = amazon_caller_client.list_buckets()
-            need_to_create_bucket = True
-            for bucket in bucket_list["Buckets"]:
-                if bucket["Name"] == amazon_destination_bucket_name:
-                    need_to_create_bucket = False
-            
-            # If we need to create a new bucket, do so
-            # TO DO: Make this a more streamlined process
-            if need_to_create_bucket:
-                amazon_caller_resource.create_bucket(Bucket=amazon_destination_bucket_name)
-
-            # Place the uploaded file in Amazon
-            amazon_caller_resource.Bucket(amazon_destination_bucket_name).put_object(ACL="public-read", Key=deliverable_key, Body=uploaded_file)
-            
-            # Finally, get the newly created URL for the image and base64 encode it
-            path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
-            mime = mimetypes.guess_type(path)
-            image = urllib.request.urlopen(path)
-            image_64 = base64.encodestring(image.read())
-            context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
-        elif google_drive_file != "":
-            mime = mimetypes.guess_type(google_drive_file)
-            image = urllib.request.urlopen(google_drive_file)
-            image_64 = base64.encodestring(image.read())
-            context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
-        elif len(dropzone_files) > 0:
-            context = {}
-            
-            # Initial AWS Variables
-            amazon_destination_bucket_name = "inflow-upload-demo"
-            amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-            amazon_caller_client = boto3.client("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-            
-            # Determine if we have to create a new bucket
-            bucket_list = amazon_caller_client.list_buckets()
-            need_to_create_bucket = True
-            for bucket in bucket_list["Buckets"]:
-                if bucket["Name"] == amazon_destination_bucket_name:
-                    need_to_create_bucket = False
-            
-            # If we need to create a new bucket, do so
-            # TO DO: Make this a more streamlined process
-            if need_to_create_bucket:
-                amazon_caller_resource.create_bucket(Bucket=amazon_destination_bucket_name)
-            
-            path = ""
-            
-            for dropzone_file in dropzone_files:
-                deliverable_key = dropzone_file.__str__()
-                
-                # Place the uploaded file in Amazon
-                amazon_caller_resource.Bucket(amazon_destination_bucket_name).put_object(ACL="public-read", Key=deliverable_key, Body=dropzone_file)
-                path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
-            
-            mime = mimetypes.guess_type(path)
-            image = urllib.request.urlopen(path)
-            image_64 = base64.encodestring(image.read())
-            context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
-        else:
-            context = self.get_context_data(request)
-        
-        return render(request, self.template_name, context)
-
-    def get_context_data(self, request, **kwargs):
-        self.find_bucket_files()
-        
-        path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
-        mime = mimetypes.guess_type(path)
-        image = urllib.request.urlopen(path)
-        image_64 = base64.encodestring(image.read())
-        
-        # Call the base implementation first to get a context
-        context = super(DemoPreviewMilestone, self).get_context_data(**kwargs)
-        context["imgData"] = u'data:%s;base64,%s' % (mime[0], str(image_64,"utf-8").replace("\n", ""))
-        return context
-    
-    def watermark_image_and_upload_to_s3(self):
-        primary_image_path = "https://www.fuzzyduk.com/wp-content/uploads/2017/04/MIN01WH.jpg"
-        watermark_image_path = "https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png"
-        
-        primary_image_response = requests.get(primary_image_path)
-        watermark_image_response = requests.get(watermark_image_path)
-        
-        primary_image = Image.open(BytesIO(primary_image_response.content))
-        watermark_image = Image.open(BytesIO(watermark_image_response.content))
-        
-        watermark_image_resized = watermark_image.resize((primary_image.width, primary_image.height))
-        
-        primary_image_copy = primary_image.copy()
-        
-        position = (0, 0)
-        primary_image_copy.paste(watermark_image_resized, position, watermark_image_resized)
-        
-        imgByteArr = BytesIO()
-        primary_image_copy.save(imgByteArr, format="JPEG")
-        imgByteArr.seek(0)  # Without this line it fails
-        
-        amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-        amazon_caller_resource.Bucket("inflow-upload-demo").put_object(ACL="public-read", Key="my_watermark.jpg", Body=imgByteArr)
-        
-    def find_bucket_files(self):
-        amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
-        amazon_caller_resource.Bucket("inflow-upload-demo")
-        
-        for object in amazon_caller_resource.Bucket("inflow-upload-demo").objects.all():
-            print(object.__getattribute__("key"))
 
 class DemoUploadMilestoneDrag(TemplateView):
     template_name = "project.upload.drag.html"
@@ -272,7 +143,113 @@ class FreelancerActiveUseLoFiSpecificProjectMilestonePreview(TemplateView):
         return render(request, self.template_name)
 
     def post(self, request):
-        return render(request, self.template_name)
+        context = {}
+        
+        # Get data from the POST
+        uploaded_file = request.FILES.get("deliverable", False)
+        google_drive_file = request.POST.get("drive-url", "")
+        google_drive_file_name = request.POST.get("drive-name", "")
+        dropzone_files = request.FILES.getlist("freelancer-deliverables")
+        
+        # Boto3 Classes
+        amazon_destination_bucket_name = "inflow-upload-demo"
+        amazon_caller_resource = boto3.resource("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+        amazon_caller_client = boto3.client("s3", region_name="us-east-1",aws_access_key_id="AKIAIQKGNH2YH2ZD2DOQ", aws_secret_access_key="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")
+        
+        # Determine if we have to create a new bucket
+        bucket_list = amazon_caller_client.list_buckets()
+        need_to_create_bucket = True
+        for bucket in bucket_list["Buckets"]:
+            if bucket["Name"] == amazon_destination_bucket_name:
+                need_to_create_bucket = False
+        
+        # If we need to create a new bucket, do so
+        # TO DO: Make this a more streamlined process
+        if need_to_create_bucket:
+            amazon_caller_resource.create_bucket(Bucket=amazon_destination_bucket_name)
+        
+        # Place the uploaded file in Amazon
+        amazon_s3_bucket = amazon_caller_resource.Bucket(amazon_destination_bucket_name)
+        
+        # If we have an actual file, time to prepare it to be uploaded to AWS
+        if uploaded_file != False:
+            deliverable_key = uploaded_file.__str__()
+            deliverable_preview_key = ("preview/%s" % deliverable_key)
+            
+            if not self.does_this_file_exists_in_bucket(amazon_s3_bucket,deliverable_key):
+                amazon_s3_bucket.put_object(ACL="public-read", Key=deliverable_key, Body=uploaded_file)
+            
+            # Finally, get the newly created URL for the image and base64 encode it
+            primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
+            watermarked_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_preview_key))
+            self.watermark_image_and_upload_to_s3(primary_path,watermarked_path,deliverable_preview_key,amazon_s3_bucket)
+            context["preview_path"] = watermarked_path
+        elif google_drive_file != "" and google_drive_file_name != "":
+            deliverable_key = google_drive_file_name
+            deliverable_preview_key = ("preview/%s" % deliverable_key)
+            
+            primary_image_response = requests.get(google_drive_file)
+            primary_image = Image.open(BytesIO(primary_image_response.content))
+            
+            if not self.does_this_file_exists_in_bucket(amazon_s3_bucket,deliverable_key):
+                amazon_s3_bucket.put_object(ACL="public-read", Key=deliverable_key, Body=primary_image_response.content)
+                
+            # Finally, get the newly created URL for the image and base64 encode it
+            primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
+            watermarked_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_preview_key))
+            self.watermark_image_and_upload_to_s3(primary_path,watermarked_path,deliverable_preview_key,amazon_s3_bucket)
+            context["preview_path"] = watermarked_path
+        elif len(dropzone_files) > 0:
+            final_watermark_path =""
+            
+            for dropzone_file in dropzone_files:
+                deliverable_key = dropzone_file.__str__()
+                deliverable_preview_key = ("preview/%s" % deliverable_key)
+                
+                # Place the uploaded file in Amazon
+                if not self.does_this_file_exists_in_bucket(amazon_s3_bucket,deliverable_key):
+                    amazon_s3_bucket.put_object(ACL="public-read", Key=deliverable_key, Body=dropzone_file)
+                
+                primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_key))
+                watermarked_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_destination_bucket_name, deliverable_preview_key))
+                
+                self.watermark_image_and_upload_to_s3(primary_path,watermarked_path,deliverable_preview_key,amazon_s3_bucket)
+                final_watermark_path = watermarked_path
+            
+            context["preview_path"] = final_watermark_path
+        
+        return render(request, self.template_name, context)
+    
+    def does_this_file_exists_in_bucket(self,bucket,key_name):
+        for object in bucket.objects.all():
+            if object.key == key_name:
+                return True
+        
+        return False
+    
+    def watermark_image_and_upload_to_s3(self,image_path,watermarked_image_path,preview_key,amazon_bucket):
+        primary_image_path = image_path
+        watermark_image_path = "https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png"
+        
+        primary_image_response = requests.get(primary_image_path)
+        watermark_image_response = requests.get(watermark_image_path)
+        
+        primary_image = Image.open(BytesIO(primary_image_response.content))
+        watermark_image = Image.open(BytesIO(watermark_image_response.content))
+        
+        watermark_image_resized = watermark_image.resize((primary_image.width, primary_image.height))
+        
+        primary_image_copy = primary_image.copy()
+        
+        position = (0, 0)
+        primary_image_copy.paste(watermark_image_resized, position, watermark_image_resized)
+        
+        imgByteArr = BytesIO()
+        primary_image_copy.save(imgByteArr, format="JPEG")
+        imgByteArr.seek(0)  # Without this line it fails
+        
+        if not self.does_this_file_exists_in_bucket(amazon_bucket,preview_key):
+            amazon_bucket.put_object(ACL="public-read", Key=preview_key, Body=imgByteArr)
 
 class FreelancerActiveUseLoFiSpecificProjectMilestonePreviewNote(TemplateView):
     template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.preview.note.html"

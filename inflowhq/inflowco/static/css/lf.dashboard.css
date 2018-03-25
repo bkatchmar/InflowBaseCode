@@ -191,6 +191,7 @@ main div.upload-modal div.main-upload div.content-reciever div.content a:visited
 main div.upload-modal div.main-upload div.content-reciever div.content a:hover,
 main div.upload-modal div.main-upload div.content-reciever div.content a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 25px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.upload-modal div.main-upload div.content-reciever div.content div { width: 100%; }
+main div.upload-modal div.main-upload div.content-reciever div.content input[type="file"] { padding: 20px 0px; }
 main div.upload-modal div.main-upload div.content-reciever div.disclaimer { font-size: 14px; margin: 5px 0px 0px; }
 main div.upload-modal div.main-upload div.other-upload-options { float: left; padding: 80px 0px 0px 0px; text-align: center; width: 225px; }
 main div.upload-modal div.main-upload div.other-upload-options a,

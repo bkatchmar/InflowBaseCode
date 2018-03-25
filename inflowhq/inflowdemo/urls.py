@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^myprojects/create-contract/', views.DemoCreateNewContract.as_view(), name='demo_create_contract'),
     url(r'^myprojects/upload-milestone', views.DemoUploadMilestone.as_view(), name='demo_upload_milestone'),
     url(r'^myprojects/upload-milestone-drag/', views.DemoUploadMilestoneDrag.as_view(), name='demo_upload_milestone_drag'),
-    url(r'^myprojects/preview-milestone/', views.DemoPreviewMilestone.as_view(), name='demo_preview_milestone'),
     url(r'^freelancer-active-use/specific-project/milestones/upload-idle', views.FreelancerActiveUseLoFiSpecificProjectMilestoneUploadIdle.as_view(), name='freelancer_active_use_specific_project_milestones_upload_idle'),
     url(r'^freelancer-active-use/specific-project/milestones/upload-progress', views.FreelancerActiveUseLoFiSpecificProjectMilestoneUploadProgress.as_view(), name='freelancer_active_use_specific_project_milestones_upload_progress'),
     url(r'^freelancer-active-use/specific-project/milestones/preview/note', views.FreelancerActiveUseLoFiSpecificProjectMilestonePreviewNote.as_view(), name='freelancer_active_use_specific_project_milestones_preview_note'),
