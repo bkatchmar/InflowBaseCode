@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'^$', views.UserDashboardView.as_view(), name='dashboard'),
     url(r'^currencies', views.CurrencyListView.as_view(), name='currencylistview'),
     url(r'^pdfview', views.SavePdfTrials.as_view(), name='mypdf'),
+    url(r'^base-json', views.BasicJsonResponse.as_view(), name='bjson'),
+    url(r'^model-json', views.DjangoModelJsonResponse.as_view(), name='mjson'),
 ]

@@ -8,8 +8,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.sitemaps import Sitemap
+from django.core.serializers import serialize
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic import TemplateView
 # Other Python Libraries
 import boto3
@@ -223,3 +226,24 @@ class GoogleDomainVerificationFile(TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+
+class BasicJsonResponse(View):
+    def get(self, request):
+        data = {
+            'name': 'Vitor',
+            'location': 'Finland',
+            'is_active': True,
+            'count': 28
+            }
+        return JsonResponse(data)
+
+class DjangoModelJsonResponse(View):
+    def get(self, request):
+        first_currency = Currency.objects.first()
+        data = {
+            "IdCurrency" : first_currency.IdCurrency,
+            "Country" : first_currency.Country,
+            "Name" : first_currency.Name,
+            "Code" : first_currency.Code
+            }
+        return JsonResponse(first_currency.to_dict(), safe=False)

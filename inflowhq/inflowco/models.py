@@ -15,8 +15,11 @@ class Currency(models.Model):
     def __str__(self):
         return self.Code
 
-    def FullName(self):
+    def full_name(self):
         return ("%s %s" % (self.Country, self.Name))
+    
+    def to_dict(self):
+        return { "IdCurrency" : self.IdCurrency, "Country" : self.Country, "Name" : self.Name, "Code" : self.Code }
 
     class Meta:
        db_table = 'Currency'
