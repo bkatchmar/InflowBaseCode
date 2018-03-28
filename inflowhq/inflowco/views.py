@@ -121,19 +121,10 @@ class BlogHomeView(TemplateView):
         return context
     
     def get(self, request):
-        context = self.get_context_data()
-        return render(request, self.template_name, context)
+        return redirect("https://medium.com/@InFlowHQ")
     
     def post(self, request):
-        context = self.get_context_data()
-        
-        entered_email_address = request.POST.get("email-address", "")
-        
-        if entered_email_address != "":
-            EmailSignup.objects.create(Address=entered_email_address,Group="b")
-            context["sign_up_msg"] = "Thank You For Signing Up"
-        
-        return render(request, self.template_name, context)
+        return redirect("https://medium.com/@InFlowHQ")
     
 class CurrencyListView(LoginRequiredMixin, TemplateView):
     template_name = 'listcurrencies.html'
