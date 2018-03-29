@@ -7,8 +7,8 @@ function changeHeaderHeight() {
 	var overallWindowHeight = jQuery("html").height();
 	
 	if (overallWindowHeight < 550) {
-		jQuery("header").css({"height" : "550px"});	
+		// jQuery("header").css({"height" : "550px"});	
 	} else {
-		jQuery("header").css({"height" : overallWindowHeight + "px"});
+		// jQuery("header").css({"height" : overallWindowHeight + "px"});
 	}
 }

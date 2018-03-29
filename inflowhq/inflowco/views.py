@@ -14,10 +14,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
-# Other Python Libraries
-import boto3
-import botocore
-import urllib.parse
 
 class IndexView(TemplateView):
     template_name = "index.html"
@@ -150,6 +146,18 @@ class UserDashboardView(LoginRequiredMixin,TemplateView):
 
     def post(self, request):
         return render(request, self.template_name)
+    
+class UserDashboardLowFi(LoginRequiredMixin,TemplateView):
+    template_name = "user.dashboard.html"
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, request, **kwargs):
+        context = super(UserDashboardLowFi, self).get_context_data(**kwargs)
+        context["first_name"] = request.user.first_name
+        return context
     
 class BaseSitemap(Sitemap):
     def items(self):
