@@ -129,7 +129,7 @@ main form.onboarding-form select { height: 39px; width: 332px; }
 main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 50px 0px; position: relative; text-align: center; }
 main div.home-top h1 { font-size: 36px; font-weight: 700; line-height: 38px; padding: 80px 0px 20px; }
 main div.home-top h1.standalone { padding: 80px 0px; }
-main div.home-top h2 { font-size: 36px; font-weight: 300; line-height: 38px; padding: 0px 0px 45px; }
+main div.home-top h2 { font-size: 36px; font-weight: 300; line-height: 38px; padding: 10px 80px 15px; }
 main div.home-top p { font-size: 28px; font-weight: 500; line-height: 30px; padding: 40px 0px 25px; }
 main div.home-top div.downward-arrow { padding: 25px 0px; position: relative; width: 100%; }
 main div.home-top div.downward-arrow div { height: 100%; position: absolute; top: 0px; width: 40%; }
@@ -138,12 +138,15 @@ main div.home-top div.downward-arrow div.right { background-color: #3E5A7C; left
 main div.home-tile { background-color: #F8F8F8; border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
 main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
 
-main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 440px; }
+main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 600px; }
 main div.home-tile div.points span.number { display: inline-block; left: 0px; padding: 0px; position: absolute; top: 50px; }
 main div.home-tile div.points span.number img { height: 52px; left: 5px; position: absolute; top: -65px; width: auto; }
-main div.home-tile div.points span.number.one {}
-main div.home-tile div.points span.number.two { left: 180px; }
-main div.home-tile div.points span.number.three { left: 370px; }
+main div.home-tile div.points span.number.one { left: 30px; }
+main div.home-tile div.points span.number.two { left: 210px; }
+main div.home-tile div.points span.number.three { left: 400px; }
+main div.home-tile div.points span.number.one img { left: 23px; }
+main div.home-tile div.points span.number.two img { left: 35px; }
+main div.home-tile div.points span.number.three img { left: 52px; }
 main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
 
 main div.home-tile h2 { font-size: 40px; font-weight: 700; line-height: 42px; padding: 25px 0px 45px; text-align: center; }
@@ -164,9 +167,9 @@ main form.sign-up input[type="submit"] { padding: 10px 0px; }
 /* How It Works */
 div.how-it-works-tile { color: #3E5A7C; margin: 85px auto; overflow: hidden; width: 1024px; }
 div.how-it-works-tile div { float: left; }
-div.how-it-works-tile div.text { padding: 35px 0px; width: 220px; }
-div.how-it-works-tile div.text.left { margin: 0px 240px 0px 0px; }
-div.how-it-works-tile div.text.right { margin: 0px 0px 0px 240px; }
+div.how-it-works-tile div.text { padding: 35px 0px; width: 260px; }
+div.how-it-works-tile div.text.left { margin: 0px 200px 0px 0px; }
+div.how-it-works-tile div.text.right { margin: 0px 0px 0px 200px; }
 div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 300; line-height: 28px; }
 div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 22px; padding: 20px 0px; }
 div.how-it-works-tile div.text a.inflow-btn { background-color: #3E5A7C; display: block; text-align: center; }
@@ -186,7 +189,7 @@ main div.human div.portrait { border: solid 1px #979797; box-shadow: 0 2px 4px 0
 main div.human div.bio { float: left; text-align: center; width: 570px; }
 main div.human div.bio div.heading { font-size: 28px; font-weight: 700; line-height: 30px; padding: 0px 0px 35px; }
 main div.human div.bio div.heading span.title { font-style: italic; }
-main div.human div.bio div.text { font-size: 24px; line-height: 26px; }
+main div.human div.bio div.text { font-size: 24px; line-height: 28px; padding: 0px 25px 25px; }
 
 /* Home Page Stats */
 div.home-stats { margin: 0px auto; padding: 75px 0px; position: relative; width: 1024px; }
