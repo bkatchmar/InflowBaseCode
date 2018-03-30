@@ -36,7 +36,8 @@
 			</div>
 			<div class="input-field text-multi-line">
 				<span class="label">Project Description:</span>
-				<span class="field"><textarea name="description" placeholder="Describe the project"></textarea></span>
+				<span class="field"><textarea name="description" placeholder="Describe the project" maxlength="500"></textarea></span>
+				<div class="counter"><span class="count">0</span> / 500</div>
 			</div>
 			<div class="header sub">Client Information</div>
 			<div class="input-field text-single-line">
@@ -65,6 +66,21 @@
 				<a href="#">Add another contact</a>
 				<a href="#">Add business location</a>
 			</div>
+			<div class="header sub">Ownership</div>
+			<div class="input-field radio-list">
+				<span class="label">Who owns this work:</span>
+				<span class="field">
+					<span class="radio">
+						<input type="radio" name="who-owns" value="myself" checked="checked" />
+						<span class="label">I own this work</span>
+					</span>
+					<span class="radio">
+						<input type="radio" name="who-owns" value="client" />
+						<span class="label">Client owns this work</span>
+					</span>
+				</span>
+			</div>
+			
 			<div class="submit-buttons">
 				<input type="submit" name="action" value="Back" />
 				<input type="submit" name="action" value="Continue" class="continue" />
@@ -76,4 +92,13 @@
 		</form>
 	</div>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}
+{% block bottom_scripts %}
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("main div.create-contract-super-window form.contract-creation div.input-field span.field textarea").keydown(function() {
+				var totalLength = jQuery("main div.create-contract-super-window form.contract-creation div.input-field span.field textarea").val().length;
+				jQuery("main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line div.counter span.count").text(totalLength);
+			});
+		});
+	</script>
+{% endblock %}
