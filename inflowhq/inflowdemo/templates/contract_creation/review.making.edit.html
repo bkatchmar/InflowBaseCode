@@ -1,4 +1,5 @@
 {% extends 'base/dashboard.base.demo.html' %}
+{% load staticfiles %}
 {% block extra_styles %}
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
 {% endblock %}
@@ -7,43 +8,57 @@
 	<div class="back-links smaller"></div>
 	<div class="create-contract-super-window">
 		<div class="header">Work Overview</div>
-		<div class="progress-bar">
-			<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
-			<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
-			<span class="number three done"><span class="mark">&#10003;</span><span class="text">Optional Fees</span></span>
-			<span class="number four on"><span class="text">Work Overview</span></span>
-			<span class="number five"><span class="text">Preview and Send</span></span>
+		<div class="progress-bar work-overview">
+			<span class="number one on"><span class="text">Work Overview</span></span>
+			<span class="number two"><span class="text">Contract Review</span></span>
+			<span class="number three"><span class="text">Preview and Send</span></span>
 			<div class="bar"></div>
 		</div>
 		<form class="contract-creation" method="post">
 			<div class="header">Work Overview</div>
+			<div class="sub-header">Please review details of the contract. You will be able to review the full contract agreement before signing. If you have any edits you'd like to make, please do so below with the Edit button.</div>
 			<div class="overview-section">
-				<div class="header">Project Information<a href="{% url 'htmldemos:contract_overview_lump_sum_edit' %}">Edit</a></div>
+				<div class="header">Project Information<a href="{% url 'htmldemos:contract_overview_lump_sum' %}">Finish Editing</a></div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Project Name:</span>
 					<span class="field"><span class="text">Sample Project Name</span></span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Project Description:</span>
 					<span class="field"><span class="text">Sample Project Description Sample</span></span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Name of Contact:</span>
 					<span class="field"><span class="text">Contact Name</span></span>
+					<span class="edit-window">
+						<span class="field"><input type="text" placeholder="Contact Name" name="edit-contact-name" required /></span>
+						<span class="field"><textarea name="edit-description" placeholder="Please list your reason for the change" maxlength="500"></textarea></span>
+						<span class="buttons">
+							<a href="#">Cancel</a>
+							<a href="#" class="continue">Propose Edit</a>
+						</span>
+					</span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Company Name:</span>
 					<span class="field"><span class="text">AT&amp;T</span></span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Email:</span>
 					<span class="field"><span class="text">client@email.com</span></span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Phone:</span>
 					<span class="field"><span class="text">(123) 555-5555</span></span>
 				</div>
 				<div class="input-field text-single-line">
+					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Address:</span>
 					<span class="field"><span class="text">3434 Goldenrod Road<br />Apartment 3C<br />Orlando, FL 32792<br />United States</span></span>
 				</div>

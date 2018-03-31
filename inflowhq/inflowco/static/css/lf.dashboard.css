@@ -268,14 +268,26 @@ main div.create-contract-super-window div.progress-bar span.number.five span.tex
 main div.create-contract-super-window div.progress-bar span.number span.text { top: 35px; }
 main div.create-contract-super-window div.progress-bar span.number span.mark { font-size: 20px; left: 11px; position: absolute; top: 1px; z-index: 50; }
 
+main div.create-contract-super-window div.progress-bar.work-overview { margin: 0px auto; width: 430px; }
+main div.create-contract-super-window div.progress-bar.work-overview span.number.one span.text { left: -34px; }
+main div.create-contract-super-window div.progress-bar.work-overview span.number.two span.text { left: -38px; }
+main div.create-contract-super-window div.progress-bar.work-overview span.number.three { width: 1px; }
+main div.create-contract-super-window div.progress-bar.work-overview span.number.three span.text { left: -44px; width: 130px; }
+
 main div.create-contract-super-window form.contract-creation { margin: 15px auto 0px; width: 900px; }
 main div.create-contract-super-window form.contract-creation div.buttons { text-align: center; }
 main div.create-contract-super-window form.contract-creation div.buttons a { font-size: 18px; padding: 20px; }
 main div.create-contract-super-window form.contract-creation div.header { font-size: 24px; font-weight: 700; line-height: 26px; padding: 0px 0px 20px; }
 main div.create-contract-super-window form.contract-creation div.header.sub { font-size: 22px; }
 main div.create-contract-super-window form.contract-creation div.header.instruction { font-size: 18px; font-weight: 300; }
-main div.create-contract-super-window form.contract-creation div.input-field { padding: 15px 0px; }
-main div.create-contract-super-window form.contract-creation div.input-field span { display: inline-block; }
+main div.create-contract-super-window form.contract-creation div.input-field { overflow: hidden; padding: 15px 0px; position: relative; }
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit,
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit:link,
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit:visited,
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit:hover,
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit:active { display: block; font-size: 16px; font-weight: 300; position: absolute; right: 0px; text-decoration: underline; top: 15px; }
+main div.create-contract-super-window form.contract-creation div.input-field a.pencil-edit img { height: auto; width: 24px; }
+main div.create-contract-super-window form.contract-creation div.input-field span { display: inline-block; text-align: center; }
 main div.create-contract-super-window form.contract-creation div.input-field span.label { font-size: 20px; line-height: 22px; padding: 0px 15px 0px 0px; text-align: right; width: 260px; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line span.label { vertical-align: top; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line div.counter { padding: 10px 140px 10px 0px; text-align: right; }
@@ -291,6 +303,18 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.text { font-size: 20px; line-height: 22px; }
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="number"] { width: 60px; }
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field span.hyphen {}
+
+main div.create-contract-super-window form.contract-creation div.input-field span.edit-window { float: right; padding: 15px 120px 15px 0px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.edit-window span.field { clear: both; display: block; padding: 0px 0px 10px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.edit-window span.field input,
+main div.create-contract-super-window form.contract-creation div.input-field span.edit-window span.field textarea { width: 290px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons {}
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a,
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:link,
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:visited,
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:hover,
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:active { background-color: #FFF; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 16px; margin: 0px 10px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.buttons a.continue { background-color: #D8D8D8; }
 
 main div.create-contract-super-window form.contract-creation div.mini-field-line { overflow: hidden; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field { float: left; width: 290px; }
@@ -338,12 +362,12 @@ main div.create-contract-super-window form.contract-creation div.submit-buttons 
 main div.create-contract-super-window form.contract-creation div.submit-buttons input[type="submit"].later { border: none; text-decoration: underline; }
 
 main div.create-contract-super-window form.contract-creation div.overview-section { border-color: #979797; border-style: solid; border-width: 0px 0px 1px; padding: 35px 0px 0px; }
-main div.create-contract-super-window form.contract-creation div.overview-section div.header { font-size: 22px; font-weight: 700; text-align: center; }
+main div.create-contract-super-window form.contract-creation div.overview-section div.header { font-size: 22px; font-weight: 700; position: relative; text-align: center; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:link,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:visited,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:hover,
-main div.create-contract-super-window form.contract-creation div.overview-section div.header a:active { display: block; float: right; font-size: 16px; font-weight: 300; text-decoration: underline; }
+main div.create-contract-super-window form.contract-creation div.overview-section div.header a:active { display: block; font-size: 16px; font-weight: 300; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.header.sub { font-size: 20px; font-style: italic; padding: 20px 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.input-field span.label { font-weight: 700; vertical-align: top; width: 50%; }
 

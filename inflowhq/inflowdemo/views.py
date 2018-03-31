@@ -581,6 +581,28 @@ class CreateContractStepFourHourly(TemplateView):
             return redirect(reverse("htmldemos:contract_creation_extra_fees"))
         
         return render(request, self.template_name, context)
+
+class CreateContractStepFourLumpSumEdit(TemplateView):
+    template_name = "contract_creation/create.contract.step-4.lump-sum.edit.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)    
+
+class CreateContractStepFourHourlyEdit(TemplateView):
+    template_name = "contract_creation/create.contract.step-4.hourly.edit.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
     
 class CreateContractStepFive(TemplateView):
     template_name = "contract_creation/create.contract.step-5.html"
@@ -625,6 +647,17 @@ class CreateContractStepFive(TemplateView):
     
 class CreateContractCongrats(TemplateView):
     template_name = "contract_creation/congrats.html"
+
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class ReviewMakingEdit(TemplateView):
+    template_name = "contract_creation/review.making.edit.html"
 
     def get(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }

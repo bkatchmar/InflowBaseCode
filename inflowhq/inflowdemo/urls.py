@@ -43,4 +43,7 @@ urlpatterns = [
     url(r'^contract-creation/step-5', views.CreateContractStepFive.as_view(), name='contract_overview_preview_send'),
     url(r'^contract-creation/final', views.CreateContractCongrats.as_view(), name='contract_overview_final'),
     url(r'^contract-creation', views.CreateContractStepOneDemo.as_view(), name='contract_creation'),
+    url(r'^contract-review/lump-sum/edit', views.CreateContractStepFourLumpSumEdit.as_view(), name='contract_overview_lump_sum_edit'),
+    url(r'^contract-review/hourly/edit', views.CreateContractStepFourHourlyEdit.as_view(), name='contract_overview_hourly_edit'),
+    url(r'^contract-review/making-edit', views.ReviewMakingEdit.as_view(), name='contract_review_making_edit'),
 ]
