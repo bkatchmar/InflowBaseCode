@@ -1,0 +1,66 @@
+{% extends 'base/dashboard.base.demo.html' %}
+{% load staticfiles %}
+{% block extra_styles %}
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+{% endblock %}
+{% block title %}Inflow My Project Dashboard - Contract Creation - Review And Send{% endblock %}
+{% block main_tag %}
+	<div class="back-links smaller"></div>
+	<div class="create-contract-super-window">
+		<div class="header">Work Overview</div>
+		<div class="progress-bar work-overview">
+			<span class="number one done"><span class="mark">&#10003;</span><span class="text">Work Overview</span></span>
+			<span class="number two on"><span class="text">Contract Review</span></span>
+			<span class="number three"><span class="text">Preview and Send</span></span>
+			<div class="bar"></div>
+		</div>
+		<form class="contract-creation" method="post">
+			<div class="header">Contract Review</div>
+			<div class="header instruction">Please review the following contract agreement and make any edits as you see fit.</div>
+			<div class="buttons">
+				<a href="#" class="btn">Export to PDF</a>
+				<a href="#" class="btn">Download</a>
+			</div>
+			<div class="contract-preview-window">
+				<div class="inner-window">
+					<p>CONTRACT<a href="#" class="primary-edit">Edit</a></p>
+					<p>I. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.<a href="#" class="para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a></p>
+					<div class="edit-window">
+						<textarea name="edit-paragraph" placeholder="Please explain what change you’d like to make." maxlength="500"></textarea>
+						<div class="buttons">
+							<a href="{% url 'htmldemos:contract_review_amended_contract' %}">Cancel</a>
+							<a href="{% url 'htmldemos:contract_review_amendment_made' %}" class="continue">Propose Edit</a>
+						</div>
+					</div>
+					<p>II. Donut cake gummies gingerbread croissant. Apple pie sugar plum brownie pie. Jelly marzipan dessert sugar plum marzipan soufflé. Wafer candy canes ice cream candy oat cake macaroon wafer sesame snaps candy. Tart toffee biscuit donut fruitcake. Jelly-o brownie brownie croissant tootsie roll sesame snaps gingerbread. Lollipop jelly-o gummies cake cotton candy jelly caramels danish ice cream. Jelly-o chocolate dessert icing topping. Sweet roll gingerbread jujubes. Jelly-o fruitcake bonbon chocolate bar liquorice icing ice cream gingerbread bonbon. Biscuit cupcake sesame snaps cotton candy sweet roll. Liquorice chocolate cake ice cream lollipop lemon drops. Caramels bonbon sweet roll candy canes oat cake donut chocolate sweet cake.<a href="#" class="para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a></p>
+					<p>III. Marzipan apple pie tiramisu cake. Macaroon tootsie roll donut candy soufflé. Brownie wafer topping jujubes sugar plum jelly carrot cake. Macaroon candy chupa chups. Halvah jelly halvah jelly-o. Gummies dessert pastry cheesecake pudding icing tiramisu candy. Chocolate caramels sweet roll cupcake ice cream. Caramels cotton candy tart bonbon topping wafer caramels icing lollipop. Candy chocolate cake cheesecake halvah liquorice jelly-o chupa chups lemon drops. Jelly cheesecake sweet. Macaroon cookie pie. Dessert donut soufflé powder danish halvah powder soufflé candy canes.<a href="#" class="para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a></p>
+					<p>IV. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.<a href="#" class="para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a></p>
+				</div>
+			</div>
+			<div class="disclaimer"><input type="checkbox" name="agree" />I agree that I have read the terms of the contract and am sending it to the client.</div>
+			<div class="submit-buttons">
+				<input type="submit" name="action" value="Back" />
+				<input type="submit" name="action" value="Send to Contractor" class="continue" />
+			</div>
+			<div class="submit-buttons alt">
+				<input type="submit" name="action" value="Save for Later" class="later" />
+			</div>
+			{% csrf_token %}
+		</form>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script>
+		jQuery(document).ready(function() {
+			jQuery("main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p a.primary-edit").click(function(event) {
+				event.preventDefault();
+				
+				if (jQuery("main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window").hasClass("edit-mode")) {
+					jQuery("main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window").removeClass("edit-mode");
+				} else {
+					jQuery("main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window").addClass("edit-mode");
+				}
+			});
+		});
+	</script>
+{% endblock %}

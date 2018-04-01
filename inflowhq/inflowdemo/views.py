@@ -664,5 +664,36 @@ class ReviewMakingEdit(TemplateView):
         return render(request, self.template_name, context)
 
     def post(self, request):
+        return redirect(reverse("htmldemos:contract_review_amended_contract"))
+
+class ReviewMadeEdit(TemplateView):
+    template_name = "contract_creation/review.edit.made.html"
+    
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        return redirect(reverse("htmldemos:contract_review_amended_contract"))
+
+class ReviewAmendedContract(TemplateView):
+    template_name = "contract_creation/review.amended.contract.html"
+    
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+class ReviewAmendedContractAmendmentMade(TemplateView):
+    template_name = "contract_creation/review.amended.contract.amended-made.html"
+    
+    def get(self, request):
+        context = { "is_client" : True, "exclude_arrow" : False }
+        return render(request, self.template_name, context)
+
+    def post(self, request):
         context = { "is_client" : True, "exclude_arrow" : False }
         return render(request, self.template_name, context)

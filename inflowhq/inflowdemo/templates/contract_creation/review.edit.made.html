@@ -32,14 +32,9 @@
 				<div class="input-field text-single-line">
 					<a href="{% url 'htmldemos:contract_review_making_edit' %}" class="pencil-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></a>
 					<span class="label">Name of Contact:</span>
-					<span class="field"><span class="text">Contact Name</span></span>
+					<span class="field"><span class="text corrected">Contact Name</span><span class="text">New Contact Name</span></span>
 					<span class="edit-window">
-						<span class="field"><input type="text" placeholder="Contact Name" name="edit-contact-name" required /></span>
-						<span class="field"><textarea name="edit-description" placeholder="Please list your reason for the change" maxlength="500"></textarea></span>
-						<span class="buttons">
-							<a href="{% url 'htmldemos:contract_overview_lump_sum_edit' %}">Cancel</a>
-							<a href="{% url 'htmldemos:contract_review_made_edit' %}" class="continue">Propose Edit</a>
-						</span>
+						<span class="text">Client edit: Jake is no longer with the company, and Tom has replaced him.</span>
 					</span>
 				</div>
 				<div class="input-field text-single-line">
@@ -67,7 +62,10 @@
 				<div class="header">Milestones<a href="#">Edit</a></div>
 				<div class="input-field text-single-line">
 					<span class="label">Total Milestone/Project Cost:</span>
-					<span class="field"><span class="text">$10,290.90</span></span>
+					<span class="field highlighted">
+						<span class="text">$10,290.90</span>
+						<span class="note">A proposed edit has been made to the Milestone Amount. This fee will also be impacted.</span>
+					</span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Down Payment (Custom):</span>
