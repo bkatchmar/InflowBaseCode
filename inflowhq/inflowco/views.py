@@ -121,19 +121,6 @@ class BlogHomeView(TemplateView):
     
     def post(self, request):
         return redirect("https://medium.com/@InFlowHQ")
-    
-class CurrencyListView(LoginRequiredMixin, TemplateView):
-    template_name = 'listcurrencies.html'
-    
-    def get_queryset(self):
-        return Currency.objects.all()
-    
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(CurrencyListView, self).get_context_data(**kwargs)
-        # Add in a QuerySet of all the currencies
-        context["currencies"] = self.get_queryset()
-        return context
 
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"

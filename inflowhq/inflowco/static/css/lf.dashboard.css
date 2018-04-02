@@ -53,7 +53,7 @@ main div.content div.heading-elements div.table div.table-content.split div.clea
 main div.content div.heading-elements div.table div.table-content.split div.in-progress { float: right; padding: 5px 10px; }
 main div.content div.heading-elements div.buttons { float: right; }
 main div.content div.heading-elements div.buttons a { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 20px auto 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; }
+main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; position: relative; }
 main div.content div.right-facing-button a,
 main div.content div.right-facing-button a:link,
 main div.content div.right-facing-button a:visited,
@@ -430,7 +430,7 @@ main div.news-ribbon { border-color: #979797; border-style: solid; border-width:
 main div.news-ribbon div.sub-heading { font-size: 16px; font-weight: 700; }
 main div.news-ribbon a, main div.news-ribbon a:link, main div.news-ribbon a:visited, main div.news-ribbon a:hover, main div.news-ribbon a:active { background-color: #E6833B; border: solid 1px #E6833B; border-radius: 8px; color: #F6F4F0; display: inline-block; font-size: 16px; font-weight: 300; line-height: 18px; padding: 6px 10px; text-decoration: none; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
-main div.dashboard-tables { float: left; margin: 140px 0px 0px 30px; }
+main div.dashboard-tables { float: left; margin: 60px 0px 0px 30px; }
 main div.dashboard-tables.left { margin-left: 35px; width: 625px; }
 main div.dashboard-tables.right { width: 320px; }
 main div.dashboard-tables div.data-table { padding: 0px 0px 40px 0px; }
