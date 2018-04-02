@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     url(r'^inflow/', include('inflowco.urls')),
     url(r'^account/', include('accounts.urls')),
-    url(r'^projects/', include('contractsandprojects.urls')),
+    url(r'^inflow/projects/', include('contractsandprojects.urls')),
     url(r'^stripe/', include('talktostripe.urls')),
     url(r'^inflow/demo/', include('inflowdemo.urls')),
     url(r'^admin/', admin.site.urls)

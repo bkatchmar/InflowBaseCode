@@ -1,0 +1,36 @@
+{% extends 'base/dashboard.base.lowfi.html' %}
+{% load staticfiles %}
+{% block title %}My Projects - Home{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content">
+		<div class="header">Projects</div>
+		<div class="right-facing-button">
+			<a href="#">Create Project</a>
+		</div>
+		<div class="list">
+			<div class="label">
+				<span class="col1">CURRENT PROJECTS</span>
+				<span class="col2">PROGRESS</span>
+				<span class="col3">START DATE</span>
+				<span class="col4">END DATE</span>
+			</div>
+			{% if projects|length == 0 %}
+				<div class="empty-message">You do not currently have any projects. Create one now to get started!</div>
+			{% endif %}
+			{% for project in projects %}
+				<div class="item">
+					<div class="info">
+						<div class="title">{{ project.project_title }}</div>
+						<div class="description">{{ project.project_client }}</div>
+					</div>
+					<div class="progress">{{ project.progress }}</div>
+					<div class="start-date">{{ project.start_date }}</div>
+					<div class="end-date">{{ project.end_date }}</div>
+					<div class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" /></a></div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

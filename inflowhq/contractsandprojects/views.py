@@ -7,16 +7,16 @@ from contractsandprojects.models import Contract
 from contractsandprojects.email_handler import EmailHandler
 
 class ContractCreationView(LoginRequiredMixin, TemplateView):
-    template_name = 'start.html'
+    template_name = "projects.home.html"
     
     def get(self, request):
-        currentlyloggedinuser = ""
-        usersettings = UserSettings()
-        
-        if request.user.is_authenticated:
-            currentlyloggedinuser = request.user
-
-        context = {}
+        context = {
+            "projects" : [
+                { "project_title" : "NFL Experience App", "project_client" : "National Football League", "progress" : "Completed", "start_date" : "02 JAN 2018", "end_date": "02 FEB 2018" },
+                { "project_title" : "Blake Federov Book", "project_client" : "Client", "progress" : "In Progress", "start_date" : "03 MAR 2018", "end_date": "30 JUL 2018" },
+                { "project_title" : "Recipe Blog Post", "project_client" : "Le Cordon Bleu", "progress" : "Not Started", "start_date" : "31 DEC 2018", "end_date": "31 DEC 2018" }
+            ]
+        }
         return render(request, self.template_name, context)
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
