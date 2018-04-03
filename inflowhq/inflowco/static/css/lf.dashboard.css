@@ -10,6 +10,11 @@ a.btn:visited,
 a.btn:hover,
 a.btn:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 0px 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
+input, select { border: solid 1px #979797; display: block; margin: 9px 0px; }
+input[type="text"], input[type="email"], input[type="password"], select { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
+div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-height: 22px; }
+
 header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
 header nav { float: none; margin: 70px 0px 15px; text-align: center; }
 header nav ul li { border-top: solid 1px #979797; padding: 19px 0px; position: relative; }
@@ -31,9 +36,14 @@ main div.progress-bar span.number span.text { color: #373737; font-size: 16px; l
 
 main select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
-main div.back-links { padding: 55px 30px; }
+main div.message-bubble { background-color: #FFF; border: solid 1px #979797; color: #000; font-size: 14px; line-height: 16px; padding: 10px; position: absolute; right: -25px; text-align: center; top: -60px; width: 210px; }
+main div.message-bubble:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -11px; content: ""; display: block; left: 92px; position: absolute; top: auto; width: 0px; }
+main div.message-bubble:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -10px; content: ""; display: block; left: 92px; position: absolute; top: auto; width: 0px; }
+
+main div.back-links { padding: 30px; }
 main div.back-links.smaller { padding: 15px 0px; }
 main div.content { border: solid 1px #979797; margin: 0px 25px; min-width: 800px; padding: 0px 0px 25px; position: relative; }
+main div.content.outer { border: none; }
 main div.content.project-arrow {}
 main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 137px; width: 0px; }
 main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 138px; width: 0px; }
@@ -53,7 +63,7 @@ main div.content div.heading-elements div.table div.table-content.split div.clea
 main div.content div.heading-elements div.table div.table-content.split div.in-progress { float: right; padding: 5px 10px; }
 main div.content div.heading-elements div.buttons { float: right; }
 main div.content div.heading-elements div.buttons a { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 20px auto 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.content div.right-facing-button { overflow: auto; padding: 10px 0px; position: relative; }
+main div.content div.right-facing-button { height: 50px; overflow: visible; padding: 10px 0px; position: relative; }
 main div.content div.right-facing-button a,
 main div.content div.right-facing-button a:link,
 main div.content div.right-facing-button a:visited,
@@ -80,10 +90,17 @@ main div.content div.list div.item div.icon { border: none; padding: 13px 6px; w
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 main div.content div.list div.item div.icon img { height: auto; width: 45px; }
 
-main div.content div.ribbon { border: solid 1px #979797; margin: 25px auto; overflow: hidden; }
-main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 0px 1px 0px 0px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; text-align: center; width: 185px; }
+main div.content div.ribbon { border: solid 0px #979797; height: 38px; margin: 25px auto; overflow: visible; }
+main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 1px 0px 1px 1px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; position: relative; text-align: center; width: 185px; }
 main div.content div.ribbon span.on { background-color: #d8d8d8; }
-main div.content div.ribbon span:last-child { border-width: 0px; width: 182px; }
+main div.content div.ribbon span.on:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -11px; content: ""; display: block; left: 66px; position: absolute; top: auto; width: 0px; }
+main div.content div.ribbon span.on:after { border-color: #d8d8d8 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -10px; content: ""; display: block; left: 66px; position: absolute; top: auto; width: 0px; }
+main div.content div.ribbon span.non-button { border-width: 0px 0px 0px 1px; padding: 11px 0px; width: 90px; }
+main div.content div.ribbon.three-buttons-one-non-button { width: 650px; }
+
+main div.content div.inner-content { border: solid 1px #979797; padding: 35px 0px 50px 40px; position: relative; width: 759px; }
+main div.content div.inner-content.settings-profile:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 143px; position: absolute; top: 0px; width: 0px; }
+main div.content div.inner-content.settings-profile:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 143px; position: absolute; top: -1px; width: 0px; }
 
 main div.content div.inner-details { border: solid 1px #979797; }
 main div.content div.inner-details div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
@@ -473,3 +490,8 @@ main div.accept-milestone div.payment-actions a.cancel { font-size: 16px; line-h
 main div.accept-milestone div.payment-actions a.contact-us { color: #8c8c8c; font-size: 14px; text-decoration: underline; }
 main div.accept-milestone div.payment-actions div.payment-terms { font-size: 16px; line-height: 18px; padding: 0px 10px; }
 main div.accept-milestone div.payment-actions div.details { color: #8c8c8c; font-size: 14px; line-height: 16px; padding: 5px 10px 25px; }
+
+main form.settings-edit { font-size: 18px; }
+main form.settings-edit input { border-radius: 0px; font-size: 18px; padding: 5px 7px; width: 400px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
+main form.settings-edit input[type="submit"] { background-color: #d8d8d8; border-radius: 8px; color: #211f1b; font-size: 20px; line-height: 22px; margin: 45px auto 0px; padding: 10px 0px; width: 236px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main form.settings-edit div.label { padding: 15px 0px 0px; }

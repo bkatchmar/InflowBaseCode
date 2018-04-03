@@ -6,7 +6,12 @@
 	<div class="content project-arrow">
 		<div class="header">Projects</div>
 		<div class="right-facing-button">
-			<a href="#">Create Project</a>
+			{% if needs_stripe %}
+				<div class="message-bubble">Set up Stripe in order to create your first project!</div>
+				<a href="#">Create Project</a>
+			{% else %}
+				<a href="#">Create Project</a>
+			{% endif %}
 		</div>
 		<div class="list">
 			<div class="label">
@@ -33,4 +38,3 @@
 		</div>
 	</div>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}

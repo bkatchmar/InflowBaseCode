@@ -2,12 +2,13 @@ from __future__ import unicode_literals
 # From Accounts App
 from accounts.externalapicalls import LinkedInApi
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import UserLinkedInInformation, UserSettings, UserType, UserAssociatedTypes
+from accounts.models import UserSettings, UserType, UserAssociatedTypes
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
 # Django references
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import IntegrityError
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.urls import reverse
@@ -213,4 +214,65 @@ class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
         context["selected_country"] = usersettings.BaseCountry.IdCountry
         context["selected_country_currency"] = usersettings.BaseCountry.PrimaryCurrency.IdCurrency
 
+        return context
+    
+class EditProfileView(TemplateView,InflowLoginView):
+    template_name = "settings.edit.profile.html"
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = {}
+        
+        # Get some necessary User Information
+        older_email = request.user.email
+        settings = UserSettings()
+        settings = settings.get_settings_based_on_user(request.user)
+        
+        # Get values from the request
+        first_name = request.POST.get("first-name", "")
+        last_name = request.POST.get("last-name", "")
+        email = request.POST.get("email-address", "")
+        phone_number = request.POST.get("phone-number", "")
+        
+        # Update User
+        request.user.first_name = first_name
+        request.user.last_name = last_name
+        request.user.email = email
+        request.user.username = email
+        settings.PhoneNumber = phone_number
+        settings.save()
+        
+        # Update Context
+        context["first_name"] = request.user.first_name
+        context["last_name"] = request.user.last_name
+        context["email"] = request.user.email
+        context["phone_number"] = phone_number
+        
+        # Some basic exception handling, let the DB handle this part for us so users don't try to save duplicate names
+        try:
+            request.user.save()
+        except IntegrityError:
+            context["error_message"] = ("User with the email '%s' already exists" % email)
+            context["email"] = older_email
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Get some necessary User Information
+        settings = UserSettings()
+        settings = settings.get_settings_based_on_user(request.user)
+        
+        context = super(EditProfileView, self).get_context_data(**kwargs)
+        context["first_name"] = request.user.first_name
+        context["last_name"] = request.user.last_name
+        context["email"] = request.user.email
+        
+        if settings.PhoneNumber is None:
+            context["phone_number"] = ""
+        else:
+            context["phone_number"] = settings.PhoneNumber
+        
         return context

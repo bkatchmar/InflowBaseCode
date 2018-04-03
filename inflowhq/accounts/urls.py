@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^create/onboarding-2', views.OnboardingStepTwoView.as_view(), name='onboarding_2'),
     url(r'^create/onboarding-3', views.OnboardingStepThreeView.as_view(), name='onboarding_3'),
     url(r'^create', views.CreateAccountView.as_view(), name='create'),
+    url(r'^settings', views.EditProfileView.as_view(), name='settings'),
 ]

@@ -10,14 +10,24 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
     template_name = "projects.home.html"
     
     def get(self, request):
-        context = {
-            "projects" : [
-                { "project_title" : "NFL Experience App", "project_client" : "National Football League", "progress" : "Completed", "start_date" : "02 JAN 2018", "end_date": "02 FEB 2018" },
-                { "project_title" : "Blake Federov Book", "project_client" : "Client", "progress" : "In Progress", "start_date" : "03 MAR 2018", "end_date": "30 JUL 2018" },
-                { "project_title" : "Recipe Blog Post", "project_client" : "Le Cordon Bleu", "progress" : "Not Started", "start_date" : "31 DEC 2018", "end_date": "31 DEC 2018" }
-            ]
-        }
+        context = self.get_context_data(request)
         return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Get some necessary User Information
+        settings = UserSettings()
+        settings = settings.get_settings_based_on_user(request.user)
+        
+        # Set the context
+        context = super(ContractCreationView, self).get_context_data(**kwargs)
+        context["projects"] = []
+        
+        if settings.StripeConnectAccountKey is None:
+            context["needs_stripe"] = True
+        else:
+            context["needs_stripe"] = False
+        
+        return context
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"

@@ -49,6 +49,7 @@ class UserSettings(models.Model):
                             default="a")
     BusinessName = models.CharField(max_length=50,null=True)
     Region = models.CharField(max_length=50,null=True)
+    PhoneNumber = models.CharField(max_length=20,null=True)
 
     def get_settings_based_on_user(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()
