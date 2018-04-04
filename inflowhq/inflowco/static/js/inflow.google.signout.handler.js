@@ -12,3 +12,9 @@ function InflowGoogleSignOut() {
 	var auth2 = gapi.auth2.getAuthInstance();
     auth2.signOut();
 }
+
+jQuery(document).ready(function() {
+	jQuery("main div.content div.ribbon span.non-button a").click(function(event) {
+		InflowGoogleSignOut();
+	});
+});

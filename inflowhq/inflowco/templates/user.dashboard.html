@@ -4,7 +4,7 @@
 	<div class="news-ribbon">
 		<div class="heading">Hello, {{first_name}}. Welcome back!</div>
 		<div class="sub-heading">Get paid by signing up for Stripe!</div>
-		<a href="#">Sign Up</a>
+		<a href="{% url 'accounts:edit_account' %}">Sign Up</a>
 	</div>
 	<div class="dashboard-tables left">
 		<div class="data-table">
@@ -17,10 +17,10 @@
 					<span class="amount">TOTAL</span>
 				</div>
 				<div class="row">
-					<span class="date">3/20/18</span>
-					<span class="milestone">NFL Wireframes</span>
-					<span class="project">App Experience</span>
-					<span class="amount">$1,200</span>
+					<span class="date"></span>
+					<span class="milestone"></span>
+					<span class="project"></span>
+					<span class="amount"></span>
 				</div>
 				<div class="row">
 					<span class="date"></span>
@@ -64,10 +64,10 @@
 					<span class="amount">PAID</span>
 				</div>
 				<div class="row">
-					<span class="date">1/25/18</span>
-					<span class="milestone">NFL Research</span>
-					<span class="project">App Experience</span>
-					<span class="amount">$500</span>
+					<span class="date"></span>
+					<span class="milestone"></span>
+					<span class="project"></span>
+					<span class="amount"></span>
 				</div>
 				<div class="row">
 					<span class="date"></span>
@@ -88,11 +88,6 @@
 					<span class="amount"></span>
 				</div>
 			</div>
-		</div>
-	</div>
-	<div class="dashboard-tables right">
-		<div class="messages">
-			<span class="empty-text">Rotating messages of freelance tips, blog posts, updates, etc.</span>
 		</div>
 	</div>
 {% endblock %}

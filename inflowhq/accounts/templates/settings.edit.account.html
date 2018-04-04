@@ -1,0 +1,38 @@
+{% extends 'base/dashboard.base.lowfi.account.html' %}
+{% load staticfiles %}
+{% block title %}InFlow - Edit My Account{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content outer">
+		<div class="header">SETTINGS</div>
+		<div class="ribbon three-buttons-one-non-button">
+			<span><a href="{% url 'accounts:settings' %}">PROFILE</a></span>
+			<span class="on"><a href="{% url 'accounts:edit_account' %}">ACCOUNT</a></span>
+			<span><a href="#">NOTIFICATIONS</a></span>
+			<span class="non-button log-out"><a href="{% url 'accounts:login' %}">Log out</a></span>
+		</div>
+		<div class="inner-content account-profile">
+			{% if error_message != "" %}
+				<div class="error-message">{{error_message}}</div>
+			{% endif %}
+			<form class="settings-edit" method="post">
+				<div class="label">Security</div>
+				<div class="label">Current Password</div>
+				<div class="field"><input type="password" name="current-password" required /></div>
+				<div class="label">New Password</div>
+				<div class="field"><input type="password" name="new-password-1" required /></div>
+				<div class="label">Confirm New Password</div>
+				<div class="field"><input type="password" name="new-password-2" required /></div>
+				<div class="label">Stripe Payments</div>
+				{% if needs_stripe %}
+					<div class="sub-label">InFlow uses Stripe so you can get your money quick and easy, with a simple and immediate setup and payment collection.</div>
+					<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{stripe_acct}}&scope=read_write&state={{call_state}}" class="stripe-connect"><span>Connect with Stripe</span></a>
+				{% else %}
+					<a href="https://dashboard.stripe.com/account/applications/settings" target="_blank">Manage my Stripe account</a>
+				{% endif %}
+				<input type="submit" value="Update" />
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}

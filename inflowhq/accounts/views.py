@@ -5,7 +5,10 @@ from accounts.inflowaccountloginview import InflowLoginView
 from accounts.models import UserSettings, UserType, UserAssociatedTypes
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
+# Inflow Stripe App
+from talktostripe.stripecommunication import StripeCommunication
 # Django references
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
@@ -216,7 +219,7 @@ class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
 
         return context
     
-class EditProfileView(TemplateView,InflowLoginView):
+class EditProfileView(LoginRequiredMixin,TemplateView):
     template_name = "settings.edit.profile.html"
     
     def get(self, request):
@@ -274,5 +277,86 @@ class EditProfileView(TemplateView,InflowLoginView):
             context["phone_number"] = ""
         else:
             context["phone_number"] = settings.PhoneNumber
+        
+        return context
+
+class EditAccountView(LoginRequiredMixin,TemplateView):
+    template_name = "settings.edit.account.html"
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        
+        # If true, This call came from a Stripe page and came back with a User ID
+        if context["came_from_stripe"] and context["user_stripe_acct"] != "":
+            user_settings = UserSettings()
+            user_settings = user_settings.get_settings_based_on_user(request.user)
+            user_settings.StripeConnectAccountKey = context["user_stripe_acct"]
+            user_settings.save()
+            context["needs_stripe"] = False
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = self.get_context_data(request)
+        
+        # Get variables from request
+        new_password_1 = request.POST.get("new-password-1", "")
+        new_password_2 = request.POST.get("new-password-2", "")
+        
+        # Make the attempt to change the password
+        if new_password_1 != "" and new_password_2 != "":
+            if new_password_1 == new_password_2:
+                validator = UserCreationBaseValidators()
+                validator.try_to_validate_password(request.user,new_password_1)
+                context["error_message"] = validator.error_message
+            else:
+                context["error_message"] = "Please Confirm Your New Password"
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Get some necessary User Information
+        user_settings = UserSettings()
+        user_settings = user_settings.get_settings_based_on_user(request.user)
+        
+        # Set the context
+        context = super(EditAccountView, self).get_context_data(**kwargs)
+        
+        if user_settings.StripeConnectAccountKey is None:
+            context["needs_stripe"] = True
+        else:
+            context["needs_stripe"] = False
+        
+        # Call Stripe Settings For The Link Generation
+        context["call_state"] = settings.STRIPE_CALL_STATE
+        context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
+        
+        # If this is from a Stripe Auth Page
+        comm = StripeCommunication()
+        response_code = request.GET.get("code", "")
+        stripe_state = request.GET.get("state", "")
+        json_response = {}
+        
+        # We need to check if this request even came from Stripe
+        if response_code != "":
+            json_response = comm.create_new_stripe_custom_account(response_code)
+            context["came_from_stripe"] = True
+            
+            if stripe_state != settings.STRIPE_CALL_STATE:
+                context["error_message"] = "Bad Call State"
+                context["needs_stripe"] = True
+        else:
+            context["came_from_stripe"] = False
+        
+        # Did we get the stripe User ID in the response?
+        if "stripe_user_id" in json_response:
+            context["user_stripe_acct"] = json_response["stripe_user_id"]
+        else:
+            context["user_stripe_acct"] = ""
+        
+        # Did the response come with an error description?
+        if "error_description" in json_response:
+            context["error_message"] = json_response["error_description"]
+            context["needs_stripe"] = True
         
         return context

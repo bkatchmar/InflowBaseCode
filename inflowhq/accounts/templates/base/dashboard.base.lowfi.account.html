@@ -4,8 +4,9 @@
 	<head>
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=20180402" />
+		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=201804040130" />
 		<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
+		<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com" />
 		<title>{% block title %}{% endblock %}</title>
 	</head>
 	<body>
@@ -17,7 +18,7 @@
 				<nav>
 					<ul>
 						<li><a href="{% url 'base:dashboard' %}">Home</a></li>
-						<li class="arrow"><a href="{% url 'contracts:home' %}">Projects</a></li>
+						<li><a href="{% url 'contracts:home' %}">Projects</a></li>
 						<li><a href="#">Contacts</a></li>
 					</ul>
 				</nav>
@@ -35,6 +36,8 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<script src="{% static 'js/inflow.dashboard.base.js' %}?"></script>
+		<script src="https://apis.google.com/js/platform.js"></script>
+		<script src="{% static 'js/inflow.google.signout.handler.js' %}?d=2018"></script>
 		{% block bottom_scripts %}{% endblock %}
 	</body>
 </html>

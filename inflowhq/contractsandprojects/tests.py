@@ -3,13 +3,20 @@ from datetime import date
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
-from inflowco.models import Currency
+from inflowco.models import Currency, Country
 from contractsandprojects.models import Contract, Milestone, Payment, PaymentPlan, Recipient, Relationship
 import pytz
 
 class ContractScreenAuthenticationTestCase(TestCase):
     def setUp(self):
         usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
         brianUser = User.objects.create(
                             username="brian",
                             email="brian@workinflow.co",

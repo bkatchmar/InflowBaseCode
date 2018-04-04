@@ -1,4 +1,4 @@
-{% extends 'base/dashboard.base.lowfi.html' %}
+{% extends 'base/dashboard.base.lowfi.project.html' %}
 {% load staticfiles %}
 {% block title %}My Projects - Home{% endblock %}
 {% block main_tag %}
@@ -8,7 +8,7 @@
 		<div class="right-facing-button">
 			{% if needs_stripe %}
 				<div class="message-bubble">Set up Stripe in order to create your first project!</div>
-				<a href="#">Create Project</a>
+				<a href="{% url 'accounts:edit_account' %}">Create Project</a>
 			{% else %}
 				<a href="#">Create Project</a>
 			{% endif %}

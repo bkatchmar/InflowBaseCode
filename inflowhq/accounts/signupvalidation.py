@@ -40,3 +40,14 @@ class UserCreationBaseValidators:
                 self.error_thrown = True
                 self.error_message = val.__str__()
                 self.created_user.delete()
+        
+    def try_to_validate_password(self,logged_in,new_password):
+        self.created_user = logged_in
+        
+        try:
+            validate_password(new_password, user=self.created_user)
+            self.created_user.set_password(new_password)
+            self.created_user.save()
+        except ValidationError as val:
+            self.error_thrown = True
+            self.error_message = val.__str__()

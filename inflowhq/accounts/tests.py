@@ -4,7 +4,7 @@ from accounts.models import UserSettings, UserType, UserAssociatedTypes
 from accounts.signupvalidation import UserCreationBaseValidators
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
-from inflowco.models import Country, Currency
+from inflowco.models import Currency, Country
 import pytz
 
 class BaseUserTestCase(TestCase):
@@ -47,13 +47,13 @@ class UserAuthenticationTestCase(TestCase):
     
     def test_not_logged_in_user_get_kicked_out(self):
         c = Client()
-        response = c.get('/inflow/account/')
-        self.assertEqual(302,response.status_code)
+        response = c.get('/inflow')
+        self.assertEqual(301,response.status_code)
         
     def test_does_user_see_page_when_logged_in(self):
         c = Client()
         loginAttempt = c.login(username='brian', password='ilikechickenfingersandpizza')
-        response = c.get('/inflow/account/')
+        response = c.get('/inflow/')
         
         self.assertTrue(loginAttempt) # User was able to log in
         self.assertEqual(200,response.status_code) # User can see the page
@@ -61,11 +61,12 @@ class UserAuthenticationTestCase(TestCase):
     def test_does_user_see_expected_information(self):
         c = Client()
         loginAttempt = c.login(username='brian', password='ilikechickenfingersandpizza')
-        response = c.get('/inflow/account/')
+        response = c.get('/account/settings')
         
-        self.assertEqual(response.context["settings"].UserAccount.username, "brian")
-        self.assertEqual(response.context["settings"].UserAccount.first_name, "Brian")
-        self.assertEqual(response.context["settings"].UserAccount.last_name, "Katchmar")
+        self.assertEqual(response.context["first_name"], "Brian")
+        self.assertEqual(response.context["last_name"], "Katchmar")
+        self.assertEqual(response.context["email"], "brian@workinflow.co")
+        self.assertEqual(response.context["phone_number"], "")
 
 class SignUpValidationTests(TestCase):
     def setUp(self):
