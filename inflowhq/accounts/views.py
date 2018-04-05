@@ -300,18 +300,27 @@ class EditAccountView(LoginRequiredMixin,TemplateView):
         context = self.get_context_data(request)
         
         # Get variables from request
+        current_password = request.POST.get("current-password", "")
         new_password_1 = request.POST.get("new-password-1", "")
         new_password_2 = request.POST.get("new-password-2", "")
+        
+        # Check to see if the password entered is even correct
+        if not request.user.check_password(current_password) and request.user.has_usable_password():
+            context["error_message"] = "Current Password is not correct"
+            return render(request, self.template_name, context)
         
         # Make the attempt to change the password
         if new_password_1 != "" and new_password_2 != "":
             if new_password_1 == new_password_2:
                 validator = UserCreationBaseValidators()
-                validator.try_to_validate_password(request.user,new_password_1)
+                validator.try_to_validate_password(request.user,new_password_1,request)
                 context["error_message"] = validator.error_message
             else:
                 context["error_message"] = "Please Confirm Your New Password"
         
+        if not validator.error_thrown:
+            context["error_message"] = "Your password has been changed"
+
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
@@ -359,4 +368,24 @@ class EditAccountView(LoginRequiredMixin,TemplateView):
             context["error_message"] = json_response["error_description"]
             context["needs_stripe"] = True
         
+        return context
+    
+class EditNotificationsView(LoginRequiredMixin,TemplateView):
+    template_name = "settings.edit.notifications.html"
+    
+    def get(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Get some necessary User Information
+        user_settings = UserSettings()
+        user_settings = user_settings.get_settings_based_on_user(request.user)
+        
+        # Set the context
+        context = super(EditNotificationsView, self).get_context_data(**kwargs)
         return context

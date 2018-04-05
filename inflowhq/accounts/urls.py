@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^create', views.CreateAccountView.as_view(), name='create'),
     url(r'^settings', views.EditProfileView.as_view(), name='settings'),
     url(r'^edit-account', views.EditAccountView.as_view(), name='edit_account'),
+    url(r'^notifications', views.EditNotificationsView.as_view(), name='notifications'),
 ]

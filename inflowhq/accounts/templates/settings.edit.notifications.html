@@ -1,0 +1,29 @@
+{% extends 'base/dashboard.base.lowfi.account.html' %}
+{% load staticfiles %}
+{% block title %}InFlow - Edit My Account{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content outer">
+		<div class="header">SETTINGS</div>
+		<div class="ribbon three-buttons-one-non-button">
+			<span><a href="{% url 'accounts:settings' %}">PROFILE</a></span>
+			<span><a href="{% url 'accounts:edit_account' %}">ACCOUNT</a></span>
+			<span class="on"><a href="{% url 'accounts:notifications' %}">NOTIFICATIONS</a></span>
+			<span class="non-button log-out"><a href="{% url 'accounts:login' %}">Log out</a></span>
+		</div>
+		<div class="inner-content notifications">
+			{% if error_message != "" %}
+				<div class="error-message">{{error_message}}</div>
+			{% endif %}
+			<form class="settings-edit" method="post">
+				<div class="label">I want to receive emails about:</div>
+				<div class="field checkbox"><input type="checkbox" name="checkbox-1" checked="checked" />&nbsp;Tips on getting the most out of InFlow</div>
+				<div class="field checkbox"><input type="checkbox" name="checkbox-2" checked="checked" />&nbsp;The latest InFlow news and announcements</div>
+				<div class="field checkbox"><input type="checkbox" name="checkbox-3" checked="checked" />&nbsp;Monthly newsletter featuring our best articles</div>
+				<div class="field checkbox"><input type="checkbox" name="checkbox-4" checked="checked" />&nbsp;Account updates</div>
+				<input type="submit" value="Update" />
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}

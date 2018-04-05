@@ -2,10 +2,10 @@
 {% load staticfiles %}
 {% block title %}Welcome to InFlow{% endblock %}
 {% block main_tag %}
-	<div class="home-top">
+	<div class="home-top alt">
 		<h1>Fair and timely payments for creative freelancers and clients</h1>
 		<h2>Bill by the milestone, share work securely get paid in full for freelance work faster</h2>
-		{% if sign_up_msg != "" %}
+		{% if sign_up_msg %}
 			<p>{{sign_up_msg}}</p>
 		{% endif %}
 		<form class="sign-up" method="post">
@@ -13,6 +13,7 @@
 			<input type="submit" value="Start your free trial" />
 			{% csrf_token %}
 		</form>
+		<img src="https://s3.us-east-2.amazonaws.com/inflowcssjs/img/office-594132_1920.jpg" alt="InFlow Office Shot" />
 	</div>
 	<div class="home-tile alt">
 		<h3>How You Benefit</h3>

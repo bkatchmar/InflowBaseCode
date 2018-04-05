@@ -8,7 +8,7 @@
 		<div class="ribbon three-buttons-one-non-button">
 			<span><a href="{% url 'accounts:settings' %}">PROFILE</a></span>
 			<span class="on"><a href="{% url 'accounts:edit_account' %}">ACCOUNT</a></span>
-			<span><a href="#">NOTIFICATIONS</a></span>
+			<span><a href="{% url 'accounts:notifications' %}">NOTIFICATIONS</a></span>
 			<span class="non-button log-out"><a href="{% url 'accounts:login' %}">Log out</a></span>
 		</div>
 		<div class="inner-content account-profile">
@@ -18,7 +18,7 @@
 			<form class="settings-edit" method="post">
 				<div class="label">Security</div>
 				<div class="label">Current Password</div>
-				<div class="field"><input type="password" name="current-password" required /></div>
+				<div class="field"><input type="password" name="current-password" /></div>
 				<div class="label">New Password</div>
 				<div class="field"><input type="password" name="new-password-1" required /></div>
 				<div class="label">Confirm New Password</div>

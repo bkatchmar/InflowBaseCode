@@ -127,14 +127,11 @@ main form.onboarding-form select { height: 39px; width: 332px; }
 
 /* Splash Page */
 main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 50px 0px; position: relative; text-align: center; }
-main div.home-top h1 { font-size: 36px; font-weight: 700; line-height: 38px; padding: 80px 0px 20px; }
-main div.home-top h1.standalone { padding: 80px 0px; }
-main div.home-top h2 { font-size: 36px; font-weight: 300; line-height: 38px; padding: 10px 80px 15px; }
-main div.home-top p { font-size: 28px; font-weight: 500; line-height: 30px; padding: 40px 0px 25px; }
-main div.home-top div.downward-arrow { padding: 25px 0px; position: relative; width: 100%; }
-main div.home-top div.downward-arrow div { height: 100%; position: absolute; top: 0px; width: 40%; }
-main div.home-top div.downward-arrow div.left { background-color: #3E5A7C; left: 0px; }
-main div.home-top div.downward-arrow div.right { background-color: #3E5A7C; left: 60%; }
+main div.home-top h1 { font-size: 36px; font-weight: 700; line-height: 38px; padding: 80px 0px 20px; position: relative; z-index: 40; }
+main div.home-top h1.standalone { padding: 80px 0px; position: relative; z-index: 40; }
+main div.home-top h2 { font-size: 36px; font-weight: 300; line-height: 38px; padding: 10px 80px 15px; position: relative; z-index: 40; }
+main div.home-top p { font-size: 28px; font-weight: 500; line-height: 30px; padding: 40px 0px 25px; position: relative; z-index: 40; }
+main div.home-top img { height: auto; left: 0px; opacity: 0.3; position: absolute; top: 0px; width: 100%; }
 main div.home-tile { background-color: #F8F8F8; border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
 main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
 
@@ -157,7 +154,7 @@ main div.home-tile div.buttons { padding: 50px 0px; text-align: center; }
 main div.home-tile div.buttons a { font-size: 18px; margin: 0px 40px; }
 
 /* Email Sign Up */
-main form.sign-up { padding: 15px 0px 60px; }
+main form.sign-up { padding: 15px 0px 60px; position: relative; z-index: 40; }
 main form.sign-up input { display: inline-block; font-size: 18px; line-height: 20px; }
 main form.sign-up input[type="text"],
 main form.sign-up input[type="email"],

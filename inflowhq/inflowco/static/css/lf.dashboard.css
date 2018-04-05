@@ -12,6 +12,7 @@ a.btn:active { background-color: #D8D8D8; border: solid 1px #979797; border-radi
 
 input, select { border: solid 1px #979797; display: block; margin: 9px 0px; }
 input[type="text"], input[type="email"], input[type="password"], select { border-radius: 8px; font-size: 14px; font-weight: 300; padding: 10px 15px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+input[type="checkbox"] { display: inline-block; }
 
 div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-height: 22px; }
 
@@ -106,6 +107,9 @@ main div.content div.inner-content.settings-profile:after { border-color: #FFF t
 
 main div.content div.inner-content.account-profile:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 328px; position: absolute; top: 0px; width: 0px; }
 main div.content div.inner-content.account-profile:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 328px; position: absolute; top: -1px; width: 0px; }
+
+main div.content div.inner-content.notifications:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 514px; position: absolute; top: 0px; width: 0px; }
+main div.content div.inner-content.notifications:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 514px; position: absolute; top: -1px; width: 0px; }
 
 main div.content div.inner-details { border: solid 1px #979797; }
 main div.content div.inner-details div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
@@ -499,10 +503,12 @@ main div.accept-milestone div.payment-actions div.details { color: #8c8c8c; font
 main form.settings-edit { font-size: 18px; }
 main form.settings-edit input { border-radius: 0px; font-size: 18px; padding: 5px 7px; width: 400px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 main form.settings-edit input[type="submit"] { background-color: #d8d8d8; border-radius: 8px; color: #211f1b; font-size: 20px; line-height: 22px; margin: 45px auto 0px; padding: 10px 0px; width: 236px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main form.settings-edit input[type="checkbox"] { margin: 9px 10px 9px 0px; width: auto; }
 main form.settings-edit div.label { padding: 15px 0px 0px; }
+main form.settings-edit div.field.checkbox { font-size: 16px; padding: 15px 0px 0px; }
 main form.settings-edit div.sub-label { font-size: 14px; padding: 30px 0px 10px; width: 500px; }
 main form.settings-edit a { display: block; padding: 25px 0px 0px; text-decoration: underline; }
-main form.settings-edit a.stripe-connect { text-decoration: none; }
+main form.settings-edit a.stripe-connect { display: inline-block; padding: 0px; text-decoration: none; }
 
 /* STRIPE CSS */
 .stripe-connect {

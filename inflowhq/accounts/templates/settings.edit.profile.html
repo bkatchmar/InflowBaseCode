@@ -8,7 +8,7 @@
 		<div class="ribbon three-buttons-one-non-button">
 			<span class="on"><a href="{% url 'accounts:settings' %}">PROFILE</a></span>
 			<span><a href="{% url 'accounts:edit_account' %}">ACCOUNT</a></span>
-			<span><a href="#">NOTIFICATIONS</a></span>
+			<span><a href="{% url 'accounts:notifications' %}">NOTIFICATIONS</a></span>
 			<span class="non-button log-out"><a href="{% url 'accounts:login' %}">Log out</a></span>
 		</div>
 		<div class="inner-content settings-profile">

@@ -1,3 +1,4 @@
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
@@ -41,13 +42,15 @@ class UserCreationBaseValidators:
                 self.error_message = val.__str__()
                 self.created_user.delete()
         
-    def try_to_validate_password(self,logged_in,new_password):
+    def try_to_validate_password(self,logged_in,new_password,request):
         self.created_user = logged_in
         
         try:
             validate_password(new_password, user=self.created_user)
             self.created_user.set_password(new_password)
             self.created_user.save()
+            
+            login(request, self.created_user)
         except ValidationError as val:
             self.error_thrown = True
             self.error_message = val.__str__()
