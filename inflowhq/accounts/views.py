@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 # From Accounts App
 from accounts.externalapicalls import LinkedInApi
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import UserSettings, UserType, UserAssociatedTypes
+from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
 # Inflow Stripe App
@@ -372,20 +372,46 @@ class EditAccountView(LoginRequiredMixin,TemplateView):
     
 class EditNotificationsView(LoginRequiredMixin,TemplateView):
     template_name = "settings.edit.notifications.html"
+    all_settings = NotificationSetting.objects.all()
     
     def get(self, request):
         context = self.get_context_data(request)
         return render(request, self.template_name, context)
     
     def post(self, request):
+        associated_settings = UserNotificationSettings.objects.filter(UserAccount=request.user)
+        
+        # Time to iterate through each setting, see what was clicked, and make the needed calls to the DB
+        for type in self.all_settings:
+            form_name = ("checkbox-%d" % type.id)
+            form_value = request.POST.get(form_name, "")
+            is_checked = (form_value == "on")
+            
+            # If we have an entry in the DB, we'll just update it, otherwise, create a new entry
+            if associated_settings.filter(Setting=type).exists():
+                UserNotificationSettings.objects.filter(Setting=type).update(Selected=is_checked)
+            else:
+                UserNotificationSettings.objects.create(UserAccount=request.user,Setting=type,Selected=is_checked)
+        
         context = self.get_context_data(request)
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
-        # Get some necessary User Information
-        user_settings = UserSettings()
-        user_settings = user_settings.get_settings_based_on_user(request.user)
+        # Build objects for context
+        all_collected_info = []
+        associated_settings = UserNotificationSettings.objects.filter(UserAccount=request.user)
+        
+        # Time to iterate through each setting, find the associated setting to the user (if any exists) and 
+        for type in self.all_settings:
+            setting_data = { "id" : type.id, "text" : type.SettingName, "selected" : False }
+            
+            for associated_setting in associated_settings:
+                if type.id == associated_setting.Setting.id:
+                    setting_data["selected"] = associated_setting.Selected
+                
+            all_collected_info.append(setting_data)
         
         # Set the context
         context = super(EditNotificationsView, self).get_context_data(**kwargs)
+        context["settings"] = all_collected_info
         return context

@@ -17,10 +17,13 @@
 			{% endif %}
 			<form class="settings-edit" method="post">
 				<div class="label">I want to receive emails about:</div>
-				<div class="field checkbox"><input type="checkbox" name="checkbox-1" checked="checked" />&nbsp;Tips on getting the most out of InFlow</div>
-				<div class="field checkbox"><input type="checkbox" name="checkbox-2" checked="checked" />&nbsp;The latest InFlow news and announcements</div>
-				<div class="field checkbox"><input type="checkbox" name="checkbox-3" checked="checked" />&nbsp;Monthly newsletter featuring our best articles</div>
-				<div class="field checkbox"><input type="checkbox" name="checkbox-4" checked="checked" />&nbsp;Account updates</div>
+				{% for not_setting in settings %}
+					{% if not_setting.selected %}
+						<div class="field checkbox"><input type="checkbox" name="checkbox-{{not_setting.id}}" checked="checked" />&nbsp;{{not_setting.text}}</div>
+					{% else %}
+						<div class="field checkbox"><input type="checkbox" name="checkbox-{{not_setting.id}}" />&nbsp;{{not_setting.text}}</div>
+					{% endif %}
+				{% endfor %}
 				<input type="submit" value="Update" />
 				{% csrf_token %}
 			</form>

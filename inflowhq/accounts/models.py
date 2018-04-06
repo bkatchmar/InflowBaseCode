@@ -176,8 +176,22 @@ class UserType(models.Model):
        db_table = "UserType"
        
 class UserAssociatedTypes(models.Model):
-    UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.DO_NOTHING)
-    UserFreelanceType = models.ForeignKey(UserType,on_delete=models.DO_NOTHING)
+    UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.CASCADE)
+    UserFreelanceType = models.ForeignKey(UserType,on_delete=models.CASCADE)
     
     class Meta:
        db_table = "UserAssociatedTypes"
+    
+class NotificationSetting(models.Model):
+    SettingName = models.TextField()
+    
+    class Meta:
+       db_table = "NotificationSetting"
+       
+class UserNotificationSettings(models.Model):
+    UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.CASCADE)
+    Setting = models.ForeignKey(NotificationSetting,on_delete=models.CASCADE)
+    Selected = models.BooleanField()
+    
+    class Meta:
+       db_table = "UserNotificationSettings"
