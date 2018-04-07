@@ -164,7 +164,6 @@ class BaseSitemap(Sitemap):
         return ["index",
                 "how_it_works",
                 "about_us",
-                "blog",
                 "accounts:login",
                 "accounts:create",
                 "htmldemos:freelancer_active_use_specific_project_milestones_upload_idle",
