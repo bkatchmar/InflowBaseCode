@@ -4,21 +4,29 @@
 	<head>
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=20180405" />
+		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=20180407" />
 		<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 		<title>{% block title %}{% endblock %}</title>
 	</head>
 	<body>
 		<header>
 			<div class="logo">
-				<a href="{% url 'base:dashboard' %}">InFlow</a>
+				<a href="{% url 'base:dashboard' %}"><img src="{% static 'img/inflow-logo.png' %}" alt="InFlow is a freelancer payment solution" /></a>
 			</div>
 			<div class="content">
 				<nav>
 					<ul>
 						<li><a href="{% url 'base:dashboard' %}">Home</a></li>
-						<li class="arrow"><a href="{% url 'contracts:home' %}">Projects</a></li>
-						<li><a href="#">Contacts</a></li>
+						{% if view_mode == "projects" %}
+							<li class="arrow"><a href="{% url 'contracts:home' %}">Projects</a></li>
+						{% else %}
+							<li><a href="{% url 'contracts:home' %}">Projects</a></li>
+						{% endif %}
+						{% if view_mode == "contacts" %}
+							<li class="arrow"><a href="{% url 'contracts:my_contacts' %}">Contacts</a></li>
+						{% else %}
+							<li><a href="{% url 'contracts:my_contacts' %}">Contacts</a></li>
+						{% endif %}
 					</ul>
 				</nav>
 				<nav class="alt">

@@ -21,12 +21,26 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
         # Set the context
         context = super(ContractCreationView, self).get_context_data(**kwargs)
         context["projects"] = []
+        context["view_mode"] = "projects"
         
         if settings.StripeConnectAccountKey is None:
             context["needs_stripe"] = True
         else:
             context["needs_stripe"] = False
         
+        return context
+
+class MyContactsView(LoginRequiredMixin, TemplateView):
+    template_name = "projects.contacts.html"
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, **kwargs):
+        # Set the context
+        context = super(MyContactsView, self).get_context_data(**kwargs)
+        context["view_mode"] = "contacts"
         return context
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):

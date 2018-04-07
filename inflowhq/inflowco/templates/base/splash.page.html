@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180405" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180407" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
 	<title>{% block title %}{% endblock %}</title>
@@ -12,7 +12,7 @@
 	<header>
 		<div class="content">
 			<div class="logo">
-				<a href="{% url 'index' %}">InFlow</a>
+				<a href="{% url 'index' %}"><img src="{% static 'img/inflow-logo.png' %}" alt="InFlow is a freelancer payment solution" /></a>
 			</div>
 			<nav>
 				{% if active_link == "how it works" %}
@@ -30,8 +30,6 @@
 				{% else %}
 					<a href="https://medium.com/@InFlowHQ" target="_blank">Blog</a>
 				{% endif %}
-				<a href="{% url 'accounts:login' %}">Sign In</a>
-				<a href="{% url 'accounts:create' %}" class="alt">Sign Up</a>
 			</nav>
 		</div>
 	</header>
@@ -43,7 +41,7 @@
 			<div class="line">
 				<div class="left">
 					<div class="logo">
-						<a href="{% url 'index' %}">InFlow</a>
+						<a href="{% url 'index' %}"><img src="{% static 'img/inflow-logo.png' %}" alt="InFlow is a freelancer payment solution" /></a>
 					</div>
 				</div>
 				<div class="right">

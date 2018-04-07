@@ -4,22 +4,21 @@
 	<head>
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
 		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
-		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=20180406" />
-		<link rel="stylesheet" href="{% static 'css/stripe.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/lf.dashboard.css' %}?d=201804071304" />
 		<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 		<title>{% block title %}{% endblock %}</title>
 	</head>
 	<body>
 		<header>
 			<div class="logo">
-				<a href="{% url 'base:dashboard' %}">InFlow</a>
+				<a href="{% url 'base:dashboard' %}"><img src="{% static 'img/inflow-logo.png' %}" alt="InFlow is a freelancer payment solution" /></a>
 			</div>
 			<div class="content">
 				<nav>
 					<ul>
 						<li><a href="{% url 'base:dashboard' %}">Home</a></li>
 						<li><a href="{% url 'contracts:home' %}">Projects</a></li>
-						<li><a href="#">Contacts</a></li>
+						<li><a href="{% url 'contracts:my_contacts' %}">Contacts</a></li>
 					</ul>
 				</nav>
 				<nav class="alt">

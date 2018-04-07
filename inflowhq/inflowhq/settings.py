@@ -138,7 +138,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_URL = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
 STATIC_ROOT = "https://s3.us-east-2.amazonaws.com/inflowcssjs/"
-LOGIN_URL = "/"
+LOGIN_URL = "/account/login"
 
 EMAIL_HOST= "email-smtp.us-east-1.amazonaws.com"
 EMAIL_HOST_USER = "AKIAI6OO52H7X6ZFGGTQ"

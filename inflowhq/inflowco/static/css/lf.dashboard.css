@@ -16,8 +16,10 @@ input[type="checkbox"] { display: inline-block; }
 
 div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-height: 22px; }
 
-header div.logo { background-color: #FFF; border: solid 1px #979797; color: #FFF; float: none; font-size: 48px; margin: 42px 37px; padding: 23px 9px; }
-header nav { float: none; margin: 70px 0px 15px; text-align: center; }
+header div.logo { background-color: #FFF; border: solid 0px #979797; color: #FFF; float: none; font-size: 48px; margin: 0px; padding: 6px 0px 0px; }
+header div.logo a { display: block; }
+header div.logo img { display: block; height: auto; margin: 0px auto; padding: 15px 0px 0px; width: 110px; }
+header nav { float: none; margin: 10px 0px 15px; text-align: center; }
 header nav ul li { border-top: solid 1px #979797; padding: 19px 0px; position: relative; }
 header nav ul li.arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; bottom: auto; content: ""; display: block; left: auto; position: absolute; right: -16px; top: 15px; width: 0px; }
 header nav ul li.arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; bottom: auto; content: ""; display: block; left: auto; position: absolute; right: -15px; top: 16px; width: 0px; }
@@ -46,8 +48,6 @@ main div.back-links.smaller { padding: 15px 0px; }
 main div.content { border: solid 1px #979797; margin: 0px 25px; min-height: 400px; min-width: 800px; padding: 0px 0px 25px; position: relative; }
 main div.content.outer { border: none; }
 main div.content.project-arrow {}
-main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 185px; width: 0px; }
-main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 186px; width: 0px; }
 main div.content.project-arrow.more-top-padding:before { top: 121px; }
 main div.content.project-arrow.more-top-padding:after { top: 122px; }
 main div.content > div { margin: 0px auto; width: 740px; }
@@ -92,6 +92,11 @@ main div.content div.list div.item div.end-date { padding: 26px 10px; text-align
 main div.content div.list div.item div.icon { border: none; padding: 13px 6px; width: auto; }
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 main div.content div.list div.item div.icon img { height: auto; width: 45px; }
+
+main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 135px; width: 0px; }
+main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 136px; width: 0px; }
+main div.content.contacts-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 190px; width: 0px; }
+main div.content.contacts-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 191px; width: 0px; }
 
 main div.content div.ribbon { border: solid 0px #979797; height: 38px; margin: 25px auto; overflow: visible; }
 main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 1px 0px 1px 1px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; position: relative; text-align: center; width: 185px; }
@@ -519,14 +524,24 @@ main div.content.outer div.tiles.help span.tile span.title { font-size: 20px; fo
 main div.content.outer div.tiles.help span.tile span.info { font-size: 18px; font-style: italic; line-height: 20px; width: 80%; }
 main div.content.outer div.header.help.alt { text-align: left; }
 main div.content.outer div.sub-header.help.alt { text-align: left; }
+
+main div.content div.accordian-holder { overflow: hidden; }
 main div.content div.accordian { float: left; margin: 15px 25px 15px 0px; width: 340px; }
+main div.content div.accordian.contacts { margin: 30px 25px 15px 0px; width: 610px; }
 main div.content div.accordian div.accordian-header { font-size: 18px; padding: 10px 0px; }
 main div.content div.accordian div.items {}
-main div.content div.accordian div.items div.item { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; position: relative; }
-main div.content div.accordian div.items div.item:last-child { border-width: 1px; }
-main div.content div.accordian div.items div.item div.title { font-size: 18px; line-height: 20px; padding: 12px; }
-main div.content div.accordian div.items div.item div.info { display: none; }
+main div.content div.accordian div.items div.item { position: relative; }
+main div.content div.accordian div.items div.item.opened { margin: 0px 0px 30px; }
+main div.content div.accordian div.items div.item div.title { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; font-size: 18px; line-height: 20px; padding: 12px; }
+main div.content div.accordian div.items div.item div.title.last { border-width: 1px; }
+main div.content div.accordian div.items div.item div.info { display: none; min-height: 100px; padding: 5px 15px; }
 main div.content div.accordian div.items div.item div.info.on { display: block; }
+main div.content div.accordian div.items div.item div.row { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; display: none; font-size: 14px; line-height: 16px; margin: 0px; padding: 12px; }
+main div.content div.accordian div.items div.item div.row.last { border-width: 1px; }
+main div.content div.accordian div.items div.item div.row.header { font-size: 18px; line-height: 20px; }
+main div.content div.accordian div.items div.item div.row.on { display: block; }
+main div.content div.accordian div.items div.item div.row span { display: inline-block; font-weight: 700; margin: 0px 10px 0px 0px; vertical-align: top; }
+main div.content div.accordian div.items div.item div.row span.multi-line { display: inline-block; font-weight: 300; }
 main div.content div.accordian div.items div.item div.arrow { cursor: pointer; position: absolute; right: 10px; top: 14px; }
 main div.content.outer div.help-accordian-holder {}
 main div.content.outer div.help-accordian-holder div.help-accordian-row { min-height: 250px; overflow: hidden; }

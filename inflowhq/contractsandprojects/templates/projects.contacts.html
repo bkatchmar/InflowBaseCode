@@ -1,0 +1,40 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}My Contacts{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content contacts-arrow">
+		<div class="header">CONTACTS</div>
+		<div class="accordian-holder">
+			<div class="accordian contacts">
+				<div class="items">
+					<div class="item opened">
+						<div class="title">Contact #1</div>
+						<div class="row header on">Contact Information</div>
+						<div class="row on"><span>Client Name:</span>Russell Wilson</div>
+						<div class="row on"><span>Email:</span>russ1@nfl.com</div>
+						<div class="row on"><span>Phone:</span>123-456-7890</div>
+						<div class="row header on">Business Location</div>
+						<div class="row on last"><span>Address:</span><span class="multi-line">1111 Football Way N.<br />Seattle, WA 11111</span></div>
+						<div class="arrow">&#9650;</div>
+					</div>
+					<div class="item">
+						<div class="title">Contact #2</div>
+						<div class="info">The answer to the question.</div>
+						<div class="arrow">&#9660;</div>
+					</div>
+					<div class="item">
+						<div class="title">Contact #3</div>
+						<div class="info">The answer to the question.</div>
+						<div class="arrow">&#9660;</div>
+					</div>
+					<div class="item">
+						<div class="title last">Contact #4</div>
+						<div class="info">The answer to the question.</div>
+						<div class="arrow">&#9660;</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
