@@ -1,0 +1,42 @@
+{% extends 'base/dashboard.home.lowfi.html' %}
+{% block title %}InFlow Help Center{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content outer">
+		<div class="header">HELP CENTER</div>
+		<div class="help header">What can we help you with?</div>
+		<div class="help sub-header">If you ever need to get in contact with us, we're available for you on Facebook, Twitter, and Instagram, or email us at support@inflow.co.</div>
+		<div class="help tiles">
+			<a href="{% url 'base:help_topic_inflow_101' %}">
+				<span class="tile">
+					<span class="title">InFlow 101</span>
+					<span class="info">General information about this topic.</span>
+				</span>
+			</a>
+			<a href="{% url 'base:help_topic_inflow_101' %}">
+				<span class="tile">
+					<span class="title">Invoicing</span>
+					<span class="info">General information about this topic.</span>
+				</span>
+			</a>
+			<a href="{% url 'base:help_topic_inflow_101' %}">
+				<span class="tile">
+					<span class="title">Contracts</span>
+					<span class="info">General information about this topic.</span>
+				</span>
+			</a>
+			<a href="{% url 'base:help_topic_inflow_101' %}">
+				<span class="tile">
+					<span class="title">Another Topic</span>
+					<span class="info">General information about this topic.</span>
+				</span>
+			</a>
+			<a href="{% url 'base:help_topic_inflow_101' %}">
+				<span class="tile">
+					<span class="title">Another Topic</span>
+					<span class="info">General information about this topic.</span>
+				</span>
+			</a>
+		</div>
+	</div>
+{% endblock %}

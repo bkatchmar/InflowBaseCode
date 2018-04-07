@@ -124,15 +124,6 @@ class BlogHomeView(TemplateView):
 
 class SavePdfTrials(PDFTemplateView):
     template_name = "basepdftemplate.html"
-
-class UserDashboardView(LoginRequiredMixin,TemplateView):
-    template_name = "dashboard.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        return render(request, self.template_name)
     
 class UserDashboardLowFi(LoginRequiredMixin,TemplateView):
     template_name = "user.dashboard.html"
@@ -144,6 +135,28 @@ class UserDashboardLowFi(LoginRequiredMixin,TemplateView):
     def get_context_data(self, request, **kwargs):
         context = super(UserDashboardLowFi, self).get_context_data(**kwargs)
         context["first_name"] = request.user.first_name
+        return context
+
+class HelpCenter(LoginRequiredMixin,TemplateView):
+    template_name = "help.center.html"
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = super(HelpCenter, self).get_context_data(**kwargs)
+        return context
+    
+class HelpTopicInflow101(LoginRequiredMixin,TemplateView):
+    template_name = "help.topic.inflow.101.html"
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def get_context_data(self, **kwargs):
+        context = super(HelpTopicInflow101, self).get_context_data(**kwargs)
         return context
     
 class BaseSitemap(Sitemap):
