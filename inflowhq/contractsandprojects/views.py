@@ -42,6 +42,30 @@ class MyContactsView(LoginRequiredMixin, TemplateView):
         context = super(MyContactsView, self).get_context_data(**kwargs)
         context["view_mode"] = "contacts"
         return context
+
+class CreateContractStepOne(LoginRequiredMixin, TemplateView):
+    template_name = "contract.creation.first.step.html"
+    
+    def get(self, request):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        context = self.get_context_data()
+        
+        action_taken = request.POST.get("action", "")
+        # Back
+        # Continue
+        # Save for Later
+        print(action_taken)
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, **kwargs):
+        # Set the context
+        context = super(CreateContractStepOne, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        return context
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"

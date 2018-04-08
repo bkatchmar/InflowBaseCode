@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.utils import timezone
-from inflowco.models import Currency
+from inflowco.models import Country, Currency
 
 CONTRACT_TYPES = (
                   ('d', 'DELIVERABLE BASED'),
@@ -27,13 +27,30 @@ RELATIONSHIP_TYPE = (
                   ('c', 'CLIENT'),
                   )
 
+CONTRACT_STATES = (
+                    ('c', 'Being Created'),
+                    ('n', 'Not Started'),
+                    ('u', 'Under Review'),
+                    ('r', 'Revisions Being Made'),
+                    ('p', 'In Progress'),
+                    ('x', 'Completed'),
+                    )
+
+OWNERSHIP_TYPE = (
+                  ('i', 'I own this work'),
+                  ('u', 'Client owns this work'),
+                  )
+
 class Contract(models.Model):
     Creator = models.ForeignKey(User,unique=False,on_delete=models.CASCADE)
     Name = models.CharField(max_length=200)
+    Description = models.TextField(max_length=500,null=True)
     ContractType = models.CharField(max_length=1,choices=CONTRACT_TYPES,default='d')
     StartDate = models.DateField(auto_now=True)
     EndDate = models.DateField(auto_now=True)
     UrlSlug = models.SlugField(max_length=50)
+    ContractState = models.CharField(max_length=1,choices=CONTRACT_STATES,default='c')
+    Ownership = models.CharField(max_length=1,choices=OWNERSHIP_TYPE,default='i')
 
     def CreateNewMilestone(self):
         newlyCreated = Milestone.objects.create(MilestoneContract=self)
@@ -65,14 +82,23 @@ class Contract(models.Model):
 class Recipient(models.Model):
     ContractForRecipient = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
     Name = models.CharField(max_length=200)
-    Address = models.CharField(max_length=200)
-    State = models.CharField(max_length=100)
-    Email = models.EmailField()
-    City = models.CharField(max_length=200)
-    Country = models.CharField(max_length=100)
+    BillingName = models.CharField(max_length=200,null=False)
+    PhoneNumber = models.CharField(max_length=20,null=True)
+    EmailAddress = models.EmailField()
 
     class Meta:
        db_table = 'ContractRecipient'
+
+class RecipientAddress(models.Model):
+    RecipientForAddress = models.ForeignKey(Recipient,unique=False,on_delete=models.CASCADE)
+    Address1 = models.CharField(max_length=200)
+    Address2 = models.CharField(max_length=200)
+    State = models.CharField(max_length=100)
+    City = models.CharField(max_length=200)
+    Country = models.ForeignKey(Country,unique=False,null=True,on_delete=models.SET_NULL)
+    
+    class Meta:
+       db_table = 'ContractRecipientAddress'
 
 class Milestone(models.Model):
     IdMilestone = models.AutoField(primary_key=True,verbose_name="IdMilestone")

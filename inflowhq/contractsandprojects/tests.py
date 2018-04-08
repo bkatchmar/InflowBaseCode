@@ -86,8 +86,8 @@ class ContractAndMilestoneModelCreationTest(TestCase):
         secondContract.CreateNewMilestone()
         
         # Contract Recipients
-        Recipient.objects.create(ContractForRecipient=firstContract,Name="John Smith",Address="123 Anywhere Lane",State="New York",Email="bkatchmar@gmail.com",City="New York",Country="United States of America")
-        Recipient.objects.create(ContractForRecipient=secondContract,Name="Jane Doe",Address="123 Anywhere Lane",State="New York",Email="bkatchmar@gmail.com",City="New York",Country="United States of America")
+        Recipient.objects.create(ContractForRecipient=firstContract,Name="John Smith",BillingName="John Smith")
+        Recipient.objects.create(ContractForRecipient=secondContract,Name="Jane Doe",BillingName="Jane Doe")
         
         # Contract Payment Plan
         PaymentPlan.objects.create(ContractForPaymentPlan=firstContract,ContractCurrency=usd)
@@ -151,8 +151,8 @@ class ContractRelationshipTest(TestCase):
         contract2.save()
         
         # Contract Recipients
-        Recipient.objects.create(ContractForRecipient=contract1,Name="Brian Katchmar",Address="64-34 102ND STREET, APT 9H",State="New York",Email="brian@workinflow.co",City="Rego Park",Country="United States of America")
-        Recipient.objects.create(ContractForRecipient=contract2,Name="Brian Katchmar",Address="64-34 102ND STREET, APT 9H",State="New York",Email="brian@workinflow.co",City="Rego Park",Country="United States of America")
+        Recipient.objects.create(ContractForRecipient=contract1,Name="Brian Katchmar",BillingName="John Smith")
+        Recipient.objects.create(ContractForRecipient=contract2,Name="Brian Katchmar",BillingName="John Smith")
         
         # Contract Payment Plan
         PaymentPlan.objects.create(ContractForPaymentPlan=contract1,ContractCurrency=usd)

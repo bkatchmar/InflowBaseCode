@@ -10,7 +10,7 @@
 				<div class="message-bubble">Set up Stripe in order to create your first project!</div>
 				<a href="{% url 'accounts:edit_account' %}">Create Project</a>
 			{% else %}
-				<a href="#">Create Project</a>
+				<a href="{% url 'contracts:create_contract_step_1' %}">Create Project</a>
 			{% endif %}
 		</div>
 		<div class="list">
