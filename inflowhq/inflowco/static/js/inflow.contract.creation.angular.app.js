@@ -1,0 +1,1 @@
+var stepOneApp = angular.module("createContractStepOneApp", []);
