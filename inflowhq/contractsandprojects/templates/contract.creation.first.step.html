@@ -44,8 +44,8 @@
 					<span class="field"><input type="text" placeholder="Company Name" name="company-name" /></span>
 				</div>
 				<div class="input-field text-single-line">
-					<span class="label">Client’s Billing Name*:</span>
-					<span class="field"><input type="text" placeholder="Full Name" name="client-biling-name" required /></span>
+					<span class="label">Client's Billing Name*:</span>
+					<span class="field"><input type="text" placeholder="Full Name" name="client-billing-name" required /></span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Email*:</span>
@@ -54,12 +54,29 @@
 				<div class="input-field text-single-line phone-number">
 					<span class="label">Phone Number:</span>
 					<span class="field">
-						<input type="number" name="area-code" placeholder="xxx" />
+						<input type="number" name="phone-area-1" placeholder="xxx" />
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="first-part" placeholder="xxx" />
+						<input type="number" name="phone-area-2" placeholder="xxx" />
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="second-part" placeholder="xxxx" />
+						<input type="number" name="phone-area-3" placeholder="xxxx" />
 					</span>
+				</div>
+				<div class="header sub">Business Location</div>
+				<div class="input-field text-single-line">
+					<span class="label">Business Address 1*:</span>
+					<span class="field"><input type="text" placeholder="Business Address 1" name="client-business-address-1-1" required /></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">Business Address 2:</span>
+					<span class="field"><input type="text" placeholder="Business Address 2" name="client-business-address-2-1" /></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">City*:</span>
+					<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-city-1" required /></span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label">State or Province*:</span>
+					<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-state-1" required /></span>
 				</div>
 				<div class="addition-buttons">
 					<a href="#">Add business location</a>

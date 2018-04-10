@@ -56,8 +56,15 @@ class Contract(models.Model):
         newlyCreated = Milestone.objects.create(MilestoneContract=self)
         return newlyCreated
 
-    def CreateSlug(self):
+    def create_slug(self):
         self.UrlSlug = slugify('%s' % (self.Name[:50]))
+        
+    def get_contract_state_view(self):
+        for t in CONTRACT_STATES:
+            if self.ContractState == t[0]:
+                return t[1]
+            
+        return ""
 
     def DoesThisUserHavePermissionToSeeContract(self,loggedinuser):
         relationship = ""
@@ -85,6 +92,11 @@ class Recipient(models.Model):
     BillingName = models.CharField(max_length=200,null=False)
     PhoneNumber = models.CharField(max_length=20,null=True)
     EmailAddress = models.EmailField()
+    
+    def create_address_for_recipient(self):
+        default_country = Country.objects.first()
+        addr = RecipientAddress.objects.create(RecipientForAddress=self,Address1="",Address2="",State="",City="",Country=default_country) 
+        return addr
 
     class Meta:
        db_table = 'ContractRecipient'

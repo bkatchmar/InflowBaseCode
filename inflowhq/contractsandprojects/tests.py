@@ -65,7 +65,7 @@ class ContractAndMilestoneModelCreationTest(TestCase):
                             StartDate=date(2017,9,20),
                             EndDate=date(2017,9,29))
         
-        firstContract.CreateSlug()
+        firstContract.create_slug()
         firstContract.save()
         
         firstContract.CreateNewMilestone()
@@ -79,7 +79,7 @@ class ContractAndMilestoneModelCreationTest(TestCase):
                             StartDate=date(2017,10,2),
                             EndDate=date(2017,10,5))
         
-        secondContract.CreateSlug()
+        secondContract.create_slug()
         secondContract.save()
         
         secondContract.CreateNewMilestone()
@@ -143,11 +143,11 @@ class ContractRelationshipTest(TestCase):
         
         # Contracts
         contract1 = Contract.objects.create(Creator=user2,Name="Josh Contract",StartDate=date(2017,10,5),EndDate=date(2017,10,15))
-        contract1.CreateSlug()
+        contract1.create_slug()
         contract1.save()
         
         contract2 = Contract.objects.create(Creator=user4,Name="Erin Contract",StartDate=date(2017,10,16),EndDate=date(2017,10,25))
-        contract2.CreateSlug()
+        contract2.create_slug()
         contract2.save()
         
         # Contract Recipients
