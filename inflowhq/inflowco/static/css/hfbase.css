@@ -23,7 +23,7 @@ strong { font-weight: bold; }
 /* The Beginning of InFlow Base CSS Overrides */
 /* High Level Styles */
 body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
-header { background-color: #3E5A7C; height: 60px; position: fixed; width: 100%; z-index: 50; }
+header { background-color: #3E5A7C; border-bottom: 1px solid #FFF; height: 60px; position: fixed; width: 100%; z-index: 50; }
 main { padding: 60px 0px 0px; }
 footer {}
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
@@ -128,7 +128,7 @@ main form.onboarding-form select { height: 39px; width: 332px; }
 
 /* Splash Page */
 main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 15px 0px; position: relative; text-align: center; }
-main div.home-top.alt { padding: 60px 0px; }
+main div.home-top.alt { height: 650px; padding: 0px; }
 main div.home-top h1 { font-size: 34px; font-weight: 700; line-height: 38px; padding: 80px 0px 50px; position: relative; z-index: 40; }
 main div.home-top h1.standalone { padding: 15px 0px; position: relative; z-index: 40; }
 main div.home-top h2 { font-size: 34px; font-weight: 300; line-height: 38px; padding: 5px 80px 35px; position: relative; z-index: 40; }
@@ -136,16 +136,11 @@ main div.home-top p { font-size: 26px; font-weight: 700; line-height: 30px; padd
 main div.home-top img { height: auto; left: 0px; opacity: 0.3; position: absolute; top: 0px; width: 100%; }
 main div.home-tile { background-color: #F8F8F8; border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
 main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
+main div.home-top.alt h1 { padding: 180px 0px 50px; }
 
-main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 930px; }
-main div.home-tile div.points span.number { display: inline-block; left: 0px; font-size: 23px; line-height: 30px; padding: 0px; position: absolute; top: 90px; }
-main div.home-tile div.points span.number img { height: 75px; left: 5px; position: absolute; top: -110px; width: auto; }
-main div.home-tile div.points span.number.one { left: 30px; }
-main div.home-tile div.points span.number.two { left: 341px; }
-main div.home-tile div.points span.number.three { left: 595px; }
-main div.home-tile div.points span.number.one img { left: 25px; }
-main div.home-tile div.points span.number.two img { left: 25px; }
-main div.home-tile div.points span.number.three img { left: 62px; }
+main div.home-tile div.points { margin: 25px auto 15px; max-width: 1280px; padding: 0px; position: relative; text-align: center; }
+main div.home-tile div.points span.number { display: inline-block; font-size: 23px; line-height: 30px; padding: 0px; width: 300px; }
+main div.home-tile div.points span.number img { display: block; height: auto; margin: 0px auto 15px; width: 75px; }
 main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
 
 main div.home-tile h2 { font-size: 36px; font-weight: 700; line-height: 42px; padding: 25px 0px 45px; text-align: center; }
@@ -199,7 +194,7 @@ div.home-stats div.stat.one {}
 div.home-stats div.stat.two { left: 385px; }
 div.home-stats div.stat.three { left: 765px; }
 div.home-stats div.stat div.header { font-size: 35px; font-weight: 700; line-height: 36px; padding: 0px 0px 15px; }
-div.home-stats div.stat div.description { font-size: 22px; font-weight: 100; line-height: 24px; }
+div.home-stats div.stat div.description { font-size: 22px; font-weight: 100; line-height: 24px; text-align: left; }
 
 div.blog-container { margin: 0px auto; overflow: hidden; padding: 50px 0px; width: 1130px; }
 div.blog-container div.blogs { float: left; width: 720px; }
