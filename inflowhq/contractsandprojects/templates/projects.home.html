@@ -35,6 +35,18 @@
 					<div class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" /></a></div>
 				</div>
 			{% endfor %}
+			{% for project in projects %}
+				<div class="item">
+					<span class="info">
+						<span class="title">{{ project.project_title }}</span>
+						<span class="description">{{ project.project_client }}</span>
+					</span>
+					<span class="progress">{{ project.progress }}</span>
+					<span class="start-date">{{ project.start_date }}</span>
+					<span class="end-date">{{ project.end_date }}</span>
+					<span class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" /></a></span>
+				</div>
+			{% endfor %}
 		</div>
 	</div>
 {% endblock %}

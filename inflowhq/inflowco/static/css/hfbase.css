@@ -23,8 +23,8 @@ strong { font-weight: bold; }
 /* The Beginning of InFlow Base CSS Overrides */
 /* High Level Styles */
 body { background-color: #FFF; color: #000; font-family: Lato, Verdana, sans-serif; }
-header { background-color: #3E5A7C; height: 103px; position: fixed; width: 100%; z-index: 50; }
-main { padding: 103px 0px 0px; }
+header { background-color: #3E5A7C; height: 60px; position: fixed; width: 100%; z-index: 50; }
+main { padding: 60px 0px 0px; }
 footer {}
 a, a:link, a:visited, a:hover, a:active { color: #000; text-decoration: none; }
 
@@ -54,13 +54,13 @@ header div.logo a:link,
 header div.logo a:visited,
 header div.logo a:hover,
 header div.logo a:active { color: #FFF; display: block; }
-header div.logo img { height: auto; width: 110px; }
-header nav { float: right; margin: 45px 50px 0px 0px; }
+header div.logo img { height: auto; width: 60px; }
+header nav { float: right; margin: 22px 50px 0px 0px; }
 header nav a,
 header nav a:link,
 header nav a:visited,
 header nav a:hover,
-header nav a:active { color: #FFF; font-size: 20px; font-weight: 500; padding: 6px 25px; }
+header nav a:active { color: #FFF; font-size: 14px; font-weight: 500; padding: 6px 25px; }
 header nav a.on,
 header nav a.on:link,
 header nav a.on:visited,
@@ -127,32 +127,35 @@ main form.onboarding-form input[type="password"], select {  margin: 9px auto; wi
 main form.onboarding-form select { height: 39px; width: 332px; }
 
 /* Splash Page */
-main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 50px 0px; position: relative; text-align: center; }
+main div.home-top { background-image: linear-gradient(227deg, #fad961, #f76b1c); color: #3E5A7C; padding: 15px 0px; position: relative; text-align: center; }
+main div.home-top.alt { padding: 60px 0px; }
 main div.home-top h1 { font-size: 34px; font-weight: 700; line-height: 38px; padding: 80px 0px 50px; position: relative; z-index: 40; }
-main div.home-top h1.standalone { padding: 80px 0px; position: relative; z-index: 40; }
+main div.home-top h1.standalone { padding: 15px 0px; position: relative; z-index: 40; }
 main div.home-top h2 { font-size: 34px; font-weight: 300; line-height: 38px; padding: 5px 80px 35px; position: relative; z-index: 40; }
-main div.home-top p { font-size: 26px; font-weight: 500; line-height: 30px; padding: 40px 0px 25px; position: relative; z-index: 40; }
+main div.home-top p { font-size: 26px; font-weight: 700; line-height: 30px; padding: 40px 0px 25px; position: relative; z-index: 40; }
 main div.home-top img { height: auto; left: 0px; opacity: 0.3; position: absolute; top: 0px; width: 100%; }
 main div.home-tile { background-color: #F8F8F8; border: solid 1px #979797; color: #3E5A7C; padding: 10px; position: relative; }
 main div.home-tile.alt { background-color: #3E5A7C; color: #F6F4F0; }
 
-main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 800px; }
-main div.home-tile div.points span.number { display: inline-block; left: 0px; padding: 0px; position: absolute; top: 90px; }
-main div.home-tile div.points span.number img { height: 75px; left: 5px; position: absolute; top: -90px; width: auto; }
+main div.home-tile div.points { margin: 25px auto 15px; padding: 60px 0px; position: relative; width: 930px; }
+main div.home-tile div.points span.number { display: inline-block; left: 0px; font-size: 23px; line-height: 30px; padding: 0px; position: absolute; top: 90px; }
+main div.home-tile div.points span.number img { height: 75px; left: 5px; position: absolute; top: -110px; width: auto; }
 main div.home-tile div.points span.number.one { left: 30px; }
-main div.home-tile div.points span.number.two { left: 330px; }
+main div.home-tile div.points span.number.two { left: 341px; }
 main div.home-tile div.points span.number.three { left: 595px; }
-main div.home-tile div.points span.number.one img { left: 18px; }
-main div.home-tile div.points span.number.two img { left: 28px; }
-main div.home-tile div.points span.number.three img { left: 47px; }
+main div.home-tile div.points span.number.one img { left: 25px; }
+main div.home-tile div.points span.number.two img { left: 25px; }
+main div.home-tile div.points span.number.three img { left: 62px; }
 main div.home-tile h3 { font-size: 30px; font-weight: 700; line-height: 32px; padding: 15px 0px 30px; text-align: center; }
 
 main div.home-tile h2 { font-size: 36px; font-weight: 700; line-height: 42px; padding: 25px 0px 45px; text-align: center; }
 main div.home-tile h2.alt { color: #3E5A7C; }
 main div.home-tile.text-alt { color: #424753; }
-main div.home-tile p.heading { font-size: 24px; line-height: 30px; margin: 0px auto; padding: 25px 0px; text-align: center; width: 980px; }
+main div.home-tile p.heading { font-size: 17px; line-height: 25px; margin: 0px auto; padding: 20px 0px; text-align: center; width: 980px; }
 main div.home-tile div.buttons { padding: 50px 0px; text-align: center; }
 main div.home-tile div.buttons a { font-size: 18px; margin: 0px 40px; }
+
+main div.home-tile > img { height: auto; left: -409px; opacity: 0.1; position: absolute; top: 300px; width: 900px; }
 
 /* Email Sign Up */
 main form.sign-up { padding: 25px 0px 60px; position: relative; z-index: 40; }
@@ -160,7 +163,7 @@ main form.sign-up input { display: inline-block; font-size: 18px; line-height: 2
 main form.sign-up input[type="text"],
 main form.sign-up input[type="email"],
 main form.sign-up input[type="password"] { margin: 0px 10px 0px 0px; width: 330px; }
-main form.sign-up input[type="submit"] { padding: 10px 0px; }
+main form.sign-up input[type="submit"] { font-weight: 500; padding: 10px 0px; }
 
 /* How It Works */
 div.how-it-works-tile { color: #3E5A7C; margin: 85px auto; overflow: hidden; width: 800px; }
@@ -168,8 +171,8 @@ div.how-it-works-tile div { float: left; }
 div.how-it-works-tile div.text { padding: 35px 0px; width: 300px; }
 div.how-it-works-tile div.text.left { margin: 0px 200px 0px 0px; }
 div.how-it-works-tile div.text.right { margin: 0px 0px 0px 200px; }
-div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 300; line-height: 28px; }
-div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 22px; padding: 20px 0px; }
+div.how-it-works-tile div.text h4 { font-size: 25px; font-weight: 700; line-height: 28px; }
+div.how-it-works-tile div.text p { font-size: 20px; font-weight: 300; line-height: 26px; padding: 20px 0px; }
 div.how-it-works-tile div.text a.inflow-btn { background-color: #3E5A7C; display: block; text-align: center; }
 div.how-it-works-tile div.photo { width: 290px; }
 div.how-it-works-tile div.photo img { height: 260px; padding: 0px 0px; width: auto; }
@@ -179,15 +182,15 @@ main div.how-it-works-feature { color: #000; margin: 70px auto; overflow: hidden
 main div.how-it-works-feature div.image { float: left; width: 200px; }
 main div.how-it-works-feature div.image img { height: auto; width: 100%; }
 main div.how-it-works-feature div.text { float: left; padding: 0px 40px; width: 695px; }
-main div.how-it-works-feature div.text h3 { font-size: 32px; line-height: 36px; padding: 0px 0px 30px; text-align: left; }
-main div.how-it-works-feature div.text p { font-size: 22px; line-height: 26px; text-align: left; }
+main div.how-it-works-feature div.text h3 { font-size: 25px; line-height: 36px; padding: 0px 0px 30px; text-align: left; }
+main div.how-it-works-feature div.text p { font-size: 17px; line-height: 26px; text-align: left; }
 
 main div.human { margin: 0px auto; overflow: hidden; padding: 25px 0px; width: 1024px; }
 main div.human div.portrait { border: solid 1px #979797; box-shadow: 0 2px 4px 0 rgba(246, 244, 240, 0.5); float: left; height: 292px; width: 450px; }
 main div.human div.bio { float: left; text-align: center; width: 570px; }
-main div.human div.bio div.heading { font-size: 28px; font-weight: 700; line-height: 30px; padding: 0px 0px 35px; }
+main div.human div.bio div.heading { font-size: 25px; font-weight: 700; line-height: 30px; padding: 0px 0px 35px; }
 main div.human div.bio div.heading span.title { font-style: italic; }
-main div.human div.bio div.text { font-size: 22px; line-height: 28px; padding: 0px 25px 25px; }
+main div.human div.bio div.text { font-size: 17px; line-height: 28px; padding: 0px 25px 25px; }
 
 /* Home Page Stats */
 div.home-stats { margin: 0px auto; padding: 75px 0px; position: relative; width: 1024px; }
@@ -196,7 +199,7 @@ div.home-stats div.stat.one {}
 div.home-stats div.stat.two { left: 385px; }
 div.home-stats div.stat.three { left: 765px; }
 div.home-stats div.stat div.header { font-size: 35px; font-weight: 700; line-height: 36px; padding: 0px 0px 15px; }
-div.home-stats div.stat div.description { font-size: 22px; font-weight: 300; line-height: 24px; }
+div.home-stats div.stat div.description { font-size: 22px; font-weight: 100; line-height: 24px; }
 
 div.blog-container { margin: 0px auto; overflow: hidden; padding: 50px 0px; width: 1130px; }
 div.blog-container div.blogs { float: left; width: 720px; }
@@ -228,10 +231,10 @@ div.blog-container div.nav-elements div.blog-highlights div.container article di
 div.blog-container div.nav-elements div.blog-highlights div.container article:last-child { border-bottom: none; }
 
 /* Footer */
-footer { background-color: #3E5A7C; height: 200px; }
+footer { background-color: #3E5A7C; height: auto; padding: 0px; }
 footer div.line { overflow: hidden; }
 footer div.line div.left { float: left; }
-footer div.line div.left p { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 0px 15px; width: 430px; }
+footer div.line div.left p { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 10px 15px; width: 430px; }
 footer div.line div.right { float: right; }
 footer div.line div.right p { padding: 0px 25px 0px 0px; }
 footer div.line div.right p a { color: #FFF; display: inline-block; font-size: 15px; font-weight: 300; line-height: 16px; padding: 0px 10px; }
@@ -241,7 +244,7 @@ footer div.logo a,
 footer div.logo a:link,
 footer div.logo a:visited,
 footer div.logo a:hover,
-footer div.logo img { height: auto; width: 110px; }
+footer div.logo img { height: auto; width: 60px; }
 footer div.logo a:active { color: #FFF; }
-footer div.social-media { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 45px 25px 0px 0px; }
-footer div.social-media img { height: auto; width: 20px; }
+footer div.social-media { color: #FFF; font-size: 13px; font-weight: 300; line-height: 14px; padding: 10px 25px 15px 150px; }
+footer div.social-media img { height: auto; padding: 0px 10px; width: 25px; }

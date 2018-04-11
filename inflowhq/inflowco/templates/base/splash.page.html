@@ -3,7 +3,7 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180407" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180408" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
 	<title>{% block title %}{% endblock %}</title>
@@ -43,23 +43,20 @@
 					<div class="logo">
 						<a href="{% url 'index' %}"><img src="{% static 'img/inflow-logo.png' %}" alt="InFlow is a freelancer payment solution" /></a>
 					</div>
-				</div>
-				<div class="right">
-					<div class="social-media"><img src="{% static 'img/twitter_social_icon_circle_color.png' %}" alt="InFlow on Twitter" /> 1024 | <img src="{% static 'img/fb-f-logo__blue_29.png' %}" alt="InFlow On Facebook" /> 562 | <img src="{% static 'img/in-white-21px-r.png' %}" alt="InFlow on LinkedIn" /> 356</div>
-				</div>
-			</div>
-			<div class="line">
-				<div class="left">
 					<p>&copy; 2018 InFlow Inc. All rights reserved. <br />Inflow is a registered trademark of Inflow Inc. Terms and conditions, features, support, pricing and service options subject to change without notice.</p>
 				</div>
 				<div class="right">
-					<p>
-						<a href="{% url 'index' %}">Home</a>
-						<a href="{% url 'how_it_works' %}">How it works</a>
-						<a href="{% url 'about_us' %}">About Us</a>
-						<a href="{% url 'blog' %}">Blog</a>
-						<a href="{% url 'accounts:login' %}" class="sign-in">Sign in</a>
-					</p>
+					<div class="social-media"><img src="{% static 'img/twitter_social_icon_circle_color.png' %}" alt="InFlow on Twitter" /> | <img src="{% static 'img/fb-f-logo__blue_29.png' %}" alt="InFlow On Facebook" /> | <img src="{% static 'img/in-white-21px-r.png' %}" alt="InFlow on LinkedIn" /></div>
+					<div class="line">
+						<div class="right">
+							<p>
+								<a href="{% url 'index' %}">Home</a>
+								<a href="{% url 'how_it_works' %}">How it works</a>
+								<a href="{% url 'about_us' %}">About Us</a>
+								<a href="{% url 'blog' %}">Blog</a>
+							</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

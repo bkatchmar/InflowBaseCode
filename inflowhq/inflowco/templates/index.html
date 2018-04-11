@@ -10,7 +10,7 @@
 		{% endif %}
 		<form class="sign-up" method="post">
 			<input type="email" name="email-address" placeholder="Email address" required />
-			<input type="submit" value="Start your free trial" />
+			<input type="submit" value="Join our Beta Waitlist" />
 			{% csrf_token %}
 		</form>
 		<img src="https://s3.us-east-2.amazonaws.com/inflowcssjs/img/office-594132_1920.jpg" alt="InFlow Office Shot" />
@@ -24,7 +24,7 @@
 			</span>
 			<span class="number two">
 				<img src="{% static 'img/if_alarm_on_2897845.png' %}" alt="InFlow Benefit 2" />
-				Get paid in faster
+				Get paid faster
 			</span>
 			<span class="number three">
 				<img src="{% static 'img/if_075_402140.png' %}" alt="InFlow Benefit 3" />
@@ -33,11 +33,12 @@
 		</div>
 	</div>
 	<div class="home-tile">
+		<img src="{% static 'img/inflow-arrow-icon.png' %}" alt="InFlow Arrow" />
 		<h3>How InFlow Works</h3>
 		<div class="how-it-works-tile">
 			<div class="text left">
 				<h4>Build a legally binding contract</h4>
-				<p>We make it easy to understand contract terms so you and your client know exactly what to expect before, during and after the course of a project</p>
+				<p>We make it easy to understand contract terms so you and your client know exactly what to expect before, during and after the course of a project.</p>
 			</div>
 			<div class="photo">
 				<img src="{% static 'img/if_d36_1121663.png' %}" alt="InFlow allows to easily onboard clients faster" />
@@ -55,7 +56,7 @@
 		<div class="how-it-works-tile">
 			<div class="text left">
 				<h4>Securely Preview Your Work Without Giving Access to Source Files</h4>
-				<p>Each time a milestone is reached, your files can be uploaded to our platform and securely shared with clients for feedback.  Once the agreed upon milestone is paid for through our platform, the files are automatically sent to your client</p>
+				<p>Each time a milestone is reached, your files can be uploaded to our platform and securely shared with clients for feedback. Once the agreed upon milestone is paid for through our platform, the files are automatically sent to your client.</p>
 			</div>
 			<div class="photo">
 				<img src="{% static 'img/stripe-logo.png' %}" alt="Get paid on InFlow with Stripe" class="stripe" />
@@ -81,12 +82,12 @@
 	</div>
 	<div class="home-top">
 		<p>Sign up to receive free updates as soon as they hit!</p>
-		{% if sign_up_msg != "" %}
+		{% if sign_up_msg %}
 			<p>{{sign_up_msg}}</p>
 		{% endif %}
 		<form class="sign-up" method="post">
 			<input type="email" name="email-address" placeholder="Email address" required />
-			<input type="submit" value="Start your free trial" />
+			<input type="submit" value="Join our Beta Waitlist" />
 			{% csrf_token %}
 		</form>
 	</div>
