@@ -138,7 +138,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         if company_name != "":
             created_contract_recipient.Name = company_name
         if phone_area_1 != "" and phone_area_2 != "" and phone_area_3 != "":
-            created_contract_recipient.PhoneNumber = ("%s-%s-%s", phone_area_1, phone_area_2, phone_area_3)
+            created_contract_recipient.PhoneNumber = ("%s-%s-%s" % (phone_area_1, phone_area_2, phone_area_3))
         
         created_contract_recipient.save()
         

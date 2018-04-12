@@ -13,40 +13,35 @@
 				<a href="{% url 'contracts:create_contract_step_1' %}">Create Project</a>
 			{% endif %}
 		</div>
-		<div class="list">
-			<div class="label">
-				<span class="col1">CURRENT PROJECTS</span>
-				<span class="col2">PROGRESS</span>
-				<span class="col3">START DATE</span>
-				<span class="col4">END DATE</span>
-			</div>
-			{% if projects|length == 0 %}
-				<div class="empty-message">You do not currently have any projects. Create one now to get started!</div>
-			{% endif %}
-			{% for project in projects %}
-				<div class="item">
-					<div class="info">
-						<div class="title">{{ project.project_title }}</div>
-						<div class="description">{{ project.project_client }}</div>
-					</div>
-					<div class="progress">{{ project.progress }}</div>
-					<div class="start-date">{{ project.start_date }}</div>
-					<div class="end-date">{{ project.end_date }}</div>
-					<div class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" /></a></div>
-				</div>
-			{% endfor %}
-			{% for project in projects %}
-				<div class="item">
-					<span class="info">
-						<span class="title">{{ project.project_title }}</span>
-						<span class="description">{{ project.project_client }}</span>
-					</span>
-					<span class="progress">{{ project.progress }}</span>
-					<span class="start-date">{{ project.start_date }}</span>
-					<span class="end-date">{{ project.end_date }}</span>
-					<span class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" /></a></span>
-				</div>
-			{% endfor %}
-		</div>
+		<table class="list">
+			<thead>
+				<tr>
+					<th class="info">CURRENT PROJECTS</th>
+					<th class="progress">PROGRESS</th>
+					<th class="start-date">START DATE</th>
+					<th class="end-date">END DATE</th>
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if projects|length == 0 %}
+					<tr>
+						<td colspan="5" class="empty-message">You do not currently have any projects. Create one now to get started!</td>
+					</tr>
+				{% endif %}
+				{% for project in projects %}
+					<tr>
+						<td class="info">
+							<span class="title">{{ project.project_title }}</span>
+							<span class="description">{{ project.project_client }}</span>
+						</td>
+						<td class="progress">{{ project.progress }}</td>
+						<td class="start-date">{{ project.start_date }}</td>
+						<td class="end-date">{{ project.end_date }}</td>
+						<td class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 {% endblock %}

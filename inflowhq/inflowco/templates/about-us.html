@@ -1,5 +1,6 @@
 {% extends 'base/splash.page.html' %}
-{% block title %}Welcome to InFlow{% endblock %}
+{% load staticfiles %}
+{% block title %}About Inflow{% endblock %}
 {% block main_tag %}
 	<div class="home-top">
 		<h1 class="standalone">About Us</h1>
@@ -14,7 +15,7 @@
 	<div class="home-tile alt">
 		<h3>The Humans Behind InFlow</h3>
 		<div class="human">
-			<div class="portrait"></div>
+			<div class="portrait"><img src="{% static 'img/about-inflow-josh.png' %}" alt="Josh Blank" /></div>
 			<div class="bio">
 				<div class="heading">
 					<span class="name">Josh Blank,</span>
@@ -25,7 +26,7 @@
 			</div>
 		</div>
 		<div class="human">
-			<div class="portrait"></div>
+			<div class="portrait"><img src="{% static 'img/about-inflow-kenny.png' %}" alt="Kenny Kim" /></div>
 			<div class="bio">
 				<div class="heading">
 					<span class="name">Kenny Kim,</span>
@@ -35,7 +36,7 @@
 			</div>
 		</div>
 		<div class="human">
-			<div class="portrait"></div>
+			<div class="portrait"><img src="{% static 'img/about-inflow-brian.png' %}" alt="Brian Katchmar" /></div>
 			<div class="bio">
 				<div class="heading">
 					<span class="name">Brian Katchmar,</span>

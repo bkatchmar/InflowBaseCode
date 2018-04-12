@@ -181,7 +181,8 @@ main div.how-it-works-feature div.text h3 { font-size: 25px; line-height: 36px; 
 main div.how-it-works-feature div.text p { font-size: 17px; line-height: 26px; text-align: left; }
 
 main div.human { margin: 0px auto; overflow: hidden; padding: 25px 0px; width: 1024px; }
-main div.human div.portrait { border: solid 1px #979797; box-shadow: 0 2px 4px 0 rgba(246, 244, 240, 0.5); float: left; height: 292px; width: 450px; }
+main div.human div.portrait { float: left; width: 450px; }
+main div.human div.portrait img { display: block; height: auto; padding: 0px 40px; width: 370px; }
 main div.human div.bio { float: left; text-align: center; width: 570px; }
 main div.human div.bio div.heading { font-size: 25px; font-weight: 700; line-height: 30px; padding: 0px 0px 35px; }
 main div.human div.bio div.heading span.title { font-style: italic; }
