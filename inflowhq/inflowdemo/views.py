@@ -21,13 +21,6 @@ from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 import re
 
-# Error Pages
-def server_error(request):
-    return render(request, "errors/500.html")
- 
-def not_found(request):
-    return render(request, "errors/404.html")
-
 class DemoLoginView(TemplateView):
     template_name = "demologin.html"
 

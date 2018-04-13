@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls)
 ]
 
-handler404 = 'inflowdemo.views.not_found'
-handler500 = 'inflowdemo.views.server_error'
+handler403 = 'inflowco.views.resource_unauthorized'
+handler404 = 'inflowco.views.not_found'
+handler500 = 'inflowco.views.server_error'

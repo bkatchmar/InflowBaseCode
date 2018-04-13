@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -64,8 +65,12 @@ class MyContactsView(LoginRequiredMixin, TemplateView):
 class CreateContractStepOne(LoginRequiredMixin, TemplateView):
     template_name = "contract.creation.first.step.html"
     
-    def get(self, request):
+    def get(self, request, **kwargs):
         context = self.get_context_data()
+        
+        if "contract_id" in kwargs:
+            print("Contract ID Found %s" % kwargs.get("contract_id"))
+        
         return render(request, self.template_name, context)
     
     def post(self, request):
@@ -83,6 +88,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
             # Going to somehow need to handle this one way or another
             return redirect(reverse("contracts:home"))
         
+        # raise PermissionDenied()
         return render(request, self.template_name, context)
     
     def get_context_data(self, **kwargs):

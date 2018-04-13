@@ -15,6 +15,16 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView
 
+# Error Pages
+def resource_unauthorized(request, exception, template_name="errors/403.html"):
+    return render(request, template_name)
+
+def server_error(request, exception, template_name="errors/500.html"):
+    return render(request, template_name)
+ 
+def not_found(request, exception, template_name="errors/404.html"):
+    return render(request, template_name)
+
 class IndexView(TemplateView):
     template_name = "index.html"
     

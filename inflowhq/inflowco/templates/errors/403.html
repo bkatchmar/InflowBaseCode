@@ -1,0 +1,11 @@
+{% extends 'base/error.base.html' %}
+{% block title %}403 Unauthorized{% endblock %}
+{% block main_tag %}
+	<div class="content error">
+		<div class="error-title">Error 403: Forbidden</div>
+		<div class="main-error-message">Hold up!</div>
+		<div class="error-description">Sorry, you don’t have permission to access this page.<br />Either check the URL, go back to the <a href="{% url 'base:dashboard' %}">homepage</a>, or <a href="#">report this issue.</a></div>
+		<a class="inflow-btn" href="{% url 'base:dashboard' %}">Take me Home</a>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

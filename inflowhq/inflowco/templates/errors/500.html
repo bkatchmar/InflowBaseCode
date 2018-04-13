@@ -1,0 +1,12 @@
+{% extends 'base/error.base.html' %}
+{% block title %}403 Unauthorized{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<div class="error-title">Error 500: Internal Server Error</div>
+		<h1>Well, that's embarrassing!</h1>
+		<div class="error-description">We’re so sorry for the inconvenience. We typically like seeing the number 500 (with a $ in front of it), but not when it's an internal server problem.</div>
+		<div class="error-description">If the problem persists, please let us know.</div>
+		<a class="inflow-btn" href="{% url 'base:dashboard' %}">Take me Home</a>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
