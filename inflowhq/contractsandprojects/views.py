@@ -148,7 +148,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         
     def build_new_object(self,request,**kwargs):
         # Build Contract
-        project_name = request.POST.get("project-name", "")
+        project_name = request.POST.get("contractName", "")
         contract_type = request.POST.get("contract-type", "")
         contract_type_db = ""
         description = request.POST.get("description", "")
@@ -190,11 +190,11 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         
         # Build Recipient Information
         company_name = request.POST.get("company-name", "")
-        client_billing_name = request.POST.get("client-billing-name", "")
-        client_email = request.POST.get("client-email", "")
-        phone_area_1 = request.POST.get("phone-area-1", "")
-        phone_area_2 = request.POST.get("phone-area-2", "")
-        phone_area_3 = request.POST.get("phone-area-3", "")
+        client_billing_name = request.POST.get("companyBillingName", "")
+        client_email = request.POST.get("companyContactEmail", "")
+        phone_area_1 = request.POST.get("phoneArea1", "")
+        phone_area_2 = request.POST.get("phoneArea2", "")
+        phone_area_3 = request.POST.get("phoneArea3", "")
         
         # Handle the need to update Recipient
         created_contract_recipient = Recipient.objects.filter(ContractForRecipient=created_contract).first()
@@ -214,10 +214,10 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         # Build Recipient Address
         retrieved_contract_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=created_contract_recipient)
         
-        client_business_address_1 = request.POST.getlist("client-business-address-1")
-        client_business_address_2 = request.POST.getlist("client-business-address-2")
-        client_business_address_city = request.POST.getlist("client-business-address-city")
-        client_business_address_state = request.POST.getlist("client-business-address-state")
+        client_business_address_1 = request.POST.getlist("clientBusinessAddress1")
+        client_business_address_2 = request.POST.getlist("clientBusinessAddress2")
+        client_business_address_city = request.POST.getlist("clientBusinessAddressCity")
+        client_business_address_state = request.POST.getlist("clientBusinessAddressState")
         
         for address_index in range(0,len(client_business_address_1)):
             if address_index < len(retrieved_contract_recipient_addresses):

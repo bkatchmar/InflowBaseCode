@@ -342,7 +342,7 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.label { font-size: 20px; line-height: 22px; padding: 0px 15px 0px 0px; text-align: right; width: 260px; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line span.label { vertical-align: top; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line div.counter { padding: 10px 140px 10px 0px; text-align: right; }
-main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line div.counter span.count {}
+main div.create-contract-super-window form.contract-creation div.input-field span.error-msg { color: #800000; display: block; font-size: 16px; font-weight: 700; line-height: 18px; padding: 15px 0px 0px; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field { position: relative; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field input[type="text"],
 main div.create-contract-super-window form.contract-creation div.input-field span.field input[type="number"],

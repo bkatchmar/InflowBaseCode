@@ -31,7 +31,8 @@
 				<div class="header">Project Information</div>
 				<div class="input-field text-single-line">
 					<span class="label">Project Name*:</span>
-					<span class="field"><input type="text" placeholder="Name of Project" name="project-name" ng-model="contractName" ng-value="contractName" ng-init="contractName='{{contract_info.contract_name}}'" required /></span>
+					<span class="field"><input type="text" placeholder="Name of Project" name="contractName" ng-model="contractName" ng-value="contractName" ng-init="contractName='{{contract_info.contract_name}}'" required /></span>
+					<span class="error-msg" ng-show="contractCreationStep1.contractName.$touched && contractCreationStep1.contractName.$invalid">The project name is required.</span>
 				</div>
 				<div class="input-field radio-list">
 					<span class="label">This project is based on:</span>
@@ -66,39 +67,54 @@
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Client's Billing Name*:</span>
-					<span class="field"><input type="text" placeholder="Full Name" name="client-billing-name" ng-model="companyBillingName" ng-value="companyBillingName" ng-init="companyBillingName='{{contract_info.contact.billing_name}}'" required /></span>
+					<span class="field"><input type="text" placeholder="Full Name" name="companyBillingName" ng-model="companyBillingName" ng-value="companyBillingName" ng-init="companyBillingName='{{contract_info.contact.billing_name}}'" required /></span>
+					<span class="error-msg" ng-show="contractCreationStep1.companyBillingName.$touched && contractCreationStep1.companyBillingName.$invalid">Contact Billing name is required.</span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Email*:</span>
-					<span class="field"><input type="email" placeholder="Email Address" name="client-email" ng-model="companyContactEmail" ng-value="companyContactEmail" ng-init="companyContactEmail='{{contract_info.contact.email}}'" required /></span>
+					<span class="field"><input type="email" placeholder="Email Address" name="companyContactEmail" ng-model="companyContactEmail" ng-value="companyContactEmail" ng-init="companyContactEmail='{{contract_info.contact.email}}'" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required /></span>
+					<span class="error-msg" ng-show="contractCreationStep1.companyContactEmail.$touched && contractCreationStep1.companyContactEmail.$invalid">Contact Email is required.</span>
 				</div>
 				<div class="input-field text-single-line phone-number">
 					<span class="label">Phone Number:</span>
 					<span class="field">
-						<input type="number" name="phone-area-1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-init="companyContactPhone1={{contract_info.contact.phone_1}}" />
+						{% if contract_info.contact.phone_1 == "" %}
+							<input type="number" name="phoneArea1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-required="companyContactPhone2" ng-required="companyContactPhone3" />
+						{% else %}
+							<input type="number" name="phoneArea1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-init="companyContactPhone1={{contract_info.contact.phone_1}}" ng-required="companyContactPhone2" ng-required="companyContactPhone3" />
+						{% endif %}
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="phone-area-2" placeholder="xxx" value="{{contract_info.contact.phone_2}}" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-init="companyContactPhone2={{contract_info.contact.phone_2}}" />
+						{% if contract_info.contact.phone_2 == "" %}
+							<input type="number" name="phoneArea2" placeholder="xxx" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-required="companyContactPhone1" ng-required="companyContactPhone3" />
+						{% else %}
+							<input type="number" name="phoneArea2" placeholder="xxx" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-init="companyContactPhone2={{contract_info.contact.phone_2}}" ng-required="companyContactPhone1" ng-required="companyContactPhone3" />
+						{% endif %}
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="phone-area-3" placeholder="xxxx" value="{{contract_info.contact.phone_3}}" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-init="companyContactPhone3={{contract_info.contact.phone_3}}" />
+						{% if contract_info.contact.phone_3 == "" %}
+							<input type="number" name="phoneArea3" placeholder="xxxx" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-required="companyContactPhone2" ng-required="companyContactPhone3" />
+						{% else %}
+							<input type="number" name="phoneArea3" placeholder="xxxx" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-init="companyContactPhone3={{contract_info.contact.phone_3}}" ng-required="companyContactPhone2" ng-required="companyContactPhone3" />
+						{% endif %}
 					</span>
+					<span class="error-msg" ng-show="contractCreationStep1.phoneArea1.$invalid || contractCreationStep1.phoneArea2.$invalid || contractCreationStep1.phoneArea3.$invalid">Phone number must be either empty or full</span>
 				</div>
 				<div ng-repeat="ca in contact_addresses">
 					<div class="header sub">Business Location <span ng-bind="ca.index"></span></div>
 					<div class="input-field text-single-line">
 						<span class="label">Business Address 1*:</span>
-						<span class="field"><input type="text" placeholder="Business Address 1" name="client-business-address-1" ng-value="ca.addr1" ng-bind="ca.addr1" required /></span>
+						<span class="field"><input type="text" placeholder="Business Address 1" name="clientBusinessAddress1" ng-value="ca.addr1" ng-bind="ca.addr1" required /></span>
 					</div>
 					<div class="input-field text-single-line">
 						<span class="label">Business Address 2:</span>
-						<span class="field"><input type="text" placeholder="Business Address 2" name="client-business-address-2" ng-value="ca.addr2" ng-bind="ca.addr2" /></span>
+						<span class="field"><input type="text" placeholder="Business Address 2" name="clientBusinessAddress2" ng-value="ca.addr2" ng-bind="ca.addr2" /></span>
 					</div>
 					<div class="input-field text-single-line">
 						<span class="label">City*:</span>
-						<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-city" ng-value="ca.city" ng-bind="ca.city" required /></span>
+						<span class="field"><input type="text" placeholder="Business State or Province" name="clientBusinessAddressCity" ng-value="ca.city" ng-bind="ca.city" required /></span>
 					</div>
 					<div class="input-field text-single-line">
 						<span class="label">State or Province*:</span>
-						<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-state" ng-value="ca.state" ng-bind="ca.state" required /></span>
+						<span class="field"><input type="text" placeholder="Business State or Province" name="clientBusinessAddressState" ng-value="ca.state" ng-bind="ca.state" required /></span>
 					</div>
 				</div>
 				<div class="addition-buttons">
