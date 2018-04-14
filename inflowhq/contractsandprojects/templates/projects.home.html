@@ -38,7 +38,7 @@
 						<td class="progress">{{ project.progress }}</td>
 						<td class="start-date">{{ project.start_date }}</td>
 						<td class="end-date">{{ project.end_date }}</td>
-						<td class="icon"><a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a></td>
+						<td class="icon"><a href="{% url 'contracts:create_contract_step_1_edit' project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

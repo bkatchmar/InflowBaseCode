@@ -66,7 +66,7 @@ class Contract(models.Model):
             
         return ""
 
-    def DoesThisUserHavePermissionToSeeContract(self,loggedinuser):
+    def does_this_user_have_permission_to_see_contract(self,loggedinuser):
         relationship = ""
 
         if (loggedinuser.is_superuser):

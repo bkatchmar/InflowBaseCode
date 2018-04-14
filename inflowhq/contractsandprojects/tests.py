@@ -181,19 +181,19 @@ class ContractRelationshipTest(TestCase):
         contract2 = Contract.objects.get(Name="Erin Contract")
         
         # Check super user permissions
-        self.assertIsNotNone(contract1.DoesThisUserHavePermissionToSeeContract(emperor_of_the_universe))
-        self.assertIsNotNone(contract2.DoesThisUserHavePermissionToSeeContract(emperor_of_the_universe))
+        self.assertIsNotNone(contract1.does_this_user_have_permission_to_see_contract(emperor_of_the_universe))
+        self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(emperor_of_the_universe))
         
         # Assert all contract 1 permissions
-        self.assertIsNotNone(contract1.DoesThisUserHavePermissionToSeeContract(josh))
-        self.assertIsNotNone(contract1.DoesThisUserHavePermissionToSeeContract(matt))
-        self.assertIsNone(contract1.DoesThisUserHavePermissionToSeeContract(erin))
-        self.assertIsNone(contract1.DoesThisUserHavePermissionToSeeContract(clara))
-        self.assertIsNone(contract1.DoesThisUserHavePermissionToSeeContract(kenny))
+        self.assertIsNotNone(contract1.does_this_user_have_permission_to_see_contract(josh))
+        self.assertIsNotNone(contract1.does_this_user_have_permission_to_see_contract(matt))
+        self.assertIsNone(contract1.does_this_user_have_permission_to_see_contract(erin))
+        self.assertIsNone(contract1.does_this_user_have_permission_to_see_contract(clara))
+        self.assertIsNone(contract1.does_this_user_have_permission_to_see_contract(kenny))
         
         # Assert all contract 2 permissions
-        self.assertIsNotNone(contract2.DoesThisUserHavePermissionToSeeContract(erin))
-        self.assertIsNotNone(contract2.DoesThisUserHavePermissionToSeeContract(kenny))
-        self.assertIsNotNone(contract2.DoesThisUserHavePermissionToSeeContract(clara))
-        self.assertIsNone(contract2.DoesThisUserHavePermissionToSeeContract(josh))
-        self.assertIsNone(contract2.DoesThisUserHavePermissionToSeeContract(matt))
+        self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(erin))
+        self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(kenny))
+        self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(clara))
+        self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(josh))
+        self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(matt))

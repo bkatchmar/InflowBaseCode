@@ -1,6 +1,15 @@
 {% extends 'base/dashboard.base.lowfi.project.html' %}
 {% load staticfiles %}
 {% block title %}Create New Contract{% endblock %}
+{% block head_script %}
+	<script>
+		var addresses = [];
+		
+		{% for address in contract_info.locations %}
+			addresses.push({"index" : "{{address.index}}", "addr1" : "{{address.addr1}}", "addr2" : "{{address.addr2}}", "city" : "{{address.city}}", "state" : "{{address.state}}"});
+		{% endfor %}
+	</script>
+{% endblock %}
 {% block main_tag %}
 	<div class="back-links"></div>
 	<div class="content project-arrow">
@@ -14,83 +23,105 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation" method="post">
+			{% if contract_info.id == 0 %}
+			<form class="contract-creation" name="contractCreationStep1" method="post" action="{% url 'contracts:create_contract_step_1' %}" ng-app="createContractStepOneApp" ng-controller="createContractStepOneCtrl">
+			{% else %}
+			<form class="contract-creation" name="contractCreationStep1" method="post" action="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}" ng-app="createContractStepOneApp" ng-controller="createContractStepOneCtrl">
+			{% endif %}
 				<div class="header">Project Information</div>
 				<div class="input-field text-single-line">
 					<span class="label">Project Name*:</span>
-					<span class="field"><input type="text" placeholder="Name of Project" name="project-name" required /></span>
+					<span class="field"><input type="text" placeholder="Name of Project" name="project-name" ng-model="contractName" ng-value="contractName" ng-init="contractName='{{contract_info.contract_name}}'" required /></span>
 				</div>
 				<div class="input-field radio-list">
 					<span class="label">This project is based on:</span>
 					<span class="field">
 						<span class="radio">
-							<input type="radio" name="contract-type" value="milestones" checked="checked" />
+							{% if contract_info.contract_type == "d" %}
+								<input type="radio" name="contract-type" value="milestones" checked="checked" ng-model="contractType" ng-init="contractType='milestones'" />
+							{% else %}
+								<input type="radio" name="contract-type" value="milestones" ng-model="contractType" />
+							{% endif %}
 							<span class="label">Milestones/Deliverables</span>
 						</span>
 						<span class="radio">
-							<input type="radio" name="contract-type" value="time" />
+							{% if contract_info.contract_type == "t" %}
+								<input type="radio" name="contract-type" value="time" checked="checked" ng-model="contractType" ng-init="contractType='time'" />
+							{% else %}
+								<input type="radio" name="contract-type" value="time" ng-model="contractType" />
+							{% endif %}
 							<span class="label">Time</span>
 						</span>
 					</span>
 				</div>
 				<div class="input-field text-multi-line">
 					<span class="label">Project Description:</span>
-					<span class="field"><textarea name="description" placeholder="Describe the project" maxlength="500"></textarea></span>
+					<span class="field"><textarea name="description" placeholder="Describe the project" maxlength="500">{{contract_info.contract_description}}</textarea></span>
 					<div class="counter"><span class="count">0</span> / 500</div>
 				</div>
 				<div class="header sub">Client Information</div>
 				<div class="input-field text-single-line">
 					<span class="label">Company Name:</span>
-					<span class="field"><input type="text" placeholder="Company Name" name="company-name" /></span>
+					<span class="field"><input type="text" placeholder="Company Name" name="company-name" ng-model="companyName" ng-value="companyName" ng-init="companyName='{{contract_info.contact.name}}'" /></span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Client's Billing Name*:</span>
-					<span class="field"><input type="text" placeholder="Full Name" name="client-billing-name" required /></span>
+					<span class="field"><input type="text" placeholder="Full Name" name="client-billing-name" ng-model="companyBillingName" ng-value="companyBillingName" ng-init="companyBillingName='{{contract_info.contact.billing_name}}'" required /></span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label">Email*:</span>
-					<span class="field"><input type="email" placeholder="Email Address" name="client-email" required /></span>
+					<span class="field"><input type="email" placeholder="Email Address" name="client-email" ng-model="companyContactEmail" ng-value="companyContactEmail" ng-init="companyContactEmail='{{contract_info.contact.email}}'" required /></span>
 				</div>
 				<div class="input-field text-single-line phone-number">
 					<span class="label">Phone Number:</span>
 					<span class="field">
-						<input type="number" name="phone-area-1" placeholder="xxx" />
+						<input type="number" name="phone-area-1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-init="companyContactPhone1={{contract_info.contact.phone_1}}" />
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="phone-area-2" placeholder="xxx" />
+						<input type="number" name="phone-area-2" placeholder="xxx" value="{{contract_info.contact.phone_2}}" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-init="companyContactPhone2={{contract_info.contact.phone_2}}" />
 						<span class="hyphen">&mdash;</span>
-						<input type="number" name="phone-area-3" placeholder="xxxx" />
+						<input type="number" name="phone-area-3" placeholder="xxxx" value="{{contract_info.contact.phone_3}}" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-init="companyContactPhone3={{contract_info.contact.phone_3}}" />
 					</span>
 				</div>
-				<div class="header sub">Business Location</div>
-				<div class="input-field text-single-line">
-					<span class="label">Business Address 1*:</span>
-					<span class="field"><input type="text" placeholder="Business Address 1" name="client-business-address-1-1" required /></span>
-				</div>
-				<div class="input-field text-single-line">
-					<span class="label">Business Address 2:</span>
-					<span class="field"><input type="text" placeholder="Business Address 2" name="client-business-address-2-1" /></span>
-				</div>
-				<div class="input-field text-single-line">
-					<span class="label">City*:</span>
-					<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-city-1" required /></span>
-				</div>
-				<div class="input-field text-single-line">
-					<span class="label">State or Province*:</span>
-					<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-state-1" required /></span>
+				<div ng-repeat="ca in contact_addresses">
+					<div class="header sub">Business Location <span ng-bind="ca.index"></span></div>
+					<div class="input-field text-single-line">
+						<span class="label">Business Address 1*:</span>
+						<span class="field"><input type="text" placeholder="Business Address 1" name="client-business-address-1" ng-value="ca.addr1" ng-bind="ca.addr1" required /></span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">Business Address 2:</span>
+						<span class="field"><input type="text" placeholder="Business Address 2" name="client-business-address-2" ng-value="ca.addr2" ng-bind="ca.addr2" /></span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">City*:</span>
+						<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-city" ng-value="ca.city" ng-bind="ca.city" required /></span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">State or Province*:</span>
+						<span class="field"><input type="text" placeholder="Business State or Province" name="client-business-address-state" ng-value="ca.state" ng-bind="ca.state" required /></span>
+					</div>
 				</div>
 				<div class="addition-buttons">
-					<a href="#">Add business location</a>
+					<span ng-click="addAddress()">Add business location</span>
 				</div>
 				<div class="header sub">Ownership</div>
 				<div class="input-field radio-list">
 					<span class="label">Who owns this work:</span>
 					<span class="field">
 						<span class="radio">
-							<input type="radio" name="who-owns" value="myself" checked="checked" />
+							{% if contract_info.ownership_type == "i" %}
+								<input type="radio" name="who-owns" value="myself" checked="checked" ng-model="whoOwnsWork" ng-init="whoOwnsWork='myself'" />
+							{% else %}
+								<input type="radio" name="who-owns" value="myself" ng-model="whoOwnsWork" />
+							{% endif %}
 							<span class="label">I own this work</span>
 						</span>
 						<span class="radio">
-							<input type="radio" name="who-owns" value="client" />
+							{% if contract_info.ownership_type == "u" %}
+								<input type="radio" name="who-owns" value="client" checked="checked" ng-model="whoOwnsWork" ng-init="whoOwnsWork='client'" />
+							{% else %}
+								<input type="radio" name="who-owns" value="client" ng-model="whoOwnsWork" />
+							{% endif %}
 							<span class="label">Client owns this work</span>
 						</span>
 					</span>
@@ -108,7 +139,7 @@
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
-	<script src="{% static 'js/inflow.contract.js' %}"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}"></script>
+	<script src="{% static 'js/inflow.contract.js' %}?"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180414"></script>
 {% endblock %}

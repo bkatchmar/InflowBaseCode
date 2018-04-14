@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
@@ -31,7 +32,7 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
         for contract in user_created_contracts:
             recipient_for_contract = Recipient.objects.filter(ContractForRecipient=contract).first()
             
-            appended_project = { "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y") }
+            appended_project = { "id" : contract.id, "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y") }
             
             if recipient_for_contract is None:
                 appended_project["project_client"] = ""
@@ -66,44 +67,86 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
     template_name = "contract.creation.first.step.html"
     
     def get(self, request, **kwargs):
-        context = self.get_context_data()
-        
-        if "contract_id" in kwargs:
-            print("Contract ID Found %s" % kwargs.get("contract_id"))
-        
+        context = self.get_context_data(request, **kwargs)
         return render(request, self.template_name, context)
     
-    def post(self, request):
-        context = self.get_context_data()
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
         
         action_taken = request.POST.get("action", "")
         
         if action_taken == "Continue": # User wants to go to the next step
-            self.process_continue(request)
+            self.process_continue(request,**kwargs)
             return redirect(reverse("contracts:home"))
         elif action_taken == "Save for Later":
-            self.process_save_for_later(request)
+            self.process_save_for_later(request,**kwargs)
             return redirect(reverse("contracts:home"))
         else:
             # Going to somehow need to handle this one way or another
             return redirect(reverse("contracts:home"))
         
-        # raise PermissionDenied()
         return render(request, self.template_name, context)
     
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(CreateContractStepOne, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
+        
+        # Used for sending contract information to the view
+        contract_info = { 
+            "id" : 0, "contract_name" : "", "contract_description" : "", "contract_type" : "d", "ownership_type" : "i",
+            "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" },
+            "locations" : []
+        }
+        
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            
+            if selected_contract is None: # Just exit and raise a 404 message
+                raise Http404()
+            
+            selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+            
+            if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                selected_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_recipient)
+                contract_info["id"] = selected_contract.id
+                contract_info["contract_name"] = selected_contract.Name
+                contract_info["contract_description"] = selected_contract.Description
+                contract_info["contract_type"] = selected_contract.ContractType
+                contract_info["ownership_type"] = selected_contract.Ownership
+                
+                if selected_recipient is not None:
+                    contract_info["contact"]["name"] = selected_recipient.Name
+                    contract_info["contact"]["billing_name"] = selected_recipient.BillingName
+                    contract_info["contact"]["email"] = selected_recipient.EmailAddress
+                    
+                    # Fracture the phone number
+                    if selected_recipient.PhoneNumber != "" and selected_recipient.PhoneNumber is not None:
+                        number_parts = selected_recipient.PhoneNumber.split("-")
+                        contract_info["contact"]["phone_1"] = number_parts[0]
+                        contract_info["contact"]["phone_2"] = number_parts[1]
+                        contract_info["contact"]["phone_3"] = number_parts[2]
+                    
+                    # Iterate through all locations and put them into the JSON context
+                    addr_index = 1
+                    for address in selected_recipient_addresses:
+                        entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
+                        contract_info["locations"].append(entered_address)
+                        addr_index = addr_index + 1
+                
+            else:
+                raise PermissionDenied() # Raise 403
+        
+        context["contract_info"] = contract_info
         return context
     
-    def process_continue(self,request):
-        self.build_new_object(request)
+    def process_continue(self,request,**kwargs):
+        self.build_new_object(request,**kwargs)
     
-    def process_save_for_later(self,request):
-        self.build_new_object(request)
+    def process_save_for_later(self,request,**kwargs):
+        self.build_new_object(request,**kwargs)
         
-    def build_new_object(self,request):
+    def build_new_object(self,request,**kwargs):
         # Build Contract
         project_name = request.POST.get("project-name", "")
         contract_type = request.POST.get("contract-type", "")
@@ -122,14 +165,28 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         else:
             who_owns_db = "u"
         
-        created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db)
+        # Create a brand new Contract or go ahead and edit an existing one
+        if "contract_id" in kwargs:
+            created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            
+            if created_contract is None:
+                created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db)
+            else:
+                created_contract.Name = project_name
+                created_contract.ContractType = contract_type_db
+                created_contract.Ownership = who_owns_db
+        else:
+            created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db)
+        
         if description != "":
             created_contract.Description = description
+        
         created_contract.create_slug()
         created_contract.save()
         
         # Build Relationship
-        Relationship.objects.create(ContractUser=request.user,ContractForRelationship=created_contract,RelationshipType='f')
+        if not Relationship.objects.filter(ContractUser=request.user,ContractForRelationship=created_contract).exists():
+            Relationship.objects.create(ContractUser=request.user,ContractForRelationship=created_contract,RelationshipType='f')
         
         # Build Recipient Information
         company_name = request.POST.get("company-name", "")
@@ -139,7 +196,13 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         phone_area_2 = request.POST.get("phone-area-2", "")
         phone_area_3 = request.POST.get("phone-area-3", "")
         
-        created_contract_recipient = Recipient.objects.create(ContractForRecipient=created_contract,BillingName=client_billing_name,EmailAddress=client_email)
+        # Handle the need to update Recipient
+        created_contract_recipient = Recipient.objects.filter(ContractForRecipient=created_contract).first()
+        if created_contract_recipient is None:
+            created_contract_recipient = Recipient.objects.create(ContractForRecipient=created_contract,BillingName=client_billing_name,EmailAddress=client_email)
+        else:
+            created_contract_recipient.BillingName = client_billing_name
+            created_contract_recipient.EmailAddress = client_email
         
         if company_name != "":
             created_contract_recipient.Name = company_name
@@ -149,18 +212,24 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         created_contract_recipient.save()
         
         # Build Recipient Address
-        client_business_address_1_1 = request.POST.get("client-business-address-1-1", "")
-        client_business_address_2_1 = request.POST.get("client-business-address-2-1", "")
-        client_business_address_city_1 = request.POST.get("client-business-address-city-1", "")
-        client_business_address_state_1 = request.POST.get("client-business-address-state-1", "")
+        retrieved_contract_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=created_contract_recipient)
         
-        created_contract_recipient_address = created_contract_recipient.create_address_for_recipient()
+        client_business_address_1 = request.POST.getlist("client-business-address-1")
+        client_business_address_2 = request.POST.getlist("client-business-address-2")
+        client_business_address_city = request.POST.getlist("client-business-address-city")
+        client_business_address_state = request.POST.getlist("client-business-address-state")
         
-        created_contract_recipient_address.Address1 = client_business_address_1_1
-        created_contract_recipient_address.Address2 = client_business_address_2_1
-        created_contract_recipient_address.City = client_business_address_city_1
-        created_contract_recipient_address.State = client_business_address_state_1
-        created_contract_recipient_address.save()
+        for address_index in range(0,len(client_business_address_1)):
+            if address_index < len(retrieved_contract_recipient_addresses):
+                created_contract_recipient_address = retrieved_contract_recipient_addresses[address_index]
+            else:
+                created_contract_recipient_address = created_contract_recipient.create_address_for_recipient()
+                
+            created_contract_recipient_address.Address1 = client_business_address_1[address_index]
+            created_contract_recipient_address.Address2 = client_business_address_2[address_index]
+            created_contract_recipient_address.City = client_business_address_city[address_index]
+            created_contract_recipient_address.State = client_business_address_state[address_index]
+            created_contract_recipient_address.save()
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"

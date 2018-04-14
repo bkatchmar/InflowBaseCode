@@ -1,12 +1,12 @@
-{% load staticfiles %}
-<!doctype html>
-<html lang="en-US">
-<head>
-	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/base.css' %}" />
-	<title>Inflow Demo - Received Email</title>
-</head>
-<body>
-	<div>404 Error Thrown</div>
-</body>
-</html>
+{% extends 'base/error.base.html' %}
+{% block title %}404 Not Found{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<div class="error-title">Error 404: Page Not Found</div>
+		<h1>Uh oh!</h1>
+		<div class="error-description">This isn't what you’re looking for, is it?</div>
+		<div class="error-description">Double check the URL, or maybe these links might be of use:<br /><a href="{% url 'base:dashboard' %}">Home</a><br /><a href="https://medium.com/@InFlowHQ">Blog</a></div>
+		<a class="inflow-btn" href="{% url 'base:dashboard' %}">Take me Home</a>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}
