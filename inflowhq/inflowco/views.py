@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 def resource_unauthorized(request, exception, template_name="errors/403.html"):
     return render(request, template_name)
 
-def server_error(request, exception, template_name="errors/500.html"):
+def server_error(request, template_name="errors/500.html"):
     return render(request, template_name)
  
 def not_found(request, exception, template_name="errors/404.html"):
