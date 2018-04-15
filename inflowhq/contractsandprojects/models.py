@@ -17,11 +17,6 @@ CONTRACT_PAYMENT_LEVELS = (
                   ('m', 'MONTHLY'),
                   )
 
-MILESTONE_PAYMENT_TYPE = (
-                  ('r', 'RAW AMOUNT'),
-                  ('p', 'PERCENTAGE'),
-                  )
-
 RELATIONSHIP_TYPE = (
                   ('f', 'FREELANCER'),
                   ('c', 'CLIENT'),
@@ -46,14 +41,19 @@ class Contract(models.Model):
     Name = models.CharField(max_length=200)
     Description = models.TextField(max_length=500,null=True)
     ContractType = models.CharField(max_length=1,choices=CONTRACT_TYPES,default='d')
-    StartDate = models.DateField(auto_now=True)
-    EndDate = models.DateField(auto_now=True)
+    StartDate = models.DateField(auto_now=False)
+    EndDate = models.DateField(auto_now=False)
     UrlSlug = models.SlugField(max_length=50)
     ContractState = models.CharField(max_length=1,choices=CONTRACT_STATES,default='c')
     Ownership = models.CharField(max_length=1,choices=OWNERSHIP_TYPE,default='i')
+    HourlyRate = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    NumberOfAllowedRevisions = models.PositiveSmallIntegerField(default=1)
+    TotalContractWorth = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    DownPaymentRate = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    DownPaymentAmount = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
 
     def CreateNewMilestone(self):
-        newlyCreated = Milestone.objects.create(MilestoneContract=self)
+        newlyCreated = Milestone.objects.create(MilestoneContract=self,Name="")
         return newlyCreated
 
     def create_slug(self):
@@ -115,10 +115,11 @@ class RecipientAddress(models.Model):
 class Milestone(models.Model):
     IdMilestone = models.AutoField(primary_key=True,verbose_name="IdMilestone")
     MilestoneContract = models.ForeignKey(Contract,unique=False,on_delete=models.CASCADE)
+    Name = models.CharField(max_length=200)
     Explanation = models.TextField()
     MilestonePaymentAmount = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
-    MilestonePaymentType = models.CharField(max_length=1,choices=MILESTONE_PAYMENT_TYPE,default='r')
-    NumberOfAllowedRevisions = models.PositiveSmallIntegerField(default=1)
+    EstimateHoursRequired = models.IntegerField(null=True)
+    Deadline = models.DateField(auto_now=True)
 
     class Meta:
        db_table = 'Milestone'

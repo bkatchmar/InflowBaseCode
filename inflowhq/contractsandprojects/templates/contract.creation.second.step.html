@@ -1,0 +1,119 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}Create New Contract - Step 2 - {{contract_info.contract_name}}{% endblock %}
+{% block head_script %}
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+	<script>
+		var milestones = [];
+		
+		{% for milestone in contract_info.milestones %}
+			milestones.push({"index":{{milestone.index}}, "name" : "{{milestone.name}}", "description" : "{{milestone.description}}", "estimateHourCompletion" : {{milestone.estimateHourCompletion}}, "totalMilestoneAmount" : {{milestone.totalMilestoneAmount}}, "milestoneDeadline" : "{{milestone.milestoneDeadline}}"});
+		{% endfor %}
+	</script>
+{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="create-contract-super-window">
+			<div class="header">Create Contract</div>
+			<div class="progress-bar">
+				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
+				<span class="number two on"><span class="text">Milestones</span></span>
+				<span class="number three"><span class="text">Optional Fees</span></span>
+				<span class="number four"><span class="text">Work Overview</span></span>
+				<span class="number five"><span class="text">Preview and Send</span></span>
+				<div class="bar"></div>
+			</div>
+			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractType='{{contract_info.type}}';hourlyRate=0">
+				<div class="header">Milestones</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field date">
+						<span class="label">Contract Start Date*:</span>
+						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractStartDate" value="{{contract_info.start_date}}" required /></span>
+					</div>
+					<div class="input-field mini-field date">
+						<span class="label">Contract End Date*:</span>
+						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractEndDate" value="{{contract_info.end_date}}" required /></span>
+					</div>
+				</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field switch">
+						<span class="label">How would you like to charge?</span>
+						<span class="switch">
+							<span class="on">Lump Sum</span>
+							<span class="border">Hourly Rate</span>
+						</span>
+					</div>
+					<div class="input-field mini-field" ng-show="contractType=='t'">
+						<span class="label">Hourly rate*:</span>
+						<span class="field"><input type="text" placeholder="0 hours" name="hourlyRate" ng-bind="hourlyRate" ng-required="contractType=='t'" /></span>
+					</div>
+				</div>
+				<div ng-repeat="ms in milestones">
+					<div class="milestone-block">
+						<div class="header left">Milestone #<span ng-bind="ms.index"></span></div>
+						<div class="input-field text-single-line">
+							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" ng-value="ms.name" ng-model="ms.name" required /></span>
+						</div>
+						<div class="input-field text-multi-line">
+							<span class="label">Task Description:</span>
+							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone" ng-value="ms.description" ng-model="ms.description"></textarea></span>
+						</div>
+						<div class="mini-field-line">
+							<div class="input-field mini-field" ng-show="contractType=='t'">
+								<span class="label">Estimate of hours<br />to completion*:</span>
+								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-value="ms.estimateHourCompletion" ng-model="ms.estimateHourCompletion" ng-change="updateTotals()" required /></span>
+							</div>
+							<div class="input-field mini-field">
+								<span class="label">Milestone Amount*:</span>
+								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-value="ms.totalMilestoneAmount" ng-model="ms.totalMilestoneAmount" ng-change="updateTotals()" required /></span>
+							</div>
+							<div class="input-field mini-field date">
+								<span class="label">Milestone Deadline*:</span>
+								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-value="ms.milestoneDeadline" ng-model="ms.milestoneDeadline" required /></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="addition-buttons left border">
+					<span class="milestones" ng-click="addMilestone()">Add another Milestone</span>
+				</div>
+				<div class="milestone-totals mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Milestone Total Amount:<br /><span>(Total Project Amount)</span></span>
+						<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" required /></span>
+					</div>
+					<div class="input-field mini-field switch">
+						<span class="label">Down Payment (optional):</span>
+						<span class="switch custom-down-payment">
+							<span>5%</span>
+							<span class="border">10%</span>
+							<span class="border">15%</span>
+							<span class="on border">Custom</span>
+							<span class="field"><input type="number" placeholder="$0.00" name="downPaymentAmount" /></span>
+						</span>
+					</div>
+				</div>
+				<div class="milestone-totals mini-field-line">
+					<div class="input-field mini-field clear">
+						<span class="label">Total Number of Revisions:</span>
+						<span class="field"><input type="number" placeholder="# of Revisions" name="totalNumberOfRevisions" required /></span>
+					</div>
+				</div>
+				<div class="submit-buttons">
+					<a href="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}" class="btn">Back</a>
+					<input type="submit" name="action" value="Continue" class="continue" />
+				</div>
+				<div class="submit-buttons alt">
+					<input type="submit" name="action" value="Save for Later" class="later" />
+				</div>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.contract.js' %}?d=2018"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201804"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201804142100"></script>
+{% endblock %}

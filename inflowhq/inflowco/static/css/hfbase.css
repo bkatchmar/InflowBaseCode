@@ -232,6 +232,8 @@ main div.content.error div.error-title { font-size: 25px; font-style: italic; fo
 main div.content.error div.main-error-message { font-size: 64px; font-weight: 700; line-height: 66px; padding: 15px 0px; }
 main div.content.error div.error-description { font-size: 25px; font-weight: 300; line-height: 30px; padding: 15px 0px; }
 main div.content.error div.error-description a { text-decoration: underline; }
+main div.content.error div.error-description.larger { font-size: 35px; line-height: 36px; }
+main div.content.error div.error-description.smaller { font-size: 20px; }
 main div.content.error a.inflow-btn { display: inline-block; margin: 20px 0px; }
 
 /* Footer */
