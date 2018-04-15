@@ -22,11 +22,11 @@
 				<div class="mini-field-line">
 					<div class="input-field mini-field date">
 						<span class="label">Contract Start Date*:</span>
-						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractStartDate" value="{{contract_info.start_date}}" required /></span>
+						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractStartDate" ng-value="contractStartDate" ng-model="contractStartDate" ng-init="contractStartDate='{{contract_info.start_date}}'" required /></span>
 					</div>
 					<div class="input-field mini-field date">
 						<span class="label">Contract End Date*:</span>
-						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractEndDate" value="{{contract_info.end_date}}" required /></span>
+						<span class="field"><input type="text" placeholder="MM/DD/YY" name="contractEndDate" ng-value="contractEndDate" ng-model="contractEndDate" ng-init="contractEndDate='{{contract_info.end_date}}'" required /></span>
 					</div>
 				</div>
 				<div class="mini-field-line">
@@ -42,6 +42,7 @@
 						<span class="field"><input type="text" placeholder="0/hr" name="hourlyRate" ng-value="hourlyRate" ng-model="hourlyRate" ng-required="contractType=='t'" /></span>
 					</div>
 				</div>
+				<div class="error-msg" ng-show="contractCreationStep2.contractStartDate.$invalid || contractCreationStep1.contractEndDate.$invalid || contractCreationStep1.hourlyRate.$invalid">All Above Fields Are Required</div>
 				{% for milestone in contract_info.milestones %}
 					<div class="milestone-block">
 						<div class="header left">Milestone #<span ng-bind="index[{{milestone.index}}]" ng-init="index[{{milestone.index}}]={{milestone.front_index}}"></span></div>

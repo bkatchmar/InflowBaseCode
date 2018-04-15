@@ -358,6 +358,7 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="number"],
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="text"] { display: inline-block; width: 60px; }
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field span.hyphen {}
+main div.create-contract-super-window form.contract-creation div.error-msg { color: #800000; font-size: 16px; font-weight: 700; line-height: 18px; padding: 15px 0px 0px; }
 
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.note { background-color: #FFF; border: solid 1px #979797; color: #0D0D0D; font-size: 16px; line-height: 18px; padding: 5px; position: absolute; right: -295px; text-align: left; top: -17px; width: 255px; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.note:before { border-color: transparent #979797; border-style: solid; border-width: 15px 12px 15px 0px; content: ""; left: -13px; position: absolute; top: 17px; }

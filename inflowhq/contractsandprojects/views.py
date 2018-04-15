@@ -172,13 +172,13 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             
             if created_contract is None:
-                created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db)
+                created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today())
             else:
                 created_contract.Name = project_name
                 created_contract.ContractType = contract_type_db
                 created_contract.Ownership = who_owns_db
         else:
-            created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db)
+            created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today())
         
         if description != "":
             created_contract.Description = description
@@ -349,25 +349,14 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             created_contract.StartDate = datetime.datetime.strptime(contractStartDate, "%b %d %Y")
             created_contract.EndDate = datetime.datetime.strptime(contractEndDate, "%b %d %Y")
             
-            try:
-                created_contract.TotalContractWorth = float(totalContractAmount)
-            except Exception as e:
-                created_contract.TotalContractWorth = 0.0
-                
-            try:
-                created_contract.DownPaymentAmount = float(downPaymentAmount)
-            except Exception as e:
-                created_contract.DownPaymentAmount = 0.0
+            created_contract.TotalContractWorth = self.getEntryForFloat(totalContractAmount)
+            created_contract.DownPaymentAmount = self.getEntryForFloat(downPaymentAmount)
+            created_contract.HourlyRate = self.getEntryForFloat(hourlyRate)
                 
             try:
                 created_contract.NumberOfAllowedRevisions = int(totalNumberOfRevisions)
             except Exception as e:
                 created_contract.NumberOfAllowedRevisions = 0
-            
-            try:
-                created_contract.HourlyRate = float(hourlyRate)
-            except Exception as e:
-                created_contract.HourlyRate = 0.00
             
             created_contract.save()
             
@@ -381,23 +370,11 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                     created_milestone = created_contract.create_new_milestone()
                 
                 created_milestone.Name = milestoneName[milestone_index]
+                created_milestone.EstimateHoursRequired = self.getEntryForFloat(milestonesEstimateHours[milestone_index])
+                created_milestone.MilestonePaymentAmount = self.getEntryForFloat(milestoneAmount[milestone_index])
                 
                 if milestoneDescription[milestone_index] != "":
                     created_milestone.Explanation = milestoneDescription[milestone_index]
-                
-                if milestonesEstimateHours[milestone_index] != "":
-                    try:
-                        created_milestone.EstimateHoursRequired = float(milestonesEstimateHours[milestone_index])
-                    except Exception as e:
-                        created_milestone.EstimateHoursRequired = 0.0
-                
-                if milestoneAmount[milestone_index] != "":
-                    try:
-                        created_milestone.MilestonePaymentAmount = float(milestoneAmount[milestone_index])
-                    except Exception as e:
-                        created_milestone.MilestonePaymentAmount = 0.0
-                else:
-                    created_milestone.MilestonePaymentAmount = 0.0
                 
                 if milestoneDeadline[milestone_index] != "":
                     try:
@@ -410,6 +387,12 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                 created_milestone.save()
             
         return created_contract
+    
+    def getEntryForFloat(self,floatAmt):
+        try:
+            return float(floatAmt)
+        except Exception as e:
+            return 0.0
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
