@@ -1,0 +1,76 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}Create New Contract - Step 3 - {{contract_info.contract_name}}{% endblock %}
+{% block head_script %}
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="create-contract-super-window">
+			<div class="header">Create Contract</div>
+			<div class="progress-bar">
+				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
+				<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
+				<span class="number three on"><span class="text">Optional Fees</span></span>
+				<span class="number four"><span class="text">Work Overview</span></span>
+				<span class="number five"><span class="text">Preview and Send</span></span>
+				<div class="bar"></div>
+			</div>
+			<form class="contract-creation smaller" name="contractCreationStep3" method="post" action="{% url 'contracts:create_contract_step_3' contract_info.id %}">
+				<div class="header left">Optional Fees</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Extra Revision Fee (optional):</span>
+						{% if contract_info.extra_revision_fee > 0 %}
+					 		<span class="field"><input type="number" placeholder="$0.00" name="extra-revision-fee" value="{{contract_info.extra_revision_fee}}" /></span>
+						{% else %}
+							<span class="field"><input type="number" placeholder="$0.00" name="extra-revision-fee" /></span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Request for Change Fee (optional):</span>
+						{% if contract_info.request_for_change_fee > 0 %}
+					 		<span class="field"><input type="number" placeholder="$0.00" name="request-change-fee" value="{{contract_info.request_for_change_fee}}" /></span>
+						{% else %}
+							<span class="field"><input type="number" placeholder="$0.00" name="request-change-fee" /></span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Charge for Late Review (optional):</span>
+						{% if contract_info.charge_for_late_review > 0 %}
+					 		<span class="field"><input type="number" placeholder="$0.00" name="charge-late-fee" value="{{contract_info.charge_for_late_review}}" /></span>
+						{% else %}
+							<span class="field"><input type="number" placeholder="$0.00" name="charge-late-fee" /></span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="mini-field-line">
+					<div class="input-field mini-field">
+						<span class="label">Kill Fee (optional):</span>
+						{% if contract_info.kill_fee > 0 %}
+					 		<span class="field"><input type="number" placeholder="$0.00" name="kill-fee" value="{{contract_info.kill_fee}}" /></span>
+						{% else %}
+							<span class="field"><input type="number" placeholder="$0.00" name="kill-fee" /></span>
+						{% endif %}
+					</div>
+				</div>
+				<div class="submit-buttons">
+					<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
+					<input type="submit" name="action" value="Continue" class="continue" />
+				</div>
+				<div class="submit-buttons alt">
+					<input type="submit" name="action" value="Save for Later" class="later" />
+				</div>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
+{% endblock %}

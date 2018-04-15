@@ -52,6 +52,10 @@ class Contract(models.Model):
     TotalContractWorth = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
     DownPaymentRate = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
     DownPaymentAmount = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    ExtraRevisionFee = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    RequestForChangeFee = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    ChargeForLateReview = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
+    KillFee = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
 
     def create_new_milestone(self):
         newly_created_milestone = Milestone.objects.create(MilestoneContract=self,Name="",Deadline=datetime.date.today())

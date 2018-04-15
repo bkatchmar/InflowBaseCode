@@ -18,7 +18,7 @@
 				<div class="bar"></div>
 			</div>
 			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};contractTotal={{contract_info.contract_total}};downPaymentAmount={{contract_info.down_payment_amount}};allowedRevisions={{contract_info.total_revisions}};downPaymentRate=0;current_milestone_count={{contract_info.number_of_milestones}};milestones=[]">
-				<div class="header">Milestones</div>
+				<div class="header left">Milestones</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field date">
 						<span class="label">Contract Start Date*:</span>

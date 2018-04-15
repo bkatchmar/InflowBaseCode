@@ -326,6 +326,7 @@ main div.create-contract-super-window div.progress-bar.work-overview span.number
 main div.create-contract-super-window div.progress-bar.work-overview span.number.three span.text { left: -44px; width: 130px; }
 
 main div.create-contract-super-window form.contract-creation { margin: 15px auto 0px; width: 900px; }
+main div.create-contract-super-window form.contract-creation.smaller { width: 740px; }
 main div.create-contract-super-window form.contract-creation div.buttons { text-align: center; }
 main div.create-contract-super-window form.contract-creation div.buttons a { font-size: 18px; padding: 20px; }
 main div.create-contract-super-window form.contract-creation div.header { font-size: 24px; font-weight: 700; line-height: 26px; padding: 0px 0px 20px; width: 750px; }

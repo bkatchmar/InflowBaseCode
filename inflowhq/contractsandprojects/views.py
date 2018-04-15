@@ -11,6 +11,7 @@ from accounts.models import UserSettings
 from contractsandprojects.models import Contract, Recipient, RecipientAddress, Relationship, Milestone
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
+from contractsandprojects.request_handler import RequestInputHandler
 
 class ContractCreationView(LoginRequiredMixin, TemplateView):
     template_name = "projects.home.html"
@@ -316,7 +317,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
     
     def process_continue(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
-        return redirect(reverse("contracts:home"))
+        return redirect(reverse("contracts:create_contract_step_3", kwargs={"contract_id" : contract.id}))
     
     def process_save_for_later(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
@@ -349,14 +350,10 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             created_contract.StartDate = datetime.datetime.strptime(contractStartDate, "%b %d %Y")
             created_contract.EndDate = datetime.datetime.strptime(contractEndDate, "%b %d %Y")
             
-            created_contract.TotalContractWorth = self.getEntryForFloat(totalContractAmount)
-            created_contract.DownPaymentAmount = self.getEntryForFloat(downPaymentAmount)
-            created_contract.HourlyRate = self.getEntryForFloat(hourlyRate)
-                
-            try:
-                created_contract.NumberOfAllowedRevisions = int(totalNumberOfRevisions)
-            except Exception as e:
-                created_contract.NumberOfAllowedRevisions = 0
+            created_contract.TotalContractWorth = self.get_entry_for_float(totalContractAmount)
+            created_contract.DownPaymentAmount = self.get_entry_for_float(downPaymentAmount)
+            created_contract.HourlyRate = self.get_entry_for_float(hourlyRate)
+            created_contract.NumberOfAllowedRevisions = self.get_entry_for_int(totalNumberOfRevisions)
             
             created_contract.save()
             
@@ -370,8 +367,8 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                     created_milestone = created_contract.create_new_milestone()
                 
                 created_milestone.Name = milestoneName[milestone_index]
-                created_milestone.EstimateHoursRequired = self.getEntryForFloat(milestonesEstimateHours[milestone_index])
-                created_milestone.MilestonePaymentAmount = self.getEntryForFloat(milestoneAmount[milestone_index])
+                created_milestone.EstimateHoursRequired = self.get_entry_for_float(milestonesEstimateHours[milestone_index])
+                created_milestone.MilestonePaymentAmount = self.get_entry_for_float(milestoneAmount[milestone_index])
                 
                 if milestoneDescription[milestone_index] != "":
                     created_milestone.Explanation = milestoneDescription[milestone_index]
@@ -388,11 +385,97 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             
         return created_contract
     
-    def getEntryForFloat(self,floatAmt):
+    def get_entry_for_float(self,floatAmt):
         try:
             return float(floatAmt)
         except Exception as e:
             return 0.0
+        
+    def get_entry_for_int(self,intAmt):
+        try:
+            return int(intAmt)
+        except Exception as e:
+            return 0
+
+class CreateContractStepThree(LoginRequiredMixin, TemplateView):
+    template_name = "contract.creation.third.step.html"
+
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        action_taken = request.POST.get("action", "")
+        
+        if action_taken == "Continue": # User wants to go to the next step
+            return self.process_continue(request, **kwargs)
+        elif action_taken == "Save for Later":
+            return self.process_save_for_later(request, **kwargs)
+        else:
+            # Going to somehow need to handle this one way or another
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(CreateContractStepThree, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        context["in_edit_mode"] = False
+        
+        contract_info = { 
+            "id" : 0, "contract_name" : "", "extra_revision_fee" : 0.00, "request_for_change_fee" : 0.00, "charge_for_late_review" : 0.00, "kill_fee" : 0.00,
+        }
+        
+        # If we even passed a variable in, go ahead and check to make sure its an actual contract
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            
+            if selected_contract is None: # Just exit and raise a 404 message
+                raise Http404()
+            else:
+                context["in_edit_mode"] = True
+                
+                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                    contract_info["id"] = selected_contract.id
+                    contract_info["contract_name"] = selected_contract.Name
+                    contract_info["extra_revision_fee"] = selected_contract.ExtraRevisionFee
+                    contract_info["request_for_change_fee"] = selected_contract.RequestForChangeFee
+                    contract_info["charge_for_late_review"] = selected_contract.ChargeForLateReview
+                    contract_info["kill_fee"] = selected_contract.KillFee
+                else:
+                    raise PermissionDenied() # Raise 403
+                
+        context["contract_info"] = contract_info
+        return context
+    
+    def process_continue(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        return redirect(reverse("contracts:home"))
+    
+    def process_save_for_later(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        return redirect(reverse("contracts:home"))
+    
+    def build_new_object(self,request,**kwargs):
+        handler = RequestInputHandler()
+        extraRevisionFee = request.POST.get("extra-revision-fee", "")
+        requestChangeFee = request.POST.get("request-change-fee", "")
+        chargeLateFee = request.POST.get("charge-late-fee", "")
+        killFee = request.POST.get("kill-fee", "")
+        
+        selected_contract = None
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
+            selected_contract.RequestForChangeFee = handler.get_entry_for_float(requestChangeFee)
+            selected_contract.ChargeForLateReview = handler.get_entry_for_float(chargeLateFee)
+            selected_contract.KillFee = handler.get_entry_for_float(killFee)
+            selected_contract.save()
+        
+        return selected_contract
     
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
