@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -52,9 +53,9 @@ class Contract(models.Model):
     DownPaymentRate = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
     DownPaymentAmount = models.DecimalField(decimal_places=5,null=True,default=0.00000,max_digits=10)
 
-    def CreateNewMilestone(self):
-        newlyCreated = Milestone.objects.create(MilestoneContract=self,Name="")
-        return newlyCreated
+    def create_new_milestone(self):
+        newly_created_milestone = Milestone.objects.create(MilestoneContract=self,Name="",Deadline=datetime.date.today())
+        return newly_created_milestone
 
     def create_slug(self):
         self.UrlSlug = slugify('%s' % (self.Name[:50]))
@@ -118,8 +119,8 @@ class Milestone(models.Model):
     Name = models.CharField(max_length=200)
     Explanation = models.TextField()
     MilestonePaymentAmount = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
-    EstimateHoursRequired = models.IntegerField(null=True)
-    Deadline = models.DateField(auto_now=True)
+    EstimateHoursRequired = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
+    Deadline = models.DateField(auto_now=False)
 
     class Meta:
        db_table = 'Milestone'

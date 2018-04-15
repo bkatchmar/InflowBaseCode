@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import datetime
+import json
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -269,7 +270,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
         today = datetime.date.today()
         # Used for sending contract information to the view
         contract_info = { 
-            "id" : 0, "contract_name" : "", "start_date" : today.strftime("%b %d %Y"), "end_date" : today.strftime("%b %d %Y"), "type" : "d",
+            "id" : 0, "contract_name" : "", "start_date" : today.strftime("%b %d %Y"), "end_date" : today.strftime("%b %d %Y"), "type" : "d", "contract_total" : 0.00, "down_payment_amount" : 0.00, "total_revisions" : 1, "hourly_rate" : 0.00,
             "milestones" : []
         }
         
@@ -288,14 +289,25 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                     contract_info["start_date"] = selected_contract.StartDate.strftime("%b %d %Y")
                     contract_info["end_date"] = selected_contract.EndDate.strftime("%b %d %Y")
                     contract_info["type"] = selected_contract.ContractType
+                    contract_info["contract_total"] = selected_contract.TotalContractWorth
+                    contract_info["down_payment_amount"] = selected_contract.DownPaymentAmount
+                    contract_info["total_revisions"] = selected_contract.NumberOfAllowedRevisions
+                    contract_info["hourly_rate"] = selected_contract.HourlyRate
                     
                     # Retrieve the milestones (if any)
-                    milestone_index = 1
+                    milestone_index = 0
                     selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
                     for milestone in selected_contract_milestones:
-                        entered_milestone = { "index" : milestone_index, "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
+                        entered_milestone = { "index" : milestone_index, "front_index": (milestone_index+1), "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
                         milestone_index = milestone_index + 1
                         contract_info["milestones"].append(entered_milestone)
+                    
+                    if milestone_index == 0:
+                        entered_milestone = { "index":milestone_index,"front_index":(milestone_index+1),"name":"","description":"","estimateHourCompletion":0,"totalMilestoneAmount":0,"milestoneDeadline":"" }
+                        milestone_index = milestone_index + 1
+                        contract_info["milestones"].append(entered_milestone)
+                    
+                    contract_info["number_of_milestones"] = milestone_index
                 else:
                     raise PermissionDenied() # Raise 403
         
@@ -326,14 +338,76 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
         milestoneAmount = request.POST.getlist("milestoneAmount")
         milestoneDeadline = request.POST.getlist("milestoneDeadline")
         
+        # Totals for Contract
+        totalContractAmount = request.POST.get("totalContractAmount", "")
+        downPaymentAmount = request.POST.get("downPaymentAmount", "")
+        totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
+        
         created_contract = None
         if "contract_id" in kwargs:
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            print(created_contract)
             created_contract.StartDate = datetime.datetime.strptime(contractStartDate, "%b %d %Y")
             created_contract.EndDate = datetime.datetime.strptime(contractEndDate, "%b %d %Y")
+            
+            try:
+                created_contract.TotalContractWorth = float(totalContractAmount)
+            except Exception as e:
+                created_contract.TotalContractWorth = 0.0
+                
+            try:
+                created_contract.DownPaymentAmount = float(downPaymentAmount)
+            except Exception as e:
+                created_contract.DownPaymentAmount = 0.0
+                
+            try:
+                created_contract.NumberOfAllowedRevisions = int(totalNumberOfRevisions)
+            except Exception as e:
+                created_contract.NumberOfAllowedRevisions = 0
+            
+            try:
+                created_contract.HourlyRate = float(hourlyRate)
+            except Exception as e:
+                created_contract.HourlyRate = 0.00
+            
             created_contract.save()
-            print("Saved Contract")
+            
+            retrieved_milestones = Milestone.objects.filter(MilestoneContract=created_contract)
+            
+            # Build Each Milestone Object
+            for milestone_index in range(0,len(milestoneName)):
+                if milestone_index < len(retrieved_milestones):
+                    created_milestone = retrieved_milestones[milestone_index]
+                else:
+                    created_milestone = created_contract.create_new_milestone()
+                
+                created_milestone.Name = milestoneName[milestone_index]
+                
+                if milestoneDescription[milestone_index] != "":
+                    created_milestone.Explanation = milestoneDescription[milestone_index]
+                
+                if milestonesEstimateHours[milestone_index] != "":
+                    try:
+                        created_milestone.EstimateHoursRequired = float(milestonesEstimateHours[milestone_index])
+                    except Exception as e:
+                        created_milestone.EstimateHoursRequired = 0.0
+                
+                if milestoneAmount[milestone_index] != "":
+                    try:
+                        created_milestone.MilestonePaymentAmount = float(milestoneAmount[milestone_index])
+                    except Exception as e:
+                        created_milestone.MilestonePaymentAmount = 0.0
+                else:
+                    created_milestone.MilestonePaymentAmount = 0.0
+                
+                if milestoneDeadline[milestone_index] != "":
+                    try:
+                        created_milestone.Deadline = datetime.datetime.strptime(milestoneDeadline[milestone_index], "%b %d %Y")
+                    except Exception as e:
+                        created_milestone.Deadline = datetime.date.today()
+                else:
+                    created_milestone.Deadline = datetime.date.today()
+                
+                created_milestone.save()
             
         return created_contract
     

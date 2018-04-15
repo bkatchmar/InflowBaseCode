@@ -15,3 +15,7 @@ jQuery(document).ready(function() {
 	
 	jQuery("div.input-field.date input[type='text']").datepicker({showOtherMonths:true,selectOtherMonths:true,dateFormat:"M dd yy"});
 });
+
+function generateDatePickersForUnusedDateFields() {
+	jQuery("div.input-field.date input[type='text']:not(.hasDatepicker)").datepicker({showOtherMonths:true,selectOtherMonths:true,dateFormat:"M dd yy"});
+}

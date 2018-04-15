@@ -68,9 +68,9 @@ class ContractAndMilestoneModelCreationTest(TestCase):
         firstContract.create_slug()
         firstContract.save()
         
-        firstContract.CreateNewMilestone()
-        firstContract.CreateNewMilestone()
-        firstContract.CreateNewMilestone()
+        firstContract.create_new_milestone()
+        firstContract.create_new_milestone()
+        firstContract.create_new_milestone()
         
         # Second contract, this is meant to test the 50 character slug limit but over 50 character name
         secondContract = Contract.objects.create(
@@ -82,8 +82,8 @@ class ContractAndMilestoneModelCreationTest(TestCase):
         secondContract.create_slug()
         secondContract.save()
         
-        secondContract.CreateNewMilestone()
-        secondContract.CreateNewMilestone()
+        secondContract.create_new_milestone()
+        secondContract.create_new_milestone()
         
         # Contract Recipients
         Recipient.objects.create(ContractForRecipient=firstContract,Name="John Smith",BillingName="John Smith")

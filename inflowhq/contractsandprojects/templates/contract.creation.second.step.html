@@ -3,13 +3,6 @@
 {% block title %}Create New Contract - Step 2 - {{contract_info.contract_name}}{% endblock %}
 {% block head_script %}
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
-	<script>
-		var milestones = [];
-		
-		{% for milestone in contract_info.milestones %}
-			milestones.push({"index":{{milestone.index}}, "name" : "{{milestone.name}}", "description" : "{{milestone.description}}", "estimateHourCompletion" : {{milestone.estimateHourCompletion}}, "totalMilestoneAmount" : {{milestone.totalMilestoneAmount}}, "milestoneDeadline" : "{{milestone.milestoneDeadline}}"});
-		{% endfor %}
-	</script>
 {% endblock %}
 {% block main_tag %}
 	<div class="back-links"></div>
@@ -24,7 +17,7 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractType='{{contract_info.type}}';hourlyRate=0">
+			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};contractTotal={{contract_info.contract_total}};downPaymentAmount={{contract_info.down_payment_amount}};allowedRevisions={{contract_info.total_revisions}};downPaymentRate=0;current_milestone_count={{contract_info.number_of_milestones}};milestones=[]">
 				<div class="header">Milestones</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field date">
@@ -40,37 +33,63 @@
 					<div class="input-field mini-field switch">
 						<span class="label">How would you like to charge?</span>
 						<span class="switch">
-							<span class="on">Lump Sum</span>
-							<span class="border">Hourly Rate</span>
+							<span ng-class="{'on': contractType=='d'}" ng-class="{'border': contractType=='t'}">Lump Sum</span>
+							<span class="border" ng-class="{'on': contractType=='t'}">Hourly Rate</span>
 						</span>
 					</div>
 					<div class="input-field mini-field" ng-show="contractType=='t'">
 						<span class="label">Hourly rate*:</span>
-						<span class="field"><input type="text" placeholder="0 hours" name="hourlyRate" ng-bind="hourlyRate" ng-required="contractType=='t'" /></span>
+						<span class="field"><input type="text" placeholder="0/hr" name="hourlyRate" ng-value="hourlyRate" ng-model="hourlyRate" ng-required="contractType=='t'" /></span>
 					</div>
 				</div>
-				<div ng-repeat="ms in milestones">
+				{% for milestone in contract_info.milestones %}
 					<div class="milestone-block">
-						<div class="header left">Milestone #<span ng-bind="ms.index"></span></div>
+						<div class="header left">Milestone #<span ng-bind="index[{{milestone.index}}]" ng-init="index[{{milestone.index}}]={{milestone.front_index}}"></span></div>
 						<div class="input-field text-single-line">
-							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" ng-value="ms.name" ng-model="ms.name" required /></span>
+							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" value="{{milestone.name}}" required /></span>
 						</div>
 						<div class="input-field text-multi-line">
 							<span class="label">Task Description:</span>
-							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone" ng-value="ms.description" ng-model="ms.description"></textarea></span>
+							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone">{{milestone.description}}</textarea></span>
 						</div>
 						<div class="mini-field-line">
 							<div class="input-field mini-field" ng-show="contractType=='t'">
 								<span class="label">Estimate of hours<br />to completion*:</span>
-								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-value="ms.estimateHourCompletion" ng-model="ms.estimateHourCompletion" ng-change="updateTotals()" required /></span>
+								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-value="estimateHourCompletion[{{milestone.index}}]" ng-model="estimateHourCompletion[{{milestone.index}}]" ng-init="estimateHourCompletion[{{milestone.index}}]={{milestone.estimateHourCompletion}}" ng-change="updateTotals(false)" required /></span>
 							</div>
 							<div class="input-field mini-field">
 								<span class="label">Milestone Amount*:</span>
-								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-value="ms.totalMilestoneAmount" ng-model="ms.totalMilestoneAmount" ng-change="updateTotals()" required /></span>
+								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-value="totalMilestoneAmount[{{milestone.index}}]" ng-model="totalMilestoneAmount[{{milestone.index}}]" ng-init="totalMilestoneAmount[{{milestone.index}}]={{milestone.totalMilestoneAmount}}" ng-change="updateTotals(true)" required /></span>
 							</div>
 							<div class="input-field mini-field date">
 								<span class="label">Milestone Deadline*:</span>
-								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-value="ms.milestoneDeadline" ng-model="ms.milestoneDeadline" required /></span>
+								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-value="milestoneDeadline[{{milestone.index}}]" ng-model="milestoneDeadline[{{milestone.index}}]" ng-init="milestoneDeadline[{{milestone.index}}]='{{milestone.milestoneDeadline}}'" onclick="generateDatePickersForUnusedDateFields()" required /></span>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+				<div ng-repeat="ms in milestones">
+					<div class="milestone-block">
+						<div class="header left">Milestone #<span ng-bind="ms.index"></span></div>
+						<div class="input-field text-single-line">
+							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" required /></span>
+						</div>
+						<div class="input-field text-multi-line">
+							<span class="label">Task Description:</span>
+							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone"></textarea></span>
+						</div>
+						<div class="mini-field-line">
+							<div class="input-field mini-field" ng-show="contractType=='t'">
+								<span class="label">Estimate of hours<br />to completion*:</span>
+								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-model="ms.estimateHourCompletion" ng-change="updateTotals(false)" required /></span>
+							</div>
+							<div class="input-field mini-field">
+								<span class="label">Milestone Amount*:</span>
+								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-model="ms.totalMilestoneAmount" ng-change="updateTotals(true)" required /></span>
+							</div>
+							<div class="input-field mini-field date">
+								<span class="label">Milestone Deadline*:</span>
+								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" onclick="generateDatePickersForUnusedDateFields()" required /></span>
 							</div>
 						</div>
 					</div>
@@ -81,23 +100,23 @@
 				<div class="milestone-totals mini-field-line">
 					<div class="input-field mini-field">
 						<span class="label">Milestone Total Amount:<br /><span>(Total Project Amount)</span></span>
-						<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" required /></span>
+						<span class="field"><input type="number" placeholder="$0.00" name="totalContractAmount" ng-value="contractTotal" ng-model="contractTotal" required /></span>
 					</div>
 					<div class="input-field mini-field switch">
 						<span class="label">Down Payment (optional):</span>
 						<span class="switch custom-down-payment">
-							<span>5%</span>
-							<span class="border">10%</span>
-							<span class="border">15%</span>
-							<span class="on border">Custom</span>
-							<span class="field"><input type="number" placeholder="$0.00" name="downPaymentAmount" /></span>
+							<span ng-class="{'on': downPaymentRate==0.05}" ng-click="changeRate(0.05)">5%</span>
+							<span class="border" ng-class="{'on': downPaymentRate==0.1}" ng-click="changeRate(0.1)">10%</span>
+							<span class="border" ng-class="{'on': downPaymentRate==0.15}" ng-click="changeRate(0.15)">15%</span>
+							<span class="border" ng-class="{'on': downPaymentRate==0}" ng-click="changeRate(0)">Custom</span>
+							<span class="field"><input type="number" placeholder="$0.00" name="downPaymentAmount" ng-value="downPaymentAmount" ng-model="downPaymentAmount" /></span>
 						</span>
 					</div>
 				</div>
 				<div class="milestone-totals mini-field-line">
 					<div class="input-field mini-field clear">
 						<span class="label">Total Number of Revisions:</span>
-						<span class="field"><input type="number" placeholder="# of Revisions" name="totalNumberOfRevisions" required /></span>
+						<span class="field"><input type="number" placeholder="# of Revisions" name="totalNumberOfRevisions" ng-value="allowedRevisions" ng-model="allowedRevisions" required /></span>
 					</div>
 				</div>
 				<div class="submit-buttons">
@@ -113,7 +132,7 @@
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
-	<script src="{% static 'js/inflow.contract.js' %}?d=2018"></script>
+	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
 	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201804"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201804142100"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180416"></script>
 {% endblock %}
