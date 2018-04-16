@@ -1,0 +1,27 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}Create New Contract - Step 4 - {{contract_info.contract_name}}{% endblock %}
+{% block head_script %}
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="create-contract-super-window">
+			<div class="header">Create Contract</div>
+			<div class="progress-bar">
+				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
+				<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
+				<span class="number three done"><span class="mark">&#10003;</span><span class="text">Optional Fees</span></span>
+				<span class="number four on"><span class="text">Work Overview</span></span>
+				<span class="number five"><span class="text">Preview and Send</span></span>
+				<div class="bar"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201804"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180416"></script>
+{% endblock %}
