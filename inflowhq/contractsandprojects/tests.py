@@ -197,3 +197,61 @@ class ContractRelationshipTest(TestCase):
         self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(clara))
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(josh))
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(matt))
+
+class ContractNewFirstScreenTest(TestCase):
+    def setUp(self):
+        timezone.activate(pytz.timezone("America/New_York"))
+        
+        # Users
+        brian = User.objects.create(username="Brian@workinflow.co",email="Brian@workinflow.co",first_name="Brian",last_name="Katchmar")
+        brian.set_password("Th3L10nK1ng15Fun")
+        brian.save()
+        
+        kenny = User.objects.create(username="Kenny@workinflow.co",email="Kenny@workinflow.co",first_name="Kenny",last_name="Kim") # Has User Settings, has associated types, neither of the two fields we check
+        kenny.set_password("Thing5Ar3Gr34t")
+        kenny.save()
+        
+        clara = User.objects.create(username="Clara@workinflow.co",email="Clara@workinflow.co",first_name="Clara",last_name="Chang")
+        clara.set_password("Thing5Ar3Gr34t")
+        clara.save()
+        
+        if not Contract.objects.filter(Name="Brian Contract 1").exists():
+            contract_1 = Contract.objects.create(Creator=brian,Name="Brian Contract 1",StartDate=date.today(),EndDate=date.today())
+            Relationship.objects.create(ContractUser=brian,ContractForRelationship=contract_1,RelationshipType='f')
+        
+        if Contract.objects.filter(Name="Kenny Contract 1").exists():
+            asdd = ""
+            
+        if Contract.objects.filter(Name="Clara Contract 1").exists():
+            asdd = ""
+    
+    def testCurrentContractNotBeingEditted(self):
+        c = Client()
+        loginAttempt = c.login(username='Brian@workinflow.co', password='Th3L10nK1ng15Fun')
+        response = c.get("/inflow/projects/contract/create")
+        
+        self.assertEqual(response.context["contract_info"]["id"], 0)
+        self.assertEqual(200,response.status_code) # User can see the page
+        
+    def testFirstScreenEditOk(self):
+        contract_1 = Contract.objects.get(Name="Brian Contract 1")
+        request_url = ("/inflow/projects/contract/edit/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username='Brian@workinflow.co', password='Th3L10nK1ng15Fun')
+        response = c.get(request_url)
+        
+        self.assertEqual(response.context["contract_info"]["id"], contract_1.id)
+        self.assertEqual(response.context["contract_info"]["contract_name"], contract_1.Name)
+        self.assertEqual(200,response.status_code) # User got a 404
+        
+    def testFirstScreenEditKickedOutKenny(self):
+        contract_1 = Contract.objects.get(Name="Brian Contract 1")
+        request_url = ("/inflow/projects/contract/edit/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username='Kenny@workinflow.co', password='Thing5Ar3Gr34t')
+        response = c.get(request_url)
+        
+        self.assertEqual(200,response.status_code) # User got a 404
+        self.assertFalse("contract_info" in response.context)
