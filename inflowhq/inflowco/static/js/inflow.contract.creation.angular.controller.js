@@ -47,3 +47,24 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope) {
 		$scope.downPaymentAmount = $scope.contractTotal * rate;
 	};
 });
+
+stepFourApp.controller("createContractStepFourCtrl", function($scope) {
+	$scope.changeEditMode = function(mode,index) {
+		var getOutOfEditMode = ($scope.editMode === mode);
+		
+		if (getOutOfEditMode) { $scope.editMode = ""; $scope.currentlyEditing = ""; }
+		else { $scope.editMode = mode; }
+		
+		for (var iterator = 0; iterator < $scope.editModeLabels.length; iterator++) {
+			$scope.editModeLabels[iterator] = "Edit";
+		}
+		
+		if (!getOutOfEditMode) { $scope.editModeLabels[index] = "Finish Editing"; }
+	};
+	$scope.changeWhatWeAreEditing = function(field) {
+		$scope.currentlyEditing = field;
+	};
+	$scope.updatePhoneNumber = function() {
+		$scope.phoneNumber = $scope.companyContactPhone1 + "-" + $scope.companyContactPhone2 + "-" + $scope.companyContactPhone3;
+	};
+});

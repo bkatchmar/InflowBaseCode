@@ -17,11 +17,119 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
+			<form class="contract-creation review-contract" name="contractCreationStep4" method="post" action="{% url 'contracts:create_contract_step_4' contract_info.id %}" ng-app="createContractStepFourApp" ng-controller="createContractStepFourCtrl" ng-init="editModeLabels=['Edit','Edit'];editMode='';currentlyEditing=''">
+				<div class="header">Work Overview</div>
+				
+				<!-- Display Error Messages -->
+				<div class="input-field text-single-line" ng-show="contractCreationStep4.contractName.$touched && contractCreationStep4.contractName.$invalid">
+					<span class="error-msg">The project name is required.</span>
+				</div>
+				<div class="input-field text-single-line" ng-show="contractCreationStep4.billingName.$touched && contractCreationStep4.billingName.$invalid">
+					<span class="error-msg">Contact Billing name is required.</span>
+				</div>
+				<div class="input-field text-single-line" ng-show="contractCreationStep4.billingEmail.$touched && contractCreationStep4.billingEmail.$invalid">
+					<span class="error-msg">Valid contact Email Address is required.</span>
+				</div>
+				<div class="input-field text-single-line" ng-show="(contractCreationStep4.companyContactPhone1.$touched && contractCreationStep4.companyContactPhone1.$invalid) || (contractCreationStep4.companyContactPhone2.$touched && contractCreationStep4.companyContactPhone2.$invalid) || (contractCreationStep4.companyContactPhone3.$touched && contractCreationStep4.companyContactPhone3.$invalid)">
+					<span class="error-msg">Phone number must be either empty or full</span>
+				</div>
+				{% for addr in contract_recipient_addresses %}
+					<div class="input-field text-single-line" ng-show="(contractCreationStep4.address1{{addr.id}}.$touched && contractCreationStep4.address1{{addr.id}}.$invalid) || (contractCreationStep4.addressCity{{addr.id}}.$touched && contractCreationStep4.addressCity{{addr.id}}.$invalid) || (contractCreationStep4.addressState{{addr.id}}.$touched && contractCreationStep4.addressState{{addr.id}}.$invalid)">
+						<span class="error-msg">All addresses need their required fields</span>
+					</div>
+				{% endfor %}
+				
+				<div class="overview-section">
+					<div class="header">Project Information<div class="go-to-edit-mode" ng-click="changeEditMode('project-information',0)" ng-bind="editModeLabels[0]"></div></div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('contractName')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.contractName.$touched && contractCreationStep4.contractName.$invalid}">Project Name:</span>
+						<span class="field">
+							<span class="text" ng-bind="contractName" ng-init="contractName='{{contract_info.Name}}'" ng-class="{'on' : currentlyEditing!='contractName'}"></span>
+							<input type="text" placeholder="Name of Project" name="contractName" ng-model="contractName" ng-value="contractName" ng-class="{'on' : currentlyEditing=='contractName'}" required />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('contractDescription')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Project Description:</span>
+						<span class="field">
+							<span class="text" ng-bind="contractDescription" ng-init="contractDescription='{{contract_info.Description}}'" ng-class="{'on' : currentlyEditing!='contractDescription'}"></span>
+							<input type="text" placeholder="Project Description" name="contractDescription" ng-model="contractDescription" ng-value="contractDescription" ng-class="{'on' : currentlyEditing=='contractDescription'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('nameOfContact')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Name of Contact:</span>
+						<span class="field">
+							<span class="text" ng-bind="nameOfContact" ng-init="nameOfContact='{{contract_recipient.Name}}'" ng-class="{'on' : currentlyEditing!='nameOfContact'}"></span>
+							<input type="text" placeholder="Name of Project Contact" name="nameOfContact" ng-model="nameOfContact" ng-value="nameOfContact" ng-class="{'on' : currentlyEditing=='nameOfContact'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('billingName')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.billingName.$touched && contractCreationStep4.billingName.$invalid}">Company Name:</span>
+						<span class="field">
+							<span class="text" ng-bind="billingName" ng-init="billingName='{{contract_recipient.BillingName}}'" ng-class="{'on' : currentlyEditing!='billingName'}"></span>
+							<input type="text" placeholder="Name of Project Contact" name="billingName" ng-model="billingName" ng-value="billingName" ng-class="{'on' : currentlyEditing=='billingName'}" required />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('billingEmail')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.billingEmail.$touched && contractCreationStep4.billingEmail.$invalid}">Email:</span>
+						<span class="field">
+							<span class="text" ng-bind="billingEmail" ng-init="billingEmail='{{contract_recipient.EmailAddress}}'" ng-class="{'on' : currentlyEditing!='billingEmail'}"></span>
+							<input type="email" placeholder="Name of Project Contact" name="billingEmail" ng-model="billingEmail" ng-value="billingEmail" ng-class="{'on' : currentlyEditing=='billingEmail'}" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('phoneNumber')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : (contractCreationStep4.companyContactPhone1.$touched && contractCreationStep4.companyContactPhone1.$invalid) || (contractCreationStep4.companyContactPhone2.$touched && contractCreationStep4.companyContactPhone2.$invalid) || (contractCreationStep4.companyContactPhone3.$touched && contractCreationStep4.companyContactPhone3.$invalid)}">
+							Phone:
+						</span>
+						<span class="field">
+							<span class="text" ng-bind="phoneNumber" ng-init="phoneNumber='{{contract_recipient.PhoneNumber}}'" ng-class="{'on' : currentlyEditing!='phoneNumber'}"></span>
+							<input type="text" name="companyContactPhone1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-init="companyContactPhone1='{{phone_1}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone2" ng-required="companyContactPhone3" ng-pattern="/^\d{3}$/" ng-change="updatePhoneNumber()" />
+							<span class="hyphen" ng-class="{'on' : currentlyEditing=='phoneNumber'}">&mdash;</span>
+							<input type="text" name="companyContactPhone2" placeholder="xxx" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-init="companyContactPhone2='{{phone_2}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone1" ng-required="companyContactPhone3" ng-pattern="/^\d{3}$/" ng-change="updatePhoneNumber()" />
+							<span class="hyphen" ng-class="{'on' : currentlyEditing=='phoneNumber'}">&mdash;</span>
+							<input type="text" name="companyContactPhone3" placeholder="xxxx" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-init="companyContactPhone3='{{phone_3}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone1" ng-required="companyContactPhone2" ng-pattern="/^\d{4}$/" ng-change="updatePhoneNumber()" />
+						</span>
+					</div>
+					{% for addr in contract_recipient_addresses %}
+						<div class="input-field text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('address{{addr.id}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : (contractCreationStep4.address1{{addr.id}}.$touched && contractCreationStep4.address1{{addr.id}}.$invalid) || (contractCreationStep4.addressCity{{addr.id}}.$touched && contractCreationStep4.addressCity{{addr.id}}.$invalid) || (contractCreationStep4.addressState{{addr.id}}.$touched && contractCreationStep4.addressState{{addr.id}}.$invalid)}">
+								Address:
+							</span>
+							<span class="field">
+								<span class="text" ng-bind="address1{{addr.id}}" ng-init="address1{{addr.id}}='{{addr.Address1}}'" ng-class="{'on' : currentlyEditing!='address{{addr.id}}'}"></span>
+								<span ng-show="address2{{addr.id}}!=''" class="text" ng-bind="address2{{addr.id}}" ng-init="address2{{addr.id}}='{{addr.Address2}}'" ng-class="{'on' : currentlyEditing!='address{{addr.id}}'}"></span>
+								<span class="text" ng-init="addressCity{{addr.id}}='{{addr.City}}';addressState{{addr.id}}='{{addr.State}}'" ng-class="{'on' : currentlyEditing!='address{{addr.id}}'}">
+									<span ng-bind="addressCity{{addr.id}}"></span>,&nbsp;<span ng-bind="addressState{{addr.id}}"></span>
+								</span>
+								<span class="text" ng-bind="addressCountryName{{addr.id}}" ng-init="addressCountryName{{addr.id}}='{{addr.Country.Name}}'" ng-class="{'on' : currentlyEditing!='address{{addr.id}}'}"></span>
+								<input type="text" placeholder="Address 1" name="address1{{addr.id}}" ng-model="address1{{addr.id}}" ng-value="address1{{addr.id}}" ng-class="{'on' : currentlyEditing=='address{{addr.id}}'}" required />
+								<input type="text" placeholder="Address 2" name="address2{{addr.id}}" ng-model="address2{{addr.id}}" ng-value="address2{{addr.id}}" ng-class="{'on' : currentlyEditing=='address{{addr.id}}'}" />
+								<input type="text" placeholder="City" name="addressCity{{addr.id}}" ng-model="addressCity{{addr.id}}" ng-value="addressCity{{addr.id}}" ng-class="{'on' : currentlyEditing=='address{{addr.id}}'}" required />
+								<input type="text" placeholder="State" name="addressState{{addr.id}}" ng-model="addressState{{addr.id}}" ng-value="addressState{{addr.id}}" ng-class="{'on' : currentlyEditing=='address{{addr.id}}'}" required />
+							</span>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="submit-buttons">
+					<a href="{% url 'contracts:create_contract_step_3' contract_info.id %}" class="btn">Back</a>
+					<input type="submit" name="action" value="Continue" class="continue" />
+				</div>
+				<div class="submit-buttons alt">
+					<input type="submit" name="action" value="Save for Later" class="later" />
+				</div>
+				{% csrf_token %}
+			</form>
 		</div>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201804"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180416"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180416"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=2018041623"></script>
 {% endblock %}

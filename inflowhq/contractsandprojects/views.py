@@ -453,7 +453,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
     
     def process_continue(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
-        return redirect(reverse("contracts:home"))
+        return redirect(reverse("contracts:create_contract_step_4", kwargs={"contract_id" : contract.id}))
     
     def process_save_for_later(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
@@ -476,7 +476,88 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
             selected_contract.save()
         
         return selected_contract
+
+class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
+    template_name = "contract.creation.fourth.step.html"
     
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        action_taken = request.POST.get("action", "")
+        
+        if action_taken == "Continue": # User wants to go to the next step
+            return self.process_continue(request, **kwargs)
+        elif action_taken == "Save for Later":
+            return self.process_save_for_later(request, **kwargs)
+        else:
+            # Going to somehow need to handle this one way or another
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(CreateContractStepFourth, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        context["in_edit_mode"] = False
+        
+        contract_info = { }
+        
+        # If we even passed a variable in, go ahead and check to make sure its an actual contract
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+            selected_contract_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
+            
+            if selected_contract is None: # Just exit and raise a 404 message
+                raise Http404()
+            else:
+                context["in_edit_mode"] = True
+                
+                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                    contract_info = selected_contract
+                else:
+                    raise PermissionDenied() # Raise 403
+                
+        context["contract_info"] = contract_info
+        context["contract_recipient"] = selected_contract_recipient
+        context["contract_recipient_addresses"] = selected_contract_recipient_addresses
+        
+        # Fracture the phone number
+        if selected_contract_recipient.PhoneNumber != "" and selected_contract_recipient.PhoneNumber is not None:
+            number_parts = selected_contract_recipient.PhoneNumber.split("-")
+            context["phone_1"] = number_parts[0].__str__()
+            context["phone_2"] = number_parts[1].__str__()
+            context["phone_3"] = number_parts[2].__str__()
+        
+        return context
+    
+    def process_continue(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        return redirect(reverse("contracts:home"))
+    
+    def process_save_for_later(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        return redirect(reverse("contracts:home"))
+    
+    def build_new_object(self,request,**kwargs):
+        handler = RequestInputHandler()
+        contractName = request.POST.get("contractName", "")
+        contractDescription = request.POST.get("contractDescription", "")
+        
+        selected_contract = None
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            selected_contract.Name = contractName
+            selected_contract.Description = contractDescription
+            selected_contract.save()
+        
+        return selected_contract
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     
