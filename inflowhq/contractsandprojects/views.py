@@ -534,6 +534,16 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
             context["phone_2"] = number_parts[1].__str__()
             context["phone_3"] = number_parts[2].__str__()
         
+        # Retrieve the milestones (if any)
+        milestone_index = 1
+        milestones = []
+        selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
+        for milestone in selected_contract_milestones:
+            entered_milestone = { "index" : milestone_index, "name" : milestone.Name.replace("\"", "\\\"").replace("'", "\\'"), "description" : milestone.Explanation.replace("\"", "\\\"").replace("'", "\\'"), "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
+            milestone_index = milestone_index + 1
+            milestones.append(entered_milestone)
+        context["milestones"] = milestones
+        
         return context
     
     def process_continue(self,request,**kwargs):
@@ -549,13 +559,87 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         contractName = request.POST.get("contractName", "")
         contractDescription = request.POST.get("contractDescription", "")
         
+        nameOfContact = request.POST.get("nameOfContact", "")
+        billingName = request.POST.get("billingName", "")
+        billingEmail = request.POST.get("billingEmail", "")
+        phone_area_1 = request.POST.get("companyContactPhone1", "")
+        phone_area_2 = request.POST.get("companyContactPhone2", "")
+        phone_area_3 = request.POST.get("companyContactPhone3", "")
+        totalMilestoneProjectCost = request.POST.get("totalMilestoneProjectCost", "")
+        totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
+        downPaymentAmount = request.POST.get("downPaymentAmount", "")
+        extraRevisionFee = request.POST.get("extraRevisionFee", "")
+        requestForChangeFee = request.POST.get("requestForChangeFee", "")
+        lateReviewFee = request.POST.get("lateReviewFee", "")
+        killFee = request.POST.get("killFee", "")
+        
         selected_contract = None
         if "contract_id" in kwargs:
+            handler = RequestInputHandler()
             selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+            recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
+            
             selected_contract.Name = contractName
             selected_contract.Description = contractDescription
+            selected_contract.TotalContractWorth = handler.get_entry_for_float(totalMilestoneProjectCost)
+            selected_contract.NumberOfAllowedRevisions = handler.get_entry_for_int(totalNumberOfRevisions)
+            selected_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
+            
+            selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
+            selected_contract.RequestForChangeFee = handler.get_entry_for_float(requestForChangeFee)
+            selected_contract.ChargeForLateReview = handler.get_entry_for_float(lateReviewFee)
+            selected_contract.KillFee = handler.get_entry_for_float(killFee)
+            
             selected_contract.save()
-        
+            
+            if selected_contract_recipient is not None:
+                selected_contract_recipient.Name = nameOfContact
+                selected_contract_recipient.BillingName = billingName
+                selected_contract_recipient.EmailAddress = billingEmail
+                
+                if phone_area_1 != "" and phone_area_2 != "" and phone_area_3 != "":
+                    selected_contract_recipient.PhoneNumber = ("%s-%s-%s" % (phone_area_1, phone_area_2, phone_area_3))
+                
+                selected_contract_recipient.save()
+                
+                for addr in recipient_addresses:
+                    addr1_field = ("address1%s" % addr.id)
+                    addr2_field = ("address2%s" % addr.id)
+                    city_field = ("addressCity%s" % addr.id)
+                    state_field = ("addressState%s" % addr.id)
+                    
+                    address1 = request.POST.get(addr1_field, "")
+                    address2 = request.POST.get(addr2_field, "")
+                    city = request.POST.get(city_field, "")
+                    state = request.POST.get(state_field, "")
+                    
+                    addr.Address1 = address1
+                    addr.Address2 = address2
+                    addr.City = city
+                    addr.State = state
+                    addr.save()
+            
+            # Build the milestones
+            milestone_index = 1
+            selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
+            for milestone in selected_contract_milestones:
+                # Fields from POST
+                milestoneName = request.POST.get(("milestoneName%s" % milestone_index), "")
+                milestoneDescription = request.POST.get(("milestoneDescription%s" % milestone_index), "")
+                milestoneTotal = request.POST.get(("milestoneTotal%s" % milestone_index), "")
+                milestoneDeadline = request.POST.get(("milestoneDeadline%s" % milestone_index), "")
+                estimateHourCompletion = request.POST.get(("estimateHourCompletion%s" % milestone_index), "")
+                
+                milestone.Name = milestoneName
+                milestone.Explanation = milestoneDescription
+                milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneTotal)
+                milestone.Deadline = handler.get_entry_for_date(milestoneDeadline)
+                milestone.EstimateHoursRequired = handler.get_entry_for_float(estimateHourCompletion)
+                milestone.save()
+                
+                milestone_index = milestone_index + 1
+            
         return selected_contract
 
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):

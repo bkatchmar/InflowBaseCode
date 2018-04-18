@@ -67,4 +67,18 @@ stepFourApp.controller("createContractStepFourCtrl", function($scope) {
 	$scope.updatePhoneNumber = function() {
 		$scope.phoneNumber = $scope.companyContactPhone1 + "-" + $scope.companyContactPhone2 + "-" + $scope.companyContactPhone3;
 	};
+	$scope.updateTotals = function(overrideHours) {
+		var totalMilestoneProjectCost = 0;
+		
+		var iterator = 1;
+		while ($scope["milestoneTotal" + iterator]) {
+			if (overrideHours) {
+				$scope["milestoneTotal" + iterator] = ($scope["estimateHourCompletion" + iterator] * $scope.hourlyRate);
+			}
+			totalMilestoneProjectCost = totalMilestoneProjectCost + $scope["milestoneTotal" + iterator];
+			iterator++;
+		}
+		
+		$scope.totalMilestoneProjectCost = totalMilestoneProjectCost;
+	};
 });

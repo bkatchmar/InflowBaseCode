@@ -17,7 +17,7 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation review-contract" name="contractCreationStep4" method="post" action="{% url 'contracts:create_contract_step_4' contract_info.id %}" ng-app="createContractStepFourApp" ng-controller="createContractStepFourCtrl" ng-init="editModeLabels=['Edit','Edit'];editMode='';currentlyEditing=''">
+			<form class="contract-creation review-contract" name="contractCreationStep4" method="post" action="{% url 'contracts:create_contract_step_4' contract_info.id %}" ng-app="createContractStepFourApp" ng-controller="createContractStepFourCtrl" ng-init="editModeLabels=['Edit','Edit','Edit'];editMode='';currentlyEditing=''">
 				<div class="header">Work Overview</div>
 				
 				<!-- Display Error Messages -->
@@ -116,6 +116,125 @@
 						</div>
 					{% endfor %}
 				</div>
+				<div class="overview-section">
+					<div class="header">Milestones<div class="go-to-edit-mode" ng-click="changeEditMode('milestones',1)" ng-bind="editModeLabels[1]"></div></div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('totalMilestoneProjectCost')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.totalMilestoneProjectCost.$touched && contractCreationStep4.totalMilestoneProjectCost.$invalid}">Total Milestone/Project Cost:</span>
+						<span class="field">
+							<span class="text" ng-bind="totalMilestoneProjectCost" ng-init="totalMilestoneProjectCost={{contract_info.TotalContractWorth}}" ng-class="{'on' : currentlyEditing!='totalMilestoneProjectCost'}"></span>
+							<input type="number" placeholder="Total Milestone/Project Cost" name="totalMilestoneProjectCost" ng-model="totalMilestoneProjectCost" ng-value="totalMilestoneProjectCost" ng-class="{'on' : currentlyEditing=='totalMilestoneProjectCost'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('downPaymentAmount')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.downPaymentAmount.$touched && contractCreationStep4.downPaymentAmount.$invalid}">Down Payment (Custom):</span>
+						<span class="field">
+							<span class="text" ng-bind="downPaymentAmount" ng-init="downPaymentAmount={{contract_info.DownPaymentAmount}}" ng-class="{'on' : currentlyEditing!='downPaymentAmount'}"></span>
+							<input type="number" placeholder="Down Payment" name="downPaymentAmount" ng-model="downPaymentAmount" ng-value="totalMilestoneProjectCost" ng-class="{'on' : currentlyEditing=='downPaymentAmount'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('totalNumberOfRevisions')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.totalNumberOfRevisions.$touched && contractCreationStep4.totalNumberOfRevisions.$invalid}">Total Number of Revisions:</span>
+						<span class="field">
+							<span class="text" ng-bind="totalNumberOfRevisions" ng-init="totalNumberOfRevisions={{contract_info.NumberOfAllowedRevisions}}" ng-class="{'on' : currentlyEditing!='totalNumberOfRevisions'}"></span>
+							<input type="number" placeholder="Total Number of Revisions" name="totalNumberOfRevisions" ng-model="totalNumberOfRevisions" ng-value="totalNumberOfRevisions" ng-class="{'on' : currentlyEditing=='totalNumberOfRevisions'}" required />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">Charging by:</span>
+						<span class="field">
+							<span class="text on" ng-init="contractType='{{contract_info.ContractType}}'">{% if contract_info.ContractType == 'd' %}Lump Sum{% else %}Hourly Rate{% endif %}</span>
+						</span>
+					</div>
+					<div class="input-field text-single-line" ng-show="contractType=='t'">
+						<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('hourlyRate')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label" ng-class="{'error' : contractCreationStep4.hourlyRate.$touched && contractCreationStep4.hourlyRate.$invalid}">Hourly Rate:</span>
+						<span class="field">
+							<span class="text" ng-bind="hourlyRate" ng-init="hourlyRate={{contract_info.HourlyRate}}" ng-class="{'on' : currentlyEditing!='hourlyRate'}"></span>
+							<input type="number" placeholder="Hourly Rate" name="hourlyRate" ng-model="hourlyRate" ng-value="hourlyRate" ng-class="{'on' : currentlyEditing=='hourlyRate'}" ng-required="contractType=='t'" />
+						</span>
+					</div>
+					{% for ms in milestones %}
+						<div class="header sub">Milestone #{{ms.index}}</div>
+						<div class="input-field text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('milestoneName{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : contractCreationStep4.milestoneName{{ms.index}}.$touched && contractCreationStep4.milestoneName{{ms.index}}.$invalid}">Milestone Name:</span>
+							<span class="field">
+								<span class="text" ng-bind="milestoneName{{ms.index}}" ng-init="milestoneName{{ms.index}}='{{ms.name}}'" ng-class="{'on' : currentlyEditing!='milestoneName{{ms.index}}'}"></span>
+								<input type="text" placeholder="Milestone Name" name="milestoneName{{ms.index}}" ng-model="milestoneName{{ms.index}}" ng-value="milestoneName{{ms.index}}" ng-class="{'on' : currentlyEditing=='milestoneName{{ms.index}}'}" required />
+							</span>
+						</div>
+						<div class="input-field text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('milestoneDescription{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : contractCreationStep4.milestoneDescription{{ms.index}}.$touched && contractCreationStep4.milestoneDescription{{ms.index}}.$invalid}">Task Description:</span>
+							<span class="field">
+								<span class="text" ng-bind="milestoneDescription{{ms.index}}" ng-init="milestoneDescription{{ms.index}}='{{ms.description}}'" ng-class="{'on' : currentlyEditing!='milestoneDescription{{ms.index}}'}"></span>
+								<input type="text" placeholder="Task Description" name="milestoneDescription{{ms.index}}" ng-model="milestoneDescription{{ms.index}}" ng-value="milestoneDescription{{ms.index}}" ng-class="{'on' : currentlyEditing=='milestoneDescription{{ms.index}}'}" />
+							</span>
+						</div>
+						<div class="input-field text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('estimateHourCompletion{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : contractCreationStep4.estimateHourCompletion{{ms.index}}.$touched && contractCreationStep4.estimateHourCompletion{{ms.index}}.$invalid}">Estimate of Hours to Completion:</span>
+							<span class="field">
+								<span class="text" ng-bind="estimateHourCompletion{{ms.index}}" ng-init="estimateHourCompletion{{ms.index}}={{ms.estimateHourCompletion}}" ng-class="{'on' : currentlyEditing!='estimateHourCompletion{{ms.index}}'}"></span>
+								<input type="number" placeholder="Estimate of Hours to Completion" name="estimateHourCompletion{{ms.index}}" ng-model="estimateHourCompletion{{ms.index}}" ng-value="estimateHourCompletion{{ms.index}}" ng-class="{'on' : currentlyEditing=='estimateHourCompletion{{ms.index}}'}" ng-change="updateTotals(true)" required />
+							</span>
+						</div>
+						<div class="input-field text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('milestoneTotal{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : contractCreationStep4.milestoneTotal{{ms.index}}.$touched && contractCreationStep4.milestoneTotal{{ms.index}}.$invalid}">Milestone Amount:</span>
+							<span class="field">
+								<span class="text" ng-bind="milestoneTotal{{ms.index}}" ng-init="milestoneTotal{{ms.index}}={{ms.totalMilestoneAmount}}" ng-class="{'on' : currentlyEditing!='milestoneTotal{{ms.index}}'}"></span>
+								<input type="number" placeholder="Task Description" name="milestoneTotal{{ms.index}}" ng-model="milestoneTotal{{ms.index}}" ng-value="milestoneTotal{{ms.index}}" ng-class="{'on' : currentlyEditing=='milestoneTotal{{ms.index}}'}" ng-change="updateTotals(false)" required />
+							</span>
+						</div>
+						<div class="input-field date text-single-line">
+							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('milestoneDeadline{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="label" ng-class="{'error' : contractCreationStep4.milestoneDeadline{{ms.index}}.$touched && contractCreationStep4.milestoneDeadline{{ms.index}}.$invalid}">Milestone Deadline:</span>
+							<span class="field">
+								<span class="text" ng-bind="milestoneDeadline{{ms.index}}" ng-init="milestoneDeadline{{ms.index}}='{{ms.milestoneDeadline}}'" ng-class="{'on' : currentlyEditing!='milestoneDeadline{{ms.index}}'}"></span>
+								<input type="text" placeholder="Deadline" name="milestoneDeadline{{ms.index}}" ng-model="milestoneDeadline{{ms.index}}" ng-value="milestoneDeadline{{ms.index}}" ng-class="{'on' : currentlyEditing=='milestoneDeadline{{ms.index}}'}" required />
+							</span>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="overview-section">
+					<div class="header">Optional Fees<div class="go-to-edit-mode" ng-click="changeEditMode('optional-fees',2)" ng-bind="editModeLabels[2]"></div></div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='optional-fees'}" ng-click="changeWhatWeAreEditing('extraRevisionFee')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Extra Revision Fee:</span>
+						<span class="field">
+							<span class="text" ng-bind="extraRevisionFee" ng-init="extraRevisionFee={{contract_info.ExtraRevisionFee}}" ng-class="{'on' : currentlyEditing!='extraRevisionFee'}"></span>
+							<input type="number" placeholder="Extra Revision Fee" name="extraRevisionFee" ng-model="extraRevisionFee" ng-value="extraRevisionFee" ng-class="{'on' : currentlyEditing=='extraRevisionFee'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='optional-fees'}" ng-click="changeWhatWeAreEditing('requestForChangeFee')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Request for Change Fee:</span>
+						<span class="field">
+							<span class="text" ng-bind="requestForChangeFee" ng-init="requestForChangeFee={{contract_info.RequestForChangeFee}}" ng-class="{'on' : currentlyEditing!='requestForChangeFee'}"></span>
+							<input type="number" placeholder="Request for Change Fee" name="requestForChangeFee" ng-model="requestForChangeFee" ng-value="requestForChangeFee" ng-class="{'on' : currentlyEditing=='requestForChangeFee'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='optional-fees'}" ng-click="changeWhatWeAreEditing('lateReviewFee')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Late Review Fee:</span>
+						<span class="field">
+							<span class="text" ng-bind="lateReviewFee" ng-init="lateReviewFee={{contract_info.ChargeForLateReview}}" ng-class="{'on' : currentlyEditing!='lateReviewFee'}"></span>
+							<input type="number" placeholder="Late Review Fee" name="lateReviewFee" ng-model="lateReviewFee" ng-value="lateReviewFee" ng-class="{'on' : currentlyEditing=='lateReviewFee'}" />
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="pencil-edit" ng-class="{'on': editMode=='optional-fees'}" ng-click="changeWhatWeAreEditing('killFee')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="label">Kill Fee:</span>
+						<span class="field">
+							<span class="text" ng-bind="killFee" ng-init="killFee={{contract_info.KillFee}}" ng-class="{'on' : currentlyEditing!='killFee'}"></span>
+							<input type="number" placeholder="Kill Fee" name="killFee" ng-model="killFee" ng-value="killFee" ng-class="{'on' : currentlyEditing=='killFee'}" />
+						</span>
+					</div>
+				</div>
 				<div class="submit-buttons">
 					<a href="{% url 'contracts:create_contract_step_3' contract_info.id %}" class="btn">Back</a>
 					<input type="submit" name="action" value="Continue" class="continue" />
@@ -131,5 +250,5 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
 	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180416"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=2018041623"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180417"></script>
 {% endblock %}
