@@ -174,12 +174,12 @@
 								<input type="text" placeholder="Task Description" name="milestoneDescription{{ms.index}}" ng-model="milestoneDescription{{ms.index}}" ng-value="milestoneDescription{{ms.index}}" ng-class="{'on' : currentlyEditing=='milestoneDescription{{ms.index}}'}" />
 							</span>
 						</div>
-						<div class="input-field text-single-line">
+						<div class="input-field text-single-line" ng-show="contractType=='t'">
 							<span class="pencil-edit" ng-class="{'on': editMode=='milestones'}" ng-click="changeWhatWeAreEditing('estimateHourCompletion{{ms.index}}')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 							<span class="label" ng-class="{'error' : contractCreationStep4.estimateHourCompletion{{ms.index}}.$touched && contractCreationStep4.estimateHourCompletion{{ms.index}}.$invalid}">Estimate of Hours to Completion:</span>
 							<span class="field">
 								<span class="text" ng-bind="estimateHourCompletion{{ms.index}}" ng-init="estimateHourCompletion{{ms.index}}={{ms.estimateHourCompletion}}" ng-class="{'on' : currentlyEditing!='estimateHourCompletion{{ms.index}}'}"></span>
-								<input type="number" placeholder="Estimate of Hours to Completion" name="estimateHourCompletion{{ms.index}}" ng-model="estimateHourCompletion{{ms.index}}" ng-value="estimateHourCompletion{{ms.index}}" ng-class="{'on' : currentlyEditing=='estimateHourCompletion{{ms.index}}'}" ng-change="updateTotals(true)" required />
+								<input type="number" placeholder="Estimate of Hours to Completion" name="estimateHourCompletion{{ms.index}}" ng-model="estimateHourCompletion{{ms.index}}" ng-value="estimateHourCompletion{{ms.index}}" ng-class="{'on' : currentlyEditing=='estimateHourCompletion{{ms.index}}'}" ng-change="updateTotals(true)" ng-required="contractType=='t'" />
 							</span>
 						</div>
 						<div class="input-field text-single-line">
