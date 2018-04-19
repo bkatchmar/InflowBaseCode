@@ -468,6 +468,7 @@ main div.create-contract-super-window form.contract-creation div.contract-previe
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window { background-color: #FFF; padding: 15px 25px; position: relative; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p { font-size: 22px; line-height: 24px; padding: 5px 0px 25px; position: relative; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p a { font-size: 22px; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p span.edit { cursor: pointer; font-size: 22px; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode {}
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p { padding: 5px 50px 25px 0px; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window div.edit-window { display: none; padding: 0px 0px 15px; }
@@ -480,9 +481,12 @@ main div.create-contract-super-window form.contract-creation div.contract-previe
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window div.edit-window div.buttons a:active { background-color: #FFF; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 16px; margin: 0px 10px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window div.edit-window div.buttons a.continue { background-color: #D8D8D8; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode div.edit-window { display: block; }
-main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p a.para-edit { display: none; }
-main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p a.para-edit { display: inline-block; }
-main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p a.para-edit img { height: auto; width: 40px; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p a.para-edit,
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p span.para-edit { display: none; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p a.para-edit,
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p span.para-edit { display: inline-block; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p a.para-edit img,
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p span.para-edit img { height: auto; width: 24px; }
 
 main div.content.contract {}
 main div.content.contract div.info-window { padding: 0px 25px; }

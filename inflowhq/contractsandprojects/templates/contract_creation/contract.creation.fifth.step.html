@@ -1,0 +1,54 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}Create New Contract - Step 5 - {{contract_info.Name}}{% endblock %}
+{% block head_script %}
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
+{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="create-contract-super-window">
+			<div class="header">Create Contract</div>
+			<div class="progress-bar">
+				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
+				<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
+				<span class="number three done"><span class="mark">&#10003;</span><span class="text">Optional Fees</span></span>
+				<span class="number four done"><span class="mark">&#10003;</span><span class="text">Work Overview</span></span>
+				<span class="number five on"><span class="text">Preview and Send</span></span>
+				<div class="bar"></div>
+			</div>
+			<form class="contract-creation" name="contractCreationStep5" method="post" action="{% url 'contracts:create_contract_step_5' contract_info.id %}" ng-app="createContractStepFiveApp" ng-controller="createContractStepFiveCtrl" ng-init="mode='';primaryEditLabel='Edit'">
+				<div class="header">Preview Contract Details</div>
+				<div class="header instruction">Please review the following contract agreement and make any edits as you see fit.</div>
+				<div class="buttons">
+					<a href="#" class="btn">Upload New</a>
+					<a href="#" class="btn">Export to PDF</a>
+					<a href="#" class="btn">Download</a>
+				</div>
+				<div class="contract-preview-window">
+					<div class="inner-window" ng-class="{'edit-mode' : mode=='edit'}">
+						<p>CONTRACT<span class="edit" ng-bind="primaryEditLabel" ng-click="changeEditMode()"></span></p>
+						<p ng-bind="contractParagraph[1]" ng-init="contractParagraph[1]='I. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.'"><span class="edit para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span></p>
+						<p ng-bind="contractParagraph[2]" ng-init="contractParagraph[2]='II. Donut cake gummies gingerbread croissant. Apple pie sugar plum brownie pie. Jelly marzipan dessert sugar plum marzipan soufflé. Wafer candy canes ice cream candy oat cake macaroon wafer sesame snaps candy. Tart toffee biscuit donut fruitcake. Jelly-o brownie brownie croissant tootsie roll sesame snaps gingerbread. Lollipop jelly-o gummies cake cotton candy jelly caramels danish ice cream. Jelly-o chocolate dessert icing topping. Sweet roll gingerbread jujubes. Jelly-o fruitcake bonbon chocolate bar liquorice icing ice cream gingerbread bonbon. Biscuit cupcake sesame snaps cotton candy sweet roll. Liquorice chocolate cake ice cream lollipop lemon drops. Caramels bonbon sweet roll candy canes oat cake donut chocolate sweet cake.'"><span class="edit para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span></p>
+						<p ng-bind="contractParagraph[3]" ng-init="contractParagraph[3]='III. Marzipan apple pie tiramisu cake. Macaroon tootsie roll donut candy soufflé. Brownie wafer topping jujubes sugar plum jelly carrot cake. Macaroon candy chupa chups. Halvah jelly halvah jelly-o. Gummies dessert pastry cheesecake pudding icing tiramisu candy. Chocolate caramels sweet roll cupcake ice cream. Caramels cotton candy tart bonbon topping wafer caramels icing lollipop. Candy chocolate cake cheesecake halvah liquorice jelly-o chupa chups lemon drops. Jelly cheesecake sweet. Macaroon cookie pie. Dessert donut soufflé powder danish halvah powder soufflé candy canes.'"><span class="edit para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span></p>
+						<p ng-bind="contractParagraph[4]" ng-init="contractParagraph[4]='IV. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.'"><span class="edit para-edit"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span></p>
+					</div>
+				</div>
+				<div class="disclaimer"><input type="checkbox" name="agree" />I agree that I have read the terms of the contract and am sending it to the client.</div>
+				<div class="submit-buttons">
+					<a href="{% url 'contracts:create_contract_step_4' contract_info.id %}" class="btn">Back</a>
+					<input type="submit" name="action" value="Send to Client" class="continue" />
+				</div>
+				<div class="submit-buttons alt">
+					<input type="submit" name="action" value="Save for Later" class="later" />
+				</div>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180418"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180418"></script>
+{% endblock %}

@@ -131,7 +131,7 @@
 						<span class="label" ng-class="{'error' : contractCreationStep4.downPaymentAmount.$touched && contractCreationStep4.downPaymentAmount.$invalid}">Down Payment (Custom):</span>
 						<span class="field">
 							<span class="text" ng-bind="downPaymentAmount" ng-init="downPaymentAmount={{contract_info.DownPaymentAmount}}" ng-class="{'on' : currentlyEditing!='downPaymentAmount'}"></span>
-							<input type="number" placeholder="Down Payment" name="downPaymentAmount" ng-model="downPaymentAmount" ng-value="totalMilestoneProjectCost" ng-class="{'on' : currentlyEditing=='downPaymentAmount'}" />
+							<input type="number" placeholder="Down Payment" name="downPaymentAmount" ng-model="downPaymentAmount" ng-value="downPaymentAmount" ng-class="{'on' : currentlyEditing=='downPaymentAmount'}" />
 						</span>
 					</div>
 					<div class="input-field text-single-line">

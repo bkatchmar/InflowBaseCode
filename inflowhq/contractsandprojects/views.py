@@ -67,7 +67,7 @@ class MyContactsView(LoginRequiredMixin, TemplateView):
         return context
 
 class CreateContractStepOne(LoginRequiredMixin, TemplateView):
-    template_name = "contract.creation.first.step.html"
+    template_name = "contract_creation/contract.creation.first.step.html"
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
@@ -237,7 +237,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         return created_contract
 
 class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
-    template_name = "contract.creation.second.step.html"
+    template_name = "contract_creation/contract.creation.second.step.html"
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
@@ -398,7 +398,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             return 0
 
 class CreateContractStepThree(LoginRequiredMixin, TemplateView):
-    template_name = "contract.creation.third.step.html"
+    template_name = "contract_creation/contract.creation.third.step.html"
 
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
@@ -478,7 +478,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
         return selected_contract
 
 class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
-    template_name = "contract.creation.fourth.step.html"
+    template_name = "contract_creation/contract.creation.fourth.step.html"
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
@@ -548,7 +548,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
     
     def process_continue(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
-        return redirect(reverse("contracts:home"))
+        return redirect(reverse("contracts:create_contract_step_5", kwargs={"contract_id" : contract.id}))
     
     def process_save_for_later(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
@@ -642,6 +642,39 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
             
         return selected_contract
 
+class CreateContractStepFive(LoginRequiredMixin, TemplateView):
+    template_name = "contract_creation/contract.creation.fifth.step.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(CreateContractStepFive, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        context["in_edit_mode"] = False
+        
+        # If we even passed a variable in, go ahead and check to make sure its an actual contract
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            
+            if selected_contract is None: # Just exit and raise a 404 message
+                raise Http404()
+            else:
+                context["in_edit_mode"] = True
+                
+                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                    context["contract_info"] = selected_contract
+                else:
+                    raise PermissionDenied() # Raise 403
+        
+        return context
+    
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     

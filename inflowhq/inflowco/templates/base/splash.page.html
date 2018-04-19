@@ -3,9 +3,10 @@
 <html>
 <head>
 	<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,300,400,700" />
-	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180411" />
+	<link rel="stylesheet" href="{% static 'css/hfbase.css' %}?d=20180419" />
 	<link rel="shortcut icon" type="image/x-icon" href="{% static 'img/favicon.ico' %}" />
 	<meta name="google-signin-client_id" content="857316650586-gm54140nh8ifnvls7s8acbntv3cp915e.apps.googleusercontent.com">
+	{% block meta_tags %}{% endblock %}
 	<title>{% block title %}{% endblock %}</title>
 </head>
 <body>
@@ -21,9 +22,9 @@
 					<a href="{% url 'index' %}">Home</a>
 				{% endif %}
 				{% if active_link == "how it works" %}
-					<a href="{% url 'how_it_works' %}" class="on">How it Works</a>
+					<a href="{% url 'how_it_works' %}" class="on">Product</a>
 				{% else %}
-					<a href="{% url 'how_it_works' %}">How it Works</a>
+					<a href="{% url 'how_it_works' %}">Product</a>
 				{% endif %}
 				{% if active_link == "about us" %}
 					<a href="{% url 'about_us' %}" class="on">About Us</a>
@@ -31,9 +32,9 @@
 					<a href="{% url 'about_us' %}">About Us</a>
 				{% endif %}
 				{% if active_link == "blog" %}
-					<a href="https://medium.com/@InFlowHQ" target="_blank" class="on">Blog</a>
+					<a href="https://medium.com/@InFlowHQ" target="_blank" class="on">Resources</a>
 				{% else %}
-					<a href="https://medium.com/@InFlowHQ" target="_blank">Blog</a>
+					<a href="https://medium.com/@InFlowHQ" target="_blank">Resources</a>
 				{% endif %}
 			</nav>
 		</div>

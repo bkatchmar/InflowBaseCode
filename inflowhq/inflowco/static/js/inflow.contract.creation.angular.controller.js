@@ -82,3 +82,18 @@ stepFourApp.controller("createContractStepFourCtrl", function($scope) {
 		$scope.totalMilestoneProjectCost = totalMilestoneProjectCost;
 	};
 });
+
+stepFiveApp.controller("createContractStepFiveCtrl", function($scope) {
+	$scope.changeEditMode = function() {
+		var getOutOfEditMode = ($scope.primaryEditLabel === "Finish Editing");
+		
+		if (getOutOfEditMode) {
+			$scope.primaryEditLabel = "Edit";
+			$scope.mode = "";
+		}
+		else {
+			$scope.primaryEditLabel = "Finish Editing";
+			$scope.mode = "edit";
+		}
+	};
+});
