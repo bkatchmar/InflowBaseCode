@@ -389,6 +389,16 @@ class EditAccountViewTests(TestCase):
         
         self.assertFalse(response.context["needs_stripe"])
     
+    def testUsersNeedStripeFromClass(self):
+        kenny = User.objects.get(username="Kenny@workinflow.co")
+        clara = User.objects.get(username="Clara@workinflow.co")
+        
+        kenny_settings = UserSettings.objects.get(UserAccount=kenny)
+        clara_settings = UserSettings.objects.get(UserAccount=clara)
+        
+        self.assertTrue(kenny_settings.does_this_user_need_stripe())
+        self.assertFalse(clara_settings.does_this_user_need_stripe())
+    
 class EditNotificationsViewTests(TestCase):
     def setUp(self):
         # Necessary Currency Objects

@@ -1,9 +1,11 @@
 from __future__ import unicode_literals # I have no idea what this even is
 # References from our own library
 from accounts.inflowaccountloginview import InflowLoginView
+from accounts.models import UserSettings
 from inflowco.models import Currency, EmailSignup
 from easy_pdf.views import PDFTemplateView
 # Django references
+from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -145,6 +147,13 @@ class UserDashboardLowFi(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self, request, **kwargs):
         context = super(UserDashboardLowFi, self).get_context_data(**kwargs)
+        
+        user_settings = UserSettings()
+        user_settings = user_settings.get_settings_based_on_user(request.user)
+        
+        context["needs_stripe"] = user_settings.does_this_user_need_stripe()
+        context["call_state"] = settings.STRIPE_CALL_STATE
+        context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
         context["first_name"] = request.user.first_name
         return context
 

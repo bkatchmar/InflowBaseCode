@@ -290,6 +290,15 @@ main div.content div.info-window a:visited,
 main div.content div.info-window a:hover,
 main div.content div.info-window a:active { display: block; margin: 10px 0px; text-decoration: underline; }
 
+main div.content div.info-window { padding: 0px 25px; }
+main div.content div.info-window div.header { margin: 0px; font-weight: 900; }
+main div.content div.info-window div.sub-header { font-weight: 900; }
+main div.content div.info-window a.info-btn, 
+main div.content div.info-window a.info-btn:link, 
+main div.content div.info-window a.info-btn:visited, 
+main div.content div.info-window a.info-btn:hover, 
+main div.content div.info-window a.info-btn:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; font-weight: 900; margin: 0px auto; padding: 10px; text-decoration: none; width: 230px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+
 main div.upload-modal div.modal-header { font-size: 18px; font-weight: 700; padding: 50px 25px; }
 main div.upload-modal div.upload-line { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 10px; }
 main div.upload-modal div.upload-line span { display: inline-block; vertical-align: middle; }
@@ -487,16 +496,7 @@ main div.create-contract-super-window form.contract-creation div.contract-previe
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p span.para-edit { display: inline-block; }
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p a.para-edit img,
 main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window.edit-mode p span.para-edit img { height: auto; width: 24px; }
-
-main div.content.contract {}
-main div.content.contract div.info-window { padding: 0px 25px; }
-main div.content.contract div.info-window div.header { margin: 0px; font-weight: 900; }
-main div.content.contract div.info-window div.sub-header { font-weight: 900; }
-main div.content.contract div.info-window a, 
-main div.content.contract div.info-window a:link, 
-main div.content.contract div.info-window a:visited, 
-main div.content.contract div.info-window a:hover, 
-main div.content.contract div.info-window a:active { font-weight: 900; margin: 0px auto; text-decoration: none; width: 230px; }
+main div.create-contract-super-window form.contract-creation div.contract-preview-window div.inner-window p textarea { display: block; height: 250px; font-size: 22px; line-height: 24px; margin: 15px 0px; width: 100%; }
 
 main div.news-ribbon { border-color: #979797; border-style: solid; border-width: 1px 0px 1px 1px; color: #000; font-size: 24px; font-weight: 700; line-height: 26px; padding: 25px 0px 15px 25px; text-align: left; }
 main div.news-ribbon div.sub-heading { font-size: 16px; font-weight: 700; }

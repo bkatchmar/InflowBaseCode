@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import datetime
 import json
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -71,6 +72,10 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
@@ -92,6 +97,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
         # Set the context
         context = super(CreateContractStepOne, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
+        context["in_edit_mode"] = True
         
         # Used for sending contract information to the view
         contract_info = { 
@@ -134,7 +140,8 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
                         entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
                         contract_info["locations"].append(entered_address)
                         addr_index = addr_index + 1
-                
+                    
+                context["in_edit_mode"] = (selected_contract.ContractState == "c")
             else:
                 raise PermissionDenied() # Raise 403
         
@@ -282,7 +289,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             if selected_contract is None: # Just exit and raise a 404 message
                 raise Http404()
             else:
-                context["in_edit_mode"] = True
+                context["in_edit_mode"] = (selected_contract.ContractState == "c")
                 
                 if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
                     contract_info["id"] = selected_contract.id
@@ -402,6 +409,10 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
 
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
@@ -436,7 +447,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
             if selected_contract is None: # Just exit and raise a 404 message
                 raise Http404()
             else:
-                context["in_edit_mode"] = True
+                context["in_edit_mode"] = (selected_contract.ContractState == "c")
                 
                 if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
                     contract_info["id"] = selected_contract.id
@@ -482,6 +493,10 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
@@ -516,7 +531,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
             if selected_contract is None: # Just exit and raise a 404 message
                 raise Http404()
             else:
-                context["in_edit_mode"] = True
+                context["in_edit_mode"] = (selected_contract.ContractState == "c")
                 
                 if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
                     contract_info = selected_contract
@@ -575,7 +590,6 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         
         selected_contract = None
         if "contract_id" in kwargs:
-            handler = RequestInputHandler()
             selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
             recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
@@ -647,10 +661,26 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
     
     def get(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        action_taken = request.POST.get("action", "")
+        
+        print(action_taken)
+        if action_taken == "Send to Client": # User wants to go to the next step
+            return self.process_continue(request,**kwargs)
+        elif action_taken == "Save for Later":
+            return self.process_save_for_later(request,**kwargs)
+        else:
+            # Going to somehow need to handle this one way or another
+            return redirect(reverse("contracts:home"))
+        
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
@@ -666,15 +696,82 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
             if selected_contract is None: # Just exit and raise a 404 message
                 raise Http404()
             else:
-                context["in_edit_mode"] = True
+                context["in_edit_mode"] = (selected_contract.ContractState == "c")
                 
                 if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                    contract_paragraphs = selected_contract.get_contract_text()
                     context["contract_info"] = selected_contract
+                    context["paragraphs"] = contract_paragraphs
                 else:
                     raise PermissionDenied() # Raise 403
         
         return context
     
+    def process_continue(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        contract.ContractState = "u"
+        contract.save()
+        return redirect(reverse("contracts:create_contract_step_6", kwargs={"contract_id" : contract.id}))
+    
+    def process_save_for_later(self,request,**kwargs):
+        contract = self.build_new_object(request,**kwargs)
+        return redirect(reverse("contracts:home"))
+    
+    def build_new_object(self,request,**kwargs):
+        selected_contract = None
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            paragraphs = selected_contract.get_contract_text()
+            
+            for para in paragraphs:
+                contract_text = request.POST.get(("contractParagraph%s" % para.id), "")
+                para.ParagraphText = contract_text
+                para.save()
+                
+        return selected_contract
+
+class ContractDoneCreated(LoginRequiredMixin, TemplateView):
+    template_name = "contract_creation/contract.message.creation-done.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ContractDoneCreated, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        
+        # If we even passed a variable in, go ahead and check to make sure its an actual contract
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+            
+            if selected_contract is None: # Just exit and raise a 404 message
+                raise Http404()
+            else:
+                context["in_edit_mode"] = True
+                
+                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
+                    selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+                    context["contract_info"] = selected_contract
+                    context["contract_recipient"] = selected_contract_recipient
+                    
+                    # Check if the recipient is of a user that actually exists
+                    recipient_user = User.objects.filter(email=selected_contract_recipient.EmailAddress).first()
+                    context["recipient_not_in_system"] = (recipient_user is None)
+                else:
+                    raise PermissionDenied() # Raise 403
+        
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     

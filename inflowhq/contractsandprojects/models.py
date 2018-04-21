@@ -25,9 +25,9 @@ RELATIONSHIP_TYPE = (
 
 CONTRACT_STATES = (
                     ('c', 'Being Created'),
-                    ('n', 'Not Started'),
                     ('u', 'Under Review'),
                     ('r', 'Revisions Being Made'),
+                    ('n', 'Not Started'),
                     ('p', 'In Progress'),
                     ('x', 'Completed'),
                     )
@@ -70,6 +70,18 @@ class Contract(models.Model):
                 return t[1]
             
         return ""
+    
+    def get_contract_text(self):
+        paragraphs = ContractText.objects.filter(ContractFor=self)
+        
+        if len(paragraphs) == 0:
+            paragraphs = []
+            paragraphs.append(ContractText.objects.create(ContractFor=self,Order=1,ParagraphText='I. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.'))
+            paragraphs.append(ContractText.objects.create(ContractFor=self,Order=2,ParagraphText='II. Donut cake gummies gingerbread croissant. Apple pie sugar plum brownie pie. Jelly marzipan dessert sugar plum marzipan soufflé. Wafer candy canes ice cream candy oat cake macaroon wafer sesame snaps candy. Tart toffee biscuit donut fruitcake. Jelly-o brownie brownie croissant tootsie roll sesame snaps gingerbread. Lollipop jelly-o gummies cake cotton candy jelly caramels danish ice cream. Jelly-o chocolate dessert icing topping. Sweet roll gingerbread jujubes. Jelly-o fruitcake bonbon chocolate bar liquorice icing ice cream gingerbread bonbon. Biscuit cupcake sesame snaps cotton candy sweet roll. Liquorice chocolate cake ice cream lollipop lemon drops. Caramels bonbon sweet roll candy canes oat cake donut chocolate sweet cake.'))
+            paragraphs.append(ContractText.objects.create(ContractFor=self,Order=3,ParagraphText='III. Marzipan apple pie tiramisu cake. Macaroon tootsie roll donut candy soufflé. Brownie wafer topping jujubes sugar plum jelly carrot cake. Macaroon candy chupa chups. Halvah jelly halvah jelly-o. Gummies dessert pastry cheesecake pudding icing tiramisu candy. Chocolate caramels sweet roll cupcake ice cream. Caramels cotton candy tart bonbon topping wafer caramels icing lollipop. Candy chocolate cake cheesecake halvah liquorice jelly-o chupa chups lemon drops. Jelly cheesecake sweet. Macaroon cookie pie. Dessert donut soufflé powder danish halvah powder soufflé candy canes.'))
+            paragraphs.append(ContractText.objects.create(ContractFor=self,Order=4,ParagraphText='IV. Icing bear claw wafer. Tart bonbon muffin jelly-o. Sesame snaps lemon drops sugar plum toffee caramels. Pudding sesame snaps tiramisu lemon drops jelly. Halvah gummi bears sugar plum danish tootsie roll. Jelly lollipop bear claw cookie gummies icing. Caramels carrot cake pie chupa chups dragée chupa chups wafer. Dessert chupa chups chupa chups. Cake tiramisu sweet roll tiramisu chocolate cake lollipop cupcake gummi bears chocolate cake. Pastry cake cupcake donut gingerbread chocolate cake cheesecake bear claw. Halvah biscuit wafer bear claw chocolate bar bonbon lollipop apple pie. Chocolate icing croissant chocolate bar dessert.'))
+        
+        return paragraphs
 
     def does_this_user_have_permission_to_see_contract(self,loggedinuser):
         relationship = ""
@@ -137,6 +149,14 @@ class Relationship(models.Model):
     class Meta:
        db_table = 'ContractRelationship'
 
+class ContractText(models.Model):
+    ContractFor = models.ForeignKey(Contract,unique=False,on_delete=models.CASCADE)
+    ParagraphText = models.TextField(null=True)
+    Order = models.PositiveSmallIntegerField(default=1)
+    
+    class Meta:
+       db_table = "ContractText"
+       
 class PaymentPlan(models.Model):
     ContractForPaymentPlan = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
     PaymentType = models.CharField(max_length=1,choices=CONTRACT_PAYMENT_LEVELS,default='o')

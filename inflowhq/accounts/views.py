@@ -331,12 +331,8 @@ class EditAccountView(LoginRequiredMixin,TemplateView):
         # Set the context
         context = super(EditAccountView, self).get_context_data(**kwargs)
         
-        if user_settings.StripeConnectAccountKey is None:
-            context["needs_stripe"] = True
-        else:
-            context["needs_stripe"] = False
-        
         # Call Stripe Settings For The Link Generation
+        context["needs_stripe"] = user_settings.does_this_user_need_stripe()
         context["call_state"] = settings.STRIPE_CALL_STATE
         context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
         

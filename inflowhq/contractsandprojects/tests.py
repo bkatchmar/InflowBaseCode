@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
 from inflowco.models import Currency, Country
-from contractsandprojects.models import Contract, Milestone, Payment, PaymentPlan, Recipient, Relationship
+from contractsandprojects.models import Contract, Milestone, Payment, PaymentPlan, Recipient, Relationship, ContractText
 import pytz
 
 class ContractScreenAuthenticationTestCase(TestCase):
@@ -255,3 +255,39 @@ class ContractNewFirstScreenTest(TestCase):
         
         self.assertEqual(200,response.status_code) # User got a 404
         self.assertFalse("contract_info" in response.context)
+
+class ContractParagraphTest(TestCase):
+    def setUp(self):
+        timezone.activate(pytz.timezone("America/New_York"))
+        
+        # Users
+        brian = User.objects.create(username="Brian@workinflow.co",email="Brian@workinflow.co",first_name="Brian",last_name="Katchmar")
+        brian.set_password("Th3L10nK1ng15Fun")
+        brian.save()
+        
+        kenny = User.objects.create(username="Kenny@workinflow.co",email="Kenny@workinflow.co",first_name="Kenny",last_name="Kim") # Has User Settings, has associated types, neither of the two fields we check
+        kenny.set_password("Thing5Ar3Gr34t")
+        kenny.save()
+        
+        clara = User.objects.create(username="Clara@workinflow.co",email="Clara@workinflow.co",first_name="Clara",last_name="Chang")
+        clara.set_password("Thing5Ar3Gr34t")
+        clara.save()
+        
+        if not Contract.objects.filter(Name="Kenny Contract 1").exists():
+            contract_1 = Contract.objects.create(Creator=kenny,Name="Kenny Contract 1",StartDate=date.today(),EndDate=date.today())
+            Relationship.objects.create(ContractUser=kenny,ContractForRelationship=contract_1,RelationshipType='f')
+            ContractText.objects.create(ContractFor=contract_1,Order=1,ParagraphText='The Legend of Bucket-Head Man')
+        
+        if not Contract.objects.filter(Name="Clara Contract 1").exists():
+            contract_2 = Contract.objects.create(Creator=clara,Name="Clara Contract 1",StartDate=date.today(),EndDate=date.today())
+            Relationship.objects.create(ContractUser=clara,ContractForRelationship=contract_1,RelationshipType='f')
+            
+    def testContractParagraphsCount(self):
+        contract_1 = Contract.objects.get(Name="Kenny Contract 1")
+        contract_1_paras = contract_1.get_contract_text()
+        
+        contract_2 = Contract.objects.get(Name="Clara Contract 1")
+        contract_2_paras = contract_2.get_contract_text()
+        
+        self.assertEqual(1,len(contract_1_paras)) # We only put 1 in
+        self.assertEqual(4,len(contract_2_paras)) # Default

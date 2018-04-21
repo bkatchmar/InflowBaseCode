@@ -95,5 +95,9 @@ stepFiveApp.controller("createContractStepFiveCtrl", function($scope) {
 			$scope.primaryEditLabel = "Finish Editing";
 			$scope.mode = "edit";
 		}
+		$scope.currentlyEdit = "";
+	};
+	$scope.changeCurrentEdit = function(mode) {
+		$scope.currentlyEdit = mode;
 	};
 });

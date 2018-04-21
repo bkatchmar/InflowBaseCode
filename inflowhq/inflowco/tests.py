@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 # References from our own library
-from inflowco.models import Currency, EmailSignup
+from inflowco.models import Country, Currency, EmailSignup
 # Django references
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
@@ -44,6 +44,15 @@ class BaseEmailSignUpCase(TestCase):
         
 class TestInFlowDashboardScreens(TestCase):
     def setUp(self):
+        # Necessary Currency Objects
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
         # Brian - User 1
         brian = User.objects.create(
                             username="brian",

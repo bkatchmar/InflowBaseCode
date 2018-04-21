@@ -1,11 +1,13 @@
 {% extends 'base/dashboard.home.lowfi.html' %}
 {% block title %}Welcome To Your InFlow Dashboard{% endblock %}
 {% block main_tag %}
-	<div class="news-ribbon">
-		<div class="heading">Hello, {{first_name}}. Welcome back!</div>
-		<div class="sub-heading">Get paid by signing up for Stripe!</div>
-		<a href="{% url 'accounts:edit_account' %}">Sign Up For Stripe</a>
-	</div>
+	{% if needs_stripe %}
+		<div class="news-ribbon">
+			<div class="heading">Hello, {{first_name}}. Welcome back!</div>
+			<div class="sub-heading">Get paid by signing up for Stripe!</div>
+			<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{stripe_acct}}&scope=read_write&state={{call_state}}">Sign Up For Stripe</a>
+		</div>
+	{% endif %}
 	<div class="dashboard-tables left">
 		<div class="data-table">
 			<div class="header">Upcoming Milestones</div>

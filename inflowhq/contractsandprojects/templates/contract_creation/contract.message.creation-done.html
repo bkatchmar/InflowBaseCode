@@ -1,0 +1,25 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% block title %}{{contract_info.Name}} Contract Entry Completed{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="info-window">
+			<div class="header">Congratulations!</div>
+			<div class="sub-header">Your contract has been sent to the client for review.</div>
+			<div>A confirmation email has been sent to you at {{contract_recipient.EmailAddress}}. You may check the status of the review process any time in your Dashboard.</div>
+			<div class="buttons"><a href="{% url 'base:dashboard' %}" class="info-btn">Go To Dashboard</a></div>
+			
+			{% if recipient_not_in_system %}
+				<div class="sub-header">No users with that email address in our system, send an email to invite to InFlow.</div>
+				<div class="create-contract-super-window" style="min-width: auto;">
+					<form class="contract-creation" method="post" action="{% url 'contracts:create_contract_step_6' contract_info.id %}" style="width:100%;">
+						<div class="submit-buttons">
+							<input type="submit" name="action" value="Send to Client" class="continue" />
+						</div>
+					</form>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}{% endblock %}

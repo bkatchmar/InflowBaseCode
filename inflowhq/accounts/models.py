@@ -113,7 +113,15 @@ class UserSettings(models.Model):
             return generated
         else:
             return ("%s-%d" % (generated, len(slugs)+1))
-
+    
+    def does_this_user_need_stripe(self):
+        if self.StripeConnectAccountKey is None:
+            return True
+        elif self.StripeConnectAccountKey == "":
+            return True
+        else:
+            return False
+    
     def __str__(self):
         return self.UserAccount.username
 
