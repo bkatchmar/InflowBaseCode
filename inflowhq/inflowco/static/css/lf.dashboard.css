@@ -102,7 +102,7 @@ main div.content table.list thead th.start-date { width: 145px; }
 main div.content table.list thead th.end-date { width: 145px; }
 main div.content table.list tbody td { border-color: #979797; border-style: solid; border-width: 1px; font-size: 20px; line-height: 22px; text-align: center; vertical-align: middle; }
 main div.content table.list tbody td.info { padding: 12px 0px 12px 14px; text-align: left; }
-main div.content table.list tbody td.info span.title { display: inline-block; font-size: 20px; font-weight: 700; line-height: 28px; }
+main div.content table.list tbody td.info span.title { display: inline-block; font-size: 20px; font-weight: 700; line-height: 28px; width: 230px; }
 main div.content table.list tbody td.info span.description { display: inline-block; font-size: 20px; line-height: 22px; }
 main div.content table.list tbody td.icon { padding: 0px; }
 main div.content table.list tbody td.icon a { display: block; }

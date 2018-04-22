@@ -40,6 +40,12 @@ LINKEDIN_CLIENT_SECRET = "JxqIUYwOl3BbEDGz"
 LINKEDIN_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
 LINKEDIN_REDIRECT_URL = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/account/login"
 
+# MailChimp Info
+MAILCHIMP_USERNAME = "Josh@workinflow.co"
+MAILCHIMP_API_KEY = "847c3df3e6ec9b554e30e521c28a1934-us16"
+MAILCHIMP_REGION = "us16"
+MAILCHIMP_LIST = {"General Splash Page Signups" : "2b105e40a9"}
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
