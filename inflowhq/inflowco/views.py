@@ -3,6 +3,7 @@ from __future__ import unicode_literals # I have no idea what this even is
 from accounts.inflowaccountloginview import InflowLoginView
 from accounts.models import UserSettings
 from inflowco.models import Currency, EmailSignup
+from inflowco.mailchimp import MailChimpCommunication
 from easy_pdf.views import PDFTemplateView
 # Django references
 from django.conf import settings
@@ -45,8 +46,13 @@ class IndexView(TemplateView):
         entered_email_address = request.POST.get("email-address", "")
         
         if entered_email_address != "":
-            EmailSignup.objects.create(Address=entered_email_address,Group="g")
-            context["sign_up_msg"] = "Thank You For Signing Up"
+            email_lookup = EmailSignup.objects.filter(Address=entered_email_address,Group="g")
+            
+            if len(email_lookup) == 0:
+                mailchimp_comm = MailChimpCommunication()
+                mailchimp_comm.post_email_to_list(settings.MAILCHIMP_LIST["General Splash Page Signups"],entered_email_address)
+                EmailSignup.objects.create(Address=entered_email_address,Group="g")
+                context["sign_up_msg"] = "Thank You For Signing Up"
         
         return render(request, self.template_name, context)
 
@@ -108,8 +114,13 @@ class HowItWorksView(TemplateView):
         entered_email_address = request.POST.get("email-address", "")
         
         if entered_email_address != "":
-            EmailSignup.objects.create(Address=entered_email_address,Group="g")
-            context["sign_up_msg"] = "Thank You For Signing Up"
+            email_lookup = EmailSignup.objects.filter(Address=entered_email_address,Group="g")
+            
+            if len(email_lookup) == 0:
+                mailchimp_comm = MailChimpCommunication()
+                mailchimp_comm.post_email_to_list(settings.MAILCHIMP_LIST["General Splash Page Signups"],entered_email_address)
+                EmailSignup.objects.create(Address=entered_email_address,Group="g")
+                context["sign_up_msg"] = "Thank You For Signing Up"
         
         return render(request, self.template_name, context)
 
