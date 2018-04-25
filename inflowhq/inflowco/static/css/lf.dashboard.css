@@ -53,9 +53,9 @@ main div.content.project-arrow.more-top-padding:after { top: 122px; }
 main div.content > div { margin: 0px auto; width: 740px; }
 main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32px; margin: 20px auto 0px; }
 main div.content div.sub-header { font-size: 16px; }
-main div.content div.heading-elements { overflow: hidden; }
-main div.content div.heading-elements div.header { clear: left; float: left; }
-main div.content div.heading-elements div.sub-header { clear: left; float: left; }
+main div.content div.heading-elements { overflow: hidden; width: 800px; }
+main div.content div.heading-elements div.header { clear: left; float: left; width: 400px; }
+main div.content div.heading-elements div.sub-header { clear: left; float: left; width: 400px; }
 main div.content div.heading-elements div.table { border: solid 1px #979797; float: right; margin: 20px 10px 0px 0px; text-align: center; width: 180px; }
 main div.content div.heading-elements div.table div.table-header { border-bottom: solid 1px #979797; padding: 3px; }
 main div.content div.heading-elements div.table div.table-content { padding: 5px 0px; }
@@ -111,11 +111,15 @@ main div.content table.list tbody td.empty-message { border: none; color: #000; 
 
 main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 135px; width: 0px; }
 main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 136px; width: 0px; }
+main div.content.project-arrow.higher:before { top: 119px; }
+main div.content.project-arrow.higher:after { top: 120px; }
 main div.content.contacts-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 190px; width: 0px; }
 main div.content.contacts-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 191px; width: 0px; }
 
 main div.content div.ribbon { border: solid 0px #979797; height: 38px; margin: 25px auto; overflow: visible; }
 main div.content div.ribbon span { border-color: #979797; border-style: solid; border-width: 1px 0px 1px 1px; display: inline-block; float: left; font-size: 16px; font-weight: 400; padding: 10px 0px; position: relative; text-align: center; width: 185px; }
+main div.content div.ribbon span:last-child { border-width: 1px; }
+main div.content div.ribbon.four-buttons span { width: 183px; }
 main div.content div.ribbon span.on { background-color: #d8d8d8; }
 main div.content div.ribbon span.on:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -11px; content: ""; display: block; left: 66px; position: absolute; top: auto; width: 0px; }
 main div.content div.ribbon span.on:after { border-color: #d8d8d8 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: -10px; content: ""; display: block; left: 66px; position: absolute; top: auto; width: 0px; }

@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.urls import reverse
 from accounts.models import UserSettings
+from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
 from contractsandprojects.models import Contract, Recipient, RecipientAddress, Relationship, Milestone
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
@@ -36,7 +37,7 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
         for contract in user_created_contracts:
             recipient_for_contract = Recipient.objects.filter(ContractForRecipient=contract).first()
             
-            appended_project = { "id" : contract.id, "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y") }
+            appended_project = { "id" : contract.id, "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y"), "state" : contract.ContractState, "slug" : contract.UrlSlug }
             
             if recipient_for_contract is None:
                 appended_project["project_client"] = ""
@@ -769,6 +770,43 @@ class ContractDoneCreated(LoginRequiredMixin, TemplateView):
                     context["recipient_not_in_system"] = (recipient_user is None)
                 else:
                     raise PermissionDenied() # Raise 403
+        
+        return context
+
+class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/freelancer.specific-project.milestones.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(SpecificProjectMilestones, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
         
         return context
 

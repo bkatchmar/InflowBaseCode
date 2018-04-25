@@ -12,5 +12,6 @@ urlpatterns = [
     url(r'^contract/create/step-5/(?P<contract_id>[0-9]+)', views.CreateContractStepFive.as_view(), name='create_contract_step_5'),
     url(r'^contract/create/final/(?P<contract_id>[0-9]+)', views.ContractDoneCreated.as_view(), name='create_contract_step_6'),
     url(r'^contract/create', views.CreateContractStepOne.as_view(), name='create_contract_step_1'),
+    url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones', views.SpecificProjectMilestones.as_view(), name='project_milestones'),
     url(r'^emailer', views.EmailPlaceholderView.as_view(), name='contract_email_placeholder'),
 ]
