@@ -1,6 +1,6 @@
 {% extends 'base/dashboard.base.lowfi.project.html' %}
 {% load staticfiles %}
-{% block title %}{{contract_info.Name}} - Milestones{% endblock %}
+{% block title %}{{contract_info.name}} - Milestones{% endblock %}
 {% block main_tag %}
 	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
 	<div class="content project-arrow higher">
@@ -24,6 +24,43 @@
 			<span><a href="#">OVERVIEW</a></span>
 			<span><a href="#">INVOICES</a></span>
 			<span><a href="#">FILES</a></span>
+		</div>
+		<div class="milestone-detail-list milestones">
+			{% for ms in milestones %}
+				<div class="milestone-name-upload">
+					<span class="name">Milestone: {{ms.name}}</span>
+					<span class="upload on">Upload Milestone</span>
+				</div>
+				<div class="milestone-information">
+					<div class="due-date">
+						<div class="due">DUE</div>
+						<div class="date-box">
+							<div class="month">{{ms.deadline_month}}</div>
+							<div class="day">{{ms.deadline_day}}</div>
+						</div>
+					</div>
+					<div class="status">
+						<div class="status-bar"><strong>Status</strong>: {{ms.state}}</div>
+						<div class="task-bar"><strong>Task</strong>: {{ms.details}}</div>
+						{% if False %}
+							<div class="uploaded-table">
+								<div class="header">UPLOADED MILESTONES</div>
+								<div class="line">
+									<span class="file-name">Research_NFL_2.4.18.doc</span>
+									<span class="delete">&times;</span>
+									<span class="download">DL</span>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+					<div class="payment-details">
+						<div class="paid">TO BE PAID</div>
+						<div class="amount">${{ms.amount}}</div>
+						<a href="#">View payment details</a>
+					</div>
+				</div>
+			{% endfor %}
+			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
 		</div>
 	</div>
 {% endblock %}

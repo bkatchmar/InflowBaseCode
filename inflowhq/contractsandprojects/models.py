@@ -32,6 +32,12 @@ CONTRACT_STATES = (
                     ('x', 'Completed'),
                     )
 
+MILESTONE_STATES = (
+                    ('n', 'Not Started'),
+                    ('p', 'In Progress'),
+                    ('x', 'Completed'),
+                    )
+
 OWNERSHIP_TYPE = (
                   ('i', 'I own this work'),
                   ('u', 'Client owns this work'),
@@ -137,6 +143,14 @@ class Milestone(models.Model):
     MilestonePaymentAmount = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
     EstimateHoursRequired = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
     Deadline = models.DateField(auto_now=False)
+    MilestoneState = models.CharField(max_length=1,choices=MILESTONE_STATES,default='n')
+    
+    def get_milestone_state_view(self):
+        for t in MILESTONE_STATES:
+            if self.MilestoneState == t[0]:
+                return t[1]
+            
+        return ""
 
     class Meta:
        db_table = 'Milestone'

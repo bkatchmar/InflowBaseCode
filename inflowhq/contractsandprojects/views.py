@@ -68,7 +68,7 @@ class MyContactsView(LoginRequiredMixin, TemplateView):
         context["view_mode"] = "contacts"
         return context
 
-class CreateContractStepOne(LoginRequiredMixin, TemplateView):
+class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.creation.first.step.html"
     
     def get(self, request, **kwargs):
@@ -107,45 +107,38 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView):
             "locations" : []
         }
         
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            
-            selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
-            
-            if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                selected_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_recipient)
-                contract_info["id"] = selected_contract.id
-                contract_info["contract_name"] = selected_contract.Name
-                contract_info["contract_description"] = selected_contract.Description
-                contract_info["contract_type"] = selected_contract.ContractType
-                contract_info["ownership_type"] = selected_contract.Ownership
-                
-                if selected_recipient is not None:
-                    contract_info["contact"]["name"] = selected_recipient.Name
-                    contract_info["contact"]["billing_name"] = selected_recipient.BillingName
-                    contract_info["contact"]["email"] = selected_recipient.EmailAddress
-                    
-                    # Fracture the phone number
-                    if selected_recipient.PhoneNumber != "" and selected_recipient.PhoneNumber is not None:
-                        number_parts = selected_recipient.PhoneNumber.split("-")
-                        contract_info["contact"]["phone_1"] = number_parts[0].__str__()
-                        contract_info["contact"]["phone_2"] = number_parts[1].__str__()
-                        contract_info["contact"]["phone_3"] = number_parts[2].__str__()
-                    
-                    # Iterate through all locations and put them into the JSON context
-                    addr_index = 1
-                    for address in selected_recipient_addresses:
-                        entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
-                        contract_info["locations"].append(entered_address)
-                        addr_index = addr_index + 1
-                    
-                context["in_edit_mode"] = (selected_contract.ContractState == "c")
-            else:
-                raise PermissionDenied() # Raise 403
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         
+        if selected_contract is not None:
+            selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+            selected_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_recipient)
+            context["in_edit_mode"] = (selected_contract.ContractState == "c")
+            
+            contract_info["id"] = selected_contract.id
+            contract_info["contract_name"] = selected_contract.Name
+            contract_info["contract_description"] = selected_contract.Description
+            contract_info["contract_type"] = selected_contract.ContractType
+            contract_info["ownership_type"] = selected_contract.Ownership
+            
+            if selected_recipient is not None:
+                contract_info["contact"]["name"] = selected_recipient.Name
+                contract_info["contact"]["billing_name"] = selected_recipient.BillingName
+                contract_info["contact"]["email"] = selected_recipient.EmailAddress
+                
+                # Fracture the phone number
+                if selected_recipient.PhoneNumber != "" and selected_recipient.PhoneNumber is not None:
+                    number_parts = selected_recipient.PhoneNumber.split("-")
+                    contract_info["contact"]["phone_1"] = number_parts[0].__str__()
+                    contract_info["contact"]["phone_2"] = number_parts[1].__str__()
+                    contract_info["contact"]["phone_3"] = number_parts[2].__str__()
+                    
+                # Iterate through all locations and put them into the JSON context
+                addr_index = 1
+                for address in selected_recipient_addresses:
+                    entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
+                    contract_info["locations"].append(entered_address)
+                    addr_index = addr_index + 1
+                    
         context["contract_info"] = contract_info
         return context
     
@@ -791,12 +784,14 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectMilestones, self).get_context_data(**kwargs)
-        context["view_mode"] = "projects"
         
         selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
         
-        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "number_of_revisions" : selected_contract.NumberOfAllowedRevisions }
+        context["milestones"] = []
         
         if selected_recipient is None:
             context["contract_info"]["client_name"] = ""
@@ -807,6 +802,9 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
             context["in_edit_mode"] = False
         else:
             context["in_edit_mode"] = True
+            
+        for milestone in contract_milestones:
+            context["milestones"].append({ "name" : milestone.Name, "deadline_month" : milestone.Deadline.strftime("%b"), "deadline_day" : milestone.Deadline.strftime("%d"), "details" : milestone.Explanation, "amount" : "{0:.0f}".format(milestone.MilestonePaymentAmount), "state" : milestone.get_milestone_state_view() })
         
         return context
 
