@@ -6,7 +6,7 @@
 		<div class="info-window">
 			<div class="header">Congratulations!</div>
 			<div class="sub-header">Your contract has been sent to the client for review.</div>
-			<div>A confirmation email has been sent to you at {{contract_recipient.EmailAddress}}. You may check the status of the review process any time in your Dashboard.</div>
+			<div>A confirmation email has been sent to you at {{user_email}}. You may check the status of the review process any time in your Dashboard.</div>
 			<div class="buttons"><a href="{% url 'base:dashboard' %}" class="info-btn">Go To Dashboard</a></div>
 			
 			{% if recipient_not_in_system %}

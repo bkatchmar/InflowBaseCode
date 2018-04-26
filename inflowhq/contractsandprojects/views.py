@@ -757,6 +757,7 @@ class ContractDoneCreated(LoginRequiredMixin, TemplateView):
                     selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
                     context["contract_info"] = selected_contract
                     context["contract_recipient"] = selected_contract_recipient
+                    context["user_email"] = request.user.email
                     
                     # Check if the recipient is of a user that actually exists
                     recipient_user = User.objects.filter(email=selected_contract_recipient.EmailAddress).first()
