@@ -16,6 +16,9 @@ input[type="checkbox"] { display: inline-block; }
 
 div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-height: 22px; }
 
+/* My leanModal Overlay */
+div.lean-modal-overlay { background-color: #EEE; border-radius: 0px; display: none; padding: 10px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
+
 header div.logo { background-color: #FFF; border: solid 0px #979797; color: #FFF; float: none; font-size: 48px; margin: 0px; padding: 6px 0px 0px; }
 header div.logo a { display: block; }
 header div.logo img { display: block; height: auto; margin: 0px auto; padding: 15px 0px 0px; width: 110px; }
@@ -158,6 +161,7 @@ main div.content div.milestone-detail-list div.milestone-name-upload { border: s
 main div.content div.milestone-detail-list div.milestone-name-upload span.name { display: inline-block; font-size: 18px; font-weight: 700; line-height: 18px; padding: 10px; }
 main div.content div.milestone-detail-list div.milestone-name-upload span.upload { border-left: solid 1px #979797; display: inline-block; float: right; font-size: 14px; font-weight: 400; padding: 11px 10px;  }
 main div.content div.milestone-detail-list div.milestone-name-upload span.upload.on { background-color: #D8D8D8; }
+main div.content div.milestone-detail-list div.milestone-name-upload span.upload a {}
 main div.content div.milestone-detail-list div.milestone-information { margin: 10px; overflow: hidden; }
 main div.content div.milestone-detail-list div.milestone-information div.due-date { float: left; text-align: center; width: 10%; }
 main div.content div.milestone-detail-list div.milestone-information div.due-date div.due { font-size: 14px; font-weight: 700; padding: 5px 0px; }
@@ -597,3 +601,15 @@ main div.content.outer div.help-accordian-holder div.help-accordian-row { min-he
 
 /* DatePicker */
 div#ui-datepicker-div { z-index: 60 !important; }
+
+/* Overlay Code from leanModal - http://leanmodal.finelysliced.com.au/# - NOT MY CSS */
+#lean_overlay {
+    position: fixed;
+    z-index:100;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background: #000;
+    display: none;
+}

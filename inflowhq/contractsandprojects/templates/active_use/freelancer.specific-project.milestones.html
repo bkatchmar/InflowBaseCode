@@ -29,7 +29,7 @@
 			{% for ms in milestones %}
 				<div class="milestone-name-upload">
 					<span class="name">Milestone: {{ms.name}}</span>
-					<span class="upload on">Upload Milestone</span>
+					<span class="upload on"><a href="#file-upload">Upload Milestone</a></span>
 				</div>
 				<div class="milestone-information">
 					<div class="due-date">
@@ -63,4 +63,11 @@
 			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
 		</div>
 	</div>
+	<div class="lean-modal-overlay" id="file-upload">
+		<div>I like chicken fingers pizza bacon cereal, and ice cream</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}"></script>
 {% endblock %}
