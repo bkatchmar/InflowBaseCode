@@ -46,6 +46,11 @@ MAILCHIMP_API_KEY = "847c3df3e6ec9b554e30e521c28a1934-us16"
 MAILCHIMP_REGION = "us16"
 MAILCHIMP_LIST = {"General Splash Page Signups" : "2b105e40a9"}
 
+# AWS Settings
+AWS_S3_REGION = "us-east-1"
+AWS_ACCESS_KEY = "AKIAIQKGNH2YH2ZD2DOQ"
+AWS_SECRET_ACCESS_KEY = "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"
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
