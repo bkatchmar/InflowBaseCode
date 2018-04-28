@@ -1,16 +1,25 @@
 from __future__ import unicode_literals
+import boto3
 import datetime
 import json
+import pathlib
+import requests
+from PIL import Image
+from io import BytesIO
+# Django References
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.urls import reverse
+# Accounts App References
 from accounts.models import UserSettings
+# Contracts and Projects App References
 from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
-from contractsandprojects.models import Contract, Recipient, RecipientAddress, Relationship, Milestone
+from contractsandprojects.models import Contract, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
 from contractsandprojects.request_handler import RequestInputHandler
@@ -666,7 +675,6 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
         
         action_taken = request.POST.get("action", "")
         
-        print(action_taken)
         if action_taken == "Send to Client": # User wants to go to the next step
             return self.process_continue(request,**kwargs)
         elif action_taken == "Save for Later":
@@ -780,6 +788,56 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
     
     def post(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+        
+        # Get data from the POST
+        uploaded_file = request.FILES.get("deliverable", False)
+        google_drive_file = request.POST.get("drive-url", "")
+        google_drive_file_name = request.POST.get("drive-name", "")
+        dropzone_files = request.FILES.getlist("freelancer-deliverables")
+        target_milestone = request.POST.get("target-milestone", "0")
+        
+        amazon_bucket = self.generate_s3_bucket(request)
+        
+        # If we have an actual file, time to prepare it to be uploaded to AWS
+        if uploaded_file != False:
+            deliverable_key = uploaded_file.__str__()
+            if self.is_this_file_extension_supported_by_inflow(deliverable_key):
+                deliverable_full_key = ("%s-%s/%s/%s" % (kwargs.get("contract_slug"), kwargs.get("contract_id"), target_milestone, deliverable_key))
+                deliverable_preview_key = ("%s-%s/%s/preview/%s" % (kwargs.get("contract_slug"), kwargs.get("contract_id"), target_milestone, deliverable_key))
+                
+                if not self.does_this_file_exists_in_bucket(amazon_bucket,deliverable_full_key):
+                    amazon_bucket.put_object(ACL="public-read", Key=deliverable_full_key, Body=uploaded_file)
+                    
+                # Finally, get the newly created URL for the image and base64 encode it
+                primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_bucket.name, deliverable_full_key))
+                watermarked_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_bucket.name, deliverable_preview_key))
+                self.watermark_image_and_upload_to_s3(primary_path,watermarked_path,deliverable_preview_key,amazon_bucket,pathlib.Path(deliverable_key).suffix)
+                
+                # Update the DB
+                selected_milestone = Milestone.objects.get(IdMilestone=target_milestone)
+                selected_milestone.MilestoneState = "p"
+                selected_milestone.save()
+                MilestoneFile.objects.create(MilestoneForFile=selected_milestone,FileName=deliverable_key,FileURL=primary_path,FilePreviewURL=watermarked_path,FileExtension=pathlib.Path(primary_path).suffix)
+                
+                # Set the primary file at this point to be private now we don't need to read from it
+                for object in amazon_bucket.objects.all():
+                    if object.key == deliverable_full_key:
+                        object.Acl().put(ACL="private")
+            else:
+                context["errors"].append(("File %s is not supported at this time" % uploaded_file.__str__()))
+        elif google_drive_file != "" and google_drive_file_name != "":
+            if self.is_this_file_extension_supported_by_inflow(google_drive_file_name):
+                asdfe = ""
+            else:
+                context["errors"].append(("File %s is not supported at this time" % google_drive_file_name))
+        elif len(dropzone_files) > 0:
+            for dropzone_file in dropzone_files:
+                deliverable_key = dropzone_file.__str__()
+                if self.is_this_file_extension_supported_by_inflow(deliverable_key):
+                    asdfe = ""
+                else:
+                    context["errors"].append(("File %s is not supported at this time" % deliverable_key))
+                    
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
@@ -805,10 +863,86 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         else:
             context["in_edit_mode"] = True
             
+        # Build the necessary milestone objects for the view
         for milestone in contract_milestones:
-            context["milestones"].append({ "name" : milestone.Name, "deadline_month" : milestone.Deadline.strftime("%b"), "deadline_day" : milestone.Deadline.strftime("%d"), "details" : milestone.Explanation, "amount" : "{0:.0f}".format(milestone.MilestonePaymentAmount), "state" : milestone.get_milestone_state_view() })
+            milestone_files = MilestoneFile.objects.filter(MilestoneForFile=milestone)
+            milestone_obj = { 
+                    "id" : milestone.IdMilestone, 
+                    "name" : milestone.Name, 
+                    "deadline_month" : milestone.Deadline.strftime("%b"), 
+                    "deadline_day" : milestone.Deadline.strftime("%d"), 
+                    "details" : milestone.Explanation, 
+                    "amount" : "{0:.0f}".format(milestone.MilestonePaymentAmount), 
+                    "state" : milestone.get_milestone_state_view(),
+                    "files": [] }
+            
+            for file in milestone_files:
+                milestone_obj["files"].append({ "id" : file.id, "name" : file.FileName, "preview_download_url" : file.FilePreviewURL })
+            
+            context["milestones"].append(milestone_obj)
         
+        context["errors"] = []
         return context
+    
+    def is_this_file_extension_supported_by_inflow(self,file_name):
+        extension = pathlib.Path(file_name.__str__()).suffix
+        rtn_val = (extension == ".jpg" or extension == ".jpeg" or extension == ".png" or extension == ".gif" or extension == ".tiff")
+        return rtn_val
+    
+    def generate_s3_bucket(self,request):
+        # Boto3 Classes
+        amazon_destination_bucket_name = ("inflow-bucket-user-%s" % request.user.id)
+        amazon_caller_resource = boto3.resource("s3", region_name=settings.AWS_S3_REGION,aws_access_key_id=settings.AWS_ACCESS_KEY, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        amazon_caller_client = boto3.client("s3", region_name=settings.AWS_S3_REGION,aws_access_key_id=settings.AWS_ACCESS_KEY, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        
+        # Determine if we have to create a new bucket
+        bucket_list = amazon_caller_client.list_buckets()
+        need_to_create_bucket = True
+        for bucket in bucket_list["Buckets"]:
+            if bucket["Name"] == amazon_destination_bucket_name:
+                need_to_create_bucket = False
+        
+        # If we need to create a new bucket, do so
+        if need_to_create_bucket:
+            amazon_caller_resource.create_bucket(Bucket=amazon_destination_bucket_name)
+        
+        # Place the uploaded file in Amazon
+        amazon_s3_bucket = amazon_caller_resource.Bucket(amazon_destination_bucket_name)
+        return amazon_s3_bucket
+    
+    def watermark_image_and_upload_to_s3(self,image_path,watermarked_image_path,preview_key,amazon_bucket,file_extension):
+        file_extension = file_extension[1:].upper()
+        
+        if file_extension == "JPG":
+            file_extension = "JPEG"
+        
+        primary_image_path = image_path
+        watermark_image_path = "https://s3.us-east-2.amazonaws.com/inflowcssjs/img/inflow_watermark.png"
+        
+        primary_image_response = requests.get(primary_image_path)
+        watermark_image_response = requests.get(watermark_image_path)
+        
+        primary_image = Image.open(BytesIO(primary_image_response.content))
+        watermark_image = Image.open(BytesIO(watermark_image_response.content))
+        
+        watermark_image_resized = watermark_image.resize((primary_image.width, primary_image.height))
+        
+        primary_image_copy = primary_image.copy()
+        
+        position = (0, 0)
+        primary_image_copy.paste(watermark_image_resized, position, watermark_image_resized)
+        
+        imgByteArr = BytesIO()
+        primary_image_copy.save(imgByteArr, format=file_extension)
+        imgByteArr.seek(0)  # Without this line it fails
+        
+        if not self.does_this_file_exists_in_bucket(amazon_bucket,preview_key):
+            amazon_bucket.put_object(ACL="public-read", Key=preview_key, Body=imgByteArr)
+    
+    def does_this_file_exists_in_bucket(self,bucket,key_name):
+        for object in bucket.objects.all():
+            if object.key == key_name:
+                return True
 
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"

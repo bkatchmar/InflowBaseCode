@@ -3,7 +3,7 @@
 {% block title %}{{contract_info.name}} - Milestones{% endblock %}
 {% block main_tag %}
 	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
-	<div class="content project-arrow higher">
+	<div class="content project-arrow higher" ng-app="milestonesApp" ng-controller="milestonesCtrl" ng-init="milestoneToUpload=0">
 		<div class="heading-elements">
 			<div class="header">{{contract_info.name}}</div>
 			<div class="table">
@@ -26,10 +26,13 @@
 			<span><a href="#">FILES</a></span>
 		</div>
 		<div class="milestone-detail-list milestones">
+			{% for error in errors %}
+				<div class="error-msg">{{error}}</div>
+			{% endfor %}
 			{% for ms in milestones %}
 				<div class="milestone-name-upload">
 					<span class="name">Milestone: {{ms.name}}</span>
-					<span class="upload on"><a href="#file-upload">Upload Milestone</a></span>
+					<span class="upload on"><a href="#file-upload" ng-click="milestoneToUpload={{ms.id}}">Upload Milestone</a></span>
 				</div>
 				<div class="milestone-information">
 					<div class="due-date">
@@ -42,14 +45,20 @@
 					<div class="status">
 						<div class="status-bar"><strong>Status</strong>: {{ms.state}}</div>
 						<div class="task-bar"><strong>Task</strong>: {{ms.details}}</div>
-						{% if False %}
+						{% if ms.files|length > 0 %}
 							<div class="uploaded-table">
 								<div class="header">UPLOADED MILESTONES</div>
-								<div class="line">
-									<span class="file-name">Research_NFL_2.4.18.doc</span>
-									<span class="delete">&times;</span>
-									<span class="download">DL</span>
-								</div>
+								{% for file in ms.files %}
+									<div class="line">
+										<span class="file-name">{{file.name}}</span>
+										<span class="delete">&times;</span>
+										<span class="download">DL</span>
+									</div>
+								{% endfor %}
+							</div>
+							<div class="buttons">
+								<a href="#">View Milestone</a>
+								<a href="#">Resend Milestone to Client</a>
 							</div>
 						{% endif %}
 					</div>
@@ -62,38 +71,41 @@
 			{% endfor %}
 			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
 		</div>
-	</div>
-	<div class="lean-modal-overlay upload-modal" id="file-upload">
-		<form method="post" enctype="multipart/form-data" class="dropzone" id="inflow-dropzone" action="{% url 'contracts:project_milestones' slug contract_info.id %}">
-			<div class="main-upload">
-				<div class="content-reciever">
-					<div class="content">
-						<div class="instructions">Drag a jpeg, png, .doc, .pdf, or .pages file here </div>
-						<div class="or-separator">or</div>
-						<input type="file" name="deliverable" />
+		<div class="lean-modal-overlay upload-modal" id="file-upload">
+			<form method="post" enctype="multipart/form-data" class="dropzone" id="inflow-dropzone" action="{% url 'contracts:project_milestones' slug contract_info.id %}">
+				<div class="main-upload">
+					<div class="content-reciever">
+						<div class="content">
+							<div class="instructions">Drag a .jpeg, .png, .gif, or .tiff file here </div>
+							<div class="or-separator">or</div>
+							<input type="file" name="deliverable" />
+						</div>
+					</div>
+					<div class="other-upload-options">
+						<div>Other ways to upload:</div>
+						<a href="#">InFlow Files</a>
+						<a href="#" id="google-drive-authorization">Google Drive</a>
+						<a href="#">OneDrive</a>
+						<a href="#">URL</a>
 					</div>
 				</div>
-				<div class="other-upload-options">
-					<div>Other ways to upload:</div>
-					<a href="#">InFlow Files</a>
-					<a href="#" id="google-drive-authorization">Google Drive</a>
-					<a href="#">OneDrive</a>
-					<a href="#">URL</a>
+				<div class="main-actions">
+					<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
+					<a href="#" class="modal-cancel">Cancel</a>
 				</div>
-			</div>
-			<div class="main-actions">
-				<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
-				<a href="#" class="modal-cancel">Cancel</a>
-			</div>
-			<input type="hidden" name="drive-url" />
-			<input type="hidden" name="drive-name" />
-			{% csrf_token %}
-		</form>
+				<input type="hidden" name="drive-url" />
+				<input type="hidden" name="drive-name" />
+				<input type="hidden" name="target-milestone" ng-model="milestoneToUpload" ng-value="milestoneToUpload" />
+				{% csrf_token %}
+			</form>
+		</div>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
-	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
 	<script src="{% static 'js/dropzone.js' %}"></script>
-	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=2018"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=201804"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?"></script>
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 {% endblock %}

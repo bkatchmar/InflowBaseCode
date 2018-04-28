@@ -108,6 +108,15 @@ class Contract(models.Model):
 
     class Meta:
        db_table = 'Contract'
+    
+class ContractFile(models.Model):
+    ContractForFile = models.ForeignKey(Contract,unique=False,on_delete=models.CASCADE)
+    FileName = models.CharField(max_length=100)
+    FileURL = models.CharField(max_length=200)
+    FileExtension = models.CharField(max_length=10)
+    
+    class Meta:
+       db_table = 'ContractFile'
 
 class Recipient(models.Model):
     ContractForRecipient = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
@@ -170,7 +179,17 @@ class ContractText(models.Model):
     
     class Meta:
        db_table = "ContractText"
-       
+    
+class MilestoneFile(models.Model):
+    MilestoneForFile = models.ForeignKey(Milestone,unique=False,on_delete=models.CASCADE)
+    FileName = models.CharField(max_length=100)
+    FileURL = models.CharField(max_length=200)
+    FilePreviewURL = models.CharField(max_length=200)
+    FileExtension = models.CharField(max_length=10)
+    
+    class Meta:
+       db_table = "MilestoneFile"
+
 class PaymentPlan(models.Model):
     ContractForPaymentPlan = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
     PaymentType = models.CharField(max_length=1,choices=CONTRACT_PAYMENT_LEVELS,default='o')

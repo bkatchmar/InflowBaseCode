@@ -20,7 +20,7 @@ div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-heig
 div.lean-modal-overlay { background-color: #EEE; border: solid 1px #979797; border-radius: 0px; display: none; padding: 10px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
 
 /* File Upload Modal */
-main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; height: 380px; position: absolute; width: 780px; }
+main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; height: 380px; position: absolute; width: 780px; z-index: 150 !important; }
 main div.upload-modal form div.main-upload { overflow: hidden; }
 main div.upload-modal form div.main-upload div.content-reciever { float: left; padding: 50px 50px 0px 50px; text-align: center; width: 350px; }
 main div.upload-modal form div.main-upload div.content-reciever div.content { border-style: dashed; min-height: auto; min-width: auto; padding: 45px 0px; }
@@ -40,7 +40,7 @@ main div.upload-modal form div.main-upload div.other-upload-options a:link,
 main div.upload-modal form div.main-upload div.other-upload-options a:visited,
 main div.upload-modal form div.main-upload div.other-upload-options a:hover,
 main div.upload-modal form div.main-upload div.other-upload-options a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: block; margin: 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.upload-modal form div.main-actions { padding: 15px 0px 0px 380px; }
+main div.upload-modal form div.main-actions { padding: 15px 0px 0px 340px; }
 main div.upload-modal form div.main-actions span { display: inline-block; font-size: 14px; }
 main div.upload-modal form div.main-actions a,
 main div.upload-modal form div.main-actions a:link,
@@ -225,6 +225,7 @@ main div.content div.milestone-detail-list div.milestone-information div.payment
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:hover,
 main div.content div.milestone-detail-list div.milestone-information div.payment-details a:active { font-size: 14px; line-height: 16px; text-decoration: underline; }
 main div.content div.milestone-detail-list div.revisions { border-top: solid 1px #979797; font-size: 20px; font-weight: 700; line-height: 22px; margin: 25px 0px 0px; padding: 15px 10px; text-align: center; }
+main div.content div.milestone-detail-list div.error-msg { color: #800000; font-weight: 700; padding: 5px 0px; text-align: center; }
 
 main div.content div.milestone-detail-list.milestones:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 100px; position: absolute; top: 0px; width: 0px; }
 main div.content div.milestone-detail-list.milestones:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 100px; position: absolute; top: -1px; width: 0px; }

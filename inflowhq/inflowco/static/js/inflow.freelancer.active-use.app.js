@@ -1,0 +1,1 @@
+var milestonesApp = angular.module("milestonesApp", []);
