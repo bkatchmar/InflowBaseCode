@@ -17,7 +17,39 @@ input[type="checkbox"] { display: inline-block; }
 div.error-message { color: #800000; font-size: 20px; font-weight: 700; line-height: 22px; }
 
 /* My leanModal Overlay */
-div.lean-modal-overlay { background-color: #EEE; border-radius: 0px; display: none; padding: 10px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
+div.lean-modal-overlay { background-color: #EEE; border: solid 1px #979797; border-radius: 0px; display: none; padding: 10px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
+
+/* File Upload Modal */
+main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; height: 380px; position: absolute; width: 780px; }
+main div.upload-modal form div.main-upload { overflow: hidden; }
+main div.upload-modal form div.main-upload div.content-reciever { float: left; padding: 50px 50px 0px 50px; text-align: center; width: 350px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content { border-style: dashed; min-height: auto; min-width: auto; padding: 45px 0px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content div.instructions { font-size: 18px; line-height: 20px; width: 300px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content div.or-separator { padding: 20px 0px 0px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content a,
+main div.upload-modal form div.main-upload div.content-reciever div.content a:link,
+main div.upload-modal form div.main-upload div.content-reciever div.content a:visited,
+main div.upload-modal form div.main-upload div.content-reciever div.content a:hover,
+main div.upload-modal form div.main-upload div.content-reciever div.content a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 25px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content div { width: 100%; }
+main div.upload-modal form div.main-upload div.content-reciever div.content input[type="file"] { margin: 10px auto; padding: 20px 0px; }
+main div.upload-modal form div.main-upload div.content-reciever div.disclaimer { font-size: 14px; margin: 5px 0px 0px; }
+main div.upload-modal form div.main-upload div.other-upload-options { float: left; padding: 50px 0px 0px 0px; text-align: center; width: 225px; }
+main div.upload-modal form div.main-upload div.other-upload-options a,
+main div.upload-modal form div.main-upload div.other-upload-options a:link,
+main div.upload-modal form div.main-upload div.other-upload-options a:visited,
+main div.upload-modal form div.main-upload div.other-upload-options a:hover,
+main div.upload-modal form div.main-upload div.other-upload-options a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: block; margin: 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal form div.main-actions { padding: 15px 0px 0px 380px; }
+main div.upload-modal form div.main-actions span { display: inline-block; font-size: 14px; }
+main div.upload-modal form div.main-actions a,
+main div.upload-modal form div.main-actions a:link,
+main div.upload-modal form div.main-actions a:visited,
+main div.upload-modal form div.main-actions a:hover,
+main div.upload-modal form div.main-actions a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 14px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.upload-modal form div.dz-default { display: none; }
+main div.upload-modal form div.dz-preview { display: none; }
+/* End File Upload Modal */
 
 header div.logo { background-color: #FFF; border: solid 0px #979797; color: #FFF; float: none; font-size: 48px; margin: 0px; padding: 6px 0px 0px; }
 header div.logo a { display: block; }
@@ -244,36 +276,6 @@ main div.content div.list div.data-table div.table span.paid-on { width: 20%; }
 main div.content div.list div.data-table div.table div.data-table-header { background-color: #FFF; border-color: #979797; border-style: solid; border-width: 1px 0px; }
 main div.content div.list div.data-table div.table div.data-table-header span { font-size: 16px; font-weight: 700; }
 main div.content div.list div.data-table div.table div.row { border-bottom: solid 1px #979797; }
-
-main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; height: 420px; left: -75px; position: absolute; top: 10px; width: 900px; }
-main div.upload-modal div.main-upload { overflow: hidden; }
-main div.upload-modal div.main-upload div.content-reciever { float: left; padding: 80px 50px 0px 100px; text-align: center; width: 350px; }
-main div.upload-modal div.main-upload div.content-reciever div.content { border-style: dashed; min-width: auto; padding: 45px 0px; }
-main div.upload-modal div.main-upload div.content-reciever div.content div.instructions { font-size: 18px; line-height: 20px; width: 300px; }
-main div.upload-modal div.main-upload div.content-reciever div.content div.or-separator { padding: 20px 0px 0px; }
-main div.upload-modal div.main-upload div.content-reciever div.content a,
-main div.upload-modal div.main-upload div.content-reciever div.content a:link,
-main div.upload-modal div.main-upload div.content-reciever div.content a:visited,
-main div.upload-modal div.main-upload div.content-reciever div.content a:hover,
-main div.upload-modal div.main-upload div.content-reciever div.content a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 25px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.upload-modal div.main-upload div.content-reciever div.content div { width: 100%; }
-main div.upload-modal div.main-upload div.content-reciever div.content input[type="file"] { padding: 20px 0px; }
-main div.upload-modal div.main-upload div.content-reciever div.disclaimer { font-size: 14px; margin: 5px 0px 0px; }
-main div.upload-modal div.main-upload div.other-upload-options { float: left; padding: 80px 0px 0px 0px; text-align: center; width: 225px; }
-main div.upload-modal div.main-upload div.other-upload-options a,
-main div.upload-modal div.main-upload div.other-upload-options a:link,
-main div.upload-modal div.main-upload div.other-upload-options a:visited,
-main div.upload-modal div.main-upload div.other-upload-options a:hover,
-main div.upload-modal div.main-upload div.other-upload-options a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: block; margin: 15px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.upload-modal div.main-actions { padding: 15px 0px 0px 460px; }
-main div.upload-modal div.main-actions span { display: inline-block; font-size: 14px; }
-main div.upload-modal div.main-actions a,
-main div.upload-modal div.main-actions a:link,
-main div.upload-modal div.main-actions a:visited,
-main div.upload-modal div.main-actions a:hover,
-main div.upload-modal div.main-actions a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 14px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
-main div.upload-modal div.dz-default { display: none; }
-main div.upload-modal div.dz-preview { display: none; }
 
 main div.content div.preview-window { margin: 25px auto 0px; }
 main div.content div.preview-window div.file-name { font-size: 18px; font-weight: 300; margin: 0px 0px 15px; }

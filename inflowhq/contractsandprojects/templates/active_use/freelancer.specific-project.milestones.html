@@ -63,11 +63,37 @@
 			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
 		</div>
 	</div>
-	<div class="lean-modal-overlay" id="file-upload">
-		<div>I like chicken fingers pizza bacon cereal, and ice cream</div>
+	<div class="lean-modal-overlay upload-modal" id="file-upload">
+		<form method="post" enctype="multipart/form-data" class="dropzone" id="inflow-dropzone" action="{% url 'contracts:project_milestones' slug contract_info.id %}">
+			<div class="main-upload">
+				<div class="content-reciever">
+					<div class="content">
+						<div class="instructions">Drag a jpeg, png, .doc, .pdf, or .pages file here </div>
+						<div class="or-separator">or</div>
+						<input type="file" name="deliverable" />
+					</div>
+				</div>
+				<div class="other-upload-options">
+					<div>Other ways to upload:</div>
+					<a href="#">InFlow Files</a>
+					<a href="#" id="google-drive-authorization">Google Drive</a>
+					<a href="#">OneDrive</a>
+					<a href="#">URL</a>
+				</div>
+			</div>
+			<div class="main-actions">
+				<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
+				<a href="#" class="modal-cancel">Cancel</a>
+			</div>
+			<input type="hidden" name="drive-url" />
+			<input type="hidden" name="drive-name" />
+			{% csrf_token %}
+		</form>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
-	<script src="{% static 'js/inflow.freelance.active.use.js' %}"></script>
+	<script src="{% static 'js/dropzone.js' %}"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=2018"></script>
 {% endblock %}

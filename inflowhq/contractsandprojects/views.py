@@ -792,6 +792,7 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "number_of_revisions" : selected_contract.NumberOfAllowedRevisions }
+        context["slug"] = kwargs.get("contract_slug")
         context["milestones"] = []
         
         if selected_recipient is None:
