@@ -61,6 +61,22 @@ class AmazonBotoHandler():
         # Set the primary file at this point to be private now we don't need to read from it
         self.find_file_in_bucket_and_set_acl(amazon_bucket, deliverable_full_key, "private")
     
+    def remove_file_from_user_bucket(self, request_user, target_milestone, file_name, contract_slug, contract_id):
+        deliverable_full_key = ("%s-%s/%s/%s" % (contract_slug, contract_id, target_milestone, file_name))
+        deliverable_preview_key = ("%s-%s/%s/preview/%s" % (contract_slug, contract_id, target_milestone, file_name))
+        
+        amazon_destination_bucket_name = ("inflow-bucket-user-%s" % request_user.id)
+        amazon_caller_resource = boto3.resource("s3", region_name=settings.AWS_S3_REGION,aws_access_key_id=settings.AWS_ACCESS_KEY, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        amazon_caller_client = boto3.client("s3", region_name=settings.AWS_S3_REGION,aws_access_key_id=settings.AWS_ACCESS_KEY, aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
+        amazon_bucket = amazon_caller_resource.Bucket(amazon_destination_bucket_name)
+        
+        # Main File
+        for object in amazon_bucket.objects.all():
+            if object.key == deliverable_full_key:
+                amazon_caller_client.delete_object(Bucket=amazon_destination_bucket_name,Key=deliverable_full_key)
+            if object.key == deliverable_preview_key:
+                amazon_caller_client.delete_object(Bucket=amazon_destination_bucket_name,Key=deliverable_preview_key)
+    
     def google_drive_file_upload(self, request_user, target_milestone, deliverable_key, contract_slug, contract_id, google_drive_full_file):
         amazon_bucket = self.generate_s3_bucket(request_user)
         deliverable_full_key = ("%s-%s/%s/%s" % (contract_slug, contract_id, target_milestone, deliverable_key))

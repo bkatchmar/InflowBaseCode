@@ -46,12 +46,12 @@
 						<div class="status-bar"><strong>Status</strong>: {{ms.state}}</div>
 						<div class="task-bar"><strong>Task</strong>: {{ms.details}}</div>
 						{% if ms.files|length > 0 %}
-							<div class="uploaded-table">
+							<div class="uploaded-table" ng-init="deletedFiles[{{ms.id}}]=[]">
 								<div class="header">UPLOADED MILESTONES</div>
 								{% for file in ms.files %}
-									<div class="line">
+									<div class="line" ng-show="deletedFiles[{{ms.id}}].indexOf({{file.id}}) == -1">
 										<span class="file-name">{{file.name}}</span>
-										<span class="delete">&times;</span>
+										<span class="delete" ng-click="deleteMilestoneFile({{file.id}},{{ms.id}})">&times;</span>
 										<span class="download"><a href="{{file.preview_download_url}}" download><img src="{% static 'img/if_178_download_183297.png' %}" alt="Download File" /></a></span>
 									</div>
 								{% endfor %}
@@ -107,6 +107,6 @@
 	<script src="{% static 'js/dropzone.js' %}"></script>
 	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=20180428"></script>
 	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=2018"></script>
 	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 {% endblock %}

@@ -5,11 +5,12 @@ import pathlib
 
 # Django References
 from django.contrib.auth.models import User
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
+from django.views import View
 from django.views.generic import TemplateView
 from django.urls import reverse
 
@@ -905,3 +906,24 @@ class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
         email_mode = request.POST.get("mode", "")
         handler.send_base_email(contract_to_send)
         return render(request, self.template_name, context)
+
+class JsonDeleteMilestoneFile(LoginRequiredMixin, View):
+    def get(self, request, **kwargs):
+        data = { }
+        
+        if "milestone_file_id" in kwargs:
+            milestone_file = MilestoneFile.objects.get(id=kwargs.get("milestone_file_id"))
+            
+            if milestone_file.MilestoneForFile.MilestoneContract.does_this_user_have_permission_to_see_contract(request.user) is not None:
+                handler = AmazonBotoHandler()
+                handler.remove_file_from_user_bucket(request.user, milestone_file.MilestoneForFile.IdMilestone, milestone_file.FileName, milestone_file.MilestoneForFile.MilestoneContract.UrlSlug, milestone_file.MilestoneForFile.MilestoneContract.id)
+                milestone_file.delete()
+                
+                data = { "success" : True, "message" : "File Found and Removed" }
+            else:
+                data = { "error" : True, "error-message" : "You do not have permission to access this file" }
+                
+        else:
+            data = { "error" : True, "error-message" : "No Milestone File ID Provided" }
+        
+        return JsonResponse(data)
