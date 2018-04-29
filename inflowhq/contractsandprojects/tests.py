@@ -255,6 +255,29 @@ class ContractNewFirstScreenTest(TestCase):
         
         self.assertEqual(200,response.status_code) # User got a 404
         self.assertFalse("contract_info" in response.context)
+        
+    def testContractBeingCreatedAfterPostFromScreenOne(self):
+        number_of_current_contracts = len(Contract.objects.all())
+        create_url = "/inflow/projects/contract/create"
+        
+        c = Client()
+        loginAttempt = c.login(username='Kenny@workinflow.co', password='Thing5Ar3Gr34t')
+        response = c.post(create_url, 
+                          { 
+                              "contractName" : "Next Attempt to Create A Contract", 
+                              "contract-type" : "milestones", 
+                              "description" : "", 
+                              "who-owns" : "myself",
+                              "company-name" : "Generic Company Name",
+                              "companyBillingName" : "A Billing Name",
+                              "companyContactEmail" : "Email@email.net",
+                              "action" : "Continue"
+                           })
+        
+        number_of_current_contracts_2 = len(Contract.objects.all())
+        
+        self.assertTrue(loginAttempt)
+        self.assertNotEqual(number_of_current_contracts, number_of_current_contracts_2)
 
 class ContractParagraphTest(TestCase):
     def setUp(self):

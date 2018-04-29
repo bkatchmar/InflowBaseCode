@@ -1,14 +1,17 @@
 import boto3
 import datetime
+import os
 import pathlib
 import requests
 from PIL import Image
 from io import BytesIO
+
 # Django References
 from django.contrib.auth.models import User
 from django.conf import settings
+
 # Contracts and Projects App References
-from contractsandprojects.models import Milestone, MilestoneFile
+from contractsandprojects.models import Contract, ContractFile, Milestone, MilestoneFile
 
 class RequestInputHandler():
     def get_entry_for_float(self,floatAmt):
@@ -61,6 +64,30 @@ class AmazonBotoHandler():
         # Set the primary file at this point to be private now we don't need to read from it
         self.find_file_in_bucket_and_set_acl(amazon_bucket, deliverable_full_key, "private")
     
+    def standard_contract_file_upload(self, request_user, deliverable_key, uploaded_file, contract_slug, contract_id):
+        amazon_bucket = self.generate_s3_bucket(request_user)
+        
+        deliverable_full_key = ("%s-%s/%s" % (contract_slug, contract_id, deliverable_key))
+        primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_bucket.name, deliverable_full_key))
+        
+        amazon_bucket.put_object(ACL="public-read", Key=deliverable_full_key, Body=uploaded_file)
+        
+        copy_uploaded_file = uploaded_file
+        copy_uploaded_file.seek(0, os.SEEK_END)
+        file_length = copy_uploaded_file.tell()
+        human_readable_file_length = self.sizeof_fmt(file_length)
+        
+        selected_contract = Contract.objects.get(id=contract_id)
+        
+        if not ContractFile.objects.filter(ContractForFile=selected_contract,FileName=deliverable_key).exists():
+            ContractFile.objects.create(
+                ContractForFile=selected_contract,
+                FileName=deliverable_key,
+                FileURL=primary_path,
+                FileExtension=pathlib.Path(primary_path).suffix,
+                FileUploaded=datetime.date.today(),
+                SizeOfFile=human_readable_file_length)
+    
     def remove_file_from_user_bucket(self, request_user, target_milestone, file_name, contract_slug, contract_id):
         deliverable_full_key = ("%s-%s/%s/%s" % (contract_slug, contract_id, target_milestone, file_name))
         deliverable_preview_key = ("%s-%s/%s/preview/%s" % (contract_slug, contract_id, target_milestone, file_name))
@@ -109,6 +136,35 @@ class AmazonBotoHandler():
         
         # Set the primary file at this point to be private now we don't need to read from it
         self.find_file_in_bucket_and_set_acl(amazon_bucket, deliverable_full_key, "private")
+    
+    def google_drive_contract_file_upload(self, request_user, deliverable_key, contract_slug, contract_id, google_drive_full_file):
+        amazon_bucket = self.generate_s3_bucket(request_user)
+        deliverable_full_key = ("%s-%s/%s" % (contract_slug, contract_id, deliverable_key))
+        
+        primary_image_response = requests.get(google_drive_full_file)
+        primary_image = Image.open(BytesIO(primary_image_response.content))
+        
+        amazon_bucket.put_object(ACL="public-read", Key=deliverable_full_key, Body=primary_image_response.content)
+        
+        copy_uploaded_file = BytesIO(primary_image_response.content)
+        copy_uploaded_file.seek(0, os.SEEK_END)
+        file_length = copy_uploaded_file.tell()
+        human_readable_file_length = self.sizeof_fmt(file_length)
+            
+        # Finally, get the newly created URL for the image and base64 encode it
+        primary_path = ("https://s3.amazonaws.com/%s/%s" % (amazon_bucket.name, deliverable_full_key))
+        
+        # Update the DB
+        selected_contract = Contract.objects.get(id=contract_id)
+        
+        if not ContractFile.objects.filter(ContractForFile=selected_contract,FileName=deliverable_key).exists():
+            ContractFile.objects.create(
+                ContractForFile=selected_contract,
+                FileName=deliverable_key,
+                FileURL=primary_path,
+                FileExtension=pathlib.Path(primary_path).suffix,
+                FileUploaded=datetime.date.today(),
+                SizeOfFile=human_readable_file_length)
     
     def generate_s3_bucket(self,request_user):
         # Boto3 Classes
@@ -169,3 +225,10 @@ class AmazonBotoHandler():
         for object in bucket.objects.all():
             if object.key == deliverable_full_key:
                 object.Acl().put(ACL=acl_level)
+    
+    def sizeof_fmt(self, num, suffix="B"):
+        for unit in ['','K','M','G','T','P','E','Z']:
+            if abs(num) < 1024.0:
+                return "%3.1f %s%s" % (num, unit, suffix)
+            num /= 1024.0
+        return "%.1f %s%s" % (num, 'Yi', suffix)

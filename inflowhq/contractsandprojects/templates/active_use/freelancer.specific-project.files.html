@@ -1,0 +1,86 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - Invoices{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
+	<div class="content project-arrow higher">
+		<div class="heading-elements">
+			<div class="header">{{contract_info.name}}</div>
+			<div class="table">
+				<div class="table-header">PAYMENT PROGRESS</div>
+				<div class="table-content split">
+					<div class="cleared">$0</div>
+					<div class="in-progress">${{contract_info.total_worth}}</div>
+				</div>
+			</div>
+			<div class="table">
+				<div class="table-header">PROJECT STATUS</div>
+				<div class="table-content">{{contract_info.state}}</div>
+			</div>
+			<div class="sub-header">{{contract_info.client_name}}</div>
+		</div>
+		<div class="ribbon four-buttons">
+			<span><a href="{% url 'contracts:project_milestones' contract_info.slug contract_info.id %}">MILESTONES</a></span>
+			<span><a href="#">OVERVIEW</a></span>
+			<span><a href="{% url 'contracts:project_invoices' contract_info.slug contract_info.id %}">INVOICES</a></span>
+			<span class="on"><a href="{% url 'contracts:project_files' contract_info.slug contract_info.id %}">FILES</a></span>
+		</div>
+		<div class="list inner-details files">
+			<div class="header">All Files</div>
+			<div class="file-listing">
+				<div class="header row">
+					<span class="file-name">File Name</span>
+					<span class="file-size">File Size</span>
+					<span class="date-uploaded">Date Uploaded</span>
+					<span class="download"><a href="#">Download all files</a></span>
+				</div>
+				{% for file in contract_files %}
+					<div class="row">
+						<span class="file-name">{{file.name}}</span>
+						<span class="file-size">{{file.file_size}}</span>
+						<span class="date-uploaded">{{file.uploaded}}</span>
+						<span class="download"><a href="{{file.url}}" download><img src="{% static 'img/if_178_download_183297.png' %}" alt="Download File" /></a></span>
+						<span class="delete">&times;</span>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="buttons"><a href="#file-upload" class="file-upload">Upload a File</a></div>
+		</div>
+		<div class="lean-modal-overlay upload-modal" id="file-upload">
+			<form method="post" enctype="multipart/form-data" class="dropzone" id="inflow-dropzone" action="{% url 'contracts:project_files' contract_info.slug contract_info.id %}">
+				<div class="main-upload">
+					<div class="content-reciever">
+						<div class="content">
+							<div class="instructions">Drag a .jpeg, .png, .gif, or .tiff file here </div>
+							<div class="or-separator">or</div>
+							<input type="file" name="deliverable" />
+						</div>
+						<div class="upload-progress"><img src="{% static 'img/loading.gif' %}" alt="I am uploading your files" /></div>
+					</div>
+					<div class="other-upload-options">
+						<div>Other ways to upload:</div>
+						<a href="#">InFlow Files</a>
+						<a href="#" id="google-drive-authorization">Google Drive</a>
+						<a href="#">OneDrive</a>
+						<a href="#">URL</a>
+					</div>
+				</div>
+				<div class="main-actions">
+					<span>Make sure you have permission<br />to publish your content. Learn more here.</span>
+					<a href="#" class="modal-cancel">Cancel</a>
+				</div>
+				<input type="hidden" name="drive-url" />
+				<input type="hidden" name="drive-name" />
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
+	<script src="{% static 'js/dropzone.js' %}"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=201804291430"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180429"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180429"></script>
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+{% endblock %}

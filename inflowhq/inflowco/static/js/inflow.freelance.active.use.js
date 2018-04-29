@@ -106,6 +106,7 @@ function pickerCallback(data) {
 
 jQuery(document).ready(function() {
 	jQuery("main div.content div.milestone-detail-list div.milestone-name-upload span.upload a").leanModal({ closeButton: ".modal-cancel" });
+	jQuery("main div.content div.inner-details div.buttons a.file-upload").leanModal({ closeButton: ".modal-cancel" });
 	jQuery("main div.upload-modal form input[type='file']").change(function() {
 		jQuery("main div.upload-modal form").submit();
 	});

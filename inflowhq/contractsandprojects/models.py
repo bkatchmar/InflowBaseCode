@@ -114,6 +114,8 @@ class ContractFile(models.Model):
     FileName = models.CharField(max_length=100)
     FileURL = models.CharField(max_length=200)
     FileExtension = models.CharField(max_length=10)
+    FileUploaded = models.DateField(auto_now=False)
+    SizeOfFile = models.CharField(max_length=10)
     
     class Meta:
        db_table = 'ContractFile'

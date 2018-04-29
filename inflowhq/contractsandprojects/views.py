@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 import datetime
 import json
+import os
 import pathlib
 
 # Django References
@@ -19,7 +20,7 @@ from accounts.models import UserSettings
 
 # Contracts and Projects App References
 from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
-from contractsandprojects.models import Contract, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile
+from contractsandprojects.models import Contract, ContractFile, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
 from contractsandprojects.request_handler import AmazonBotoHandler, RequestInputHandler
@@ -804,7 +805,6 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         uploaded_file = request.FILES.get("deliverable", False)
         google_drive_file = request.POST.get("drive-url", "")
         google_drive_file_name = request.POST.get("drive-name", "")
-        dropzone_files = request.FILES.getlist("freelancer-deliverables")
         
         # Handler Class for uploading to Amazon
         amazon_handler = AmazonBotoHandler()
@@ -888,6 +888,95 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         extension = pathlib.Path(file_name.__str__()).suffix
         rtn_val = (extension == ".jpg" or extension == ".jpeg" or extension == ".png" or extension == ".gif" or extension == ".tiff")
         return rtn_val
+
+class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/freelancer.specific-project.invoices.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(SpecificProjectInvoices, self).get_context_data(**kwargs)
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
+class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/freelancer.specific-project.files.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        uploaded_file = request.FILES.get("deliverable", False)
+        google_drive_file = request.POST.get("drive-url", "")
+        google_drive_file_name = request.POST.get("drive-name", "")
+        
+        # Handler Class for uploading to Amazon
+        amazon_handler = AmazonBotoHandler()
+        
+        # If we have an actual file, time to prepare it to be uploaded to AWS
+        if uploaded_file != False:
+            deliverable_key = uploaded_file.__str__()
+            amazon_handler.standard_contract_file_upload(request.user, deliverable_key, uploaded_file, kwargs.get("contract_slug"), kwargs.get("contract_id"))
+        elif google_drive_file != "" and google_drive_file_name != "":
+            deliverable_key = google_drive_file_name
+            amazon_handler.google_drive_contract_file_upload(request.user, deliverable_key, kwargs.get("contract_slug"), kwargs.get("contract_id"), google_drive_file)
+        elif len(request.FILES) > 1:
+            for dropzone_file in request.FILES:
+                uploaded_file = request.FILES[dropzone_file]
+                deliverable_key = uploaded_file.__str__()
+                amazon_handler.standard_contract_file_upload(request.user, deliverable_key, uploaded_file, kwargs.get("contract_slug"), kwargs.get("contract_id"))
+        
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(SpecificProjectFiles, self).get_context_data(**kwargs)
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract_files = ContractFile.objects.filter(ContractForFile=selected_contract)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        context["contract_files"] = []
+        
+        for file in selected_contract_files:
+            context["contract_files"].append({ "id" : file.id, "name" : file.FileName, "file_size" : file.SizeOfFile, "url" : file.FileURL, "uploaded" : file.FileUploaded.strftime("%b %d %Y") })
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
 
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
