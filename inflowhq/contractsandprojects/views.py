@@ -1037,3 +1037,23 @@ class JsonDeleteMilestoneFile(LoginRequiredMixin, View):
             data = { "error" : True, "error-message" : "No Milestone File ID Provided" }
         
         return JsonResponse(data)
+
+class JsonDeleteContractFile(LoginRequiredMixin, View):
+    def get(self, request, **kwargs):
+        data = { }
+        
+        if "contract_file_id" in kwargs:
+            contract_file = ContractFile.objects.get(id=kwargs.get("contract_file_id"))
+            
+            if contract_file.ContractForFile.does_this_user_have_permission_to_see_contract(request.user) is not None:
+                handler = AmazonBotoHandler()
+                handler.remove_contract_file_from_user_bucket(contract_file.ContractForFile.UrlSlug, contract_file.ContractForFile.id, contract_file.FileName, request.user)
+                contract_file.delete()
+                
+                data = { "success" : True, "message" : "File Found and Removed" }
+            else:
+                data = { "error" : True, "error-message" : "No Contract File ID Provided" }
+        else:
+            data = { "error" : True, "error-message" : "No Contract File ID Provided" }
+        
+        return JsonResponse(data)

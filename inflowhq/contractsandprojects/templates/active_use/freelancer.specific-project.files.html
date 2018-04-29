@@ -27,7 +27,7 @@
 		</div>
 		<div class="list inner-details files">
 			<div class="header">All Files</div>
-			<div class="file-listing">
+			<div class="file-listing" ng-app="filesApp" ng-controller="filesCtrl" ng-init="deletedFiles=[]">
 				<div class="header row">
 					<span class="file-name">File Name</span>
 					<span class="file-size">File Size</span>
@@ -35,12 +35,12 @@
 					<span class="download"><a href="#">Download all files</a></span>
 				</div>
 				{% for file in contract_files %}
-					<div class="row">
+					<div class="row" ng-show="deletedFiles.indexOf({{file.id}}) == -1">
 						<span class="file-name">{{file.name}}</span>
 						<span class="file-size">{{file.file_size}}</span>
 						<span class="date-uploaded">{{file.uploaded}}</span>
 						<span class="download"><a href="{{file.url}}" download><img src="{% static 'img/if_178_download_183297.png' %}" alt="Download File" /></a></span>
-						<span class="delete">&times;</span>
+						<span class="delete" ng-click="deleteContractFile({{file.id}})">&times;</span>
 					</div>
 				{% endfor %}
 			</div>
@@ -79,8 +79,8 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
 	<script src="{% static 'js/dropzone.js' %}"></script>
-	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=201804291430"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180429"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180429"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=20180430"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180430"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180430"></script>
 	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 {% endblock %}

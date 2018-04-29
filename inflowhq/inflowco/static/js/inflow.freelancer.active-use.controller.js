@@ -5,4 +5,11 @@ milestonesApp.controller("milestonesCtrl", function($scope, $http) {
 	};
 });
 
+filesApp.controller("filesCtrl", function($scope, $http) {
+	$scope.deleteContractFile = function(id) {
+		$scope.deletedFiles.push(id);
+		$http.get("/inflow/projects/contract-service/delete-contract-file/" + id).then(function(response) {});
+	};
+});
+
 contactsAccordianApp.controller("contactsAccordianCtrl", function($scope) {});

@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/files', views.SpecificProjectFiles.as_view(), name='project_files'),
     url(r'^emailer', views.EmailPlaceholderView.as_view(), name='contract_email_placeholder'),
     url(r'^contract-service/delete-milestone-file/(?P<milestone_file_id>[0-9]+)', views.JsonDeleteMilestoneFile.as_view(), name='json_delete_milestone_file'),
+    url(r'^contract-service/delete-contract-file/(?P<contract_file_id>[0-9]+)', views.JsonDeleteContractFile.as_view(), name='json_delete_contract_file'),
 ]
