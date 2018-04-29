@@ -6,35 +6,31 @@
 	<div class="content contacts-arrow">
 		<div class="header">CONTACTS</div>
 		<div class="accordian-holder">
-			<div class="accordian contacts">
+			<div class="accordian contacts" ng-app="contactsAccordianApp" ng-controller="contactsAccordianCtrl" ng-init="openedContact=0">
 				<div class="items">
-					<div class="item opened">
-						<div class="title">Contact #1</div>
-						<div class="row header on">Contact Information</div>
-						<div class="row on"><span>Client Name:</span>Russell Wilson</div>
-						<div class="row on"><span>Email:</span>russ1@nfl.com</div>
-						<div class="row on"><span>Phone:</span>123-456-7890</div>
-						<div class="row header on">Business Location</div>
-						<div class="row on last"><span>Address:</span><span class="multi-line">1111 Football Way N.<br />Seattle, WA 11111</span></div>
-						<div class="arrow">&#9650;</div>
-					</div>
-					<div class="item">
-						<div class="title">Contact #2</div>
-						<div class="info">The answer to the question.</div>
-						<div class="arrow">&#9660;</div>
-					</div>
-					<div class="item">
-						<div class="title">Contact #3</div>
-						<div class="info">The answer to the question.</div>
-						<div class="arrow">&#9660;</div>
-					</div>
-					<div class="item">
-						<div class="title last">Contact #4</div>
-						<div class="info">The answer to the question.</div>
-						<div class="arrow">&#9660;</div>
-					</div>
+					{% for c in contacts %}
+						<div class="item" ng-class="{ 'opened' : openedContact=={{c.index}} }">
+							<div class="title">Contact #{{c.index}}</div>
+							<div class="row header" ng-class="{ 'on' : openedContact=={{c.index}} }">Contact Information</div>
+							<div class="row" ng-class="{ 'on' : openedContact=={{c.index}} }"><span>Client Name:</span>{{c.recipient.BillingName}}</div>
+							<div class="row" ng-class="{ 'on' : openedContact=={{c.index}} }"><span>Email:</span>{{c.recipient.EmailAddress}}</div>
+							<div class="row" ng-class="{ 'on' : openedContact=={{c.index}} }"><span>Phone:</span>{{c.recipient.PhoneNumber}}</div>
+							<div class="row header" ng-class="{ 'on' : openedContact=={{c.index}} }">Business Location</div>
+							{% for addr in c.addresses %}
+								<div class="row" ng-class="{ 'on' : openedContact=={{c.index}} }"><span>Address:</span><span class="multi-line">{{addr.Address1}} {{addr.Address2}}<br />{{addr.City}}, {{addr.State}}</span></div>
+							{% endfor %}
+							<div class="arrow" ng-click="openedContact={{c.index}}">
+								<span ng-if="openedContact == {{c.index}}">&#9650;</span>
+								<span ng-if="openedContact != {{c.index}}">&#9660;</span>
+							</div>
+						</div>
+					{% endfor %}
 				</div>
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=201804291700"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=201804291700"></script>
 {% endblock %}

@@ -600,7 +600,7 @@ main div.content div.accordian { float: left; margin: 15px 25px 15px 0px; width:
 main div.content div.accordian.contacts { margin: 30px 25px 15px 0px; width: 610px; }
 main div.content div.accordian div.accordian-header { font-size: 18px; padding: 10px 0px; }
 main div.content div.accordian div.items {}
-main div.content div.accordian div.items div.item { position: relative; }
+main div.content div.accordian div.items div.item { border-color: #979797; border-style: solid; border-width: 0px 0px 1px 0px; position: relative; }
 main div.content div.accordian div.items div.item.opened { margin: 0px 0px 30px; }
 main div.content div.accordian div.items div.item div.title { border-color: #979797; border-style: solid; border-width: 1px 1px 0px 1px; font-size: 18px; line-height: 20px; padding: 12px; }
 main div.content div.accordian div.items div.item div.title.last { border-width: 1px; }

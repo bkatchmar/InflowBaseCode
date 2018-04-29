@@ -4,3 +4,5 @@ milestonesApp.controller("milestonesCtrl", function($scope, $http) {
 		$http.get("/inflow/projects/contract-service/delete-milestone-file/" + id).then(function(response) {});
 	};
 });
+
+contactsAccordianApp.controller("contactsAccordianCtrl", function($scope) {});

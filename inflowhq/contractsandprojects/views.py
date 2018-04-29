@@ -69,13 +69,34 @@ class MyContactsView(LoginRequiredMixin, TemplateView):
     template_name = "projects.contacts.html"
     
     def get(self, request):
-        context = self.get_context_data()
+        context = self.get_context_data(request)
         return render(request, self.template_name, context)
     
-    def get_context_data(self, **kwargs):
+    def get_context_data(self, request, **kwargs):
+        total_recipients = []
+        iterator = 1
+        
         # Set the context
         context = super(MyContactsView, self).get_context_data(**kwargs)
         context["view_mode"] = "contacts"
+        
+        user_contracts = Contract.objects.filter(Creator=request.user)
+        
+        for contract in user_contracts:
+            recipients = Recipient.objects.filter(ContractForRecipient=contract)
+            
+            for r in recipients:
+                context_append = { "index": iterator, "recipient" : r, "addresses" : [] }
+                
+                recipient_address = RecipientAddress.objects.filter(RecipientForAddress=r)
+                
+                for addr in recipient_address:
+                    context_append["addresses"].append(addr)
+                
+                total_recipients.append(context_append)
+                iterator = iterator + 1
+        
+        context["contacts"] = total_recipients
         return context
 
 class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
