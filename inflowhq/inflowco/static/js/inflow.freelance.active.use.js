@@ -2,22 +2,26 @@ Dropzone.options.inflowDropzone = {
 	paramName: "freelancer-deliverables", // The name that will be used to transfer the file
 	clickable: true,
 	addRemoveLinks: true,
-	autoProcessQueue : false,
-	accept: function(file, done) {
-		done();
-		myDropzone = this;
-		myDropzone.processQueue();
-		jQuery("main div.upload-modal form").submit();
-	},
+	autoProcessQueue : true,
+	uploadMultiple: true,
+	parallelUploads: 100,
+	maxFiles: 10,
 	init : function() {
-		var submitButton = document.querySelector("#dropzone-uploader");
 		myDropzone = this;
+		this.on("sendingmultiple", function(file, xhr, formData) {
+			jQuery("main div.upload-modal form div.main-upload div.content-reciever div.content").addClass("off");
+			jQuery("main div.upload-modal form div.main-upload div.content-reciever div.upload-progress").addClass("on");
+		});
+		this.on("successmultiple", function(files, response) {
+			var currentUrl = window.location.href;
+			window.location=currentUrl;
+		});
 	}
 };
 Dropzone.prototype.defaultOptions.dictDefaultMessage = "Drag Your Files Here To Upload";
 Dropzone.prototype.defaultOptions.dictFallbackText = "You are using a much older browser, using a standard HTML file input";
 
-/* Gooogle Drive API */
+// Gooogle Drive API
 //The Browser API key obtained from the Google API Console.
 var developerKey = "AIzaSyAe7oJuNMKgBpReacIm04QQc_gtqJDV_xc";
 

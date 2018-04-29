@@ -24,6 +24,7 @@ main div.upload-modal { background-color: #FFFFFF; border: solid 1px #979797; he
 main div.upload-modal form div.main-upload { overflow: hidden; }
 main div.upload-modal form div.main-upload div.content-reciever { float: left; padding: 50px 50px 0px 50px; text-align: center; width: 350px; }
 main div.upload-modal form div.main-upload div.content-reciever div.content { border-style: dashed; min-height: auto; min-width: auto; padding: 45px 0px; }
+main div.upload-modal form div.main-upload div.content-reciever div.content.off { display: none; }
 main div.upload-modal form div.main-upload div.content-reciever div.content div.instructions { font-size: 18px; line-height: 20px; width: 300px; }
 main div.upload-modal form div.main-upload div.content-reciever div.content div.or-separator { padding: 20px 0px 0px; }
 main div.upload-modal form div.main-upload div.content-reciever div.content a,
@@ -33,6 +34,9 @@ main div.upload-modal form div.main-upload div.content-reciever div.content a:ho
 main div.upload-modal form div.main-upload div.content-reciever div.content a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; margin: 25px 0px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.upload-modal form div.main-upload div.content-reciever div.content div { width: 100%; }
 main div.upload-modal form div.main-upload div.content-reciever div.content input[type="file"] { margin: 10px auto; padding: 20px 0px; }
+main div.upload-modal form div.main-upload div.content-reciever div.upload-progress { display: none; }
+main div.upload-modal form div.main-upload div.content-reciever div.upload-progress.on { display: block; }
+main div.upload-modal form div.main-upload div.content-reciever div.upload-progress img { height: 228px; width: auto; }
 main div.upload-modal form div.main-upload div.content-reciever div.disclaimer { font-size: 14px; margin: 5px 0px 0px; }
 main div.upload-modal form div.main-upload div.other-upload-options { float: left; padding: 50px 0px 0px 0px; text-align: center; width: 225px; }
 main div.upload-modal form div.main-upload div.other-upload-options a,
@@ -207,7 +211,9 @@ main div.content div.milestone-detail-list div.milestone-information div.status 
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.header { border-bottom: solid 1px #979797; font-size: 12px; line-height: 18px; margin: 0px; padding: 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line { font-size: 12px; padding: 0px 0px 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span { display: inline-block; padding: 10px 0px; }
-main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; float: right; padding: 10px 10px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; float: right; padding: 8px 5px 9px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download a { display: block; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download img { height: auto; width: 15px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.delete { float: right; padding: 10px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.buttons { padding: 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.buttons a,

@@ -52,7 +52,7 @@
 									<div class="line">
 										<span class="file-name">{{file.name}}</span>
 										<span class="delete">&times;</span>
-										<span class="download">DL</span>
+										<span class="download"><a href="{{file.preview_download_url}}" download><img src="{% static 'img/if_178_download_183297.png' %}" alt="Download File" /></a></span>
 									</div>
 								{% endfor %}
 							</div>
@@ -80,6 +80,7 @@
 							<div class="or-separator">or</div>
 							<input type="file" name="deliverable" />
 						</div>
+						<div class="upload-progress"><img src="{% static 'img/loading.gif' %}" alt="I am uploading your files" /></div>
 					</div>
 					<div class="other-upload-options">
 						<div>Other ways to upload:</div>
@@ -104,7 +105,7 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
 	<script src="{% static 'js/dropzone.js' %}"></script>
-	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=201804"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=20180428"></script>
 	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?"></script>
 	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?"></script>
 	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
