@@ -222,15 +222,7 @@ class BaseSitemap(Sitemap):
                 "htmldemos:client_active_use_projects_milestones",
                 "htmldemos:client_active_use_projects_quick_view",
                 "htmldemos:client_active_use_projects_home",
-                "htmldemos:client_active_use",
-                "htmldemos:contract_creation_lump_sum",
-                "htmldemos:contract_creation_hourly",
-                "htmldemos:contract_creation_extra_fees",
-                "htmldemos:contract_overview_lump_sum",
-                "htmldemos:contract_overview_hourly",
-                "htmldemos:contract_overview_preview_send",
-                "htmldemos:contract_overview_final",
-                "htmldemos:contract_creation"]
+                "htmldemos:client_active_use"]
 
     def location(self, item):
         return reverse(item)

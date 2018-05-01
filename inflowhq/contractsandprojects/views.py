@@ -909,18 +909,6 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         
         return render(request, self.template_name, context)
     
-    def post(self, request, **kwargs):
-        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
-        
-        if contract_check is None:
-            return redirect(reverse("contracts:home"))
-        
-        if not context["in_edit_mode"]:
-            return redirect(reverse("contracts:home"))
-        
-        context = self.get_context_data(request, **kwargs)
-        return render(request, self.template_name, context)
-    
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectOverview, self).get_context_data(**kwargs)
