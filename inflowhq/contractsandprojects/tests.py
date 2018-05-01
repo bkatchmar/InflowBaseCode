@@ -276,6 +276,7 @@ class ContractNewFirstScreenTest(TestCase):
         
         number_of_current_contracts_2 = len(Contract.objects.all())
         
+        self.assertEqual(200,response.status_code) # User can see the page
         self.assertTrue(loginAttempt)
         self.assertNotEqual(number_of_current_contracts, number_of_current_contracts_2)
 

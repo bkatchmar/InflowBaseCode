@@ -75,15 +75,6 @@ class FreelancerActiveUseLoFiQuickView(TemplateView):
     def post(self, request):
         return render(request, self.template_name)
 
-class FreelancerActiveUseLoFiSpecificProjectMilestone(TemplateView):
-    template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.html"
-
-    def get(self, request):
-        return render(request, self.template_name)
-
-    def post(self, request):
-        return render(request, self.template_name)
-
 class FreelancerActiveUseLoFiSpecificProjectMilestoneUploadIdle(TemplateView):
     template_name = "freelancer_active_flow_lofi/projects.dashboard.specific-project.milestones.upload-idle.html"
 

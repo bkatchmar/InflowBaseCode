@@ -204,7 +204,6 @@ class BaseSitemap(Sitemap):
                 "htmldemos:freelancer_active_use_specific_project_milestones_schedule_send_now",
                 "htmldemos:freelancer_active_use_specific_project_milestones_schedule_send",
                 "htmldemos:freelancer_active_use_specific_project_milestones_schedule",
-                "htmldemos:freelancer_active_use_specific_project_milestones",
                 "htmldemos:freelancer_active_use_specific_project_overview",
                 "htmldemos:freelancer_active_use_specific_project_invoices",
                 "htmldemos:freelancer_active_use_specific_project_files",

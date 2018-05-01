@@ -268,7 +268,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         
         return created_contract
 
-class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
+class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.creation.second.step.html"
     
     def get(self, request, **kwargs):
@@ -307,42 +307,35 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
             "milestones" : []
         }
         
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+        if selected_contract is not None:
+            context["in_edit_mode"] = (selected_contract.ContractState == "c")
+            contract_info["id"] = selected_contract.id
+            contract_info["contract_name"] = selected_contract.Name
+            contract_info["start_date"] = selected_contract.StartDate.strftime("%b %d %Y")
+            contract_info["end_date"] = selected_contract.EndDate.strftime("%b %d %Y")
+            contract_info["type"] = selected_contract.ContractType
+            contract_info["contract_total"] = selected_contract.TotalContractWorth
+            contract_info["down_payment_amount"] = selected_contract.DownPaymentAmount
+            contract_info["total_revisions"] = selected_contract.NumberOfAllowedRevisions
+            contract_info["hourly_rate"] = selected_contract.HourlyRate
             
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            else:
-                context["in_edit_mode"] = (selected_contract.ContractState == "c")
+            # Retrieve the milestones (if any)
+            milestone_index = 0
+            selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
+            for milestone in selected_contract_milestones:
+                entered_milestone = { "index" : milestone_index, "front_index": (milestone_index+1), "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
+                milestone_index = milestone_index + 1
+                contract_info["milestones"].append(entered_milestone)
                 
-                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                    contract_info["id"] = selected_contract.id
-                    contract_info["contract_name"] = selected_contract.Name
-                    contract_info["start_date"] = selected_contract.StartDate.strftime("%b %d %Y")
-                    contract_info["end_date"] = selected_contract.EndDate.strftime("%b %d %Y")
-                    contract_info["type"] = selected_contract.ContractType
-                    contract_info["contract_total"] = selected_contract.TotalContractWorth
-                    contract_info["down_payment_amount"] = selected_contract.DownPaymentAmount
-                    contract_info["total_revisions"] = selected_contract.NumberOfAllowedRevisions
-                    contract_info["hourly_rate"] = selected_contract.HourlyRate
-                    
-                    # Retrieve the milestones (if any)
-                    milestone_index = 0
-                    selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
-                    for milestone in selected_contract_milestones:
-                        entered_milestone = { "index" : milestone_index, "front_index": (milestone_index+1), "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
-                        milestone_index = milestone_index + 1
-                        contract_info["milestones"].append(entered_milestone)
-                    
-                    if milestone_index == 0:
-                        entered_milestone = { "index":milestone_index,"front_index":(milestone_index+1),"name":"","description":"","estimateHourCompletion":0,"totalMilestoneAmount":0,"milestoneDeadline":"" }
-                        milestone_index = milestone_index + 1
-                        contract_info["milestones"].append(entered_milestone)
-                    
-                    contract_info["number_of_milestones"] = milestone_index
-                else:
-                    raise PermissionDenied() # Raise 403
+            if milestone_index == 0:
+                entered_milestone = { "index":milestone_index,"front_index":(milestone_index+1),"name":"","description":"","estimateHourCompletion":0,"totalMilestoneAmount":0,"milestoneDeadline":"" }
+                milestone_index = milestone_index + 1
+                contract_info["milestones"].append(entered_milestone)
+
+            contract_info["number_of_milestones"] = milestone_index
         
         context["contract_info"] = contract_info
         return context
@@ -376,16 +369,18 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
         downPaymentAmount = request.POST.get("downPaymentAmount", "")
         totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
         
+        handler = RequestInputHandler()
+        
         created_contract = None
         if "contract_id" in kwargs:
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             created_contract.StartDate = datetime.datetime.strptime(contractStartDate, "%b %d %Y")
             created_contract.EndDate = datetime.datetime.strptime(contractEndDate, "%b %d %Y")
             
-            created_contract.TotalContractWorth = self.get_entry_for_float(totalContractAmount)
-            created_contract.DownPaymentAmount = self.get_entry_for_float(downPaymentAmount)
-            created_contract.HourlyRate = self.get_entry_for_float(hourlyRate)
-            created_contract.NumberOfAllowedRevisions = self.get_entry_for_int(totalNumberOfRevisions)
+            created_contract.TotalContractWorth = handler.get_entry_for_float(totalContractAmount)
+            created_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
+            created_contract.HourlyRate = handler.get_entry_for_float(hourlyRate)
+            created_contract.NumberOfAllowedRevisions = handler.get_entry_for_int(totalNumberOfRevisions)
             
             created_contract.save()
             
@@ -399,8 +394,8 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                     created_milestone = created_contract.create_new_milestone()
                 
                 created_milestone.Name = milestoneName[milestone_index]
-                created_milestone.EstimateHoursRequired = self.get_entry_for_float(milestonesEstimateHours[milestone_index])
-                created_milestone.MilestonePaymentAmount = self.get_entry_for_float(milestoneAmount[milestone_index])
+                created_milestone.EstimateHoursRequired = handler.get_entry_for_float(milestonesEstimateHours[milestone_index])
+                created_milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneAmount[milestone_index])
                 
                 if milestoneDescription[milestone_index] != "":
                     created_milestone.Explanation = milestoneDescription[milestone_index]
@@ -416,18 +411,6 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView):
                 created_milestone.save()
             
         return created_contract
-    
-    def get_entry_for_float(self,floatAmt):
-        try:
-            return float(floatAmt)
-        except Exception as e:
-            return 0.0
-        
-    def get_entry_for_int(self,intAmt):
-        try:
-            return int(intAmt)
-        except Exception as e:
-            return 0
 
 class CreateContractStepThree(LoginRequiredMixin, TemplateView):
     template_name = "contract_creation/contract.creation.third.step.html"
@@ -809,15 +792,20 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        # Get data from the POST
-        target_milestone = request.POST.get("target-milestone", "0")
+        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         
-        if target_milestone != "0":
-            return self.handle_standard_file_entry_request(request, **kwargs)
-        
-        context = self.get_context_data(request, **kwargs)
-        context["errors"] = []
-        return render(request, self.template_name, context)
+        if contract_check is None:
+            return redirect(reverse("contracts:home"))
+        else:
+            # Get data from the POST
+            target_milestone = request.POST.get("target-milestone", "0")
+            
+            if target_milestone != "0":
+                return self.handle_standard_file_entry_request(request, **kwargs)
+            
+            context = self.get_context_data(request, **kwargs)
+            context["errors"] = []
+            return render(request, self.template_name, context)
     
     def handle_standard_file_entry_request(self,request, **kwargs):
         # Get data from the POST
@@ -910,6 +898,44 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         rtn_val = (extension == ".jpg" or extension == ".jpeg" or extension == ".png" or extension == ".gif" or extension == ".tiff")
         return rtn_val
 
+class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/freelancer.specific-project.overview.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
+        if contract_check is None:
+            return redirect(reverse("contracts:home"))
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(SpecificProjectOverview, self).get_context_data(**kwargs)
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
 class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "active_use/freelancer.specific-project.invoices.html"
     
@@ -922,11 +948,15 @@ class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissi
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        context = self.get_context_data(request, **kwargs)
+        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
+        if contract_check is None:
+            return redirect(reverse("contracts:home"))
         
         if not context["in_edit_mode"]:
             return redirect(reverse("contracts:home"))
         
+        context = self.get_context_data(request, **kwargs)
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
@@ -956,28 +986,33 @@ class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionH
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        uploaded_file = request.FILES.get("deliverable", False)
-        google_drive_file = request.POST.get("drive-url", "")
-        google_drive_file_name = request.POST.get("drive-name", "")
+        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         
-        # Handler Class for uploading to Amazon
-        amazon_handler = AmazonBotoHandler()
-        
-        # If we have an actual file, time to prepare it to be uploaded to AWS
-        if uploaded_file != False:
-            deliverable_key = uploaded_file.__str__()
-            amazon_handler.standard_contract_file_upload(request.user, deliverable_key, uploaded_file, kwargs.get("contract_slug"), kwargs.get("contract_id"))
-        elif google_drive_file != "" and google_drive_file_name != "":
-            deliverable_key = google_drive_file_name
-            amazon_handler.google_drive_contract_file_upload(request.user, deliverable_key, kwargs.get("contract_slug"), kwargs.get("contract_id"), google_drive_file)
-        elif len(request.FILES) > 1:
-            for dropzone_file in request.FILES:
-                uploaded_file = request.FILES[dropzone_file]
+        if contract_check is None:
+            return redirect(reverse("contracts:home"))
+        else:
+            uploaded_file = request.FILES.get("deliverable", False)
+            google_drive_file = request.POST.get("drive-url", "")
+            google_drive_file_name = request.POST.get("drive-name", "")
+            
+            # Handler Class for uploading to Amazon
+            amazon_handler = AmazonBotoHandler()
+            
+            # If we have an actual file, time to prepare it to be uploaded to AWS
+            if uploaded_file != False:
                 deliverable_key = uploaded_file.__str__()
                 amazon_handler.standard_contract_file_upload(request.user, deliverable_key, uploaded_file, kwargs.get("contract_slug"), kwargs.get("contract_id"))
-        
-        context = self.get_context_data(request, **kwargs)
-        return render(request, self.template_name, context)
+            elif google_drive_file != "" and google_drive_file_name != "":
+                deliverable_key = google_drive_file_name
+                amazon_handler.google_drive_contract_file_upload(request.user, deliverable_key, kwargs.get("contract_slug"), kwargs.get("contract_id"), google_drive_file)
+            elif len(request.FILES) > 1:
+                for dropzone_file in request.FILES:
+                    uploaded_file = request.FILES[dropzone_file]
+                    deliverable_key = uploaded_file.__str__()
+                    amazon_handler.standard_contract_file_upload(request.user, deliverable_key, uploaded_file, kwargs.get("contract_slug"), kwargs.get("contract_id"))
+                    
+            context = self.get_context_data(request, **kwargs)
+            return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):
         # Set the context

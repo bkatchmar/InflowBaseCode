@@ -15,7 +15,6 @@ urlpatterns = [
     url(r'^freelancer-active-use/specific-project/milestones/schedule/confirm-now', views.FreelancerActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSendNow.as_view(), name='freelancer_active_use_specific_project_milestones_schedule_send_now'),
     url(r'^freelancer-active-use/specific-project/milestones/schedule/confirm', views.FreelancerActiveUseLoFiSpecificProjectMilestoneScheduleDeliveryConfirmSend.as_view(), name='freelancer_active_use_specific_project_milestones_schedule_send'),
     url(r'^freelancer-active-use/specific-project/milestones/schedule', views.FreelancerActiveUseLoFiSpecificProjectMilestoneScheduleDelivery.as_view(), name='freelancer_active_use_specific_project_milestones_schedule'),
-    url(r'^freelancer-active-use/specific-project/milestones', views.FreelancerActiveUseLoFiSpecificProjectMilestone.as_view(), name='freelancer_active_use_specific_project_milestones'),
     url(r'^freelancer-active-use/specific-project/overview', views.FreelancerActiveUseLoFiSpecificProjectOverview.as_view(), name='freelancer_active_use_specific_project_overview'),
     url(r'^freelancer-active-use/specific-project/invoices', views.FreelancerActiveUseLoFiSpecificProjectInvoices.as_view(), name='freelancer_active_use_specific_project_invoices'),
     url(r'^freelancer-active-use/specific-project/files', views.FreelancerActiveUseLoFiSpecificProjectFiles.as_view(), name='freelancer_active_use_specific_project_files'),

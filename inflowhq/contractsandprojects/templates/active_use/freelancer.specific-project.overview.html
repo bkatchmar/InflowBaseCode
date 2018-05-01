@@ -21,13 +21,27 @@
 		</div>
 		<div class="ribbon four-buttons">
 			<span><a href="{% url 'contracts:project_milestones' contract_info.slug contract_info.id %}">MILESTONES</a></span>
-			<span><a href="{% url 'contracts:project_overview' contract_info.slug contract_info.id %}">OVERVIEW</a></span>
-			<span class="on"><a href="{% url 'contracts:project_invoices' contract_info.slug contract_info.id %}">INVOICES</a></span>
+			<span class="on"><a href="{% url 'contracts:project_overview' contract_info.slug contract_info.id %}">OVERVIEW</a></span>
+			<span><a href="{% url 'contracts:project_invoices' contract_info.slug contract_info.id %}">INVOICES</a></span>
 			<span><a href="{% url 'contracts:project_files' contract_info.slug contract_info.id %}">FILES</a></span>
 		</div>
-		<div class="list inner-details invoices">
-			<div class="header">Invoices</div>
-			<div class="buttons"><a href="#">Create Invoice</a></div>
+		<div class="milestone-contacts">
+			<div class="header">
+				Contact Information
+				<a href="#">Edit information</a>
+			</div>
+			<div class="line"><span>Client Name:</span>Russell Wilson</div>
+			<div class="line"><span>Email:</span>russ1@nfl.com</div>
+			<div class="line"><span>Phone:</span>123-456-7890</div>
+			<div class="header secondary">Business Location</div>
+			<div class="line"><span>Address:</span><span class="data">1111 Football Way N.<br />Seattle, WA 11111</span></div>
+			<div class="header secondary">Terms</div>
+			<div class="line"><span>Task:</span>Description</div>
+			<div class="line"><span>Payment Total:</span>$2,500</div>
+			<div class="line"><span>Stripe:</span>Verified</div>
+			<div class="line"><span>Project Duration:</span>8 weeks</div>
+			<div class="header secondary"><a href="#">View Contract</a></div>
+			<div class="footer">+ Another Contact</div>
 		</div>
 	</div>
 {% endblock %}
