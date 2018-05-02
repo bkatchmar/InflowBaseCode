@@ -13,3 +13,15 @@ filesApp.controller("filesCtrl", function($scope, $http) {
 });
 
 contactsAccordianApp.controller("contactsAccordianCtrl", function($scope) {});
+
+contractOverviewApp.controller("contractOverviewCtrl", function($scope) {
+	$scope.changeEditMode = function() {
+		if ($scope.editMode==0) {
+			$scope.editMode=1;
+			$scope.editModeText="Finished Editing";
+		} else {
+			$scope.editMode=0;
+			$scope.editModeText="Edit information";
+		}
+	};
+});

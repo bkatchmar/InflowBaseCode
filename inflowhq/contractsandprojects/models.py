@@ -98,6 +98,38 @@ class Contract(models.Model):
             relationship = Relationship.objects.filter(ContractForRelationship=self,ContractUser=loggedinuser).first()
 
         return relationship
+    
+    def calculate_time_left_string(self):
+        diff = self.EndDate - timezone.now().date()
+        
+        if diff.days == 0:
+            return "0 Days"
+        else:
+            # Perform calculations
+            weeks = int(diff.days / 7)
+            remaining_days = diff.days % 7
+            
+            # Since I rather declare my variables before I assign them most of the time
+            weeks_str = ""
+            days_str = ""
+            
+            # Logic to determine what the above strings will read as
+            if weeks == 1:
+                weeks_str = "1 Week"
+            elif weeks > 1:
+                weeks_str = ("%d Weeks" % weeks)
+            else:
+                weeks_str = ""
+                
+            if remaining_days == 0:
+                days_str = ""
+                return weeks_str
+            elif weeks >= 1:
+                days_str = (", %d Days" % remaining_days)
+            else:
+                return ("%d Days" % remaining_days)
+            
+            return ("%s%s" % (weeks_str, days_str))
 
     def CreatePayment(self,milestoneContractIsBasedOff):
         rtnVal = Payment()

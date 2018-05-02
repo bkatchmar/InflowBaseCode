@@ -242,7 +242,10 @@ main div.content div.inner-details.invoices:after { border-color: #FFF transpare
 main div.content div.inner-details.files:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 620px; position: absolute; top: 0px; width: 0px; }
 main div.content div.inner-details.files:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 620px; position: absolute; top: -1px; width: 0px; }
 
-main div.content div.milestone-contacts { border: solid 1px #979797; }
+main div.content div.milestone-contacts:before { border-color: #979797 transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 252px; position: absolute; top: 0px; width: 0px; }
+main div.content div.milestone-contacts:after { border-color: #FFF transparent; border-style: solid; border-width: 11px 30px 0px 30px; bottom: auto; content: ""; display: block; left: 252px; position: absolute; top: -1px; width: 0px; }
+
+main div.content div.milestone-contacts { border: solid 1px #979797; position: relative; }
 main div.content div.milestone-contacts div.header { font-size: 22px; margin: 20px auto; padding: 0px 15px; }
 main div.content div.milestone-contacts div.header.secondary { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; margin: 0px auto; padding: 20px; }
 main div.content div.milestone-contacts div.header.secondary a,
@@ -257,7 +260,7 @@ main div.content div.milestone-contacts div.header a:hover,
 main div.content div.milestone-contacts div.header a:active { display: inline-block; float: right; font-size: 16px; font-weight: 400; text-decoration: underline; }
 main div.content div.milestone-contacts div.line { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; font-size: 18px; overflow: hidden; padding: 10px 15px; }
 main div.content div.milestone-contacts div.line span { display: inline-block; float: left; font-weight: 700; padding: 0px 10px 0px 0px; }
-main div.content div.milestone-contacts div.line span.data { font-weight: normal; }
+main div.content div.milestone-contacts div.line span.data { font-weight: normal; line-height: 20px; }
 main div.content div.milestone-contacts div.footer { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; padding: 10px 0px; text-align: center; }
 
 main div.content div.list.invoices div.data-table { margin: 0px auto 15px; width: 600px; }
