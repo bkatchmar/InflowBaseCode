@@ -909,6 +909,63 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         
         return render(request, self.template_name, context)
     
+    def post(self, request, **kwargs):
+        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
+        # Base contract check so nothing gets overridden if we don't have permission
+        if contract_check is None:
+            return redirect(reverse("contracts:home"))
+        
+        # Get the Recipient that we will override
+        selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=contract_check).first()
+        selected_contract_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
+        
+        # Handle Post Input
+        handler = RequestInputHandler()
+        contact_name = request.POST.get("contact_name", "")
+        billing_name = request.POST.get("billing_name", "")
+        billing_email = request.POST.get("billing_email", "")
+        billing_phone1 = request.POST.get("billing_phone1")
+        billing_phone2 = request.POST.get("billing_phone2")
+        billing_phone3 = request.POST.get("billing_phone3")
+        
+        selected_contract_recipient.Name = contact_name
+        selected_contract_recipient.BillingName = billing_name
+        selected_contract_recipient.EmailAddress = billing_email
+        
+        # Server side validation check for phone numbers
+        if len(billing_phone1) == 3 and len(billing_phone2) == 3 and len(billing_phone3) == 4:
+            phone1_val = handler.get_entry_for_int(billing_phone1)
+            phone2_val = handler.get_entry_for_int(billing_phone2)
+            phone3_val = handler.get_entry_for_int(billing_phone3)
+            
+            if phone1_val > 0 and phone2_val > 0 and phone3_val > 0:
+                selected_contract_recipient.PhoneNumber = ("%s-%s-%s" % (billing_phone1, billing_phone2, billing_phone3))
+        else:
+            selected_contract_recipient.PhoneNumber = ""
+        
+        selected_contract_recipient.save()
+        
+        for addr in selected_contract_recipient_addresses:
+            addr_1_field = ("locationAddress1[%d]" % addr.id)
+            addr_2_field = ("locationAddress2[%d]" % addr.id)
+            addr_city_field = ("locationAddressCity[%d]" % addr.id)
+            addr_state_field = ("locationAddressState[%d]" % addr.id)
+            
+            addr_1 = request.POST.get(addr_1_field, "")
+            addr_2 = request.POST.get(addr_2_field, "")
+            addr_city = request.POST.get(addr_city_field, "")
+            addr_state = request.POST.get(addr_state_field, "")
+            
+            addr.Address1 = addr_1
+            addr.Address2 = addr_2
+            addr.State = addr_state
+            addr.City = addr_city
+            addr.save()
+        
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectOverview, self).get_context_data(**kwargs)
@@ -918,7 +975,7 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "description" : selected_contract.Description, "time_remaining" : selected_contract.calculate_time_left_string() }
         context["addresses"] = []
         
-        contract_recipient = { "billing_name" : "", "billing_email" : "" }
+        contract_recipient = { "billing_name" : "", "billing_email" : "", "contact_name" : "", "phone_number" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" }
         
         selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         
@@ -930,7 +987,16 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         if selected_contract_recipient is not None:
             contract_recipient["billing_name"] = selected_contract_recipient.BillingName
             contract_recipient["billing_email"] = selected_contract_recipient.EmailAddress
+            contract_recipient["contact_name"] = selected_contract_recipient.Name
             context["addresses"] = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
+            
+            # Fracture the phone number
+            if selected_contract_recipient.PhoneNumber != "" and selected_contract_recipient.PhoneNumber is not None:
+                number_parts = selected_contract_recipient.PhoneNumber.split("-")
+                contract_recipient["phone_number"] = selected_contract_recipient.PhoneNumber
+                contract_recipient["phone_1"] = number_parts[0].__str__()
+                contract_recipient["phone_2"] = number_parts[1].__str__()
+                contract_recipient["phone_3"] = number_parts[2].__str__()
         
         context["contract_recipient"] = contract_recipient
         return context

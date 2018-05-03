@@ -29,25 +29,57 @@
 			<form method="post" action="{% url 'contracts:project_overview' contract_info.slug contract_info.id %}">
 				<div class="header">
 					Contact Information
-					<a href="#" ng-click="changeEditMode()" ng-bind="editModeText"></a>
+					<span class="edit-mode" ng-click="changeEditMode()" ng-bind="editModeText"></span>
 				</div>
-				<div class="line"><span>Client Name:</span>{{contract_recipient.billing_name}}</div>
-				<div class="line"><span>Email:</span>{{contract_recipient.billing_email}}</div>
-				<div class="line"><span>Phone:</span>123-456-7890</div>
+				{% if contract_recipient.contact_name != "" %}
+					<div class="line">
+						<span class="label">Contact Name:</span>
+						<span ng-show="editMode==0" ng-bind="contact_name" ng-init="contact_name='{{contract_recipient.contact_name}}'"></span>
+						<input type="text" ng-show="editMode==1" name="contact_name" ng-model="contact_name" ng-value="contact_name" />
+					</div>
+				{% endif %}
+				<div class="line">
+					<span class="label">Client Name:</span>
+					<span ng-show="editMode==0" ng-bind="billing_name" ng-init="billing_name='{{contract_recipient.billing_name}}'"></span>
+					<input type="text" ng-show="editMode==1" name="billing_name" ng-model="billing_name" ng-value="billing_name" />
+				</div>
+				<div class="line">
+					<span class="label">Email:</span>
+					<span ng-show="editMode==0" ng-bind="billing_email" ng-init="billing_email='{{contract_recipient.billing_email}}'"></span>
+					<input type="email" ng-show="editMode==1" name="billing_email" ng-model="billing_email" ng-value="billing_email" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" />
+				</div>
+				<div class="line">
+					<span class="label">Phone:</span>
+					<span ng-show="editMode==0" ng-bind="billing_phone" ng-init="billing_phone='{{contract_recipient.phone_number}}'"></span>
+					<input type="text" ng-show="editMode==1" name="billing_phone1" placeholder="xxx" ng-model="billing_phone1" ng-value="billing_phone1" ng-init="billing_phone1='{{contract_recipient.phone_1}}'" class="phone-number" ng-change="updatePhoneNumber()" />
+					<input type="text" ng-show="editMode==1" name="billing_phone2" placeholder="xxx" ng-model="billing_phone2" ng-value="billing_phone2" ng-init="billing_phone2='{{contract_recipient.phone_2}}'" class="phone-number" ng-change="updatePhoneNumber()" />
+					<input type="text" ng-show="editMode==1" name="billing_phone3" placeholder="xxxx" ng-model="billing_phone3" ng-value="billing_phone3" ng-init="billing_phone3='{{contract_recipient.phone_3}}'" class="phone-number" ng-change="updatePhoneNumber()" />
+				</div>
 				<div class="header secondary">Business Location</div>
 				{% for addr in addresses %}
-					<div class="line"><span>Address:</span><span class="data">{{addr.Address1}} {{addr.Address2}}<br />{{addr.City}}, {{addr.State}}</span></div>
+					<div class="line">
+						<span class="label">Address:</span>
+						<span class="data"><span ng-show="editMode==0" ng-bind="locationAddress1[{{addr.id}}]" ng-init="locationAddress1[{{addr.id}}]='{{addr.Address1}}'"></span> <span ng-show="editMode==0" ng-bind="locationAddress2[{{addr.id}}]" ng-init="locationAddress2[{{addr.id}}]='{{addr.Address2}}'"></span><br /><span ng-show="editMode==0" ng-bind="locationAddressCity[{{addr.id}}]" ng-init="locationAddressCity[{{addr.id}}]='{{addr.City}}'"></span><span ng-show="editMode==0">,</span> <span ng-show="editMode==0" ng-bind="locationAddressState[{{addr.id}}]" ng-init="locationAddressState[{{addr.id}}]='{{addr.State}}'"></span></span>
+						<input type="text" ng-show="editMode==1" name="locationAddress1[{{addr.id}}]" ng-model="locationAddress1[{{addr.id}}]" ng-value="locationAddress1[{{addr.id}}]" placeholder="Address 1" class="address" />
+						<input type="text" ng-show="editMode==1" name="locationAddress2[{{addr.id}}]" ng-model="locationAddress2[{{addr.id}}]" ng-value="locationAddress2[{{addr.id}}]" placeholder="Address 2" class="address" />
+						<input type="text" ng-show="editMode==1" name="locationAddressCity[{{addr.id}}]" ng-model="locationAddressCity[{{addr.id}}]" ng-value="locationAddressCity[{{addr.id}}]" placeholder="City" class="address" />
+						<input type="text" ng-show="editMode==1" name="locationAddressState[{{addr.id}}]" ng-model="locationAddressState[{{addr.id}}]" ng-value="locationAddressState[{{addr.id}}]" placeholder="State" class="address" />
+					</div>
 				{% endfor %}
+				<div class="submit-buttons" ng-show="editMode==1">
+					<input type="submit" name="action" value="Save Contact" class="continue" />
+				</div>
 				<div class="header secondary">Terms</div>
-				<div class="line"><span>Task:</span>{{contract_info.description}}</div>
-				<div class="line"><span>Payment Total:</span>${{contract_info.total_worth}}</div>
-				<div class="line"><span>Project Duration:</span>{{contract_info.time_remaining}}</div>
+				<div class="line"><span class="label">Task:</span>{{contract_info.description}}</div>
+				<div class="line"><span class="label">Payment Total:</span>${{contract_info.total_worth}}</div>
+				<div class="line"><span class="label">Project Duration:</span>{{contract_info.time_remaining}}</div>
 				<div class="header secondary"><a href="#">View Contract</a></div>
+				{% csrf_token %}
 			</form>
 		</div>
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
-	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=201805"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=201805"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180503"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180503"></script>
 {% endblock %}

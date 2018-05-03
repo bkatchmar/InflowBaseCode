@@ -24,4 +24,12 @@ contractOverviewApp.controller("contractOverviewCtrl", function($scope) {
 			$scope.editModeText="Edit information";
 		}
 	};
+	
+	$scope.updatePhoneNumber = function() {
+		if ($scope.billing_phone1.length === 3 && $scope.billing_phone2.length === 3 && $scope.billing_phone3.length === 4) {
+			$scope.billing_phone = $scope.billing_phone1 + "-" + $scope.billing_phone2 + "-" + $scope.billing_phone3;
+		} else {
+			$scope.billing_phone = "";
+		}
+	};
 });

@@ -257,11 +257,18 @@ main div.content div.milestone-contacts div.header a,
 main div.content div.milestone-contacts div.header a:link,
 main div.content div.milestone-contacts div.header a:visited,
 main div.content div.milestone-contacts div.header a:hover,
-main div.content div.milestone-contacts div.header a:active { display: inline-block; float: right; font-size: 16px; font-weight: 400; text-decoration: underline; }
+main div.content div.milestone-contacts div.header a:active,
+main div.content div.milestone-contacts div.header span.edit-mode { cursor: pointer; display: inline-block; float: right; font-size: 16px; font-weight: 400; text-decoration: underline; }
 main div.content div.milestone-contacts div.line { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; font-size: 18px; overflow: hidden; padding: 10px 15px; }
-main div.content div.milestone-contacts div.line span { display: inline-block; float: left; font-weight: 700; padding: 0px 10px 0px 0px; }
+main div.content div.milestone-contacts div.line span.label { display: inline-block; float: left; font-weight: 700; padding: 0px 10px 0px 0px; }
 main div.content div.milestone-contacts div.line span.data { font-weight: normal; line-height: 20px; }
+main div.content div.milestone-contacts div.line input[type="text"],
+main div.content div.milestone-contacts div.line input[type="email"] { display: inline-block; margin: 0px; width: 200px; }
+main div.content div.milestone-contacts div.line input[type="text"].phone-number { text-align: center; width: 40px; }
+main div.content div.milestone-contacts div.line input[type="text"].address { display: block; margin: 10px 0px; width: 250px; }
 main div.content div.milestone-contacts div.footer { border-color: #979797; border-style: solid; border-width: 1px 0px 0px; padding: 10px 0px; text-align: center; }
+main div.content div.milestone-contacts form div.submit-buttons { text-align: center; }
+main div.content div.milestone-contacts form div.submit-buttons input[type="submit"] { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 10px 0px; padding: 10px 40px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 main div.content div.list.invoices div.data-table { margin: 0px auto 15px; width: 600px; }
 main div.content div.list.invoices div.data-table div.table span { width: 24%; }
