@@ -1,0 +1,29 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}Preview Milestone{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
+	<div class="content project-arrow higher">
+		<div class="heading-elements">
+			<div class="header milestone-name">MILESTONE: {{milestone_info.name}}</div>
+			<div class="buttons"><a href="{% url 'contracts:project_milestones' contract_info.slug contract_info.id %}">Upload another milestone</a></div>
+			<div class="sub-header">{{contract_info.client_name}}</div>
+		</div>
+		{% for file in files %}
+			<div class="preview-window">
+				<div class="file-name">{{file.FileName}}</div>
+				<div class="preview-area"><img src="{{file.FilePreviewURL}}" alt="Preview {{milestone_info.name}}" /></div>
+			</div>
+		{% endfor %}
+		<div class="feedback-due"><span>Feedback from client due:</span>{{milestone_info.feedback_due}}</div>
+		{% if False %}
+			<div class="feedback-due"><span>Your milestone is scheduled for delivery on:</span>April 20, 2018</div>
+		{% endif %}
+		<div class="inner-details footer">
+			<div class="buttons">
+				<a href="#">Schedule Delivery Date</a>
+				<a href="#">Send Milestones to Client</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

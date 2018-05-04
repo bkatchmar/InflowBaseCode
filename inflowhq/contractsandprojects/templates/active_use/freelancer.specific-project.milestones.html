@@ -57,7 +57,7 @@
 								{% endfor %}
 							</div>
 							<div class="buttons">
-								<a href="#">View Milestone</a>
+								<a href="{% url 'contracts:project_milestone_preview' slug contract_info.id ms.id %}">View Milestone</a>
 								<a href="#">Resend Milestone to Client</a>
 							</div>
 						{% endif %}

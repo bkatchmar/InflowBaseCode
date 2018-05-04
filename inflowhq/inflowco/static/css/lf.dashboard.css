@@ -94,6 +94,7 @@ main div.content div.header { font-size: 30px; font-weight: 700; line-height: 32
 main div.content div.sub-header { font-size: 16px; }
 main div.content div.heading-elements { overflow: hidden; width: 800px; }
 main div.content div.heading-elements div.header { clear: left; float: left; width: 400px; }
+main div.content div.heading-elements div.header.milestone-name { font-size: 28px; width: 500px; }
 main div.content div.heading-elements div.sub-header { clear: left; float: left; width: 400px; }
 main div.content div.heading-elements div.table { border: solid 1px #979797; float: right; margin: 20px 10px 0px 0px; text-align: center; width: 180px; }
 main div.content div.heading-elements div.table div.table-header { border-bottom: solid 1px #979797; padding: 3px; }

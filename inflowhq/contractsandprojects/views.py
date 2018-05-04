@@ -969,6 +969,7 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectOverview, self).get_context_data(**kwargs)
+        
         selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         
         context["view_mode"] = "projects"
@@ -1027,10 +1028,17 @@ class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissi
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectInvoices, self).get_context_data(**kwargs)
+        
         selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
         
         if selected_contract is None:
             context["in_edit_mode"] = False
@@ -1082,12 +1090,19 @@ class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionH
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(SpecificProjectFiles, self).get_context_data(**kwargs)
+        
         selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         selected_contract_files = ContractFile.objects.filter(ContractForFile=selected_contract)
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
         context["contract_files"] = []
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
         
         for file in selected_contract_files:
             context["contract_files"].append({ "id" : file.id, "name" : file.FileName, "file_size" : file.SizeOfFile, "url" : file.FileURL, "uploaded" : file.FileUploaded.strftime("%b %d %Y") })
@@ -1097,6 +1112,34 @@ class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionH
         else:
             context["in_edit_mode"] = True
             
+        return context
+
+class PreviewMilestone(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/milestone.preview.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(PreviewMilestone, self).get_context_data(**kwargs)
+        
+        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y") }
+        context["files"] = milestone_files
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
         return context
 
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
