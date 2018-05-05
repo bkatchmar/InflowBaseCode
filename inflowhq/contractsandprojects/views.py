@@ -1142,6 +1142,38 @@ class PreviewMilestone(LoginRequiredMixin, TemplateView, ContractPermissionHandl
         
         return context
 
+class ScheduleSendMilestone(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/milestone.delivery.schedule.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ScheduleSendMilestone, self).get_context_data(**kwargs)
+        
+        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y") }
+        context["files"] = milestone_files
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     

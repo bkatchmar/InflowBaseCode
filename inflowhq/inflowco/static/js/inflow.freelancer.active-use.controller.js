@@ -33,3 +33,5 @@ contractOverviewApp.controller("contractOverviewCtrl", function($scope) {
 		}
 	};
 });
+
+milestoneScheduleApp.controller("milestoneScheduleCtrl", function($scope) {});
