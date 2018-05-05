@@ -1190,7 +1190,10 @@ class ScheduleSendMilestoneConfirm(LoginRequiredMixin, TemplateView, ContractPer
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
-        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "delivery_date" : selected_milestone.ScheduledDeliveryDate.strftime("%B %d %Y") }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "delivery_date" : "" }
+        
+        if selected_milestone.ScheduledDeliveryDate is not None:
+            context["milestone_info"]["delivery_date"] = selected_milestone.ScheduledDeliveryDate.strftime("%B %d %Y")
         
         return context
 
@@ -1276,7 +1279,7 @@ class JsonDeleteContractFile(LoginRequiredMixin, View):
 class JsonScheduleMilestone(LoginRequiredMixin, View):
     def post(self, request, **kwargs):
         data = {}
-        request_body = json.loads(request.body)
+        request_body = json.loads(request.body.decode('utf-8'))
         handler = RequestInputHandler()
         
         if "delivery" in request_body and "milestone_id" in kwargs:
