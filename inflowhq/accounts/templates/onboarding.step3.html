@@ -20,7 +20,7 @@
 					{% endif %}
 				{% endfor %}
 			</select>
-			<input type="text" name="region" placeholder="Region" required />
+			<input type="text" name="region" placeholder="State/Province" required />
 			<select name="currency" disabled>
 				{% for c in currency %}
 					{% if c.IdCurrency == selected_country_currency %}

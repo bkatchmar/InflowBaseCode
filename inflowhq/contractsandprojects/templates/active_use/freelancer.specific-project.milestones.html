@@ -58,7 +58,7 @@
 							</div>
 							<div class="buttons">
 								<a href="{% url 'contracts:project_milestone_preview' slug contract_info.id ms.id %}">View Milestone</a>
-								<a href="#">Resend Milestone to Client</a>
+								<a href="{% url 'contracts:project_milestone_send_confirm' slug contract_info.id ms.id %}">Resend Milestone to Client</a>
 							</div>
 						{% endif %}
 					</div>

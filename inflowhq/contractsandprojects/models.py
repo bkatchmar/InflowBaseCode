@@ -187,6 +187,8 @@ class Milestone(models.Model):
     EstimateHoursRequired = models.DecimalField(decimal_places=5,null=False,default=0.00000,max_digits=10)
     Deadline = models.DateField(auto_now=False)
     MilestoneState = models.CharField(max_length=1,choices=MILESTONE_STATES,default='n')
+    ScheduledDeliveryDate = models.DateField(auto_now=False,null=True)
+    Delivered = models.DateField(auto_now=False,null=True)
     
     def get_milestone_state_view(self):
         for t in MILESTONE_STATES:

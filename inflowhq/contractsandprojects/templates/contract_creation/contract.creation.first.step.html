@@ -71,7 +71,7 @@
 					<span class="error-msg" ng-show="contractCreationStep1.companyBillingName.$touched && contractCreationStep1.companyBillingName.$invalid">Contact Billing name is required.</span>
 				</div>
 				<div class="input-field text-single-line">
-					<span class="label">Email*:</span>
+					<span class="label">Client's Email*:</span>
 					<span class="field"><input type="email" placeholder="Email Address" name="companyContactEmail" ng-model="companyContactEmail" ng-value="companyContactEmail" ng-init="companyContactEmail='{{contract_info.contact.email}}'" ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/" required /></span>
 					<span class="error-msg" ng-show="contractCreationStep1.companyContactEmail.$touched && contractCreationStep1.companyContactEmail.$invalid">Contact Email is required.</span>
 				</div>

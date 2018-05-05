@@ -12,6 +12,8 @@ urlpatterns = [
     url(r'^contract/create/step-5/(?P<contract_id>[0-9]+)', views.CreateContractStepFive.as_view(), name='create_contract_step_5'),
     url(r'^contract/create/final/(?P<contract_id>[0-9]+)', views.ContractDoneCreated.as_view(), name='create_contract_step_6'),
     url(r'^contract/create', views.CreateContractStepOne.as_view(), name='create_contract_step_1'),
+    url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/send-now/(?P<milestone_id>[0-9]+)', views.SendMilestoneNowConfirm.as_view(), name='project_milestone_send_confirm'),
+    url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/confirm-schedule/(?P<milestone_id>[0-9]+)', views.ScheduleSendMilestoneConfirm.as_view(), name='project_milestone_schedule_confirm'),
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/schedule/(?P<milestone_id>[0-9]+)', views.ScheduleSendMilestone.as_view(), name='project_milestone_schedule'),
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/preview/(?P<milestone_id>[0-9]+)', views.PreviewMilestone.as_view(), name='project_milestone_preview'),
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones', views.SpecificProjectMilestones.as_view(), name='project_milestones'),
@@ -21,4 +23,5 @@ urlpatterns = [
     url(r'^emailer', views.EmailPlaceholderView.as_view(), name='contract_email_placeholder'),
     url(r'^contract-service/delete-milestone-file/(?P<milestone_file_id>[0-9]+)', views.JsonDeleteMilestoneFile.as_view(), name='json_delete_milestone_file'),
     url(r'^contract-service/delete-contract-file/(?P<contract_file_id>[0-9]+)', views.JsonDeleteContractFile.as_view(), name='json_delete_contract_file'),
+    url(r'^contract-service/schedule-milestone/(?P<milestone_id>[0-9]+)', views.JsonScheduleMilestone.as_view(), name='json_schedule_milestone'),
 ]

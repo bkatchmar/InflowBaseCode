@@ -34,4 +34,17 @@ contractOverviewApp.controller("contractOverviewCtrl", function($scope) {
 	};
 });
 
-milestoneScheduleApp.controller("milestoneScheduleCtrl", function($scope) {});
+milestoneScheduleApp.controller("milestoneScheduleCtrl", function($scope, $http) {
+	$scope.updateScheduledDeliveryDate = function() {
+		var selectedDeliveryDate = jQuery("main div.content div.schedule-delivery div.calendar").datepicker("getDate");
+		var csrfToken = jQuery("form#schedule-delivery-token input[name='csrfmiddlewaretoken']").val();
+		$http.post(
+				"/inflow/projects/contract-service/schedule-milestone/" + $scope.milestoneId, 
+				{"delivery":selectedDeliveryDate}, 
+				{headers:{"Content-Type":"application/json","X-CSRFToken":csrfToken}})
+		.then(function(response) {
+			var redirectUrl = "/inflow/projects/my-contract/" + $scope.contractSlug + "-" + $scope.contractId + "/milestones/confirm-schedule/" + $scope.milestoneId;
+			window.location=redirectUrl;
+		});
+	};
+});

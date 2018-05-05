@@ -1174,6 +1174,46 @@ class ScheduleSendMilestone(LoginRequiredMixin, TemplateView, ContractPermission
         
         return context
 
+class ScheduleSendMilestoneConfirm(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/milestone.delivery.schedule.confirm.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ScheduleSendMilestoneConfirm, self).get_context_data(**kwargs)
+        
+        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "delivery_date" : selected_milestone.ScheduledDeliveryDate.strftime("%B %d %Y") }
+        
+        return context
+
+class SendMilestoneNowConfirm(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/milestone.delivery.now.confirm.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(SendMilestoneNowConfirm, self).get_context_data(**kwargs)
+        
+        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name }
+        
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     
@@ -1230,5 +1270,27 @@ class JsonDeleteContractFile(LoginRequiredMixin, View):
                 data = { "error" : True, "error-message" : "No Contract File ID Provided" }
         else:
             data = { "error" : True, "error-message" : "No Contract File ID Provided" }
+        
+        return JsonResponse(data)
+
+class JsonScheduleMilestone(LoginRequiredMixin, View):
+    def post(self, request, **kwargs):
+        data = {}
+        request_body = json.loads(request.body)
+        handler = RequestInputHandler()
+        
+        if "delivery" in request_body and "milestone_id" in kwargs:
+            passed_delivery_date = handler.get_date_from_javascript(request_body["delivery"])
+            selected_milestone = Milestone.objects.get(IdMilestone=kwargs.get("milestone_id"))
+            
+            if selected_milestone.MilestoneContract.does_this_user_have_permission_to_see_contract(request.user) is not None:
+                selected_milestone.ScheduledDeliveryDate = passed_delivery_date
+                selected_milestone.save()
+                
+                data = { "success" : True, "message" : "Milestoned scheduled for delivery" }
+            else:
+                data = { "error" : True, "error-message" : "Logged in user is not allowed to access this contract" }
+        else:
+            data = { "error" : True, "error-message" : "Delivery must be in the request body and milestone_id is required" }
         
         return JsonResponse(data)

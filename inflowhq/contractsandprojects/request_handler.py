@@ -3,8 +3,9 @@ import datetime
 import os
 import pathlib
 import requests
-from PIL import Image
+from dateutil import parser
 from io import BytesIO
+from PIL import Image
 
 # Django References
 from django.contrib.auth.models import User
@@ -15,6 +16,19 @@ from contractsandprojects.models import Contract, ContractFile, Milestone, Miles
 
 class RequestInputHandler():
     def get_entry_for_float(self,floatAmt):
+        """
+        Generic Parseing Method from string to Float
+        
+        Parameters
+        ----------
+        floatAmt : str
+            string representation of a float
+        
+        Returns
+        -------
+        float
+            parsed float object, if fails, return 0
+        """
         try:
             return float(floatAmt)
         except Exception as e:
@@ -29,6 +43,27 @@ class RequestInputHandler():
     def get_entry_for_date(self,date_val):
         try:
             return datetime.datetime.strptime(date_val, "%b %d %Y")
+        except Exception as e:
+            return datetime.date.today()
+    
+    def get_date_from_javascript(self,date_val):
+        """
+        Generic Parseing Method from string that we get from jQuery UI to a Python Date
+        
+        Extended description of function.
+        
+        Parameters
+        ----------
+        date_val : str
+            JavaScript encoded string of a date object
+        
+        Returns
+        -------
+        date
+            if the parsing failed, just return today's date, the calling method needs to handle this
+        """
+        try:
+            return parser.parse(date_val)
         except Exception as e:
             return datetime.date.today()
 
