@@ -10,8 +10,8 @@
 		<div class="create-contract-super-window">
 			<div class="header">Create Contract</div>
 			<div class="progress-bar">
-				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
-				<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
+				<span class="number one done"><a href="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Project Information</span></span>
+				<span class="number two done"><a href="{% url 'contracts:create_contract_step_2' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Milestones</span></span>
 				<span class="number three on"><span class="text">Optional Fees</span></span>
 				<span class="number four"><span class="text">Work Overview</span></span>
 				<span class="number five"><span class="text">Preview and Send</span></span>
@@ -51,7 +51,7 @@
 				</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field">
-						<span class="label">Kill Fee (optional):</span>
+						<span class="label">Early Termination Fee (optional):</span>
 						{% if contract_info.kill_fee > 0 %}
 					 		<span class="field"><input type="number" placeholder="$0.00" name="kill-fee" value="{{contract_info.kill_fee}}" /></span>
 						{% else %}

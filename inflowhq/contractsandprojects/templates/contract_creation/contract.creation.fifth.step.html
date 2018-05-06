@@ -10,10 +10,10 @@
 		<div class="create-contract-super-window">
 			<div class="header">Create Contract</div>
 			<div class="progress-bar">
-				<span class="number one done"><span class="mark">&#10003;</span><span class="text">Project Information</span></span>
-				<span class="number two done"><span class="mark">&#10003;</span><span class="text">Milestones</span></span>
-				<span class="number three done"><span class="mark">&#10003;</span><span class="text">Optional Fees</span></span>
-				<span class="number four done"><span class="mark">&#10003;</span><span class="text">Work Overview</span></span>
+				<span class="number one done"><a href="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Project Information</span></span>
+				<span class="number two done"><a href="{% url 'contracts:create_contract_step_2' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Milestones</span></span>
+				<span class="number three done"><a href="{% url 'contracts:create_contract_step_3' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Optional Fees</span></span>
+				<span class="number four done"><a href="{% url 'contracts:create_contract_step_4' contract_info.id %}"><span class="mark">&#10003;</span></a><span class="text">Work Overview</span></span>
 				<span class="number five on"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>

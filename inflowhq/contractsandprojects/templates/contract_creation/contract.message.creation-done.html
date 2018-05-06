@@ -8,9 +8,8 @@
 			<div class="sub-header">Your contract has been sent to the client for review.</div>
 			<div>A confirmation email has been sent to you at {{user_email}}. You may check the status of the review process any time in your Dashboard.</div>
 			<div class="buttons"><a href="{% url 'base:dashboard' %}" class="info-btn">Go To Dashboard</a></div>
-			
 			{% if recipient_not_in_system %}
-				<div class="sub-header">No users with that email address in our system, send an email to invite to InFlow.</div>
+				<div class="sub-header">We will be sending contract to client email and invite client to InFlow.</div>
 				<div class="create-contract-super-window" style="min-width: auto;">
 					<form class="contract-creation" method="post" action="{% url 'contracts:create_contract_step_6' contract_info.id %}" style="width:100%;">
 						<div class="submit-buttons">
