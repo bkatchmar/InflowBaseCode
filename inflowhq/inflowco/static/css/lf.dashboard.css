@@ -408,7 +408,7 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.text.corrected { padding: 0px 10px 0px 0px; text-decoration: line-through; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field.highlighted { border: solid 2px #e31a1a; padding: 5px; }
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="number"],
-main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="text"] { display: inline-block; width: 60px; }
+main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field input[type="text"] { display: inline-block; }
 main div.create-contract-super-window form.contract-creation div.input-field.phone-number span.field span.hyphen {}
 main div.create-contract-super-window form.contract-creation div.error-msg { color: #800000; font-size: 16px; font-weight: 700; line-height: 18px; padding: 15px 0px 0px; }
 

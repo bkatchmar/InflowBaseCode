@@ -134,7 +134,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         # Used for sending contract information to the view
         contract_info = { 
             "id" : 0, "contract_name" : "", "contract_description" : "", "contract_type" : "d", "ownership_type" : "i",
-            "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" },
+            "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" },
             "locations" : []
         }
         
@@ -159,6 +159,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
                 # Fracture the phone number
                 if selected_recipient.PhoneNumber != "" and selected_recipient.PhoneNumber is not None:
                     number_parts = selected_recipient.PhoneNumber.split("-")
+                    contract_info["contact"]["phone"] = selected_recipient.PhoneNumber
                     contract_info["contact"]["phone_1"] = number_parts[0].__str__()
                     contract_info["contact"]["phone_2"] = number_parts[1].__str__()
                     contract_info["contact"]["phone_3"] = number_parts[2].__str__()
@@ -169,6 +170,11 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
                     entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
                     contract_info["locations"].append(entered_address)
                     addr_index = addr_index + 1
+            
+            if len(selected_recipient_addresses) == 0:
+                contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":""})
+        else:
+            contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":""})
                     
         context["contract_info"] = contract_info
         return context
@@ -227,22 +233,19 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         company_name = request.POST.get("company-name", "")
         client_billing_name = request.POST.get("companyBillingName", "")
         client_email = request.POST.get("companyContactEmail", "")
-        phone_area_1 = request.POST.get("phoneArea1", "")
-        phone_area_2 = request.POST.get("phoneArea2", "")
-        phone_area_3 = request.POST.get("phoneArea3", "")
+        phone_number = request.POST.get("phoneNumber", "")
         
         # Handle the need to update Recipient
         created_contract_recipient = Recipient.objects.filter(ContractForRecipient=created_contract).first()
         if created_contract_recipient is None:
-            created_contract_recipient = Recipient.objects.create(ContractForRecipient=created_contract,BillingName=client_billing_name,EmailAddress=client_email)
+            created_contract_recipient = Recipient.objects.create(ContractForRecipient=created_contract,BillingName=client_billing_name,EmailAddress=client_email,PhoneNumber=phone_number)
         else:
             created_contract_recipient.BillingName = client_billing_name
             created_contract_recipient.EmailAddress = client_email
+            created_contract_recipient.PhoneNumber = phone_number
         
         if company_name != "":
             created_contract_recipient.Name = company_name
-        if phone_area_1 != "" and phone_area_2 != "" and phone_area_3 != "":
-            created_contract_recipient.PhoneNumber = ("%s-%s-%s" % (phone_area_1, phone_area_2, phone_area_3))
         
         created_contract_recipient.save()
         
@@ -925,25 +928,12 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         contact_name = request.POST.get("contact_name", "")
         billing_name = request.POST.get("billing_name", "")
         billing_email = request.POST.get("billing_email", "")
-        billing_phone1 = request.POST.get("billing_phone1")
-        billing_phone2 = request.POST.get("billing_phone2")
-        billing_phone3 = request.POST.get("billing_phone3")
+        billing_phone = request.POST.get("billing_phone", "")
         
         selected_contract_recipient.Name = contact_name
         selected_contract_recipient.BillingName = billing_name
         selected_contract_recipient.EmailAddress = billing_email
-        
-        # Server side validation check for phone numbers
-        if len(billing_phone1) == 3 and len(billing_phone2) == 3 and len(billing_phone3) == 4:
-            phone1_val = handler.get_entry_for_int(billing_phone1)
-            phone2_val = handler.get_entry_for_int(billing_phone2)
-            phone3_val = handler.get_entry_for_int(billing_phone3)
-            
-            if phone1_val > 0 and phone2_val > 0 and phone3_val > 0:
-                selected_contract_recipient.PhoneNumber = ("%s-%s-%s" % (billing_phone1, billing_phone2, billing_phone3))
-        else:
-            selected_contract_recipient.PhoneNumber = ""
-        
+        selected_contract_recipient.PhoneNumber = billing_phone
         selected_contract_recipient.save()
         
         for addr in selected_contract_recipient_addresses:
@@ -976,7 +966,7 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "description" : selected_contract.Description, "time_remaining" : selected_contract.calculate_time_left_string() }
         context["addresses"] = []
         
-        contract_recipient = { "billing_name" : "", "billing_email" : "", "contact_name" : "", "phone_number" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" }
+        contract_recipient = { "billing_name" : "", "billing_email" : "", "contact_name" : "", "phone_number" : "" }
         
         selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         
@@ -995,9 +985,6 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
             if selected_contract_recipient.PhoneNumber != "" and selected_contract_recipient.PhoneNumber is not None:
                 number_parts = selected_contract_recipient.PhoneNumber.split("-")
                 contract_recipient["phone_number"] = selected_contract_recipient.PhoneNumber
-                contract_recipient["phone_1"] = number_parts[0].__str__()
-                contract_recipient["phone_2"] = number_parts[1].__str__()
-                contract_recipient["phone_3"] = number_parts[2].__str__()
         
         context["contract_recipient"] = contract_recipient
         return context

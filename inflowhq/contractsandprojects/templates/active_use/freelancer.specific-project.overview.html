@@ -51,9 +51,7 @@
 				<div class="line">
 					<span class="label">Phone:</span>
 					<span ng-show="editMode==0" ng-bind="billing_phone" ng-init="billing_phone='{{contract_recipient.phone_number}}'"></span>
-					<input type="text" ng-show="editMode==1" name="billing_phone1" placeholder="xxx" ng-model="billing_phone1" ng-value="billing_phone1" ng-init="billing_phone1='{{contract_recipient.phone_1}}'" class="phone-number" ng-change="updatePhoneNumber()" />
-					<input type="text" ng-show="editMode==1" name="billing_phone2" placeholder="xxx" ng-model="billing_phone2" ng-value="billing_phone2" ng-init="billing_phone2='{{contract_recipient.phone_2}}'" class="phone-number" ng-change="updatePhoneNumber()" />
-					<input type="text" ng-show="editMode==1" name="billing_phone3" placeholder="xxxx" ng-model="billing_phone3" ng-value="billing_phone3" ng-init="billing_phone3='{{contract_recipient.phone_3}}'" class="phone-number" ng-change="updatePhoneNumber()" />
+					<input type="text" ng-show="editMode==1" name="billing_phone" placeholder="(xxx) xxx-xxxx" ng-model="billing_phone" ng-value="billing_phone" />
 				</div>
 				<div class="header secondary">Business Location</div>
 				{% for addr in addresses %}
