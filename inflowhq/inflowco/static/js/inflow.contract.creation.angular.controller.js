@@ -32,7 +32,12 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope) {
 	};
 	$scope.changeRate = function(rate) {
 		$scope.downPaymentRate = rate;
-		$scope.downPaymentAmount = $scope.contractTotal * rate;
+		
+		if (rate === 'c') {
+			$scope.downPaymentAmount = $scope.contractTotal * 0;	
+		} else {
+			$scope.downPaymentAmount = $scope.contractTotal * rate;	
+		}
 	};
 });
 

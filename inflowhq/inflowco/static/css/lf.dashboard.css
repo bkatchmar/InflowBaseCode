@@ -446,14 +446,14 @@ main div.create-contract-super-window form.contract-creation div.mini-field-line
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.field input[type="text"],
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.field input[type="number"],
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.field input[type="email"] { width: 75%; }
-main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch { border-color: #A7A7A7; border-style: solid; border-width: 1px 0px 1px 1px; overflow: hidden; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch { border-color: #A7A7A7; border-style: solid; border-width: 0px; overflow: hidden; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span { cursor: pointer; float: left; padding: 15px; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.on { background-color: #F2F2F2; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.border  { border-color: #A7A7A7; border-style: solid; border-width: 0px 1px;  }
-main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.custom-down-payment { width: 360px; }
-main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.custom-down-payment span.border { border-width: 0px 0px 0px 1px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.custom-down-payment { width: 420px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.custom-down-payment span.border { border-width: 1px 0px 1px 1px; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.custom-down-payment input[type="number"] { border-radius: 0px; margin: 0px; width: 65px; -moz-border-radius: 0px; -webkit-border-radius: 0px; }
-main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.field { padding: 0px; width: 80px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.field { padding: 0px; width: 92px; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.custom-text { width: 50px; }
 
 main div.create-contract-super-window form.contract-creation div#milestones { display: none; }
@@ -508,7 +508,7 @@ main div.create-contract-super-window form.contract-creation div.disclaimer inpu
 main div.create-contract-super-window form.contract-creation div.esign { border: solid 1px #979797; color: #000; font-size: 26px; line-height: 28px; margin: 10px 0px; padding: 50px 0px; text-align: center; }
 
 main div.create-contract-super-window form.contract-creation div.milestone-totals { margin: 30px 0px; }
-main div.create-contract-super-window form.contract-creation div.milestone-totals div.input-field.switch { padding: 47px 0px 0px; width: 370px; }
+main div.create-contract-super-window form.contract-creation div.milestone-totals div.input-field.switch { padding: 47px 0px 0px; width: 410px; }
 main div.create-contract-super-window form.contract-creation div.milestone-totals div.input-field.custom-down-payment { padding: 69px 0px 0px; width: 130px; }
 main div.create-contract-super-window form.contract-creation div.milestone-totals input[type="text"],
 main div.create-contract-super-window form.contract-creation div.milestone-totals input[type="number"] { border-color: #000; }
