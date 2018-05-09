@@ -277,7 +277,7 @@ class ContractNewFirstScreenTest(TestCase):
         number_of_current_contracts_2 = len(Contract.objects.all())
         
         self.assertTrue(loginAttempt)
-        self.assertEqual(302,response.status_code) # User can see the page
+        self.assertEqual(302,response.status_code)
         self.assertNotEqual(number_of_current_contracts, number_of_current_contracts_2)
 
 class ContractParagraphTest(TestCase):
@@ -315,3 +315,59 @@ class ContractParagraphTest(TestCase):
         
         self.assertEqual(1,len(contract_1_paras)) # We only put 1 in
         self.assertEqual(4,len(contract_2_paras)) # Default
+
+class ContractPhoneNumberTest(TestCase):
+    test_contract_name = "Phone Number Error Test"
+    
+    def setUp(self):
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        brianUser = User.objects.create(
+                            username="brian@workinflow.co",
+                            email="brian@workinflow.co",
+                            first_name="Brian",
+                            last_name="Katchmar",
+                            is_staff=False,
+                            is_active=True,
+                            is_superuser=False)
+        
+        brianUser.set_password("ilikechickenfingersandpizza")
+        brianUser.save()
+        
+        if not Contract.objects.filter(Name=self.test_contract_name).exists():
+            contract_1 = Contract.objects.create(Creator=brianUser,Name=self.test_contract_name,StartDate=date.today(),EndDate=date.today())
+            contract_1.create_slug()
+            contract_1.save()
+            
+            Relationship.objects.create(ContractUser=brianUser,ContractForRelationship=contract_1,RelationshipType='f')
+            Recipient.objects.create(ContractForRecipient=contract_1,Name="Snickity Snack",BillingName="Billing Things INC",PhoneNumber="1243",EmailAddress="email@email.com")
+            
+    def testBogusPhoneNumberContractCreationStepOneTest(self):
+        contract_1 = Contract.objects.get(Name=self.test_contract_name)
+        url = ("/inflow/projects/contract/edit/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username="brian@workinflow.co", password='ilikechickenfingersandpizza')
+        response = c.get(url)
+        
+        self.assertTrue(loginAttempt)
+        self.assertEqual(200,response.status_code) # User can see the page
+        self.assertEqual(contract_1.id,response.context["contract_info"]["id"])
+    
+    def testBogusPhoneNumberContractCreationStepFourTest(self):
+        contract_1 = Contract.objects.get(Name=self.test_contract_name)
+        url = ("/inflow/projects/contract/create/step-4/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username="brian@workinflow.co", password='ilikechickenfingersandpizza')
+        response = c.get(url)
+        
+        self.assertTrue(loginAttempt)
+        self.assertEqual(200,response.status_code) # User can see the page
+        self.assertEqual(contract_1.id,response.context["contract_info"].id)

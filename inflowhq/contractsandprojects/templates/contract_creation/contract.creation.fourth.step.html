@@ -30,9 +30,6 @@
 				<div class="input-field text-single-line" ng-show="contractCreationStep4.billingEmail.$touched && contractCreationStep4.billingEmail.$invalid">
 					<span class="error-msg">Valid contact Email Address is required.</span>
 				</div>
-				<div class="input-field text-single-line" ng-show="(contractCreationStep4.companyContactPhone1.$touched && contractCreationStep4.companyContactPhone1.$invalid) || (contractCreationStep4.companyContactPhone2.$touched && contractCreationStep4.companyContactPhone2.$invalid) || (contractCreationStep4.companyContactPhone3.$touched && contractCreationStep4.companyContactPhone3.$invalid)">
-					<span class="error-msg">Phone number must be either empty or full</span>
-				</div>
 				{% for addr in contract_recipient_addresses %}
 					<div class="input-field text-single-line" ng-show="(contractCreationStep4.address1{{addr.id}}.$touched && contractCreationStep4.address1{{addr.id}}.$invalid) || (contractCreationStep4.addressCity{{addr.id}}.$touched && contractCreationStep4.addressCity{{addr.id}}.$invalid) || (contractCreationStep4.addressState{{addr.id}}.$touched && contractCreationStep4.addressState{{addr.id}}.$invalid)">
 						<span class="error-msg">All addresses need their required fields</span>
@@ -83,16 +80,12 @@
 					</div>
 					<div class="input-field text-single-line">
 						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('phoneNumber')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
-						<span class="label" ng-class="{'error' : (contractCreationStep4.companyContactPhone1.$touched && contractCreationStep4.companyContactPhone1.$invalid) || (contractCreationStep4.companyContactPhone2.$touched && contractCreationStep4.companyContactPhone2.$invalid) || (contractCreationStep4.companyContactPhone3.$touched && contractCreationStep4.companyContactPhone3.$invalid)}">
+						<span class="label">
 							Phone:
 						</span>
 						<span class="field">
 							<span class="text" ng-bind="phoneNumber" ng-init="phoneNumber='{{contract_recipient.PhoneNumber}}'" ng-class="{'on' : currentlyEditing!='phoneNumber'}"></span>
-							<input type="text" name="companyContactPhone1" placeholder="xxx" ng-model="companyContactPhone1" ng-value="companyContactPhone1" ng-init="companyContactPhone1='{{phone_1}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone2" ng-required="companyContactPhone3" ng-pattern="/^\d{3}$/" ng-change="updatePhoneNumber()" />
-							<span class="hyphen" ng-class="{'on' : currentlyEditing=='phoneNumber'}">&mdash;</span>
-							<input type="text" name="companyContactPhone2" placeholder="xxx" ng-model="companyContactPhone2" ng-value="companyContactPhone2" ng-init="companyContactPhone2='{{phone_2}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone1" ng-required="companyContactPhone3" ng-pattern="/^\d{3}$/" ng-change="updatePhoneNumber()" />
-							<span class="hyphen" ng-class="{'on' : currentlyEditing=='phoneNumber'}">&mdash;</span>
-							<input type="text" name="companyContactPhone3" placeholder="xxxx" ng-model="companyContactPhone3" ng-value="companyContactPhone3" ng-init="companyContactPhone3='{{phone_3}}'" ng-class="{'on' : currentlyEditing=='phoneNumber'}" ng-required="companyContactPhone1" ng-required="companyContactPhone2" ng-pattern="/^\d{4}$/" ng-change="updatePhoneNumber()" />
+							<input type="text" placeholder="(xxx) xxx-xxxx" name="phoneNumber" ng-value="phoneNumber" ng-model="phoneNumber" ng-class="{'on' : currentlyEditing=='phoneNumber'}" />
 						</span>
 					</div>
 					{% for addr in contract_recipient_addresses %}

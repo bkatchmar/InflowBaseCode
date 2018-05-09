@@ -134,7 +134,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         # Used for sending contract information to the view
         contract_info = { 
             "id" : 0, "contract_name" : "", "contract_description" : "", "contract_type" : "d", "ownership_type" : "i",
-            "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone" : "", "phone_1" : "", "phone_2" : "", "phone_3" : "" },
+            "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone" : "" },
             "locations" : []
         }
         
@@ -160,9 +160,6 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
                 if selected_recipient.PhoneNumber != "" and selected_recipient.PhoneNumber is not None:
                     number_parts = selected_recipient.PhoneNumber.split("-")
                     contract_info["contact"]["phone"] = selected_recipient.PhoneNumber
-                    contract_info["contact"]["phone_1"] = number_parts[0].__str__()
-                    contract_info["contact"]["phone_2"] = number_parts[1].__str__()
-                    contract_info["contact"]["phone_3"] = number_parts[2].__str__()
                     
                 # Iterate through all locations and put them into the JSON context
                 addr_index = 1
@@ -530,6 +527,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         context = super(CreateContractStepFourth, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         context["in_edit_mode"] = False
+        context["phone"] = ""
         
         contract_info = { }
         
@@ -552,13 +550,6 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         context["contract_info"] = contract_info
         context["contract_recipient"] = selected_contract_recipient
         context["contract_recipient_addresses"] = selected_contract_recipient_addresses
-        
-        # Fracture the phone number
-        if selected_contract_recipient.PhoneNumber != "" and selected_contract_recipient.PhoneNumber is not None:
-            number_parts = selected_contract_recipient.PhoneNumber.split("-")
-            context["phone_1"] = number_parts[0].__str__()
-            context["phone_2"] = number_parts[1].__str__()
-            context["phone_3"] = number_parts[2].__str__()
         
         # Retrieve the milestones (if any)
         milestone_index = 1
@@ -588,9 +579,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         nameOfContact = request.POST.get("nameOfContact", "")
         billingName = request.POST.get("billingName", "")
         billingEmail = request.POST.get("billingEmail", "")
-        phone_area_1 = request.POST.get("companyContactPhone1", "")
-        phone_area_2 = request.POST.get("companyContactPhone2", "")
-        phone_area_3 = request.POST.get("companyContactPhone3", "")
+        phone_number = request.POST.get("phoneNumber", "")
         totalMilestoneProjectCost = request.POST.get("totalMilestoneProjectCost", "")
         totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
         downPaymentAmount = request.POST.get("downPaymentAmount", "")
@@ -622,9 +611,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
                 selected_contract_recipient.Name = nameOfContact
                 selected_contract_recipient.BillingName = billingName
                 selected_contract_recipient.EmailAddress = billingEmail
-                
-                if phone_area_1 != "" and phone_area_2 != "" and phone_area_3 != "":
-                    selected_contract_recipient.PhoneNumber = ("%s-%s-%s" % (phone_area_1, phone_area_2, phone_area_3))
+                selected_contract_recipient.PhoneNumber = phone_number
                 
                 selected_contract_recipient.save()
                 
