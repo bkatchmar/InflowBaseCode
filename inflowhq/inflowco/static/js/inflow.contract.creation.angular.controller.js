@@ -1,32 +1,35 @@
 stepOneApp.controller("createContractStepOneCtrl", function($scope) {});
 
-stepTwoApp.controller("createContractStepTwoCtrl", function($scope) {
+stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
+	$scope.loadInMilestones = function() {
+		$scope.milestones=[];
+		$scope.downPaymentRate=0;
+		$scope.toDelete = 0;
+		
+		$http.get("/inflow/projects/contract-service/milestones/" + $scope.contractId).then(function(response) {
+			if (response.data["success"] && response.data["milestones"]) {
+				$scope.milestones=response.data["milestones"];
+			}
+		});
+	};
 	$scope.addMilestone = function() {
-		var totalNumberOfMilestones = $scope.milestones.length+$scope.current_milestone_count+1;
-		$scope.milestones.push({"index":totalNumberOfMilestones, "estimateHourCompletion" : 0, "totalMilestoneAmount" : 0.00});
+		var totalNumberOfMilestones = $scope.milestones.length+1;
+		$scope.milestones.push({"index":totalNumberOfMilestones, "id" : 0, "name" : "", "description": "", "payment_amount" : 0, "deadline" : "", "estimate_hours_required" : 0});
 	};
 	$scope.updateTotals = function(overrideHours) {
 		var calculatedTotalAmount = 0.00;
 		
 		// Get the milestones that were previously loaded in
-		for (var iterator = 0; iterator < $scope.current_milestone_count; iterator++) {
-			if ($scope.estimateHourCompletion[iterator] > 0 && !overrideHours) {
-				$scope.totalMilestoneAmount[iterator] = $scope.estimateHourCompletion[iterator] * $scope.hourlyRate;
+		for (var iterator = 0; iterator < $scope.milestones.length; iterator++) {
+			if ($scope.milestones[iterator].estimate_hours_required > 0 && !overrideHours) {
+				$scope.milestones[iterator].payment_amount = $scope.milestones[iterator].estimate_hours_required * $scope.hourlyRate;
 			}
 			if (overrideHours) {
-				$scope.estimateHourCompletion[iterator] = 0;
+				$scope.milestones[iterator].estimate_hours_required = 0;
 			}
-			calculatedTotalAmount = calculatedTotalAmount + $scope.totalMilestoneAmount[iterator];
+			calculatedTotalAmount = calculatedTotalAmount + $scope.milestones[iterator].payment_amount;
 		}
 		
-		// Get the recently added milestones
-		for (var iterator = 0; iterator < $scope.milestones.length; iterator++) {
-			if ($scope.milestones[iterator].estimateHourCompletion > 0) {
-				$scope.milestones[iterator].totalMilestoneAmount = $scope.milestones[iterator].estimateHourCompletion * $scope.hourlyRate;
-			}
-			
-			calculatedTotalAmount = calculatedTotalAmount + $scope.milestones[iterator].totalMilestoneAmount;
-		}
 		$scope.contractTotal = calculatedTotalAmount;
 		$scope.changeRate($scope.downPaymentRate);
 	};

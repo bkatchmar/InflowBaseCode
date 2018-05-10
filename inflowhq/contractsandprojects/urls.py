@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^contract-service/delete-milestone-file/(?P<milestone_file_id>[0-9]+)', views.JsonDeleteMilestoneFile.as_view(), name='json_delete_milestone_file'),
     url(r'^contract-service/delete-contract-file/(?P<contract_file_id>[0-9]+)', views.JsonDeleteContractFile.as_view(), name='json_delete_contract_file'),
     url(r'^contract-service/schedule-milestone/(?P<milestone_id>[0-9]+)', views.JsonScheduleMilestone.as_view(), name='json_schedule_milestone'),
+    url(r'^contract-service/milestones/(?P<contract_id>[0-9]+)', views.JsonGetContractMilestones.as_view(), name='json_get_milestones'),
 ]

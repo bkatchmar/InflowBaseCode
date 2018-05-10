@@ -326,12 +326,12 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             milestone_index = 0
             selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
             for milestone in selected_contract_milestones:
-                entered_milestone = { "index" : milestone_index, "front_index": (milestone_index+1), "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
+                entered_milestone = { "index" : milestone_index, "id" : milestone.IdMilestone, "front_index": (milestone_index+1), "name" : milestone.Name, "description" : milestone.Explanation, "estimateHourCompletion" : milestone.EstimateHoursRequired, "totalMilestoneAmount" : milestone.MilestonePaymentAmount, "milestoneDeadline" : milestone.Deadline.strftime("%b %d %Y") }
                 milestone_index = milestone_index + 1
                 contract_info["milestones"].append(entered_milestone)
                 
             if milestone_index == 0:
-                entered_milestone = { "index":milestone_index,"front_index":(milestone_index+1),"name":"","description":"","estimateHourCompletion":0,"totalMilestoneAmount":0,"milestoneDeadline":"" }
+                entered_milestone = { "index":milestone_index,"id":0,"front_index":(milestone_index+1),"name":"","description":"","estimateHourCompletion":0,"totalMilestoneAmount":0,"milestoneDeadline":"" }
                 milestone_index = milestone_index + 1
                 contract_info["milestones"].append(entered_milestone)
 
@@ -363,6 +363,8 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         milestonesEstimateHours = request.POST.getlist("milestonesEstimateHours")
         milestoneAmount = request.POST.getlist("milestoneAmount")
         milestoneDeadline = request.POST.getlist("milestoneDeadline")
+        milestone_id = request.POST.getlist("milestoneId", "")
+        milestone_needs_to_be_removed = request.POST.getlist("removeMilestone", "")
         
         # Totals for Contract
         totalContractAmount = request.POST.get("totalContractAmount", "")
@@ -388,10 +390,12 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             
             # Build Each Milestone Object
             for milestone_index in range(0,len(milestoneName)):
-                if milestone_index < len(retrieved_milestones):
-                    created_milestone = retrieved_milestones[milestone_index]
-                else:
+                i_am_removing_this_milestone = (milestone_needs_to_be_removed[milestone_index]=="true")
+                
+                if int(milestone_id[milestone_index]) == 0:
                     created_milestone = created_contract.create_new_milestone()
+                else:
+                    created_milestone = retrieved_milestones.get(IdMilestone=int(milestone_id[milestone_index]))
                 
                 created_milestone.Name = milestoneName[milestone_index]
                 created_milestone.EstimateHoursRequired = handler.get_entry_for_float(milestonesEstimateHours[milestone_index])
@@ -408,6 +412,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
                 else:
                     created_milestone.Deadline = datetime.date.today()
                 
+                # Now, we either save the current milestone or delete it
                 created_milestone.save()
             
         return created_contract
@@ -1269,5 +1274,29 @@ class JsonScheduleMilestone(LoginRequiredMixin, View):
                 data = { "error" : True, "error-message" : "Logged in user is not allowed to access this contract" }
         else:
             data = { "error" : True, "error-message" : "Delivery must be in the request body and milestone_id is required" }
+        
+        return JsonResponse(data)
+
+class JsonGetContractMilestones(LoginRequiredMixin, View):
+    def get(self, request, **kwargs):
+        data = {}
+        
+        if "contract_id" in kwargs:
+            contract = Contract.objects.get(id=kwargs.get("contract_id"))
+            
+            if contract.does_this_user_have_permission_to_see_contract(request.user) is not None:
+                milestones = Milestone.objects.filter(MilestoneContract=contract)
+                milestones_obj = []
+                milestone_index = 1
+                
+                for ms in milestones:
+                    milestones_obj.append({"index" : milestone_index, "id" : ms.IdMilestone, "name" : ms.Name, "description" : ms.Explanation, "payment_amount" : float(ms.MilestonePaymentAmount), "deadline" : ms.Deadline.strftime("%b %d %Y"), "estimate_hours_required" : ms.EstimateHoursRequired })
+                    milestone_index = milestone_index + 1
+                
+                data = { "success" : True, "milestones" : milestones_obj }
+            else:
+                data = { "error" : True, "error-message" : "You do not have permission to view this contract", "Milestones" : [] }
+        else:
+            data = { "error" : True, "error-message" : "No Contract ID Provided", "Milestones" : [] }
         
         return JsonResponse(data)

@@ -17,7 +17,7 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};contractTotal={{contract_info.contract_total}};downPaymentAmount={{contract_info.down_payment_amount}};allowedRevisions={{contract_info.total_revisions}};downPaymentRate=0;current_milestone_count={{contract_info.number_of_milestones}};milestones=[]">
+			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractId={{contract_info.id}};contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};downPaymentAmount={{contract_info.down_payment_amount}};allowedRevisions={{contract_info.total_revisions}};loadInMilestones();">
 				<div class="header left">Milestones</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field date">
@@ -33,7 +33,7 @@
 					<div class="input-field mini-field switch">
 						<span class="label">How would you like to charge?</span>
 						<span class="switch">
-							<span ng-class="{'on': contractType=='d'}" ng-class="{'border': contractType=='t'}">Lump Sum</span>
+							<span class="border" ng-class="{'on': contractType=='d'}" ng-class="{'border': contractType=='t'}">Lump Sum</span>
 							<span class="border" ng-class="{'on': contractType=='t'}">Hourly Rate</span>
 						</span>
 					</div>
@@ -43,63 +43,40 @@
 					</div>
 				</div>
 				<div class="error-msg" ng-show="contractCreationStep2.contractStartDate.$invalid || contractCreationStep1.contractEndDate.$invalid || contractCreationStep1.hourlyRate.$invalid">All Above Fields Are Required</div>
-				{% for milestone in contract_info.milestones %}
-					<div class="milestone-block">
-						<div class="header left">Milestone #<span ng-bind="index[{{milestone.index}}]" ng-init="index[{{milestone.index}}]={{milestone.front_index}}"></span></div>
-						<div class="input-field text-single-line">
-							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" value="{{milestone.name}}" required /></span>
-						</div>
-						<div class="input-field text-multi-line">
-							<span class="label">Task Description:</span>
-							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone">{{milestone.description}}</textarea></span>
-						</div>
-						<div class="mini-field-line">
-							<div class="input-field mini-field" ng-show="contractType=='t'">
-								<span class="label">Estimate of hours<br />to completion*:</span>
-								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-value="estimateHourCompletion[{{milestone.index}}]" ng-model="estimateHourCompletion[{{milestone.index}}]" ng-init="estimateHourCompletion[{{milestone.index}}]={{milestone.estimateHourCompletion}}" ng-change="updateTotals(false)" required /></span>
-							</div>
-							<div class="input-field mini-field">
-								<span class="label">Milestone Amount*:</span>
-								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-value="totalMilestoneAmount[{{milestone.index}}]" ng-model="totalMilestoneAmount[{{milestone.index}}]" ng-init="totalMilestoneAmount[{{milestone.index}}]={{milestone.totalMilestoneAmount}}" ng-change="updateTotals(true)" required /></span>
-							</div>
-							<div class="input-field mini-field date">
-								<span class="label">Milestone Deadline*:</span>
-								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-value="milestoneDeadline[{{milestone.index}}]" ng-model="milestoneDeadline[{{milestone.index}}]" ng-init="milestoneDeadline[{{milestone.index}}]='{{milestone.milestoneDeadline}}'" onclick="generateDatePickersForUnusedDateFields()" required /></span>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
 				<div ng-repeat="ms in milestones">
-					<div class="milestone-block">
+					<div class="milestone-block" ng-show="ms.to_be_removed!=1">
+						<img src="{% static 'img/if_delete_326606.png' %}" alt="Remove Milestone" class="remove-milestone" ng-click="ms.to_be_removed=1" />
 						<div class="header left">Milestone #<span ng-bind="ms.index"></span></div>
 						<div class="input-field text-single-line">
-							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" required /></span>
+							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" ng-model="ms.name" ng-value="ms.name" required /></span>
 						</div>
 						<div class="input-field text-multi-line">
 							<span class="label">Task Description:</span>
-							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone"></textarea></span>
+							<span class="field"><textarea name="milestoneDescription" placeholder="Describe the milestone" ng-model="ms.description" ng-value="ms.description"></textarea></span>
 						</div>
 						<div class="mini-field-line">
 							<div class="input-field mini-field" ng-show="contractType=='t'">
 								<span class="label">Estimate of hours<br />to completion*:</span>
-								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-model="ms.estimateHourCompletion" ng-change="updateTotals(false)" required /></span>
+								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-model="ms.estimate_hours_required" ng-value="ms.estimate_hours_required" ng-change="updateTotals(false)" required /></span>
 							</div>
 							<div class="input-field mini-field">
 								<span class="label">Milestone Amount*:</span>
-								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-model="ms.totalMilestoneAmount" ng-change="updateTotals(true)" required /></span>
+								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-model="ms.payment_amount" ng_value="ms.payment_amount" ng-change="updateTotals(true)" required /></span>
 							</div>
 							<div class="input-field mini-field date">
 								<span class="label">Milestone Deadline*:</span>
-								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" onclick="generateDatePickersForUnusedDateFields()" required /></span>
+								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-model="ms.deadline" ng-value="ms.deadline" ng-onclick="generateDatePickersForUnusedDateFields()" required /></span>
 							</div>
 						</div>
+						<input type="hidden" name="milestoneId" ng-value="ms.id" />
+						<input type="hidden" name="removeMilestone" ng-value="ms.to_be_removed==1" />
 					</div>
 				</div>
 				<div class="addition-buttons left border">
 					<span class="milestones" ng-click="addMilestone()">Add another Milestone</span>
 				</div>
 				<div class="milestone-totals mini-field-line">
-					<div class="input-field mini-field">
+					<div class="input-field mini-field" ng-init="contractTotal={{contract_info.contract_total}}">
 						<span class="label">Milestone Total Amount:<br /><span>(Total Project Amount)</span></span>
 						<span class="field"><input type="number" placeholder="$0.00" name="totalContractAmount" ng-value="contractTotal" ng-model="contractTotal" required /></span>
 					</div>
@@ -136,5 +113,5 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
 	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201805"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201805"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201809"></script>
 {% endblock %}
