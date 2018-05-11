@@ -42,6 +42,9 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 			$scope.downPaymentAmount = $scope.contractTotal * rate;	
 		}
 	};
+	$scope.generateDatePickersForUnusedDateFields = function() {
+		jQuery("div.input-field.date input[type='text']:not(.hasDatepicker)").datepicker({showOtherMonths:true,selectOtherMonths:true,dateFormat:"M dd yy"});
+	}
 });
 
 stepFourApp.controller("createContractStepFourCtrl", function($scope) {

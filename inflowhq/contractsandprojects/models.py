@@ -130,6 +130,13 @@ class Contract(models.Model):
                 return ("%d Days" % remaining_days)
             
             return ("%s%s" % (weeks_str, days_str))
+    
+    def delete_milestone_if_exists(self,milestone_id):
+        if milestone_id != 0:
+            milestone_to_delete = Milestone.objects.filter(IdMilestone=milestone_id).first()
+            
+            if milestone_to_delete is not None:
+                milestone_to_delete.delete()
 
     def CreatePayment(self,milestoneContractIsBasedOff):
         rtnVal = Payment()

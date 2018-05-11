@@ -44,11 +44,11 @@
 				</div>
 				<div class="error-msg" ng-show="contractCreationStep2.contractStartDate.$invalid || contractCreationStep1.contractEndDate.$invalid || contractCreationStep1.hourlyRate.$invalid">All Above Fields Are Required</div>
 				<div ng-repeat="ms in milestones">
-					<div class="milestone-block" ng-show="ms.to_be_removed!=1">
+					<div class="milestone-block" ng-show="ms.to_be_removed!=1" ng-init="generateDatePickersForUnusedDateFields()">
 						<img src="{% static 'img/if_delete_326606.png' %}" alt="Remove Milestone" class="remove-milestone" ng-click="ms.to_be_removed=1" />
 						<div class="header left">Milestone #<span ng-bind="ms.index"></span></div>
 						<div class="input-field text-single-line">
-							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" ng-model="ms.name" ng-value="ms.name" required /></span>
+							<span class="field"><input type="text" placeholder="Milestone Name" name="milestoneName" ng-model="ms.name" ng-value="ms.name" ng-required="ms.to_be_removed!=1" /></span>
 						</div>
 						<div class="input-field text-multi-line">
 							<span class="label">Task Description:</span>
@@ -57,15 +57,15 @@
 						<div class="mini-field-line">
 							<div class="input-field mini-field" ng-show="contractType=='t'">
 								<span class="label">Estimate of hours<br />to completion*:</span>
-								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-model="ms.estimate_hours_required" ng-value="ms.estimate_hours_required" ng-change="updateTotals(false)" required /></span>
+								<span class="field"><input type="text" placeholder="0 hours" name="milestonesEstimateHours" ng-model="ms.estimate_hours_required" ng-value="ms.estimate_hours_required" ng-change="updateTotals(false)" ng-required="ms.to_be_removed!=1" /></span>
 							</div>
 							<div class="input-field mini-field">
 								<span class="label">Milestone Amount*:</span>
-								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-model="ms.payment_amount" ng_value="ms.payment_amount" ng-change="updateTotals(true)" required /></span>
+								<span class="field"><input type="number" placeholder="$0.00" name="milestoneAmount" ng-model="ms.payment_amount" ng_value="ms.payment_amount" ng-change="updateTotals(true)" ng-required="ms.to_be_removed!=1" /></span>
 							</div>
 							<div class="input-field mini-field date">
 								<span class="label">Milestone Deadline*:</span>
-								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-model="ms.deadline" ng-value="ms.deadline" ng-onclick="generateDatePickersForUnusedDateFields()" required /></span>
+								<span class="field"><input type="text" placeholder="MM/DD/YYYY" name="milestoneDeadline" ng-model="ms.deadline" ng-value="ms.deadline" ng-required="ms.to_be_removed!=1" /></span>
 							</div>
 						</div>
 						<input type="hidden" name="milestoneId" ng-value="ms.id" />
@@ -111,7 +111,7 @@
 	</div>
 {% endblock %}
 {% block bottom_scripts %}
-	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
+	<script src="{% static 'js/inflow.contract.js' %}?d=201805"></script>
 	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201805"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201809"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201810"></script>
 {% endblock %}

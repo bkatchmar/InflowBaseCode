@@ -392,28 +392,31 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             for milestone_index in range(0,len(milestoneName)):
                 i_am_removing_this_milestone = (milestone_needs_to_be_removed[milestone_index]=="true")
                 
-                if int(milestone_id[milestone_index]) == 0:
-                    created_milestone = created_contract.create_new_milestone()
+                if i_am_removing_this_milestone:
+                    created_contract.delete_milestone_if_exists(int(milestone_id[milestone_index]))
                 else:
-                    created_milestone = retrieved_milestones.get(IdMilestone=int(milestone_id[milestone_index]))
-                
-                created_milestone.Name = milestoneName[milestone_index]
-                created_milestone.EstimateHoursRequired = handler.get_entry_for_float(milestonesEstimateHours[milestone_index])
-                created_milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneAmount[milestone_index])
-                
-                if milestoneDescription[milestone_index] != "":
-                    created_milestone.Explanation = milestoneDescription[milestone_index]
-                
-                if milestoneDeadline[milestone_index] != "":
-                    try:
-                        created_milestone.Deadline = datetime.datetime.strptime(milestoneDeadline[milestone_index], "%b %d %Y")
-                    except Exception as e:
+                    if int(milestone_id[milestone_index]) == 0:
+                        created_milestone = created_contract.create_new_milestone()
+                    else:
+                        created_milestone = retrieved_milestones.get(IdMilestone=int(milestone_id[milestone_index]))
+                    
+                    created_milestone.Name = milestoneName[milestone_index]
+                    created_milestone.EstimateHoursRequired = handler.get_entry_for_float(milestonesEstimateHours[milestone_index])
+                    created_milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneAmount[milestone_index])
+                    
+                    if milestoneDescription[milestone_index] != "":
+                        created_milestone.Explanation = milestoneDescription[milestone_index]
+                        
+                    if milestoneDeadline[milestone_index] != "":
+                        try:
+                            created_milestone.Deadline = datetime.datetime.strptime(milestoneDeadline[milestone_index], "%b %d %Y")
+                        except Exception as e:
+                            created_milestone.Deadline = datetime.date.today()
+                    else:
                         created_milestone.Deadline = datetime.date.today()
-                else:
-                    created_milestone.Deadline = datetime.date.today()
                 
-                # Now, we either save the current milestone or delete it
-                created_milestone.save()
+                    # Now, we save the current milestone
+                    created_milestone.save()
             
         return created_contract
 

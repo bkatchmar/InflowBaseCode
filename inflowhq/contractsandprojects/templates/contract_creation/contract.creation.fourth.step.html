@@ -221,10 +221,10 @@
 					</div>
 					<div class="input-field text-single-line">
 						<span class="pencil-edit" ng-class="{'on': editMode=='optional-fees'}" ng-click="changeWhatWeAreEditing('killFee')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
-						<span class="label">Kill Fee:</span>
+						<span class="label">Early Termination Fee:</span>
 						<span class="field">
 							<span class="text" ng-bind="killFee" ng-init="killFee={{contract_info.KillFee}}" ng-class="{'on' : currentlyEditing!='killFee'}"></span>
-							<input type="number" placeholder="Kill Fee" name="killFee" ng-model="killFee" ng-value="killFee" ng-class="{'on' : currentlyEditing=='killFee'}" />
+							<input type="number" placeholder="Early Termination Fee" name="killFee" ng-model="killFee" ng-value="killFee" ng-class="{'on' : currentlyEditing=='killFee'}" />
 						</span>
 					</div>
 				</div>

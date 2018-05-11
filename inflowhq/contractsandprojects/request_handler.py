@@ -4,6 +4,7 @@ import os
 import pathlib
 import requests
 from dateutil import parser
+from decimal import Decimal
 from io import BytesIO
 from PIL import Image
 
@@ -15,13 +16,13 @@ from django.conf import settings
 from contractsandprojects.models import Contract, ContractFile, Milestone, MilestoneFile
 
 class RequestInputHandler():
-    def get_entry_for_float(self,floatAmt):
+    def get_entry_for_float(self,float_amt):
         """
         Generic Parseing Method from string to Float
         
         Parameters
         ----------
-        floatAmt : str
+        float_amt : str
             string representation of a float
         
         Returns
@@ -30,7 +31,7 @@ class RequestInputHandler():
             parsed float object, if fails, return 0
         """
         try:
-            return float(floatAmt)
+            return float(float_amt)
         except Exception as e:
             return 0.0
         

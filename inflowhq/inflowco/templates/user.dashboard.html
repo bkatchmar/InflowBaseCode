@@ -3,7 +3,7 @@
 {% block main_tag %}
 	{% if needs_stripe %}
 		<div class="news-ribbon">
-			<div class="heading">Hello, {{first_name}}. Welcome back!</div>
+			<div class="heading">Hello, {{first_name}}. Welcome!</div>
 			<div class="sub-heading">Get paid by signing up for Stripe!</div>
 			<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{stripe_acct}}&scope=read_write&state={{call_state}}">Sign Up For Stripe</a>
 		</div>
