@@ -469,7 +469,6 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
                     contract_info["id"] = selected_contract.id
                     contract_info["contract_name"] = selected_contract.Name
                     contract_info["extra_revision_fee"] = selected_contract.ExtraRevisionFee
-                    contract_info["request_for_change_fee"] = selected_contract.RequestForChangeFee
                     contract_info["charge_for_late_review"] = selected_contract.ChargeForLateReview
                     contract_info["kill_fee"] = selected_contract.KillFee
                 else:
@@ -488,8 +487,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
     
     def build_new_object(self,request,**kwargs):
         handler = RequestInputHandler()
-        extraRevisionFee = request.POST.get("extra-revision-fee", "")
-        requestChangeFee = request.POST.get("request_change_fee", "")
+        extraRevisionFee = request.POST.get("extra_revision_fee", "")
         chargeLateFee = request.POST.get("charge_late_fee", "")
         killFee = request.POST.get("kill_fee", "")
         
@@ -497,7 +495,6 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
         if "contract_id" in kwargs:
             selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
-            selected_contract.RequestForChangeFee = handler.get_entry_for_float(requestChangeFee)
             selected_contract.ChargeForLateReview = handler.get_entry_for_float(chargeLateFee)
             selected_contract.KillFee = handler.get_entry_for_float(killFee)
             selected_contract.save()
@@ -596,7 +593,6 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
         downPaymentAmount = request.POST.get("downPaymentAmount", "")
         extraRevisionFee = request.POST.get("extraRevisionFee", "")
-        requestForChangeFee = request.POST.get("requestForChangeFee", "")
         lateReviewFee = request.POST.get("lateReviewFee", "")
         killFee = request.POST.get("killFee", "")
         
@@ -613,7 +609,6 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
             selected_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
             
             selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
-            selected_contract.RequestForChangeFee = handler.get_entry_for_float(requestForChangeFee)
             selected_contract.ChargeForLateReview = handler.get_entry_for_float(lateReviewFee)
             selected_contract.KillFee = handler.get_entry_for_float(killFee)
             
