@@ -136,6 +136,8 @@ class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
         associated_types = UserAssociatedTypes.objects.filter(UserAccount=request.user)
         
         for type in user_types:
+            type.Selected = False # This seems to persist for some reason
+            
             for associated_type in associated_types:
                 if type.id == associated_type.UserFreelanceType.id:
                     type.Selected = True
