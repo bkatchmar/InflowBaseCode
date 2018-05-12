@@ -376,8 +376,8 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         created_contract = None
         if "contract_id" in kwargs:
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            created_contract.StartDate = datetime.datetime.strptime(contractStartDate, "%b %d %Y")
-            created_contract.EndDate = datetime.datetime.strptime(contractEndDate, "%b %d %Y")
+            created_contract.StartDate = handler.get_entry_for_date(contractStartDate)
+            created_contract.EndDate = handler.get_entry_for_date(contractEndDate)
             
             created_contract.TotalContractWorth = handler.get_entry_for_float(totalContractAmount)
             created_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
@@ -403,17 +403,10 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
                     created_milestone.Name = milestoneName[milestone_index]
                     created_milestone.EstimateHoursRequired = handler.get_entry_for_float(milestonesEstimateHours[milestone_index])
                     created_milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneAmount[milestone_index])
+                    created_milestone.Deadline = handler.get_entry_for_date(milestoneDeadline[milestone_index])
                     
                     if milestoneDescription[milestone_index] != "":
                         created_milestone.Explanation = milestoneDescription[milestone_index]
-                        
-                    if milestoneDeadline[milestone_index] != "":
-                        try:
-                            created_milestone.Deadline = datetime.datetime.strptime(milestoneDeadline[milestone_index], "%b %d %Y")
-                        except Exception as e:
-                            created_milestone.Deadline = datetime.date.today()
-                    else:
-                        created_milestone.Deadline = datetime.date.today()
                 
                     # Now, we save the current milestone
                     created_milestone.save()

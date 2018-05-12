@@ -45,7 +45,7 @@ class RequestInputHandler():
         try:
             return datetime.datetime.strptime(date_val, "%b %d %Y")
         except Exception as e:
-            return datetime.date.today()
+            return self.get_date_from_javascript(date_val)
     
     def get_date_from_javascript(self,date_val):
         """

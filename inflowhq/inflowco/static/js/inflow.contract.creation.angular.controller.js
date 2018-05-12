@@ -10,6 +10,10 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 			if (response.data["success"] && response.data["milestones"]) {
 				$scope.milestones=response.data["milestones"];
 			}
+			
+			if ($scope.milestones.length === 0) {
+				$scope.addMilestone();
+			}
 		});
 	};
 	$scope.addMilestone = function() {
