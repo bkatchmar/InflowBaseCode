@@ -17,7 +17,7 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractId={{contract_info.id}};contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};downPaymentAmount={{contract_info.down_payment_amount}};allowedRevisions={{contract_info.total_revisions}};loadInMilestones();">
+			<form class="contract-creation" name="contractCreationStep2" method="post" action="{% url 'contracts:create_contract_step_2' contract_info.id %}" ng-app="createContractStepTwoApp" ng-controller="createContractStepTwoCtrl" ng-init="contractId={{contract_info.id}};contractType='{{contract_info.type}}';hourlyRate={{contract_info.hourly_rate}};downPaymentAmount={{contract_info.down_payment_amount}};totalNumberOfRevisions={{contract_info.total_revisions}};loadInMilestones();">
 				<div class="header left">Milestones</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field date">
@@ -95,15 +95,16 @@
 				<div class="milestone-totals mini-field-line">
 					<div class="input-field mini-field clear">
 						<span class="label">Total Number of Revisions:</span>
-						<span class="field"><input type="number" placeholder="# of Revisions" name="totalNumberOfRevisions" ng-value="allowedRevisions" ng-model="allowedRevisions" required /></span>
+						<span class="field"><input type="number" placeholder="# of Revisions" name="totalNumberOfRevisions" ng-value="totalNumberOfRevisions" ng-model="totalNumberOfRevisions" ng-pattern="/^\d+$/" required /></span>
 					</div>
 				</div>
+				<div class="error-msg" ng-show="contractCreationStep2.totalNumberOfRevisions.$invalid">Please enter a valid total number of revisions</div>
 				<div class="submit-buttons">
 					<a href="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}" class="btn">Back</a>
-					<input type="submit" name="action" value="Continue" class="continue" />
+					<input type="submit" name="action" value="Continue" class="continue" ng-disabled="contractCreationStep2.$invalid" />
 				</div>
 				<div class="submit-buttons alt">
-					<input type="submit" name="action" value="Save for Later" class="later" />
+					<input type="submit" name="action" value="Save for Later" class="later" ng-disabled="contractCreationStep2.$invalid" />
 				</div>
 				{% csrf_token %}
 			</form>
@@ -112,6 +113,6 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=201805"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=201805"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=201810"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180511"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180511"></script>
 {% endblock %}

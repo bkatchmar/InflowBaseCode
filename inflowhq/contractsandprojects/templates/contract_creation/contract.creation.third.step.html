@@ -17,54 +17,38 @@
 				<span class="number five"><span class="text">Preview and Send</span></span>
 				<div class="bar"></div>
 			</div>
-			<form class="contract-creation smaller" name="contractCreationStep3" method="post" action="{% url 'contracts:create_contract_step_3' contract_info.id %}">
+			<form class="contract-creation smaller" name="contractCreationStep3" method="post" action="{% url 'contracts:create_contract_step_3' contract_info.id %}" ng-app="createContractStepThreeApp" ng-controller="createContractStepThreeCtrl" ng-init="kill_fee={{contract_info.kill_fee}};charge_late_fee={{contract_info.charge_for_late_review}};request_change_fee={{contract_info.request_for_change_fee}};extra_revision_fee={{contract_info.extra_revision_fee}}">
 				<div class="header left">Optional Fees</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field">
 						<span class="label">Extra Revision Fee (optional):</span>
-						{% if contract_info.extra_revision_fee > 0 %}
-					 		<span class="field"><input type="number" placeholder="$0.00" name="extra-revision-fee" value="{{contract_info.extra_revision_fee}}" /></span>
-						{% else %}
-							<span class="field"><input type="number" placeholder="$0.00" name="extra-revision-fee" /></span>
-						{% endif %}
+						<span class="field"><input type="number" placeholder="$0.00" name="extra_revision_fee" ng-model="extra_revision_fee" ng-value="extra_revision_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 					</div>
 				</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field">
 						<span class="label">Request for Change Fee (optional):</span>
-						{% if contract_info.request_for_change_fee > 0 %}
-					 		<span class="field"><input type="number" placeholder="$0.00" name="request-change-fee" value="{{contract_info.request_for_change_fee}}" /></span>
-						{% else %}
-							<span class="field"><input type="number" placeholder="$0.00" name="request-change-fee" /></span>
-						{% endif %}
+						<span class="field"><input type="number" placeholder="$0.00" name="request_change_fee" ng-model="request_change_fee" ng-value="request_change_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 					</div>
 				</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field">
 						<span class="label">Charge for Late Review (optional):</span>
-						{% if contract_info.charge_for_late_review > 0 %}
-					 		<span class="field"><input type="number" placeholder="$0.00" name="charge-late-fee" value="{{contract_info.charge_for_late_review}}" /></span>
-						{% else %}
-							<span class="field"><input type="number" placeholder="$0.00" name="charge-late-fee" /></span>
-						{% endif %}
+						<span class="field"><input type="number" placeholder="$0.00" name="charge_late_fee" ng-model="charge_late_fee" ng-value="charge_late_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 					</div>
 				</div>
 				<div class="mini-field-line">
 					<div class="input-field mini-field">
 						<span class="label">Early Termination Fee (optional):</span>
-						{% if contract_info.kill_fee > 0 %}
-					 		<span class="field"><input type="number" placeholder="$0.00" name="kill-fee" value="{{contract_info.kill_fee}}" /></span>
-						{% else %}
-							<span class="field"><input type="number" placeholder="$0.00" name="kill-fee" /></span>
-						{% endif %}
+						<span class="field"><input type="number" placeholder="$0.00" name="kill_fee" ng-model="kill_fee" ng-value="kill_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 					</div>
 				</div>
 				<div class="submit-buttons">
 					<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
-					<input type="submit" name="action" value="Continue" class="continue" />
+					<input type="submit" name="action" value="Continue" class="continue" ng-disabled="contractCreationStep3.$invalid" />
 				</div>
 				<div class="submit-buttons alt">
-					<input type="submit" name="action" value="Save for Later" class="later" />
+					<input type="submit" name="action" value="Save for Later" class="later" ng-disabled="contractCreationStep3.$invalid" />
 				</div>
 				{% csrf_token %}
 			</form>
@@ -73,4 +57,6 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=201805"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180511"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180511"></script>
 {% endblock %}

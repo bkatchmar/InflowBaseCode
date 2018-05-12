@@ -44,8 +44,10 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 	};
 	$scope.generateDatePickersForUnusedDateFields = function() {
 		jQuery("div.input-field.date input[type='text']:not(.hasDatepicker)").datepicker({showOtherMonths:true,selectOtherMonths:true,dateFormat:"M dd yy"});
-	}
+	};
 });
+
+stepThreeApp.controller("createContractStepThreeCtrl", function($scope) {});
 
 stepFourApp.controller("createContractStepFourCtrl", function($scope) {
 	$scope.changeEditMode = function(mode,index) {

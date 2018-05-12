@@ -1,6 +1,6 @@
 {% extends 'base/dashboard.base.lowfi.project.html' %}
 {% load staticfiles %}
-{% block title %}Create New Contract - Step 4 - {{contract_info.contract_name}}{% endblock %}
+{% block title %}Create New Contract - Step 4 - {{contract_info.Name}}{% endblock %}
 {% block head_script %}
 	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" />
 {% endblock %}
@@ -242,6 +242,6 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.js' %}?d=20180415"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180416"></script>
-	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180417"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.app.js' %}?d=20180511"></script>
+	<script src="{% static 'js/inflow.contract.creation.angular.controller.js' %}?d=20180511"></script>
 {% endblock %}

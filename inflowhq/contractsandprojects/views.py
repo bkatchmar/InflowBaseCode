@@ -146,8 +146,8 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             context["in_edit_mode"] = (selected_contract.ContractState == "c")
             
             contract_info["id"] = selected_contract.id
-            contract_info["contract_name"] = selected_contract.Name
-            contract_info["contract_description"] = selected_contract.Description
+            contract_info["contract_name"] = selected_contract.Name.replace("\"", "\\\"").replace("'", "\\'")
+            contract_info["contract_description"] = selected_contract.Description.replace("\"", "\\\"").replace("'", "\\'")
             contract_info["contract_type"] = selected_contract.ContractType
             contract_info["ownership_type"] = selected_contract.Ownership
             
@@ -489,9 +489,9 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
     def build_new_object(self,request,**kwargs):
         handler = RequestInputHandler()
         extraRevisionFee = request.POST.get("extra-revision-fee", "")
-        requestChangeFee = request.POST.get("request-change-fee", "")
-        chargeLateFee = request.POST.get("charge-late-fee", "")
-        killFee = request.POST.get("kill-fee", "")
+        requestChangeFee = request.POST.get("request_change_fee", "")
+        chargeLateFee = request.POST.get("charge_late_fee", "")
+        killFee = request.POST.get("kill_fee", "")
         
         selected_contract = None
         if "contract_id" in kwargs:
@@ -554,7 +554,11 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
                     contract_info = selected_contract
                 else:
                     raise PermissionDenied() # Raise 403
-                
+        
+        # Some quick scrubbing for the view, we're not actually saving this        
+        contract_info.Name = contract_info.Name.replace("\"", "\\\"").replace("'", "\\'")
+        contract_info.Description = contract_info.Description.replace("\"", "\\\"").replace("'", "\\'")
+        
         context["contract_info"] = contract_info
         context["contract_recipient"] = selected_contract_recipient
         context["contract_recipient_addresses"] = selected_contract_recipient_addresses
