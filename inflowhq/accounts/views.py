@@ -179,8 +179,7 @@ class OnboardingStepTwoView(LoginRequiredMixin,TemplateView):
         usersettings.FreelancerWorkWith = selected_work_with
         usersettings.save()
         
-        return render(request, self.template_name, context)
-        # return redirect(reverse("accounts:onboarding_3"))
+        return redirect(reverse("accounts:onboarding_3"))
     
     def get_context_data(self, request, **kwargs):
         context = {}
