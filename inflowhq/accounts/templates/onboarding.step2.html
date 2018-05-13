@@ -17,9 +17,11 @@
 				{% endfor %}
 			</div>
 			<div class="question-text">What features are you interested in?</div>
-			<div class="radio-list">
+			<div class="checkbox-list">
 				{% for interested in interested_in %}
-					<span class="button"><input type="radio" name="feature" value="{{interested.0}}" />{{interested.1}}</span>
+					<span class="checkbox larger">
+						<input type="checkbox" name="{{interested.0}}" /><span>{{interested.1}}</span>
+					</span>
 				{% endfor %}
 			</div>
 			<input type="submit" value="Continue" />

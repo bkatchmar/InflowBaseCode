@@ -30,6 +30,7 @@
 					{% endif %}
 					{% endfor %}
 			</select>
+			<input type="text" name="zip-code" placeholder="Zip Code" maxlength="20" required />
 			<input type="submit" value="Let's get started!" />
 			{% csrf_token %}
 			<div class="signup-link"><a href="{% url 'accounts:onboarding_2' %}">Go back</a></div>

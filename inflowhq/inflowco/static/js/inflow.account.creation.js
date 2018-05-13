@@ -1,0 +1,1 @@
+jQuery(document).ready(function() { jQuery("main div.agree-to-terms-of-service a").leanModal({}); });

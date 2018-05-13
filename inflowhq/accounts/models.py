@@ -19,7 +19,8 @@ FREELANCER_ANSWER_FREQUENCY = (
 
 FREELANCER_WORK_WITH = (
     ("s", "Me, myself, and I"),
-    ("t", "Studio/team")
+    ("t", "Studio/team"),
+    ("b", "Both")
     )
 
 FREELANCER_INTERESTED_IN = (
@@ -44,12 +45,11 @@ class UserSettings(models.Model):
     FreelancerWorkWith = models.CharField(max_length=1,
                             choices=FREELANCER_WORK_WITH,
                             default="s")
-    FreelancerInterestedIn = models.CharField(max_length=1,
-                            choices=FREELANCER_INTERESTED_IN,
-                            default="a")
     BusinessName = models.CharField(max_length=50,null=True)
     Region = models.CharField(max_length=50,null=True)
     PhoneNumber = models.CharField(max_length=20,null=True)
+    ZipCode = models.CharField(max_length=20,null=True)
+    OtherType = models.TextField()
 
     def get_settings_based_on_user(self,loggedin):
         self = UserSettings.objects.filter(UserAccount=loggedin).first()
@@ -182,6 +182,13 @@ class UserType(models.Model):
     
     class Meta:
        db_table = "UserType"
+
+class UserInterest(models.Model):
+    UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.CASCADE)
+    Interest = models.CharField(max_length=1,choices=FREELANCER_INTERESTED_IN)
+    
+    class Meta:
+       db_table = "UserInterest"
        
 class UserAssociatedTypes(models.Model):
     UserAccount = models.ForeignKey(User,verbose_name="IdAccount",on_delete=models.CASCADE)

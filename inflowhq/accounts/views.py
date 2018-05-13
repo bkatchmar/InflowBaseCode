@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 # From Accounts App
 from accounts.externalapicalls import LinkedInApi
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes
+from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes, UserInterest
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
 # Inflow Stripe App
@@ -110,6 +110,7 @@ class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
         context = self.get_context_data(request)
         
         selected_frequency = request.POST.get("frequency", UserSettings._meta.get_field("FreelancerFrequency").get_default())
+        other_text = request.POST.get("other", "")
         
         # Go through each UserType and see what was selected, add that to the DB
         # Remove anything that was previously selected
@@ -124,6 +125,7 @@ class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
         usersettings = UserSettings()
         usersettings = usersettings.get_settings_based_on_user(request.user)
         usersettings.FreelancerFrequency = selected_frequency
+        usersettings.OtherType = other_text
         usersettings.save()
         
         return redirect(reverse("accounts:onboarding_2"))
@@ -161,16 +163,24 @@ class OnboardingStepTwoView(LoginRequiredMixin,TemplateView):
         
         # Gather Data From Post
         selected_work_with = request.POST.get("work-with", UserSettings._meta.get_field("FreelancerWorkWith").get_default())
-        selected_feature = request.POST.get("feature", UserSettings._meta.get_field("FreelancerInterestedIn").get_default())
+        
+        # Remove anything that was previously selected
+        UserInterest.objects.filter(UserAccount=request.user).delete()
+        
+        for interest in FREELANCER_INTERESTED_IN:
+            interest_point = request.POST.get(interest[0], "")
+            
+            if interest_point == "on":
+                UserInterest.objects.create(UserAccount=request.user,Interest=interest[0])
         
         # Build up user settings or fetch previously saved ones, then save what was selected as the freelancer work with and interested in
         usersettings = UserSettings()
         usersettings = usersettings.get_settings_based_on_user(request.user)
         usersettings.FreelancerWorkWith = selected_work_with
-        usersettings.FreelancerInterestedIn = selected_feature
         usersettings.save()
         
-        return redirect(reverse("accounts:onboarding_3"))
+        return render(request, self.template_name, context)
+        # return redirect(reverse("accounts:onboarding_3"))
     
     def get_context_data(self, request, **kwargs):
         context = {}
@@ -195,12 +205,14 @@ class OnboardingStepThreeView(LoginRequiredMixin,TemplateView):
         # Gather Data From Post
         business_name = request.POST.get("business-name", "")
         region = request.POST.get("region", "")
+        zip_code = request.POST.get("zip-code", "")
         
         # Build up user settings or fetch previously saved ones, then save what was selected as the freelancer work with and interested in
         usersettings = UserSettings()
         usersettings = usersettings.get_settings_based_on_user(request.user)
         usersettings.BusinessName = business_name
         usersettings.Region = region
+        usersettings.ZipCode = zip_code
         usersettings.save()
         
         return redirect(reverse("base:dashboard"))
