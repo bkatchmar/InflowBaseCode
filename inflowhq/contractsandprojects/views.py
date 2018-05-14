@@ -147,7 +147,12 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             
             contract_info["id"] = selected_contract.id
             contract_info["contract_name"] = selected_contract.Name.replace("\"", "\\\"").replace("'", "\\'")
-            contract_info["contract_description"] = selected_contract.Description.replace("\"", "\\\"").replace("'", "\\'")
+            
+            if selected_contract.Description is not None:
+                contract_info["contract_description"] = selected_contract.Description.replace("\"", "\\\"").replace("'", "\\'")
+            else:
+                contract_info["contract_description"] = ""
+            
             contract_info["contract_type"] = selected_contract.ContractType
             contract_info["ownership_type"] = selected_contract.Ownership
             
@@ -547,7 +552,9 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         
         # Some quick scrubbing for the view, we're not actually saving this        
         contract_info.Name = contract_info.Name.replace("\"", "\\\"").replace("'", "\\'")
-        contract_info.Description = contract_info.Description.replace("\"", "\\\"").replace("'", "\\'")
+        
+        if contract_info.Description is not None:
+            contract_info.Description = contract_info.Description.replace("\"", "\\\"").replace("'", "\\'")
         
         context["contract_info"] = contract_info
         context["contract_recipient"] = selected_contract_recipient
