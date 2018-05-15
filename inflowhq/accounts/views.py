@@ -381,7 +381,6 @@ class EditAccountView(LoginRequiredMixin,TemplateView):
     
 class EditNotificationsView(LoginRequiredMixin,TemplateView):
     template_name = "settings.edit.notifications.html"
-    all_settings = NotificationSetting.objects.all()
     
     def get(self, request):
         context = self.get_context_data(request)
@@ -408,10 +407,11 @@ class EditNotificationsView(LoginRequiredMixin,TemplateView):
     def get_context_data(self, request, **kwargs):
         # Build objects for context
         all_collected_info = []
+        all_settings = NotificationSetting.objects.all()
         associated_settings = UserNotificationSettings.objects.filter(UserAccount=request.user)
         
         # Time to iterate through each setting, find the associated setting to the user (if any exists) and 
-        for type in self.all_settings:
+        for type in all_settings:
             setting_data = { "id" : type.id, "text" : type.SettingName, "selected" : False }
             
             for associated_setting in associated_settings:

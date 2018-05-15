@@ -418,7 +418,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             
         return created_contract
 
-class CreateContractStepThree(LoginRequiredMixin, TemplateView):
+class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.creation.third.step.html"
 
     def get(self, request, **kwargs):
@@ -454,23 +454,16 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView):
             "id" : 0, "contract_name" : "", "extra_revision_fee" : 0.00, "request_for_change_fee" : 0.00, "charge_for_late_review" : 0.00, "kill_fee" : 0.00,
         }
         
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            else:
-                context["in_edit_mode"] = (selected_contract.ContractState == "c")
-                
-                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                    contract_info["id"] = selected_contract.id
-                    contract_info["contract_name"] = selected_contract.Name
-                    contract_info["extra_revision_fee"] = selected_contract.ExtraRevisionFee
-                    contract_info["charge_for_late_review"] = selected_contract.ChargeForLateReview
-                    contract_info["kill_fee"] = selected_contract.KillFee
-                else:
-                    raise PermissionDenied() # Raise 403
+        if selected_contract is not None:
+            context["in_edit_mode"] = (selected_contract.ContractState == "c")
+            contract_info["id"] = selected_contract.id
+            contract_info["contract_name"] = selected_contract.Name
+            contract_info["extra_revision_fee"] = selected_contract.ExtraRevisionFee
+            contract_info["charge_for_late_review"] = selected_contract.ChargeForLateReview
+            contract_info["kill_fee"] = selected_contract.KillFee
                 
         context["contract_info"] = contract_info
         return context

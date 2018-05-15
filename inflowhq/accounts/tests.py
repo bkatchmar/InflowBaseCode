@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import NotificationSetting, UserSettings, UserType, UserAssociatedTypes
+from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes
 from accounts.signupvalidation import UserCreationBaseValidators
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
@@ -400,6 +400,11 @@ class EditAccountViewTests(TestCase):
         self.assertFalse(clara_settings.does_this_user_need_stripe())
     
 class EditNotificationsViewTests(TestCase):
+    setting_string_1 = "Tips on getting the most out of InFlow"
+    setting_string_2 = "The latest InFlow news and announcements"
+    setting_string_3 = "Monthly newsletter featuring our best articles"
+    setting_string_4 = "Account updates"
+        
     def setUp(self):
         # Necessary Currency Objects
         usd = Currency.objects.create()
@@ -438,34 +443,186 @@ class EditNotificationsViewTests(TestCase):
         settings_clara.StripeConnectAccountKey = "1234567890"
         settings_clara.save()
         
-        # Notification Settings
-        setting_string_1 = "Tips on getting the most out of InFlow"
-        setting_string_2 = "The latest InFlow news and announcements"
-        setting_string_3 = "Monthly newsletter featuring our best articles"
-        setting_string_4 = "Account updates"
+        if NotificationSetting.objects.filter(SettingName=self.setting_string_1).exists():
+            ns1 = NotificationSetting.objects.get(SettingName=self.setting_string_1)
+        else:
+            ns1 = NotificationSetting.objects.create(SettingName=self.setting_string_1)
         
-        if NotificationSetting.objects.filter(SettingName=setting_string_1).exists():
-            ns1 = NotificationSetting.objects.get(SettingName=setting_string_1)
+        if NotificationSetting.objects.filter(SettingName=self.setting_string_2).exists():
+            ns2 = NotificationSetting.objects.get(SettingName=self.setting_string_2)
         else:
-            ns1 = NotificationSetting.objects.create(SettingName=setting_string_1)
+            ns2 = NotificationSetting.objects.create(SettingName=self.setting_string_2)
+            
+        if NotificationSetting.objects.filter(SettingName=self.setting_string_3).exists():
+            ns3 = NotificationSetting.objects.get(SettingName=self.setting_string_3)
+        else:
+            ns3 = NotificationSetting.objects.create(SettingName=self.setting_string_3)
+            
+        if NotificationSetting.objects.filter(SettingName=self.setting_string_4).exists():
+            ns4 = NotificationSetting.objects.get(SettingName=self.setting_string_4)
+        else:
+            ns4 = NotificationSetting.objects.create(SettingName=self.setting_string_4)
         
-        if NotificationSetting.objects.filter(SettingName=setting_string_2).exists():
-            ns2 = NotificationSetting.objects.get(SettingName=setting_string_2)
-        else:
-            ns2 = NotificationSetting.objects.create(SettingName=setting_string_2)
-            
-        if NotificationSetting.objects.filter(SettingName=setting_string_3).exists():
-            ns3 = NotificationSetting.objects.get(SettingName=setting_string_3)
-        else:
-            ns3 = NotificationSetting.objects.create(SettingName=setting_string_3)
-            
-        if NotificationSetting.objects.filter(SettingName=setting_string_4).exists():
-            ns4 = NotificationSetting.objects.get(SettingName=setting_string_4)
-        else:
-            ns4 = NotificationSetting.objects.create(SettingName=setting_string_4)
-            
+        # Purge the DB Entries, we're rebuild what we're expecting
+        UserNotificationSettings.objects.filter(UserAccount=brian).delete()
+        UserNotificationSettings.objects.filter(UserAccount=kenny).delete()
+        UserNotificationSettings.objects.filter(UserAccount=clara).delete()
+        
+        # Brian
+        UserNotificationSettings.objects.create(UserAccount=brian,Setting=ns1,Selected=True)
+        UserNotificationSettings.objects.create(UserAccount=brian,Setting=ns2,Selected=True)
+        UserNotificationSettings.objects.create(UserAccount=brian,Setting=ns3,Selected=True)
+        UserNotificationSettings.objects.create(UserAccount=brian,Setting=ns4,Selected=True)
+        
+        # Kenny
+        UserNotificationSettings.objects.create(UserAccount=kenny,Setting=ns1,Selected=True)
+        UserNotificationSettings.objects.create(UserAccount=kenny,Setting=ns2,Selected=False)
+        UserNotificationSettings.objects.create(UserAccount=kenny,Setting=ns3,Selected=False)
+        UserNotificationSettings.objects.create(UserAccount=kenny,Setting=ns4,Selected=True)
+        
+        # Clara
+        UserNotificationSettings.objects.create(UserAccount=clara,Setting=ns1,Selected=False)
+        UserNotificationSettings.objects.create(UserAccount=clara,Setting=ns2,Selected=True)
+        UserNotificationSettings.objects.create(UserAccount=clara,Setting=ns3,Selected=False)
+        UserNotificationSettings.objects.create(UserAccount=clara,Setting=ns4,Selected=True)
+        
     def test1(self):
         self.assertEqual(len(NotificationSetting.objects.all()), 4)
         
     def test2(self):
         self.assertEqual(len(NotificationSetting.objects.all()), 4)
+        
+    def testBrianSettings(self):
+        ns1 = NotificationSetting.objects.get(SettingName=self.setting_string_1)
+        ns2 = NotificationSetting.objects.get(SettingName=self.setting_string_2)
+        ns3 = NotificationSetting.objects.get(SettingName=self.setting_string_3)
+        ns4 = NotificationSetting.objects.get(SettingName=self.setting_string_4)
+        
+        c = Client()
+        login_attempt = c.login(username="Brian@workinflow.co", password="Th3L10nK1ng15Fun")
+        response = c.get("/account/notifications")
+        
+        self.assertTrue(login_attempt) # User was able to log in
+        self.assertEqual(200,response.status_code) # User can see the page
+        
+        response_context = response.context
+        
+        for type in response_context["settings"]:
+            if type["id"] == ns1.id:
+                self.assertTrue(type["selected"])
+            if type["id"] == ns2.id:
+                self.assertTrue(type["selected"])
+            if type["id"] == ns3.id:
+                self.assertTrue(type["selected"])
+            if type["id"] == ns4.id:
+                self.assertTrue(type["selected"])
+    
+    def testKennySettings(self):
+        ns1 = NotificationSetting.objects.get(SettingName=self.setting_string_1)
+        ns2 = NotificationSetting.objects.get(SettingName=self.setting_string_2)
+        ns3 = NotificationSetting.objects.get(SettingName=self.setting_string_3)
+        ns4 = NotificationSetting.objects.get(SettingName=self.setting_string_4)
+        
+        c = Client()
+        login_attempt = c.login(username="Kenny@workinflow.co", password="Thing5Ar3Gr34t")
+        response = c.get("/account/notifications")
+        
+        self.assertTrue(login_attempt) # User was able to log in
+        self.assertEqual(200,response.status_code) # User can see the page
+        
+        response_context = response.context
+        
+        for type in response_context["settings"]:
+            if type["id"] == ns1.id:
+                self.assertTrue(type["selected"])
+            if type["id"] == ns2.id:
+                self.assertFalse(type["selected"])
+            if type["id"] == ns3.id:
+                self.assertFalse(type["selected"])
+            if type["id"] == ns4.id:
+                self.assertTrue(type["selected"])
+    
+    def testClaraSettings(self):
+        ns1 = NotificationSetting.objects.get(SettingName=self.setting_string_1)
+        ns2 = NotificationSetting.objects.get(SettingName=self.setting_string_2)
+        ns3 = NotificationSetting.objects.get(SettingName=self.setting_string_3)
+        ns4 = NotificationSetting.objects.get(SettingName=self.setting_string_4)
+        
+        c = Client()
+        login_attempt = c.login(username="Clara@workinflow.co", password="Thing5Ar3Gr34t")
+        response = c.get("/account/notifications")
+        
+        self.assertTrue(login_attempt) # User was able to log in
+        self.assertEqual(200,response.status_code) # User can see the page
+        
+        response_context = response.context
+        
+        for type in response_context["settings"]:
+            if type["id"] == ns1.id:
+                self.assertFalse(type["selected"])
+            if type["id"] == ns2.id:
+                self.assertTrue(type["selected"])
+            if type["id"] == ns3.id:
+                self.assertFalse(type["selected"])
+            if type["id"] == ns4.id:
+                self.assertTrue(type["selected"])
+
+class UserGeneratedSlugTests(TestCase):
+    def setUp(self):
+        # Necessary Currency Objects
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        # Users
+        user_1 = User.objects.create(username="User1@workinflow.co",email="User1@workinflow.co",first_name="Brian",last_name="Katchmar")
+        user_1.set_password("Th3L10nK1ng15Fun")
+        user_1.save()
+        settings_user_1 = UserSettings()
+        settings_user_1 = settings_user_1.get_settings_based_on_user(user_1)
+        settings_user_1.BusinessName = "MIAC"
+        settings_user_1.Region = "New York"
+        settings_user_1.save()
+        
+        user_2 = User.objects.create(username="User2@workinflow.co",email="User2@workinflow.co",first_name="Brian",last_name="Katchmar")
+        user_2.set_password("Thing5Ar3Gr34t")
+        user_2.save()
+        settings_user_2 = UserSettings()
+        settings_user_2 = settings_user_2.get_settings_based_on_user(user_2)
+        settings_user_2.save()
+        
+        user_3 = User.objects.create(username="User3@workinflow.co",email="User3@workinflow.co",first_name="Brian",last_name="Katchmar")
+        user_3.set_password("Thing5Ar3Gr34t")
+        user_3.save()
+        settings_user_3 = UserSettings()
+        settings_user_3 = settings_user_3.get_settings_based_on_user(user_3)
+        settings_user_3.BusinessName = "InFlow"
+        settings_user_3.Region = "New York"
+        settings_user_3.PhoneNumber = "2125555555"
+        settings_user_3.StripeConnectAccountKey = "1234567890"
+        settings_user_3.save()
+        
+    def testUniqueUserSlugsGeneratedEvenIfMultipleUsersAlreadyExists(self):
+        user_1 = User.objects.get(username="User1@workinflow.co")
+        settings_user_1 = UserSettings()
+        settings_user_1 = settings_user_1.get_settings_based_on_user(user_1)
+        
+        user_2 = User.objects.get(username="User2@workinflow.co")
+        settings_user_2 = UserSettings()
+        settings_user_2 = settings_user_2.get_settings_based_on_user(user_2)
+        
+        user_3 = User.objects.get(username="User3@workinflow.co")
+        settings_user_3 = UserSettings()
+        settings_user_3 = settings_user_1.get_settings_based_on_user(user_3)
+        
+        self.assertIsNotNone(settings_user_1.UrlSlug)
+        self.assertIsNotNone(settings_user_2.UrlSlug)
+        self.assertIsNotNone(settings_user_3.UrlSlug)
+        
+        self.assertNotEqual(settings_user_1.UrlSlug, settings_user_2.UrlSlug)
+        self.assertNotEqual(settings_user_1.UrlSlug, settings_user_3.UrlSlug)
+        self.assertNotEqual(settings_user_2.UrlSlug, settings_user_3.UrlSlug)

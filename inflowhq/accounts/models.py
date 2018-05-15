@@ -108,11 +108,13 @@ class UserSettings(models.Model):
     def generate_slug_for_new_user(self,loggedin):
         generated = slugify("%s %s" % (loggedin.first_name, loggedin.last_name))
         slugs = UserSettings.objects.filter(UrlSlug=generated)
-
-        if len(slugs) == 0:
-            return generated
-        else:
-            return ("%s-%d" % (generated, len(slugs)+1))
+        
+        generated_index = 2
+        while UserSettings.objects.filter(UrlSlug=generated).exists():
+            generated = slugify("%s %s %s" % (loggedin.first_name, loggedin.last_name, generated_index))
+            generated_index = generated_index + 1
+        
+        return generated
     
     def does_this_user_need_stripe(self):
         if self.StripeConnectAccountKey is None:
