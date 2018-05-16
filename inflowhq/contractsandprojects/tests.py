@@ -198,7 +198,7 @@ class ContractRelationshipTest(TestCase):
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(josh))
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(matt))
 
-class ContractNewFirstScreenTest(TestCase):
+class ContractCreationScreenTest(TestCase):
     def setUp(self):
         timezone.activate(pytz.timezone("America/New_York"))
         
@@ -215,15 +215,13 @@ class ContractNewFirstScreenTest(TestCase):
         clara.set_password("Thing5Ar3Gr34t")
         clara.save()
         
+        overlord = User.objects.create(username="Overlord@workinflow.co",email="Overlord@workinflow.co",first_name="Mister",last_name="Universe",is_superuser=True)
+        overlord.set_password("irule")
+        overlord.save()
+        
         if not Contract.objects.filter(Name="Brian Contract 1").exists():
             contract_1 = Contract.objects.create(Creator=brian,Name="Brian Contract 1",StartDate=date.today(),EndDate=date.today())
             Relationship.objects.create(ContractUser=brian,ContractForRelationship=contract_1,RelationshipType='f')
-        
-        if Contract.objects.filter(Name="Kenny Contract 1").exists():
-            asdd = ""
-            
-        if Contract.objects.filter(Name="Clara Contract 1").exists():
-            asdd = ""
     
     def testCurrentContractNotBeingEditted(self):
         c = Client()
@@ -238,12 +236,12 @@ class ContractNewFirstScreenTest(TestCase):
         request_url = ("/inflow/projects/contract/edit/%s" % contract_1.id)
         
         c = Client()
-        loginAttempt = c.login(username='Brian@workinflow.co', password='Th3L10nK1ng15Fun')
+        loginAttempt = c.login(username="Brian@workinflow.co", password="Th3L10nK1ng15Fun")
         response = c.get(request_url)
         
         self.assertEqual(response.context["contract_info"]["id"], contract_1.id)
         self.assertEqual(response.context["contract_info"]["contract_name"], contract_1.Name)
-        self.assertEqual(200,response.status_code) # User got a 404
+        self.assertEqual(200,response.status_code)
         
     def testFirstScreenEditKickedOutKenny(self):
         contract_1 = Contract.objects.get(Name="Brian Contract 1")
@@ -255,6 +253,17 @@ class ContractNewFirstScreenTest(TestCase):
         
         self.assertEqual(200,response.status_code) # User got a 404
         self.assertFalse("contract_info" in response.context)
+    
+    def testSuperUserCanSeeContract(self):
+        contract_1 = Contract.objects.get(Name="Brian Contract 1")
+        request_url = ("/inflow/projects/contract/edit/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username="Overlord@workinflow.co", password="irule")
+        response = c.get(request_url)
+        
+        self.assertEqual(200,response.status_code) # User got a 404
+        self.assertTrue("contract_info" in response.context)
         
     def testContractBeingCreatedAfterPostFromScreenOne(self):
         number_of_current_contracts = len(Contract.objects.all())
@@ -279,6 +288,42 @@ class ContractNewFirstScreenTest(TestCase):
         self.assertTrue(loginAttempt)
         self.assertEqual(302,response.status_code)
         self.assertNotEqual(number_of_current_contracts, number_of_current_contracts_2)
+    
+    def testContractCanBeEditInScreen2(self):
+        contract_name = "Brian Contract 1"
+        contract_1 = Contract.objects.get(Name=contract_name)
+        request_url = ("/inflow/projects/contract/create/step-2/%s" % contract_1.id)
+        
+        c = Client()
+        loginAttempt = c.login(username="Brian@workinflow.co", password="Th3L10nK1ng15Fun")
+        response = c.post(request_url, 
+                          { 
+                              "contractStartDate" : "Jul 30 2018", 
+                              "contractEndDate" : "Jul 31 2018", 
+                              "hourlyRate" : "0",
+                              "downPaymentAmount" : "0",
+                              "totalNumberOfRevisions": "3",
+                              "milestoneName" : ["MS1", "MS2"],
+                              "milestoneDescription" : ["", ""],
+                              "milestonesEstimateHours" : ["0", "0"],
+                              "milestoneAmount" : ["150", "200"],
+                              "milestoneDeadline" : ["Jul 30 2018", " Jul 30 2018"],
+                              "milestoneId" : ["0", "0"],
+                              "removeMilestone" : ["false", "false"],
+                              "totalContractAmount" : "350",
+                              "downPaymentAmount" : "0",
+                              "action" : "Continue"
+                           })
+        
+        self.assertTrue(loginAttempt)
+        
+        contract_edited = Contract.objects.get(Name=contract_name)
+        contract_edited_milestones = Milestone.objects.filter(MilestoneContract=contract_edited)
+        
+        self.assertEqual(contract_edited.StartDate, date(2018,7,30))
+        self.assertEqual(contract_edited.EndDate, date(2018,7,31))
+        self.assertNotEqual(contract_edited.StartDate, date(2018,8,1))
+        self.assertEqual(len(contract_edited_milestones), 2)
 
 class ContractParagraphTest(TestCase):
     def setUp(self):

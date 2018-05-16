@@ -358,9 +358,9 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         contractStartDate = request.POST.get("contractStartDate", "")
         contractEndDate = request.POST.get("contractEndDate", "")
         hourlyRate = request.POST.get("hourlyRate", "")
-        milestoneAmount = request.POST.get("milestoneAmount", "")
         downPaymentAmount = request.POST.get("downPaymentAmount", "")
         totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
+        totalContractAmount = request.POST.get("totalContractAmount", "")
         
         # Milestone amounts
         milestoneName = request.POST.getlist("milestoneName")
@@ -370,11 +370,6 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         milestoneDeadline = request.POST.getlist("milestoneDeadline")
         milestone_id = request.POST.getlist("milestoneId", "")
         milestone_needs_to_be_removed = request.POST.getlist("removeMilestone", "")
-        
-        # Totals for Contract
-        totalContractAmount = request.POST.get("totalContractAmount", "")
-        downPaymentAmount = request.POST.get("downPaymentAmount", "")
-        totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
         
         handler = RequestInputHandler()
         
