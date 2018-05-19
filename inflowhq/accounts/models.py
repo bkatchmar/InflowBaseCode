@@ -212,3 +212,14 @@ class UserNotificationSettings(models.Model):
     
     class Meta:
        db_table = "UserNotificationSettings"
+       
+class InFlowInvitation(models.Model):
+    InvitedUser = models.ForeignKey(User,null=False,on_delete=models.CASCADE)
+    GUID = models.CharField(max_length=40,null=False)
+    Expiry = models.DateField(auto_now=False,null=False)
+    
+    def has_this_invitation_expired(self,date_to_check=date.today()):
+        return date_to_check > self.Expiry
+    
+    class Meta:
+       db_table = "InFlowInvitation"

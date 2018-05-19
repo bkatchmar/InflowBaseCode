@@ -1,10 +1,11 @@
 from __future__ import unicode_literals
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes
-from accounts.signupvalidation import UserCreationBaseValidators
+from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes, InFlowInvitation
+from accounts.signupvalidation import ClientAccountGenerator, UserCreationBaseValidators
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from inflowco.models import Currency, Country
+from datetime import date
 import pytz
 
 class BaseUserTestCase(TestCase):
@@ -626,3 +627,77 @@ class UserGeneratedSlugTests(TestCase):
         self.assertNotEqual(settings_user_1.UrlSlug, settings_user_2.UrlSlug)
         self.assertNotEqual(settings_user_1.UrlSlug, settings_user_3.UrlSlug)
         self.assertNotEqual(settings_user_2.UrlSlug, settings_user_3.UrlSlug)
+
+class ClientAccountGeneratorTests(TestCase):
+    def setUp(self):
+        # Necessary Currency Objects
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        # Users
+        brian_1 = User.objects.create(username="Brian@workinflow.co",email="Brian@workinflow.co",first_name="Brian",last_name="Katchmar")
+        brian_1.set_password("Th3L10nK1ng15Fun")
+        brian_1.save()
+        
+        brian_2 = User.objects.create(username="VideoXPG@gmail.com",email="VideoXPG@gmail.com",first_name="Brian",last_name="Katchmar")
+        brian_2.set_password("Th3L10nK1ng15Fun")
+        brian_2.save()
+    
+    def testAllGuidElementsAreUnique(self):
+        generator = ClientAccountGenerator()
+        
+        guid_1 = generator.generate_guid()
+        guid_2 = generator.generate_guid()
+        guid_3 = generator.generate_guid()
+        
+        self.assertNotEqual(guid_1, guid_2)
+        self.assertNotEqual(guid_1, guid_3)
+        self.assertNotEqual(guid_2, guid_3)
+    
+    def testInvitationLinkExpiry(self):
+        july_30 = date(2018,7,30)
+        august_20 = date(2018,8,20)
+        far_out = date(2030,1,1)
+        
+        generator = ClientAccountGenerator()
+        
+        new_user_1 = User.objects.create(username="User1@workinflow.co",email="User1@workinflow.co")
+        new_user_2 = User.objects.create(username="User2@workinflow.co",email="User2@workinflow.co")
+        new_user_3 = User.objects.create(username="User3@workinflow.co",email="User3@workinflow.co")
+        
+        i1 = InFlowInvitation.objects.create(InvitedUser=new_user_1,GUID=generator.generate_guid(),Expiry=july_30)
+        i2 = InFlowInvitation.objects.create(InvitedUser=new_user_2,GUID=generator.generate_guid(),Expiry=august_20)
+        i3 = InFlowInvitation.objects.create(InvitedUser=new_user_3,GUID=generator.generate_guid(),Expiry=far_out)
+        
+        self.assertTrue(august_20 > july_30) # August 20 is after July 30
+        self.assertFalse(i1.has_this_invitation_expired(date(2018,7,25)))
+        self.assertTrue(i1.has_this_invitation_expired(august_20))
+        self.assertFalse(i3.has_this_invitation_expired())
+        
+    def testAccountCheck(self):
+        generator = ClientAccountGenerator()
+        
+        self.assertTrue(generator.does_this_account_already_exists("brian@workinflow.co"))
+        self.assertTrue(generator.does_this_account_already_exists("videoxpg@gmail.com"))
+        self.assertFalse(generator.does_this_account_already_exists("bkatchmar@gmail.com"))
+        
+    def testInvitationCreation(self):
+        generator = ClientAccountGenerator()
+        
+        number_of_invitations_1 = len(InFlowInvitation.objects.all())
+        
+        generator.create_invitation("bkatchmar@gmail.com")
+        
+        number_of_invitations_2 = len(InFlowInvitation.objects.all())
+        
+        self.assertNotEqual(number_of_invitations_1, number_of_invitations_2)
+        
+        new_user = User.objects.get(email="bkatchmar@gmail.com")
+        new_user_invitation = InFlowInvitation.objects.get(InvitedUser=new_user)
+        
+        self.assertNotEqual(date.today(), new_user_invitation.Expiry)

@@ -1,3 +1,6 @@
+import uuid
+from accounts.models import InFlowInvitation, UserSettings
+from datetime import date, timedelta
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
@@ -54,3 +57,18 @@ class UserCreationBaseValidators:
         except ValidationError as val:
             self.error_thrown = True
             self.error_message = val.__str__()
+
+class ClientAccountGenerator:
+    day_delta = 10
+    
+    def generate_guid(self):
+        return uuid.uuid4()
+    
+    def does_this_account_already_exists(self,email_address):
+        lookup_user = User.objects.filter(email=email_address).first()
+        return (lookup_user is not None)
+    
+    def create_invitation(self,email_address):
+        if not self.does_this_account_already_exists(email_address):
+            invited_user = User.objects.create(username=email_address,email=email_address,first_name="",last_name="")
+            InFlowInvitation.objects.create(InvitedUser=invited_user,GUID=self.generate_guid(),Expiry=date.today()+timedelta(days=self.day_delta))
