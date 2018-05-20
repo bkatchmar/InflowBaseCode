@@ -1,0 +1,37 @@
+{% extends 'base/header.no.sidebar.html' %}
+{% load staticfiles %}
+{% block title %}You're Invited To Join InFlow - Sign Up To Get Started{% endblock %}
+{% block main_tag %}
+	<div class="content">
+		<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
+		<div class="login-buttons">
+			<div class="g-signin2" id="google-signin"></div>
+			<a href="https://www.linkedin.com/oauth/v2/authorization?{{linkedin}}" class="inflow-btn">Log in with LinkedIn</a>
+		</div>
+		<div class="separator">or</div>
+		{% if error_msg != "" %}
+			<div class="error-msg">{{error_msg}}</div>
+		{% endif %}
+		<form method="post" class="login-form">
+			<input type="email" name="username" placeholder="E-mail address" value="{{user_email}}" disabled />
+			<input type="text" name="name" placeholder="Name" required />
+			<input type="password" name="password" placeholder="Password" required />
+			<div class="agree-to-terms-of-service">
+				<input type="checkbox" name="agree" /><span class="checkbox-text">I agree to the <a href="#tos">terms and services</a>.</span>
+			</div>
+			<input type="hidden" name="google-id-token" value="" />
+			<input type="submit" value="Sign up" />
+			{% csrf_token %}
+		</form>
+		<div class="signup-link">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></div>
+	</div>
+	<div class="lean-modal-overlay terms-of-service" id="tos">
+		<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ex tortor, pretium ac nisl id, placerat suscipit dolor. Nunc tempus justo nisl, eu sollicitudin nulla fringilla pellentesque. Aliquam lacinia, leo ut auctor tempor, tortor tellus tristique diam, vel volutpat est sem sit amet ipsum. Nunc sed mi dignissim, luctus ipsum sed, aliquet lacus. Vivamus felis velit, tempus dictum tincidunt ut, tempor quis ipsum. Aliquam a est at orci porttitor gravida sed et elit. Sed ipsum odio, ultricies a est vel, suscipit hendrerit diam. Pellentesque vel enim vel lorem posuere tempor.</p>
+		<p>Ut porta id enim eu dignissim. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Nulla tempus finibus purus eget semper. Donec aliquet justo in magna tempus consectetur vitae sit amet ante. Quisque tincidunt diam eget tincidunt euismod. Nulla rutrum maximus velit, sed euismod sapien laoreet eu.</p>
+		<p>Curabitur varius ante mauris, non scelerisque nisl tristique vel. Duis lobortis neque feugiat, feugiat arcu eget, viverra risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lobortis lorem a tortor elementum suscipit. Suspendisse consequat efficitur odio eu interdum. Duis dapibus, elit sed iaculis tempor, elit dui vestibulum urna, et scelerisque justo ante et risus. Nunc ut semper urna. Cras quis odio ac magna vestibulum cursus nec tincidunt nisl. Fusce diam felis, lobortis eu tellus sed, accumsan sagittis risus. Maecenas hendrerit lacus et purus porttitor, quis mollis ex finibus. Donec maximus nunc risus, nec mattis purus molestie id.</p>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
+	<script src="{% static 'js/inflow.account.creation.js' %}"></script>
+{% endblock %}

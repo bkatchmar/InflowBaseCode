@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from accounts.signupvalidation import ClientAccountGenerator
 import datetime
 import json
 import os
@@ -734,6 +735,11 @@ class ContractDoneCreated(LoginRequiredMixin, TemplateView):
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
+        action = request.POST.get("action", "")
+        
+        if action=="Send to Client":
+            self.create_user_and_relationship_for_contract(**kwargs)
+        
         context = self.get_context_data(request, **kwargs)
         return render(request, self.template_name, context)
     
@@ -758,12 +764,21 @@ class ContractDoneCreated(LoginRequiredMixin, TemplateView):
                     context["user_email"] = request.user.email
                     
                     # Check if the recipient is of a user that actually exists
-                    recipient_user = User.objects.filter(email=selected_contract_recipient.EmailAddress).first()
-                    context["recipient_not_in_system"] = (recipient_user is None)
+                    client_lookup = ClientAccountGenerator()
+                    context["recipient_not_in_system"] = (not client_lookup.does_this_account_already_exists(selected_contract_recipient.EmailAddress))
                 else:
                     raise PermissionDenied() # Raise 403
         
         return context
+    
+    def create_user_and_relationship_for_contract(self, **kwargs):
+        if "contract_id" in kwargs:
+            selected_contract = Contract.objects.get(id=kwargs.get("contract_id"))
+            selected_contract_recipient = Recipient.objects.get(ContractForRecipient=selected_contract)
+            
+            # Create all necessary objects for generating a relationship
+            client_lookup = ClientAccountGenerator()
+            client_lookup.create_relationship_for_contract(selected_contract_recipient.EmailAddress,selected_contract)
 
 class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "active_use/freelancer.specific-project.milestones.html"

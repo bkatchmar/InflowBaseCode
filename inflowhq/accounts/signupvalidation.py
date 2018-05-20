@@ -1,5 +1,6 @@
 import uuid
 from accounts.models import InFlowInvitation, UserSettings
+from contractsandprojects.models import Contract, Relationship
 from datetime import date, timedelta
 from django.contrib.auth import login
 from django.contrib.auth.models import User
@@ -72,3 +73,12 @@ class ClientAccountGenerator:
         if not self.does_this_account_already_exists(email_address):
             invited_user = User.objects.create(username=email_address,email=email_address,first_name="",last_name="")
             InFlowInvitation.objects.create(InvitedUser=invited_user,GUID=self.generate_guid(),Expiry=date.today()+timedelta(days=self.day_delta))
+            
+    def create_relationship_for_contract(self,email_address,contract):
+        if (isinstance(contract, Contract)):
+            self.create_invitation(email_address)
+            client_user = User.objects.get(email=email_address)
+            if not Relationship.objects.filter(ContractForRelationship=contract,ContractUser=client_user,RelationshipType="c").exists():
+                Relationship.objects.create(ContractForRelationship=contract,ContractUser=client_user,RelationshipType="c")
+        else:
+            raise TypeError("contract passed in is not a Contract type")

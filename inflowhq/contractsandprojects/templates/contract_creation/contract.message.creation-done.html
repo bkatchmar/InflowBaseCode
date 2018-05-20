@@ -15,6 +15,7 @@
 						<div class="submit-buttons">
 							<input type="submit" name="action" value="Send to Client" class="continue" />
 						</div>
+						{% csrf_token %}
 					</form>
 				</div>
 			{% endif %}

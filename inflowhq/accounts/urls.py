@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^settings', views.EditProfileView.as_view(), name='settings'),
     url(r'^edit-account', views.EditAccountView.as_view(), name='edit_account'),
     url(r'^notifications', views.EditNotificationsView.as_view(), name='notifications'),
+    url(r'^invitation/(?P<invitation_guid>[-\w]+)', views.AccountInvitationView.as_view(), name='invitation'),
 ]

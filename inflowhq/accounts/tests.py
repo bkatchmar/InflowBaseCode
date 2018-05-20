@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from accounts.inflowaccountloginview import InflowLoginView
 from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes, InFlowInvitation
 from accounts.signupvalidation import ClientAccountGenerator, UserCreationBaseValidators
+from contractsandprojects.models import Contract, Relationship
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from inflowco.models import Currency, Country
@@ -675,9 +676,9 @@ class ClientAccountGeneratorTests(TestCase):
         i3 = InFlowInvitation.objects.create(InvitedUser=new_user_3,GUID=generator.generate_guid(),Expiry=far_out)
         
         self.assertTrue(august_20 > july_30) # August 20 is after July 30
-        self.assertFalse(i1.has_this_invitation_expired(date(2018,7,25)))
-        self.assertTrue(i1.has_this_invitation_expired(august_20))
-        self.assertFalse(i3.has_this_invitation_expired())
+        self.assertFalse(i1.has_this_invitation_expired(date(2018,7,25))) # Expect this to pass as July 25th is still before July 30th
+        self.assertTrue(i1.has_this_invitation_expired(august_20)) # Expect this to fail as August 20th is well past July 30th
+        self.assertFalse(i3.has_this_invitation_expired()) # Will fail once the current date is January 1st, 2030....we have time
         
     def testAccountCheck(self):
         generator = ClientAccountGenerator()
@@ -701,3 +702,42 @@ class ClientAccountGeneratorTests(TestCase):
         new_user_invitation = InFlowInvitation.objects.get(InvitedUser=new_user)
         
         self.assertNotEqual(date.today(), new_user_invitation.Expiry)
+
+class ClientContractRelationshipTests(TestCase):
+    contract_name_1 = "ClientContractRelationshipTests Contract 1"
+    
+    def setUp(self):
+        # Necessary Currency Objects
+        usd = Currency.objects.create()
+        
+        USA = Country()
+        USA.PrimaryCurrency = usd
+        USA.Name = "United States"
+        USA.Code = "US"
+        USA.save()
+        
+        # Users
+        brian_1 = User.objects.create(username="Brian@workinflow.co",email="Brian@workinflow.co",first_name="Brian",last_name="Katchmar")
+        brian_1.set_password("Th3L10nK1ng15Fun")
+        brian_1.save()
+        
+        brian_2 = User.objects.create(username="VideoXPG@gmail.com",email="VideoXPG@gmail.com",first_name="Brian",last_name="Katchmar")
+        brian_2.set_password("Th3L10nK1ng15Fun")
+        brian_2.save()
+        
+        if not Contract.objects.filter(Name=self.contract_name_1).exists():
+            contract_1 = Contract.objects.create(Creator=brian_1,Name=self.contract_name_1,StartDate=date.today(),EndDate=date.today())
+            Relationship.objects.create(ContractUser=brian_1,ContractForRelationship=contract_1,RelationshipType="f")
+    
+    def testRelationshipGenerator(self):
+        new_email_address = "ClientContractRelationshipTestsUser1@workinflow.co"
+        generator = ClientAccountGenerator()
+        
+        brian_1 = User.objects.get(username="Brian@workinflow.co")
+        contract_1 = Contract.objects.get(Name=self.contract_name_1)
+        
+        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 1)
+        
+        generator.create_relationship_for_contract(new_email_address,contract_1)
+        
+        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 2)

@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 # From Accounts App
 from accounts.externalapicalls import LinkedInApi
 from accounts.inflowaccountloginview import InflowLoginView
-from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes, UserInterest
+from accounts.models import NotificationSetting, UserNotificationSettings, UserSettings, UserType, UserAssociatedTypes, UserInterest, InFlowInvitation
 from accounts.models import FREELANCER_ANSWER_FREQUENCY, FREELANCER_WORK_WITH, FREELANCER_INTERESTED_IN
 from accounts.signupvalidation import UserCreationBaseValidators
 # Inflow Stripe App
@@ -12,6 +12,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
+from django.http import Http404
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
 from django.urls import reverse
@@ -95,6 +96,55 @@ class CreateAccountView(TemplateView, InflowLoginView):
         else:
             login(request, validator.created_user)
             return redirect(reverse("accounts:onboarding_1"))
+        
+        return render(request, self.template_name, context)
+    
+class AccountInvitationView(TemplateView, InflowLoginView):
+    template_name = "account.invitation.html"
+    
+    def get(self, request, **kwargs):
+        logout(request)
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        
+        # Get the invitation information
+        guid = kwargs.get("invitation_guid")
+        selected_invitation = InFlowInvitation.objects.filter(GUID=guid).first()
+        
+        if selected_invitation is None: # User entered a bogus GUID
+            raise Http404()
+        
+        context["user_email"] = selected_invitation.InvitedUser.email
+        
+        # If this page was hit from LinkedIn, go ahead and handle to log the user in
+        if self.is_this_a_linkedin_request(request):
+            return self.handle_linkedin_request(request)
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        
+        google_id_token = request.POST.get("google-id-token", "")
+        
+        if google_id_token != "":
+            return self.handle_google_login_attempt(request,google_id_token)
+        
+        # Handle this as a standard sign up request
+        # Gather user form data
+        username = request.POST.get("username", "")
+        name = request.POST.get("name", "")
+        password = request.POST.get("password", "")
+        agreed = request.POST.get("agree", False)
+        
+        # Time to validate the entries
+        validator = UserCreationBaseValidators()
+        validator.attempt_to_create_user(username,name,password,agreed)
+        
+        if validator.error_thrown:
+            context["error_msg"] = validator.error_message
+        else:
+            login(request, validator.created_user)
+            return redirect(reverse("contracts:home"))
         
         return render(request, self.template_name, context)
 
