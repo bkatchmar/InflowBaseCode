@@ -215,7 +215,7 @@ class UserNotificationSettings(models.Model):
        
 class InFlowInvitation(models.Model):
     InvitedUser = models.ForeignKey(User,null=False,on_delete=models.CASCADE)
-    GUID = models.CharField(max_length=40,null=False)
+    GUID = models.CharField(max_length=40,null=False,unique=True)
     Expiry = models.DateField(auto_now=False,null=False)
     
     def has_this_invitation_expired(self,date_to_check=date.today()):

@@ -104,16 +104,19 @@ class AccountInvitationView(TemplateView, InflowLoginView):
     
     def get(self, request, **kwargs):
         logout(request)
-        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        context = { "show_nav" : True, "error_msg" : "" }
         
         # Get the invitation information
-        guid = kwargs.get("invitation_guid")
-        selected_invitation = InFlowInvitation.objects.filter(GUID=guid).first()
+        selected_invitation = self.get_invitation(**kwargs)
         
         if selected_invitation is None: # User entered a bogus GUID
             raise Http404()
         
         context["user_email"] = selected_invitation.InvitedUser.email
+        context["is_expired"] = selected_invitation.has_this_invitation_expired()
+        
+        if selected_invitation.has_this_invitation_expired():
+            context["error_msg"] = "This invitation to InFlow has expired, please contact InFlow or the Freelancer that invited you for a renewed invitation"
         
         # If this page was hit from LinkedIn, go ahead and handle to log the user in
         if self.is_this_a_linkedin_request(request):
@@ -122,31 +125,48 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        context = { "linkedin" : self.set_linkedin_params(), "show_nav" : True }
+        context = { "show_nav" : True, "error_msg" : "" }
         
+        # Get the invitation information
+        selected_invitation = self.get_invitation(**kwargs)
+        
+        context["user_email"] = selected_invitation.InvitedUser.email
+        context["is_expired"] = selected_invitation.has_this_invitation_expired()
+        
+        # Handle Google Request
         google_id_token = request.POST.get("google-id-token", "")
-        
         if google_id_token != "":
             return self.handle_google_login_attempt(request,google_id_token)
         
         # Handle this as a standard sign up request
         # Gather user form data
-        username = request.POST.get("username", "")
+        username = selected_invitation.InvitedUser.email
         name = request.POST.get("name", "")
-        password = request.POST.get("password", "")
+        password_1 = request.POST.get("password_original", "")
+        password_2 = request.POST.get("password_confirm", "")
         agreed = request.POST.get("agree", False)
         
-        # Time to validate the entries
-        validator = UserCreationBaseValidators()
-        validator.attempt_to_create_user(username,name,password,agreed)
-        
-        if validator.error_thrown:
+        # Make the attempt to change the password
+        if password_1 == "" or password_2 == "":
+            context["error_msg"] = "Please enter your desired password in both fields"
+        elif password_1 == password_2:
+            validator = UserCreationBaseValidators()
+            validator.try_to_validate_password(selected_invitation.InvitedUser,password_1,request)
             context["error_msg"] = validator.error_message
         else:
-            login(request, validator.created_user)
+            context["error_msg"] = "Password and Password Confirmation Must Match"
+        
+        if context["error_msg"] == "":
+            login(request, selected_invitation.InvitedUser)
             return redirect(reverse("contracts:home"))
         
         return render(request, self.template_name, context)
+    
+    def get_invitation(self, **kwargs):
+        # Get the invitation information
+        guid = kwargs.get("invitation_guid")
+        selected_invitation = InFlowInvitation.objects.filter(GUID=guid).first()
+        return selected_invitation
 
 class OnboardingStepOneView(LoginRequiredMixin,TemplateView):
     template_name = "onboarding.step1.html"

@@ -91,6 +91,7 @@ class InflowLoginView:
     def handle_google_login_attempt(self,request,google_id_token):
         # First we need to send google_id_token for validation, make sure this request is legit
         login_attempt_failed = False
+        context = { "error_msg" : "" }
         google_api_caller = GoogleApi()
         google_api_response = google_api_caller.validate_google_token(google_id_token)
         

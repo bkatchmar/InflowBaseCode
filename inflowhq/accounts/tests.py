@@ -702,6 +702,28 @@ class ClientAccountGeneratorTests(TestCase):
         new_user_invitation = InFlowInvitation.objects.get(InvitedUser=new_user)
         
         self.assertNotEqual(date.today(), new_user_invitation.Expiry)
+    
+    def testExpirationFromInvitationView(self):
+        january_1 = date(2017,1,1)
+        far_out = date(2030,1,1)
+        
+        generator = ClientAccountGenerator()
+        
+        new_user_1 = User.objects.create(username="User1@workinflow.co",email="User1@workinflow.co")
+        new_user_2 = User.objects.create(username="User2@workinflow.co",email="User2@workinflow.co")
+        
+        i1 = InFlowInvitation.objects.create(InvitedUser=new_user_1,GUID=generator.generate_guid(),Expiry=january_1)
+        i2 = InFlowInvitation.objects.create(InvitedUser=new_user_2,GUID=generator.generate_guid(),Expiry=far_out)
+        
+        c = Client()
+        
+        response = c.get(("/account/invitation/%s" % i1.GUID))
+        self.assertEqual(200,response.status_code)
+        self.assertTrue(response.context["is_expired"])
+        
+        response = c.get(("/account/invitation/%s" % i2.GUID))
+        self.assertEqual(200,response.status_code)
+        self.assertFalse(response.context["is_expired"])
 
 class ClientContractRelationshipTests(TestCase):
     contract_name_1 = "ClientContractRelationshipTests Contract 1"
