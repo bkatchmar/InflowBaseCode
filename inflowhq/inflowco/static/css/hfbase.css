@@ -84,6 +84,7 @@ form div.radio-list span.button input[type="radio"] { display: inline-block; mar
 /* Main Elements */
 main h1 { font-size: 36px; line-height: 36px; text-align: center; }
 main h1.error { color: #800000; line-height: 38px; padding: 10px 15px; }
+main h1.error a { color: #800000; text-decoration: underline; }
 main div.login-buttons { margin: 48px auto 15px; width: 200px; }
 main div.login-buttons a.inflow-btn { display: inline-block; margin: 0px 0px 7px; padding: 10px 0px; text-align: center; width: 193px; }
 main div.separator { color: #000000; font-size: 14px; font-weight: 300; margin: 15px 0px; text-align: center; }

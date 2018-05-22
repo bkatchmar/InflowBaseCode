@@ -114,6 +114,7 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         
         context["user_email"] = selected_invitation.InvitedUser.email
         context["is_expired"] = selected_invitation.has_this_invitation_expired()
+        context["guid"] = selected_invitation.GUID
         
         if selected_invitation.has_this_invitation_expired():
             context["error_msg"] = "This invitation to InFlow has expired, please contact InFlow or the Freelancer that invited you for a renewed invitation"
@@ -132,11 +133,12 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         
         context["user_email"] = selected_invitation.InvitedUser.email
         context["is_expired"] = selected_invitation.has_this_invitation_expired()
+        context["guid"] = selected_invitation.GUID
         
         # Handle Google Request
         google_id_token = request.POST.get("google-id-token", "")
         if google_id_token != "":
-            return self.handle_google_login_attempt(request,google_id_token)
+            return self.handle_google_login_attempt(request,google_id_token,email_address_to_match=selected_invitation.InvitedUser.email,guid=selected_invitation.GUID)
         
         # Handle this as a standard sign up request
         # Gather user form data
@@ -156,9 +158,9 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         else:
             context["error_msg"] = "Password and Password Confirmation Must Match"
         
-        if context["error_msg"] == "":
-            login(request, selected_invitation.InvitedUser)
-            return redirect(reverse("contracts:home"))
+        #if context["error_msg"] == "":
+            #login(request, selected_invitation.InvitedUser)
+            #return redirect(reverse("contracts:home"))
         
         return render(request, self.template_name, context)
     

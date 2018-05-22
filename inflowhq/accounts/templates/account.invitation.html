@@ -5,15 +5,15 @@
 	<div class="content">
 		{% if is_expired %}
 			<h1 class="error">{{error_msg}}</h1>
+		{% elif error_msg != "" %}
+			<h1 class="error">{{error_msg}}</h1>
+			<h1 class="error"><a href="{% url 'accounts:invitation' guid %}">Try Again</a></h1>
 		{% else %}
 			<h1>InFlow to increase your cashflow. Get paid by the milestone.</h1>
 			<div class="login-buttons">
 				<div class="g-signin2" id="google-signin"></div>
 			</div>
 			<div class="separator">or</div>
-			{% if error_msg != "" %}
-				<div class="error-msg">{{error_msg}}</div>
-			{% endif %}
 			<form method="post" class="login-form">
 				<input type="email" name="username" placeholder="E-mail address" value="{{user_email}}" disabled />
 				<input type="text" name="name" placeholder="Name" required />
@@ -38,4 +38,9 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
 	<script src="{% static 'js/inflow.account.creation.js' %}"></script>
+	
+	{% if error_msg != "" %}
+		<script src="https://apis.google.com/js/platform.js"></script>
+		<script src="{% static 'js/inflow.google.signout.handler.js' %}?d=201805"></script>
+	{% endif %}
 {% endblock %}

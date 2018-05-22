@@ -488,7 +488,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
         
         return selected_contract
 
-class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
+class CreateContractStepFourth(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.creation.fourth.step.html"
     
     def get(self, request, **kwargs):
@@ -519,25 +519,17 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView):
         context = super(CreateContractStepFourth, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         context["in_edit_mode"] = False
-        context["phone"] = ""
         
-        contract_info = { }
+        contract_info = {}
+        
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
         
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+        if selected_contract is not None:
+            context["in_edit_mode"] = (selected_contract.ContractState == "c")
             selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
             selected_contract_recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
-            
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            else:
-                context["in_edit_mode"] = (selected_contract.ContractState == "c")
-                
-                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                    contract_info = selected_contract
-                else:
-                    raise PermissionDenied() # Raise 403
+            contract_info = selected_contract
         
         # Some quick scrubbing for the view, we're not actually saving this        
         contract_info.Name = contract_info.Name.replace("\"", "\\\"").replace("'", "\\'")
@@ -704,6 +696,14 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
         contract = self.build_new_object(request,**kwargs)
         contract.ContractState = "u"
         contract.save()
+        
+        # Get Recipient information if there is one
+        contract_recipient = Recipient.objects.filter(ContractForRecipient=contract).first()
+        
+        # Create all necessary objects for generating a relationship
+        client_lookup = ClientAccountGenerator()
+        client_lookup.create_relationship_for_contract(contract_recipient.EmailAddress,contract)
+        
         return redirect(reverse("contracts:create_contract_step_6", kwargs={"contract_id" : contract.id}))
     
     def process_save_for_later(self,request,**kwargs):

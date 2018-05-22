@@ -88,7 +88,7 @@ class InflowLoginView:
         context["linkedin"] = self.set_linkedin_params()
         return render(request, self.template_name, context)
     
-    def handle_google_login_attempt(self,request,google_id_token):
+    def handle_google_login_attempt(self,request,google_id_token,email_address_to_match="",guid=""):
         # First we need to send google_id_token for validation, make sure this request is legit
         login_attempt_failed = False
         context = { "error_msg" : "" }
@@ -103,10 +103,18 @@ class InflowLoginView:
         if google_api_response["sub"] is None:
             login_attempt_failed = True
         
+        # We got this request from the inviation screen
+        if google_api_response["email"] is not None and email_address_to_match != "":
+            if google_api_response["email"].lower() != email_address_to_match.lower():
+                login_attempt_failed = True
+                context["user_email"] = email_address_to_match
+                context["error_msg"] = "Google Email Sign In Does Not Match Invitation Email"
+                context["guid"] = guid
+        
         # We don't need to continue if the login attempt faield
         if login_attempt_failed:
             logout(request)
-            return render(request, self.template_name)
+            return render(request, self.template_name, context)
         
         # Call the Database to see if a user already exists for this Google User ID
         # TO DO: It may be appropriate to further identify the variables to see if they match what we got back from Google, but for now that may be overkill
