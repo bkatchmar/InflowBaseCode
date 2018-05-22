@@ -158,9 +158,9 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         else:
             context["error_msg"] = "Password and Password Confirmation Must Match"
         
-        #if context["error_msg"] == "":
-            #login(request, selected_invitation.InvitedUser)
-            #return redirect(reverse("contracts:home"))
+        if context["error_msg"] == "":
+            login(request, selected_invitation.InvitedUser)
+            return redirect(reverse("contracts:home"))
         
         return render(request, self.template_name, context)
     
