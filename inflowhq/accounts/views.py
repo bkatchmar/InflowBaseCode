@@ -154,6 +154,8 @@ class AccountInvitationView(TemplateView, InflowLoginView):
         elif password_1 == password_2:
             validator = UserCreationBaseValidators()
             validator.try_to_validate_password(selected_invitation.InvitedUser,password_1,request)
+            selected_invitation.InvitedUser.first_name = name
+            selected_invitation.InvitedUser.save()
             context["error_msg"] = validator.error_message
         else:
             context["error_msg"] = "Password and Password Confirmation Must Match"
