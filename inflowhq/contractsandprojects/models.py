@@ -99,6 +99,30 @@ class Contract(models.Model):
 
         return relationship
     
+    def is_the_user_the_creator_of_contract(self,loggedinuser):
+        if (loggedinuser.is_superuser):
+            return True
+        elif self.Creator.id == loggedinuser.id:
+            return True
+        else:
+            return False
+    
+    def is_the_user_a_freelancer(self,loggedinuser):
+        if (loggedinuser.is_superuser):
+            return True
+        elif Relationship.objects.filter(ContractForRelationship=self,ContractUser=loggedinuser,RelationshipType="f").exists():
+            return True
+        else:
+            return False
+    
+    def is_the_user_a_client(self,loggedinuser):
+        if (loggedinuser.is_superuser):
+            return True
+        elif Relationship.objects.filter(ContractForRelationship=self,ContractUser=loggedinuser,RelationshipType="c").exists():
+            return True
+        else:
+            return False
+    
     def calculate_time_left_string(self):
         diff = self.EndDate - timezone.now().date()
         

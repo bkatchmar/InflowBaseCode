@@ -743,13 +743,22 @@ class ClientContractRelationshipTests(TestCase):
         brian_1.set_password("Th3L10nK1ng15Fun")
         brian_1.save()
         
+        settings_brian_1 = UserSettings()
+        settings_brian_1 = settings_brian_1.get_settings_based_on_user(brian_1)
+        settings_brian_1.save()
+        
         brian_2 = User.objects.create(username="VideoXPG@gmail.com",email="VideoXPG@gmail.com",first_name="Brian",last_name="Katchmar")
         brian_2.set_password("Th3L10nK1ng15Fun")
         brian_2.save()
         
+        settings_brian_2 = UserSettings()
+        settings_brian_2 = settings_brian_2.get_settings_based_on_user(brian_2)
+        settings_brian_2.save()
+        
         if not Contract.objects.filter(Name=self.contract_name_1).exists():
             contract_1 = Contract.objects.create(Creator=brian_1,Name=self.contract_name_1,StartDate=date.today(),EndDate=date.today())
             Relationship.objects.create(ContractUser=brian_1,ContractForRelationship=contract_1,RelationshipType="f")
+            Relationship.objects.create(ContractUser=brian_2,ContractForRelationship=contract_1,RelationshipType="c")
     
     def testRelationshipGenerator(self):
         new_email_address = "ClientContractRelationshipTestsUser1@workinflow.co"
@@ -758,8 +767,13 @@ class ClientContractRelationshipTests(TestCase):
         brian_1 = User.objects.get(username="Brian@workinflow.co")
         contract_1 = Contract.objects.get(Name=self.contract_name_1)
         
-        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 1)
+        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 2)
         
         generator.create_relationship_for_contract(new_email_address,contract_1)
         
-        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 2)
+        self.assertEqual(len(Relationship.objects.filter(ContractForRelationship=contract_1)), 3)
+    
+    def testDoesUserNeedStripeIfTheyHaveClientRelationship(self):
+        brian_2 = User.objects.get(username="VideoXPG@gmail.com")
+        settings = UserSettings.objects.get(UserAccount=brian_2)
+        self.assertFalse(settings.does_this_user_need_stripe())

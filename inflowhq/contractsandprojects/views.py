@@ -42,13 +42,15 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
         context = super(ContractCreationView, self).get_context_data(**kwargs)
         context["projects"] = []
         
-        user_created_contracts = Contract.objects.filter(Creator=request.user)
+        user_contracts_where_relationship_exists = Relationship.objects.filter(ContractUser=request.user)
+        all_recipients = Recipient.objects.all()
         
         # Build the projects JSON object for the view
-        for contract in user_created_contracts:
-            recipient_for_contract = Recipient.objects.filter(ContractForRecipient=contract).first()
+        for relationship in user_contracts_where_relationship_exists:
+            contract = relationship.ContractForRelationship
+            recipient_for_contract = all_recipients.filter(ContractForRecipient=contract).first()
             
-            appended_project = { "id" : contract.id, "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y"), "state" : contract.ContractState, "slug" : contract.UrlSlug }
+            appended_project = { "id" : contract.id, "project_title" : contract.Name, "progress" : contract.get_contract_state_view(), "start_date" : contract.StartDate.strftime("%b %d %Y"), "end_date": contract.EndDate.strftime("%b %d %Y"), "state" : contract.ContractState, "slug" : contract.UrlSlug, "relationship" : relationship.RelationshipType }
             
             if recipient_for_contract is None:
                 appended_project["project_client"] = ""
@@ -58,11 +60,7 @@ class ContractCreationView(LoginRequiredMixin, TemplateView):
             context["projects"].append(appended_project)
         
         context["view_mode"] = "projects"
-        
-        if settings.StripeConnectAccountKey is None:
-            context["needs_stripe"] = True
-        else:
-            context["needs_stripe"] = False
+        context["needs_stripe"] = (not settings.can_this_user_create_contract())
         
         return context
 
@@ -139,7 +137,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             "locations" : []
         }
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
         
         if selected_contract is not None:
             selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
@@ -313,7 +311,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             "milestones" : []
         }
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
         
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
         if selected_contract is not None:
@@ -450,7 +448,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
             "id" : 0, "contract_name" : "", "extra_revision_fee" : 0.00, "request_for_change_fee" : 0.00, "charge_for_late_review" : 0.00, "kill_fee" : 0.00,
         }
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
         
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
         if selected_contract is not None:
@@ -522,7 +520,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView, ContractPermiss
         
         contract_info = {}
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
         
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
         if selected_contract is not None:
@@ -792,7 +790,7 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        contract_check = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         
         if contract_check is None:
             return redirect(reverse("contracts:home"))
@@ -853,7 +851,7 @@ class SpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermis
         # Set the context
         context = super(SpecificProjectMilestones, self).get_context_data(**kwargs)
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
         
@@ -910,7 +908,7 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        contract_check = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         
         # Base contract check so nothing gets overridden if we don't have permission
         if contract_check is None:
@@ -957,7 +955,7 @@ class SpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissi
         # Set the context
         context = super(SpecificProjectOverview, self).get_context_data(**kwargs)
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "description" : selected_contract.Description, "time_remaining" : selected_contract.calculate_time_left_string() }
@@ -998,7 +996,7 @@ class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissi
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        contract_check = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         
         if contract_check is None:
             return redirect(reverse("contracts:home"))
@@ -1013,7 +1011,7 @@ class SpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPermissi
         # Set the context
         context = super(SpecificProjectInvoices, self).get_context_data(**kwargs)
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         
         context["view_mode"] = "projects"
@@ -1043,7 +1041,7 @@ class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionH
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        contract_check = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        contract_check = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         
         if contract_check is None:
             return redirect(reverse("contracts:home"))
@@ -1075,7 +1073,7 @@ class SpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionH
         # Set the context
         context = super(SpecificProjectFiles, self).get_context_data(**kwargs)
         
-        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_contract = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         selected_contract_files = ContractFile.objects.filter(ContractForFile=selected_contract)
         
@@ -1141,7 +1139,7 @@ class ScheduleSendMilestone(LoginRequiredMixin, TemplateView, ContractPermission
         # Set the context
         context = super(ScheduleSendMilestone, self).get_context_data(**kwargs)
         
-        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_milestone = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_contract = selected_milestone.MilestoneContract
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
@@ -1169,7 +1167,7 @@ class ScheduleSendMilestoneConfirm(LoginRequiredMixin, TemplateView, ContractPer
         # Set the context
         context = super(ScheduleSendMilestoneConfirm, self).get_context_data(**kwargs)
         
-        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_milestone = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_contract = selected_milestone.MilestoneContract
         
         context["view_mode"] = "projects"
@@ -1192,7 +1190,7 @@ class SendMilestoneNowConfirm(LoginRequiredMixin, TemplateView, ContractPermissi
         # Set the context
         context = super(SendMilestoneNowConfirm, self).get_context_data(**kwargs)
         
-        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_milestone = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_contract = selected_milestone.MilestoneContract
         
         context["view_mode"] = "projects"

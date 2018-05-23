@@ -197,6 +197,20 @@ class ContractRelationshipTest(TestCase):
         self.assertIsNotNone(contract2.does_this_user_have_permission_to_see_contract(clara))
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(josh))
         self.assertIsNone(contract2.does_this_user_have_permission_to_see_contract(matt))
+    
+    def test_contract_edit_screen_2_kickout_if_relationship_only_client(self):
+        contract2 = Contract.objects.get(Name="Erin Contract")
+        user5 = User.objects.get(email="kenny@workinflow.co")
+        
+        request_url = ("/inflow/projects/contract/create/step-2/%s" % contract2.id)
+        
+        c = Client()
+        loginAttempt = c.login(username='kenny', password='password5')
+        response = c.get(request_url)
+        
+        self.assertEqual(200,response.status_code)
+        self.assertTrue(Relationship.objects.filter(ContractUser=user5,ContractForRelationship=contract2,RelationshipType='c').exists())
+        self.assertFalse("contract_info" in response.context) # User got a 404
 
 class ContractCreationScreenTest(TestCase):
     def setUp(self):
@@ -251,8 +265,8 @@ class ContractCreationScreenTest(TestCase):
         loginAttempt = c.login(username='Kenny@workinflow.co', password='Thing5Ar3Gr34t')
         response = c.get(request_url)
         
-        self.assertEqual(200,response.status_code) # User got a 404
-        self.assertFalse("contract_info" in response.context)
+        self.assertEqual(200,response.status_code)
+        self.assertFalse("contract_info" in response.context) # User got a 404
     
     def testSuperUserCanSeeContract(self):
         contract_1 = Contract.objects.get(Name="Brian Contract 1")

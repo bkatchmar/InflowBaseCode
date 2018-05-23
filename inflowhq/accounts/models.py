@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from contractsandprojects.models import Relationship
 from datetime import date, datetime
 from dateutil.relativedelta import relativedelta
 from django.db import models
@@ -117,12 +118,22 @@ class UserSettings(models.Model):
         return generated
     
     def does_this_user_need_stripe(self):
-        if self.StripeConnectAccountKey is None:
+        if Relationship.objects.filter(ContractUser=self.UserAccount,RelationshipType="c").exists():
+            return False
+        elif self.StripeConnectAccountKey is None:
             return True
         elif self.StripeConnectAccountKey == "":
             return True
         else:
             return False
+        
+    def can_this_user_create_contract(self):
+        if self.StripeConnectAccountKey is None:
+            return False
+        elif self.StripeConnectAccountKey == "":
+            return False
+        else:
+            return True
     
     def __str__(self):
         return self.UserAccount.username
