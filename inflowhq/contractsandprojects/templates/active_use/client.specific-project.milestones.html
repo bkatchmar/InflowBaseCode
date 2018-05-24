@@ -1,0 +1,43 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - Milestones{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
+	<div class="content project-arrow higher" ng-app="milestonesApp" ng-controller="milestonesCtrl" ng-init="milestoneToUpload=0">
+		<div class="heading-elements">
+			<div class="header">{{contract_info.name}}</div>
+			<div class="table">
+				<div class="table-header">PAYMENT PROGRESS</div>
+				<div class="table-content split">
+					<div class="cleared">$0</div>
+					<div class="in-progress">${{contract_info.total_worth}}</div>
+				</div>
+			</div>
+			<div class="table">
+				<div class="table-header">PROJECT STATUS</div>
+				<div class="table-content">{{contract_info.state}}</div>
+			</div>
+			<div class="sub-header">{{contract_info.client_name}}</div>
+		</div>
+		<div class="ribbon four-buttons">
+			<span class="on"><a href="#">MILESTONES</a></span>
+			<span><a href="#">OVERVIEW</a></span>
+			<span><a href="#">INVOICES</a></span>
+			<span><a href="#">FILES</a></span>
+		</div>
+		<div class="milestone-detail-list milestones">
+			{% for error in errors %}
+				<div class="error-msg">{{error}}</div>
+			{% endfor %}
+			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
+	<script src="{% static 'js/dropzone.js' %}"></script>
+	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=20180430"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180430"></script>
+	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180430"></script>
+	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
+{% endblock %}

@@ -39,10 +39,20 @@
 						<td class="start-date">{{ project.start_date }}</td>
 						<td class="end-date">{{ project.end_date }}</td>
 						<td class="icon">
-							{% if project.state == "c" %}
-								<a href="{% url 'contracts:create_contract_step_1_edit' project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+							{% if project.relationship == "f" %}
+								{% if project.state == "c" %}
+									<a href="{% url 'contracts:create_contract_step_1_edit' project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% else %}
+									<a href="{% url 'contracts:project_milestones' project.slug project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% endif %}
 							{% else %}
-								<a href="{% url 'contracts:project_milestones' project.slug project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% if project.state == "c" %}
+									<a href="#"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% elif project.state == "u" %}
+									<a href="{% url 'contracts:client_project_milestones' project.slug project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% else %}
+									<a href="{% url 'contracts:client_project_milestones' project.slug project.id %}"><img src="{% static 'img/if_Icon_search_1595640.png' %}" alt="Project Specific Page" class="specific-project" /></a>
+								{% endif %}
 							{% endif %}
 						</td>
 					</tr>

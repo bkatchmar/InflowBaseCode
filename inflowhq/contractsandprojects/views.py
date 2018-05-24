@@ -640,7 +640,7 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView, ContractPermiss
             
         return selected_contract
 
-class CreateContractStepFive(LoginRequiredMixin, TemplateView):
+class CreateContractStepFive(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.creation.fifth.step.html"
     
     def get(self, request, **kwargs):
@@ -672,21 +672,14 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
         context["view_mode"] = "projects"
         context["in_edit_mode"] = False
         
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
+        
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            else:
-                context["in_edit_mode"] = (selected_contract.ContractState == "c")
-                
-                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                    contract_paragraphs = selected_contract.get_contract_text()
-                    context["contract_info"] = selected_contract
-                    context["paragraphs"] = contract_paragraphs
-                else:
-                    raise PermissionDenied() # Raise 403
+        if selected_contract is not None:
+            context["in_edit_mode"] = (selected_contract.ContractState == "c")
+            contract_paragraphs = selected_contract.get_contract_text()
+            context["contract_info"] = selected_contract
+            context["paragraphs"] = contract_paragraphs
         
         return context
     
@@ -721,7 +714,7 @@ class CreateContractStepFive(LoginRequiredMixin, TemplateView):
                 
         return selected_contract
 
-class ContractDoneCreated(LoginRequiredMixin, TemplateView):
+class ContractDoneCreated(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
     template_name = "contract_creation/contract.message.creation-done.html"
     
     def get(self, request, **kwargs):
@@ -746,26 +739,19 @@ class ContractDoneCreated(LoginRequiredMixin, TemplateView):
         context = super(ContractDoneCreated, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         
+        selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
+        
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
-        if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
+        if selected_contract is not None:
+            context["in_edit_mode"] = True
+            selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+            context["contract_info"] = selected_contract
+            context["contract_recipient"] = selected_contract_recipient
+            context["user_email"] = request.user.email
             
-            if selected_contract is None: # Just exit and raise a 404 message
-                raise Http404()
-            else:
-                context["in_edit_mode"] = True
-                
-                if selected_contract.does_this_user_have_permission_to_see_contract(request.user):
-                    selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
-                    context["contract_info"] = selected_contract
-                    context["contract_recipient"] = selected_contract_recipient
-                    context["user_email"] = request.user.email
-                    
-                    # Check if the recipient is of a user that actually exists
-                    client_lookup = ClientAccountGenerator()
-                    context["recipient_not_in_system"] = (not client_lookup.does_this_account_already_exists(selected_contract_recipient.EmailAddress))
-                else:
-                    raise PermissionDenied() # Raise 403
+            # Check if the recipient is of a user that actually exists
+            client_lookup = ClientAccountGenerator()
+            context["recipient_not_in_system"] = (not client_lookup.does_this_account_already_exists(selected_contract_recipient.EmailAddress))
         
         return context
     
@@ -1196,6 +1182,44 @@ class SendMilestoneNowConfirm(LoginRequiredMixin, TemplateView, ContractPermissi
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
         context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name }
+        
+        return context
+
+class ClientSpecificProjectMilestones(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.milestones.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectMilestones, self).get_context_data(**kwargs)
+        
+        selected_contract = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "number_of_revisions" : selected_contract.NumberOfAllowedRevisions }
+        context["slug"] = kwargs.get("contract_slug")
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
         
         return context
 
