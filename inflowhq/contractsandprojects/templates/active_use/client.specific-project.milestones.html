@@ -3,7 +3,7 @@
 {% block title %}{{contract_info.name}} - Milestones{% endblock %}
 {% block main_tag %}
 	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
-	<div class="content project-arrow higher" ng-app="milestonesApp" ng-controller="milestonesCtrl" ng-init="milestoneToUpload=0">
+	<div class="content project-arrow higher">
 		<div class="heading-elements">
 			<div class="header">{{contract_info.name}}</div>
 			<div class="table">
@@ -20,7 +20,7 @@
 			<div class="sub-header">{{contract_info.client_name}}</div>
 		</div>
 		<div class="ribbon four-buttons">
-			<span class="on"><a href="#">MILESTONES</a></span>
+			<span class="on"><a href="{% url 'contracts:client_project_milestones' contract_info.slug contract_info.id %}">MILESTONES</a></span>
 			<span><a href="#">OVERVIEW</a></span>
 			<span><a href="#">INVOICES</a></span>
 			<span><a href="#">FILES</a></span>
@@ -29,6 +29,41 @@
 			{% for error in errors %}
 				<div class="error-msg">{{error}}</div>
 			{% endfor %}
+			{% for ms in milestones %}
+				<div class="milestone-name-upload">
+					<span class="name">Milestone: {{ms.name}}</span>
+					<span class="upload on"><a href="#">View Milestone</a></span>
+				</div>
+				<div class="milestone-information">
+					<div class="due-date">
+						<div class="due">DUE</div>
+						<div class="date-box">
+							<div class="month">{{ms.deadline_month}}</div>
+							<div class="day">{{ms.deadline_day}}</div>
+						</div>
+					</div>
+					<div class="status">
+						<div class="status-bar"><strong>Status</strong>: {{ms.state}}</div>
+						<div class="task-bar"><strong>Task</strong>: {{ms.details}}</div>
+						{% if ms.files|length > 0 %}
+							<div class="uploaded-table">
+								<div class="header">UPLOADED MILESTONES</div>
+								{% for file in ms.files %}
+									<div class="line">
+										<span class="file-name">{{file.name}}</span>
+										<span class="download no-border"><a href="{{file.preview_download_url}}" download><img src="{% static 'img/if_178_download_183297.png' %}" alt="Download File" /></a></span>
+									</div>
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+					<div class="payment-details">
+						<div class="paid">TO BE PAID</div>
+						<div class="amount">${{ms.amount}}</div>
+						<a href="#">View payment details</a>
+					</div>
+				</div>
+			{% endfor %}
 			<div class="revisions">Number of Revisions Remaining: {{contract_info.number_of_revisions}}</div>
 		</div>
 	</div>
@@ -36,8 +71,5 @@
 {% block bottom_scripts %}
 	<script src="{% static 'js/jquery.leanModal.min.js' %}"></script>
 	<script src="{% static 'js/dropzone.js' %}"></script>
-	<script src="{% static 'js/inflow.freelance.active.use.js' %}?d=20180430"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.app.js' %}?d=20180430"></script>
-	<script src="{% static 'js/inflow.freelancer.active-use.controller.js' %}?d=20180430"></script>
 	<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 {% endblock %}

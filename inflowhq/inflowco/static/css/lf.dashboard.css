@@ -213,6 +213,7 @@ main div.content div.milestone-detail-list div.milestone-information div.status 
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line { font-size: 12px; padding: 0px 0px 0px 10px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span { display: inline-block; padding: 10px 0px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; float: right; padding: 8px 5px 9px; }
+main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download.no-border { border-width: 0px 0px 0px 1px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download a { display: block; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.download img { height: auto; width: 15px; }
 main div.content div.milestone-detail-list div.milestone-information div.status div.uploaded-table div.line span.delete { cursor: pointer; float: right; padding: 10px 10px; }

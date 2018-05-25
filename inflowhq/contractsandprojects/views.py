@@ -1215,11 +1215,30 @@ class ClientSpecificProjectMilestones(LoginRequiredMixin, TemplateView, Contract
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "number_of_revisions" : selected_contract.NumberOfAllowedRevisions }
         context["slug"] = kwargs.get("contract_slug")
+        context["milestones"] = []
         
         if selected_contract is None:
             context["in_edit_mode"] = False
         else:
             context["in_edit_mode"] = True
+            
+        # Build the necessary milestone objects for the view
+        for milestone in contract_milestones:
+            milestone_files = MilestoneFile.objects.filter(MilestoneForFile=milestone)
+            milestone_obj = { 
+                    "id" : milestone.IdMilestone, 
+                    "name" : milestone.Name, 
+                    "deadline_month" : milestone.Deadline.strftime("%b"), 
+                    "deadline_day" : milestone.Deadline.strftime("%d"), 
+                    "details" : milestone.Explanation, 
+                    "amount" : "{0:.0f}".format(milestone.MilestonePaymentAmount), 
+                    "state" : milestone.get_milestone_state_view(),
+                    "files": [] }
+            
+            for file in milestone_files:
+                milestone_obj["files"].append({ "id" : file.id, "name" : file.FileName, "preview_download_url" : file.FilePreviewURL })
+            
+            context["milestones"].append(milestone_obj)
         
         return context
 
