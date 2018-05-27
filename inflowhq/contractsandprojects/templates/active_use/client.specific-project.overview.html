@@ -1,0 +1,62 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - Invoices{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
+	<div class="content project-arrow higher">
+		<div class="heading-elements">
+			<div class="header">{{contract_info.name}}</div>
+			<div class="table">
+				<div class="table-header">PAYMENT PROGRESS</div>
+				<div class="table-content split">
+					<div class="cleared">$0</div>
+					<div class="in-progress">${{contract_info.total_worth}}</div>
+				</div>
+			</div>
+			<div class="table">
+				<div class="table-header">PROJECT STATUS</div>
+				<div class="table-content">{{contract_info.state}}</div>
+			</div>
+			<div class="sub-header">{{contract_recipient.billing_name}}</div>
+		</div>
+		<div class="ribbon four-buttons">
+			<span><a href="{% url 'contracts:client_project_milestones' contract_info.slug contract_info.id %}">MILESTONES</a></span>
+			<span class="on"><a href="{% url 'contracts:client_project_overview' contract_info.slug contract_info.id %}">OVERVIEW</a></span>
+			<span><a href="#">INVOICES</a></span>
+			<span><a href="#">FILES</a></span>
+		</div>
+		<div class="milestone-contacts">
+			<form method="post" action="{% url 'contracts:client_project_overview' contract_info.slug contract_info.id %}">
+				<div class="header">
+					Contact Information
+				</div>
+				{% if contract_recipient.contact_name != "" %}
+					<div class="line">
+						<span class="label">Contact Name:</span>
+						<span>{{contract_recipient.contact_name}}</span>
+					</div>
+				{% endif %}
+				<div class="line">
+					<span class="label">Client Name:</span>
+					<span>{{contract_recipient.billing_name}}</span>
+				</div>
+				<div class="line">
+					<span class="label">Email:</span>
+					<span>{{contract_recipient.billing_email}}</span>
+				</div>
+				<div class="line">
+					<span class="label">Phone:</span>
+					<span>{{contract_recipient.phone_number}}</span>
+				</div>
+				<div class="header secondary">Terms</div>
+				<div class="line"><span class="label">Task:</span>{{contract_info.description}}</div>
+				<div class="line"><span class="label">Payment Total:</span>${{contract_info.total_worth}}</div>
+				<div class="line"><span class="label">Project Duration:</span>{{contract_info.time_remaining}}</div>
+				<div class="header secondary"><a href="#">View Contract</a></div>
+				{% csrf_token %}
+			</form>
+		</div>
+	</div>
+{% endblock %}
+{% block bottom_scripts %}
+{% endblock %}

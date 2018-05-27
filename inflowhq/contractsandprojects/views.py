@@ -1242,6 +1242,48 @@ class ClientSpecificProjectMilestones(LoginRequiredMixin, TemplateView, Contract
         
         return context
 
+class ClientSpecificProjectOverview(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.overview.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectOverview, self).get_context_data(**kwargs)
+        
+        selected_contract = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug, "description" : selected_contract.Description, "time_remaining" : selected_contract.calculate_time_left_string() }
+        
+        contract_recipient = { "billing_name" : "", "billing_email" : "", "contact_name" : "", "phone_number" : "" }
+        
+        selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+        
+        if selected_contract_recipient is not None:
+            contract_recipient["billing_name"] = selected_contract_recipient.BillingName
+            contract_recipient["billing_email"] = selected_contract_recipient.EmailAddress
+            contract_recipient["contact_name"] = selected_contract_recipient.Name
+            
+            # Fracture the phone number
+            if selected_contract_recipient.PhoneNumber != "" and selected_contract_recipient.PhoneNumber is not None:
+                number_parts = selected_contract_recipient.PhoneNumber.split("-")
+                contract_recipient["phone_number"] = selected_contract_recipient.PhoneNumber
+        
+        context["contract_recipient"] = contract_recipient
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     
