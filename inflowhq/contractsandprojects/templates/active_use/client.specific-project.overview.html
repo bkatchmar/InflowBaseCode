@@ -23,7 +23,7 @@
 			<span><a href="{% url 'contracts:client_project_milestones' contract_info.slug contract_info.id %}">MILESTONES</a></span>
 			<span class="on"><a href="{% url 'contracts:client_project_overview' contract_info.slug contract_info.id %}">OVERVIEW</a></span>
 			<span><a href="{% url 'contracts:client_project_invoices' contract_info.slug contract_info.id %}">INVOICES</a></span>
-			<span><a href="#">FILES</a></span>
+			<span><a href="{% url 'contracts:client_project_files' contract_info.slug contract_info.id %}">FILES</a></span>
 		</div>
 		<div class="milestone-contacts">
 			<form method="post" action="{% url 'contracts:client_project_overview' contract_info.slug contract_info.id %}">

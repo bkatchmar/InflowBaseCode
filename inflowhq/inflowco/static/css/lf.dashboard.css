@@ -288,6 +288,8 @@ main div.content div.files div.file-listing div.row span.date-uploaded { width: 
 main div.content div.files div.file-listing div.row span.download { border-color: #979797; border-style: solid; border-width: 0px 1px; text-align: center; width: 40px; }
 main div.content div.files div.file-listing div.row span.download a { display: block; }
 main div.content div.files div.file-listing div.row span.download a img { height: auto; width: 15px; }
+main div.content div.files div.file-listing div.row span.download.client { border-width: 0px 0px 0px 1px; width: 83px; }
+main div.content div.files div.file-listing div.row.client:last-child { border-width: 0px 0px 0px; }
 main div.content div.files div.file-listing div.row span.delete { cursor: pointer; text-align: center; width: 40px; }
 main div.content div.files div.buttons { margin: 15px 0px; text-align: center; }
 

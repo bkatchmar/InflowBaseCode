@@ -1317,6 +1317,44 @@ class ClientSpecificProjectInvoices(LoginRequiredMixin, TemplateView, ContractPe
             
         return context
 
+class ClientSpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.files.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectFiles, self).get_context_data(**kwargs)
+        
+        selected_contract = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        selected_contract_files = ContractFile.objects.filter(ContractForFile=selected_contract)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        context["contract_files"] = []
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
+        for file in selected_contract_files:
+            context["contract_files"].append({ "id" : file.id, "name" : file.FileName, "file_size" : file.SizeOfFile, "url" : file.FileURL, "uploaded" : file.FileUploaded.strftime("%b %d %Y") })
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     
