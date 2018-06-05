@@ -32,7 +32,7 @@
 			{% for ms in milestones %}
 				<div class="milestone-name-upload">
 					<span class="name">Milestone: {{ms.name}}</span>
-					<span class="upload on"><a href="#">View Milestone</a></span>
+					<span class="upload on"><a href="{% url 'contracts:client_project_milestones_preview' contract_info.slug contract_info.id ms.id %}">View Milestone</a></span>
 				</div>
 				<div class="milestone-information">
 					<div class="due-date">

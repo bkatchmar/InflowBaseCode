@@ -1093,7 +1093,7 @@ class PreviewMilestone(LoginRequiredMixin, TemplateView, ContractPermissionHandl
         # Set the context
         context = super(PreviewMilestone, self).get_context_data(**kwargs)
         
-        selected_milestone = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_milestone = self.get_contract_if_user_is_freelancer_relationship(request.user,**kwargs)
         selected_contract = selected_milestone.MilestoneContract
         selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
@@ -1347,6 +1347,44 @@ class ClientSpecificProjectFiles(LoginRequiredMixin, TemplateView, ContractPermi
         
         for file in selected_contract_files:
             context["contract_files"].append({ "id" : file.id, "name" : file.FileName, "file_size" : file.SizeOfFile, "url" : file.FileURL, "uploaded" : file.FileUploaded.strftime("%b %d %Y") })
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
+class ClientSpecificProjectPreviewMilestone(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.milestones.preview.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectPreviewMilestone, self).get_context_data(**kwargs)
+        
+        # From freelancer
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y") }
+        context["contract_files"] = milestone_files
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
         
         if selected_contract is None:
             context["in_edit_mode"] = False

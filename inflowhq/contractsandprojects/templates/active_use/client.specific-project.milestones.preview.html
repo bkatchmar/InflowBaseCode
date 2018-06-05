@@ -1,0 +1,25 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - {{milestone_info.name}} - Preview Milestone{% endblock %}
+{% block main_tag %}
+	<div class="back-links"><a href="{% url 'contracts:home' %}">Return to Projects</a></div>
+	<div class="content project-arrow higher">
+		<div class="heading-elements">
+			<div class="header">{{contract_info.name}}</div>
+			<div class="sub-header">{{contract_info.client_name}}</div>
+		</div>
+		{% for file in contract_files %}
+			<div class="preview-window">
+				<div class="file-name">{{file.FileName}}</div>
+				<div class="preview-area"><img src="{{file.FilePreviewURL}}" alt="Preview {{milestone_info.name}}" /></div>
+			</div>
+		{% endfor %}
+		<div class="feedback-due"><span>Feedback from client due:</span>{{milestone_info.feedback_due}}</div>
+		<div class="inner-details footer">
+			<div class="buttons">
+				<a href="#" class="alt">Decline Milestone</a>
+				<a href="#">Approve Milestone</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
