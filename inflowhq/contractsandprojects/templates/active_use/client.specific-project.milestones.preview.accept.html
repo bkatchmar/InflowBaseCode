@@ -1,0 +1,8 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - {{milestone_info.name}} - Preview Milestone{% endblock %}
+{% block main_tag %}
+	<div class="accept-milestone">
+		<div class="header">Payment for {{milestone_info.name}}</div>
+	</div>
+{% endblock %}

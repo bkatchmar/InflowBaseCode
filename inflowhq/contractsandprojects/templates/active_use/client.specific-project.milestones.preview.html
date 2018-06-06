@@ -18,7 +18,7 @@
 		<div class="inner-details footer">
 			<div class="buttons">
 				<a href="#" class="alt">Decline Milestone</a>
-				<a href="#">Approve Milestone</a>
+				<a href="{% url 'contracts:client_project_milestones_accept' contract_info.slug contract_info.id milestone_info.id %}">Approve Milestone</a>
 			</div>
 		</div>
 	</div>
