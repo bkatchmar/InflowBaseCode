@@ -2,6 +2,7 @@ from __future__ import unicode_literals # I have no idea what this even is
 # References from our own library
 from accounts.inflowaccountloginview import InflowLoginView
 from accounts.models import UserSettings
+from contractsandprojects.models import Milestone, Recipient, Relationship
 from inflowco.models import Currency, EmailSignup
 from inflowco.mailchimp import MailChimpCommunication
 from easy_pdf.views import PDFTemplateView
@@ -15,6 +16,7 @@ from django.core.serializers import serialize
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -162,10 +164,30 @@ class UserDashboardLowFi(LoginRequiredMixin,TemplateView):
         user_settings = UserSettings()
         user_settings = user_settings.get_settings_based_on_user(request.user)
         
+        user_contracts_where_relationship_exists = Relationship.objects.filter(ContractUser=request.user)
+        all_recipients = Recipient.objects.all()
+        all_milestones = Milestone.objects.all().order_by("Deadline")
+        
         context["needs_stripe"] = user_settings.does_this_user_need_stripe()
         context["call_state"] = settings.STRIPE_CALL_STATE
         context["stripe_acct"] = settings.STRIPE_ACCOUNT_ID
         context["first_name"] = request.user.first_name
+        context["projects_in_progress"] = []
+        context["upcoming_milestones"] = []
+        
+        for relationship in user_contracts_where_relationship_exists:
+            if relationship.ContractForRelationship.StartDate <= timezone.now().date() and relationship.ContractForRelationship.EndDate >= timezone.now().date():
+                # Get recipient and fill in entry for the in progress projects
+                recipient_for_contract = all_recipients.filter(ContractForRecipient=relationship.ContractForRelationship).first()
+                context["projects_in_progress"].append({ "name" : relationship.ContractForRelationship.Name, "progress" : relationship.ContractForRelationship.get_contract_state_view(), "client" : recipient_for_contract.Name })
+                
+                # Get milestones for this contract that are still due
+                contract_milestones = all_milestones.filter(MilestoneContract=relationship.ContractForRelationship)
+                
+                for milestone in contract_milestones:
+                    if milestone.Deadline >= timezone.now().date():
+                        context["upcoming_milestones"].append({ "date" : milestone.Deadline.strftime("%b %d %Y"), "name" : milestone.Name, "project" : milestone.MilestoneContract.Name, "amount" : "{0:.2f}".format(milestone.MilestonePaymentAmount) })
+        
         return context
 
 class HelpCenter(LoginRequiredMixin,TemplateView):

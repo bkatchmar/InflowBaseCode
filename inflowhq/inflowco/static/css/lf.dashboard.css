@@ -134,20 +134,31 @@ main div.content div.list div.item div.icon { border: none; padding: 13px 6px; w
 main div.content div.list div.item div.icon.active { background-color: #D8D8D8; }
 main div.content div.list div.item div.icon img { height: auto; width: 45px; }
 
-main div.content table.list { margin: 0px auto; width: 740px; }
-main div.content table.list thead th { border-color: #979797; border-style: solid; border-width: 1px; font-size: 16px; font-weight: 700; padding: 5px 0px; }
-main div.content table.list thead th.info { width: 255px; }
-main div.content table.list thead th.progress { width: 132px; }
-main div.content table.list thead th.start-date { width: 145px; }
-main div.content table.list thead th.end-date { width: 145px; }
-main div.content table.list tbody td { border-color: #979797; border-style: solid; border-width: 1px; font-size: 20px; line-height: 22px; text-align: center; vertical-align: middle; }
-main div.content table.list tbody td.info { padding: 12px 0px 12px 14px; text-align: left; }
-main div.content table.list tbody td.info span.title { display: inline-block; font-size: 20px; font-weight: 700; line-height: 28px; width: 230px; }
-main div.content table.list tbody td.info span.description { display: inline-block; font-size: 20px; line-height: 22px; }
-main div.content table.list tbody td.icon { padding: 0px; }
-main div.content table.list tbody td.icon a { display: block; }
-main div.content table.list tbody td.icon img.specific-project { height: auto; width: 45px; }
-main div.content table.list tbody td.empty-message { border: none; color: #000; font-size: 16px; line-height: 18px; padding: 15px 0px; }
+main table.list { margin: 0px auto; width: 740px; }
+main table.list thead th { border-color: #979797; border-style: solid; border-width: 1px; font-size: 16px; font-weight: 700; padding: 5px 0px; }
+main table.list thead th.info { width: 255px; }
+main table.list thead th.progress { width: 132px; }
+main table.list thead th.start-date { width: 145px; }
+main table.list thead th.end-date { width: 145px; }
+main table.list tbody td { border-color: #979797; border-style: solid; border-width: 1px; font-size: 20px; line-height: 22px; text-align: center; vertical-align: middle; }
+main table.list tbody td.info { padding: 12px 0px 12px 14px; text-align: left; }
+main table.list tbody td.info span.title { display: inline-block; font-size: 20px; font-weight: 700; line-height: 28px; width: 230px; }
+main table.list tbody td.info span.description { display: inline-block; font-size: 20px; line-height: 22px; }
+main table.list tbody td.icon { padding: 0px; }
+main table.list tbody td.icon a { display: block; }
+main table.list tbody td.icon img.specific-project { height: auto; width: 45px; }
+main table.list tbody td.empty-message { border: none; color: #000; font-size: 16px; line-height: 18px; padding: 15px 0px; }
+
+main div.dashboard-tables table.list { width: 100%; }
+main div.dashboard-tables table.list tbody td { font-size: 16px; padding: 12px 0px; text-align: center; }
+
+main div.start-project { padding: 20px 0px 0px 35px; }
+main div.start-project div.heading { padding: 0px 0px 10px; }
+main div.start-project a,
+main div.start-project a:link,
+main div.start-project a:visited,
+main div.start-project a:hover,
+main div.start-project a:active  { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 16px; margin: 5px 0px; padding: 10px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 main div.content.project-arrow:before { border-color: transparent #979797; border-style: solid; border-width: 11px 0px 11px 16px; content: ""; display: block; left: -1px; position: absolute; top: 135px; width: 0px; }
 main div.content.project-arrow:after { border-color: transparent #FFF; border-style: solid; border-width: 10px 0px 10px 15px; content: ""; display: block; left: -1px; position: absolute; top: 136px; width: 0px; }
@@ -567,6 +578,8 @@ main div.dashboard-tables div.data-table div.table div.row span { border-color: 
 main div.dashboard-tables div.data-table div.table div.row span:last-child { border-width: 0px 0px 0px 0px; }
 main div.dashboard-tables div.data-table div.table div.row span.date { width: 80px; }
 main div.dashboard-tables div.data-table div.table div.row span.milestone { width: 210px; }
+main div.dashboard-tables div.data-table div.table div.row span.progress { width: 195px; }
+main div.dashboard-tables div.data-table div.table div.row span.client { width: 210px; }
 main div.dashboard-tables div.data-table div.table div.row span.project { width: 210px; }
 main div.dashboard-tables div.data-table div.table div.row span.amount { width: 120px; }
 main div.dashboard-tables.right div.data-table div.table div.row span { font-size: 14px; padding: 0px 10px; text-align: left; }

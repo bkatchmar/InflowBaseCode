@@ -8,88 +8,56 @@
 			<a href="https://connect.stripe.com/oauth/authorize?response_type=code&client_id={{stripe_acct}}&scope=read_write&state={{call_state}}">Sign Up For Stripe</a>
 		</div>
 	{% endif %}
+	{% if not needs_stripe %}
+		<div class="start-project">
+			<div class="heading">Create A Project To Get Started</div>
+			<a href="{% url 'contracts:create_contract_step_1' %}">Create Project</a>
+		</div>
+	{% endif %}
 	<div class="dashboard-tables left">
 		<div class="data-table">
-			<div class="header">Upcoming Milestones</div>
-			<div class="table">
-				<div class="row table-header">
-					<span class="date">DATE</span>
-					<span class="milestone">MILESTONE</span>
-					<span class="project">PROJECT</span>
-					<span class="amount">TOTAL</span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-			</div>
+			<div class="header">Projects in Progress</div>
+			<table class="list">
+				<thead>
+					<tr>
+						<th class="info">CURRENT PROJECT</th>
+						<th class="progress">PROGRESS</th>
+						<th class="client">CLIENT</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for in_progress in projects_in_progress %}
+						<tr>
+							<td class="info">{{in_progress.name}}</td>
+							<td class="progress">{{in_progress.progress}}</td>
+							<td class="client">{{in_progress.client}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 		<div class="data-table">
-			<div class="header">Milestones Reached</div>
-			<div class="table">
-				<div class="row table-header">
-					<span class="date">DATE</span>
-					<span class="milestone">MILESTONE</span>
-					<span class="project">PROJECT</span>
-					<span class="amount">PAID</span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-				<div class="row">
-					<span class="date"></span>
-					<span class="milestone"></span>
-					<span class="project"></span>
-					<span class="amount"></span>
-				</div>
-			</div>
+			<div class="header">Upcoming Milestones</div>
+			<table class="list">
+				<thead>
+					<tr>
+						<th class="date">DATE</th>
+						<th class="milestone">MILESTONE</th>
+						<th class="project">PROJECT</th>
+						<th class="amount">PAID</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for milestone in upcoming_milestones %}
+						<tr>
+							<td class="date">{{milestone.date}}</td>
+							<td class="milestone">{{milestone.name}}</td>
+							<td class="project">{{milestone.project}}</td>
+							<td class="amount">${{milestone.amount}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 	</div>
 {% endblock %}
