@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/invoices', views.SpecificProjectInvoices.as_view(), name='project_invoices'),
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/files', views.SpecificProjectFiles.as_view(), name='project_files'),
     url(r'^my-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/overview', views.SpecificProjectOverview.as_view(), name='project_overview'),
+    url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/accept/(?P<milestone_id>[0-9]+)/confirm', views.ClientSpecificProjectPreviewMilestoneAcceptConfirm.as_view(), name='client_project_milestones_accept_confirm'),
     url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/accept/(?P<milestone_id>[0-9]+)', views.ClientSpecificProjectPreviewMilestoneAccept.as_view(), name='client_project_milestones_accept'),
     url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones/preview/(?P<milestone_id>[0-9]+)', views.ClientSpecificProjectPreviewMilestone.as_view(), name='client_project_milestones_preview'),
     url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/milestones', views.ClientSpecificProjectMilestones.as_view(), name='client_project_milestones'),

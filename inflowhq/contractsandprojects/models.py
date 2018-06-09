@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 import datetime
+from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db import models
 from django.template.defaultfilters import slugify
@@ -41,6 +42,11 @@ MILESTONE_STATES = (
 OWNERSHIP_TYPE = (
                   ('i', 'I own this work'),
                   ('u', 'Client owns this work'),
+                  )
+
+MILESTONE_REACTIONS = (
+                  ('a', 'Accept'),
+                  ('r', 'Reject'),
                   )
 
 class Contract(models.Model):
@@ -227,6 +233,15 @@ class Milestone(models.Model):
                 return t[1]
             
         return ""
+    
+    def get_stripe_transaction_fee(self,stripe_rate=0.029):
+        return (self.MilestonePaymentAmount * Decimal(stripe_rate))
+    
+    def get_sales_tax(self,sales_tax=0.08875):
+        return (self.MilestonePaymentAmount * Decimal(sales_tax))
+    
+    def get_total_payment(self,stripe_rate=0.029,sales_tax=0.08875):
+        return self.MilestonePaymentAmount + self.get_stripe_transaction_fee(stripe_rate) + self.get_sales_tax(sales_tax)
 
     class Meta:
        db_table = 'Milestone'
@@ -256,6 +271,13 @@ class MilestoneFile(models.Model):
     
     class Meta:
        db_table = "MilestoneFile"
+       
+class MilestoneReaction(models.Model):
+    MilestoneForReaction = models.ForeignKey(Milestone,unique=False,null=False,on_delete=models.CASCADE)
+    UserReacting = models.ForeignKey(User,unique=False,null=False,on_delete=models.CASCADE)
+    Comment = models.TextField(null=False)
+    ReactionType = models.CharField(max_length=1,null=False,choices=MILESTONE_REACTIONS,default='a')
+    ReactionDateTime = models.DateTimeField(auto_now=False,auto_now_add=False)
 
 class PaymentPlan(models.Model):
     ContractForPaymentPlan = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)

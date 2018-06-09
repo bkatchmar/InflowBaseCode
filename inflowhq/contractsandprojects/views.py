@@ -21,7 +21,7 @@ from accounts.models import UserSettings
 
 # Contracts and Projects App References
 from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
-from contractsandprojects.models import Contract, ContractFile, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile
+from contractsandprojects.models import Contract, ContractFile, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile, MilestoneReaction
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
 from contractsandprojects.request_handler import AmazonBotoHandler, RequestInputHandler
@@ -1404,6 +1404,11 @@ class ClientSpecificProjectPreviewMilestoneAccept(LoginRequiredMixin, TemplateVi
         
         return render(request, self.template_name, context)
     
+    def post(self, request, **kwargs):
+        # MilestoneReaction
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        return redirect(reverse("contracts:client_project_milestones_accept_confirm", kwargs={"contract_slug" : selected_milestone.MilestoneContract.UrlSlug, "contract_id" : selected_milestone.MilestoneContract.id, "milestone_id" : selected_milestone.IdMilestone}))
+    
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(ClientSpecificProjectPreviewMilestoneAccept, self).get_context_data(**kwargs)
@@ -1416,13 +1421,50 @@ class ClientSpecificProjectPreviewMilestoneAccept(LoginRequiredMixin, TemplateVi
         
         context["view_mode"] = "projects"
         context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
-        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y") }
+        context["milestone_info"] = { 
+            "id" : selected_milestone.IdMilestone, 
+            "name" : selected_milestone.Name, 
+            "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y"), 
+            "milestone_payment" : "{0:.2f}".format(selected_milestone.MilestonePaymentAmount), 
+            "stripe_transaction_fee" : "{0:.2f}".format(selected_milestone.get_stripe_transaction_fee()), 
+            "sales_tax" : "{0:.2f}".format(selected_milestone.get_sales_tax()),
+            "payment_total" : "{0:.2f}".format(selected_milestone.get_total_payment()) }
         context["contract_files"] = milestone_files
         
         if selected_recipient is None:
             context["contract_info"]["client_name"] = ""
         else:
             context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
+class ClientSpecificProjectPreviewMilestoneAcceptConfirm(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.milestones.preview.accept.send.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectPreviewMilestoneAcceptConfirm, self).get_context_data(**kwargs)
+        
+        # From freelancer
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name  }
         
         if selected_contract is None:
             context["in_edit_mode"] = False

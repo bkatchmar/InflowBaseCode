@@ -4,5 +4,48 @@
 {% block main_tag %}
 	<div class="accept-milestone">
 		<div class="header">Payment for {{milestone_info.name}}</div>
+		{% for file in contract_files %}
+			<div class="milestone-preview">
+				<img src="{{file.FilePreviewURL}}" alt="Preview {{milestone_info.name}}" />
+			</div>
+		{% endfor %}
+		<div class="cost-breakdown">
+			<div class="line">
+				<div class="description">Milestone {{milestone_info.name}} Cost</div>
+				<div class="amount">${{milestone_info.milestone_payment}}</div>
+			</div>
+			<div class="line">
+				<div class="description">Stripe Transaction Fee (2.9%)</div>
+				<div class="amount">${{milestone_info.stripe_transaction_fee}}</div>
+			</div>
+			<div class="line">
+				<div class="description">Sales Tax (8.875%)</div>
+				<div class="amount">${{milestone_info.sales_tax}}</div>
+			</div>
+			<div class="line total">
+				<div class="description">Total (USD)</div>
+				<div class="amount">${{milestone_info.payment_total}}</div>
+			</div>
+		</div>
+		<form action="{% url 'contracts:client_project_milestones_accept' contract_info.slug contract_info.id milestone_info.id %}" method="post">
+			<div class="payment-options">
+				<textarea rows="5" cols="50" name="comments" placeholder="Leave your contractor some feedback on their great work!"></textarea>
+				<div class="options">
+					<div class="header">Payment Method</div>
+					<select>
+						<option>Chase Checking *0123</option>
+						<option>Mastercard *5454</option>
+					</select>
+				</div>
+			</div>
+			<div class="payment-actions">
+				<div class="submit-btn"><input type="submit" value="Submit Payment" /></div>
+				<div><a href="{% url 'contracts:client_project_milestones_preview' contract_info.slug contract_info.id milestone_info.id %}" class="cancel">Cancel</a></div>
+				<div class="payment-terms">Payment Terms</div>
+				<div class="details">You will be charged &lt;total service detail amount ($xx.xx)&gt;. Other terms here.</div>
+				<div><a href="#" class="contact-us">Contact support</a></div>
+			</div>
+			{% csrf_token %}
+		</form>
 	</div>
 {% endblock %}
