@@ -14,6 +14,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import TemplateView
+from django.utils import timezone
 from django.urls import reverse
 
 # Accounts App References
@@ -1405,8 +1406,12 @@ class ClientSpecificProjectPreviewMilestoneAccept(LoginRequiredMixin, TemplateVi
         return render(request, self.template_name, context)
     
     def post(self, request, **kwargs):
-        # MilestoneReaction
         selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        
+        # Make a Reaction Object
+        comments = request.POST.get("comments", "")
+        MilestoneReaction.objects.create(MilestoneForReaction=selected_milestone,UserReacting=request.user,Comment=comments,ReactionType="a",ReactionDateTime=timezone.now())
+        
         return redirect(reverse("contracts:client_project_milestones_accept_confirm", kwargs={"contract_slug" : selected_milestone.MilestoneContract.UrlSlug, "contract_id" : selected_milestone.MilestoneContract.id, "milestone_id" : selected_milestone.IdMilestone}))
     
     def get_context_data(self, request, **kwargs):
@@ -1457,6 +1462,88 @@ class ClientSpecificProjectPreviewMilestoneAcceptConfirm(LoginRequiredMixin, Tem
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(ClientSpecificProjectPreviewMilestoneAcceptConfirm, self).get_context_data(**kwargs)
+        
+        # From freelancer
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name  }
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
+class ClientSpecificProjectPreviewMilestoneReject(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.milestones.preview.reject.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        
+        # Make a Reaction Object
+        reason_select = request.POST.get("reason-select", "")
+        reason = request.POST.get("reason", "")
+        
+        if reason_select == "other":
+            MilestoneReaction.objects.create(MilestoneForReaction=selected_milestone,UserReacting=request.user,Comment=reason,ReactionType="r",ReactionDateTime=timezone.now())
+        else:
+            MilestoneReaction.objects.create(MilestoneForReaction=selected_milestone,UserReacting=request.user,Comment=reason_select,ReactionType="r",ReactionDateTime=timezone.now())
+        
+        return redirect(reverse("contracts:client_project_milestones_reject_confirm", kwargs={"contract_slug" : selected_milestone.MilestoneContract.UrlSlug, "contract_id" : selected_milestone.MilestoneContract.id, "milestone_id" : selected_milestone.IdMilestone}))
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectPreviewMilestoneReject, self).get_context_data(**kwargs)
+        
+        # From freelancer
+        selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)
+        selected_contract = selected_milestone.MilestoneContract
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
+        milestone_files = MilestoneFile.objects.filter(MilestoneForFile=selected_milestone)
+        
+        context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "state" : selected_contract.get_contract_state_view(), "total_worth" : "{0:.2f}".format(selected_contract.TotalContractWorth), "slug" : selected_contract.UrlSlug }
+        context["milestone_info"] = { "id" : selected_milestone.IdMilestone, "name" : selected_milestone.Name, "feedback_due" : selected_milestone.Deadline.strftime("%b %d %Y") }
+        context["contract_files"] = milestone_files
+        
+        if selected_recipient is None:
+            context["contract_info"]["client_name"] = ""
+        else:
+            context["contract_info"]["client_name"] = selected_recipient.BillingName
+        
+        if selected_contract is None:
+            context["in_edit_mode"] = False
+        else:
+            context["in_edit_mode"] = True
+            
+        return context
+
+class ClientSpecificProjectPreviewMilestoneRejectConfirm(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "active_use/client.specific-project.milestones.preview.reject.send.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        
+        if not context["in_edit_mode"]:
+            return redirect(reverse("contracts:home"))
+        
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(ClientSpecificProjectPreviewMilestoneRejectConfirm, self).get_context_data(**kwargs)
         
         # From freelancer
         selected_milestone = self.get_contract_if_user_is_client_relationship(request.user,**kwargs)

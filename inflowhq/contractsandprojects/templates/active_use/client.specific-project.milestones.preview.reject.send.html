@@ -1,0 +1,15 @@
+{% extends 'base/dashboard.base.lowfi.project.html' %}
+{% load staticfiles %}
+{% block title %}{{contract_info.name}} - {{milestone_info.name}} - Milestone Accepted{% endblock %}
+{% block main_tag %}
+	<div class="back-links"></div>
+	<div class="content project-arrow">
+		<div class="info-window milestone-reaction accepted">
+			<div>You have decliend and this Milestone. Your Contractor will review your feedback and let you know next steps.</div>
+			<a href="#">Resend email confirmations</a>
+		</div>
+		<div class="inner-details footer">
+			<div class="buttons"><a href="{% url 'contracts:client_project_milestones' contract_info.slug contract_info.id %}" class="alt">Return to Milestones</a></div>
+		</div>
+	</div>
+{% endblock %}

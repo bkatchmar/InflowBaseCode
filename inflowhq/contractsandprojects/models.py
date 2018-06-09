@@ -278,6 +278,9 @@ class MilestoneReaction(models.Model):
     Comment = models.TextField(null=False)
     ReactionType = models.CharField(max_length=1,null=False,choices=MILESTONE_REACTIONS,default='a')
     ReactionDateTime = models.DateTimeField(auto_now=False,auto_now_add=False)
+    
+    class Meta:
+       db_table = "MilestoneReaction"
 
 class PaymentPlan(models.Model):
     ContractForPaymentPlan = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)

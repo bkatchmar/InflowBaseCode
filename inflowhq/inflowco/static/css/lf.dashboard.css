@@ -190,8 +190,11 @@ main div.content div.inner-details div.buttons a.alt:hover,
 main div.content div.inner-details div.buttons a.alt:active { background-color: #FFF; }
 main div.content div.inner-details.footer { border: none; margin: 15px auto; text-align: center; }
 main div.content div.inner-details.footer select { border-radius: 8px; font-size: 14px; font-weight: 300; margin: 25px 0px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
+main div.content div.inner-details.footer select.reason { margin: 25px auto; }
+main div.content div.inner-details.footer textarea.reason { height: 100px; width: 400px; }
 main div.content div.inner-details.footer div.reason { font-size: 16px; padding: 15px 0px; }
 main div.content div.inner-details.footer input[type="text"] { display: block; margin: 15px auto; padding: 10px; width: 400px; }
+main div.content div.inner-details.footer input[type="submit"] { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 10px 0px; padding: 10px 40px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
 main div.content div.milestone-detail-list { border: solid 1px #979797; padding: 25px 0px 0px; position: relative; width: 800px; }
 main div.content div.milestone-detail-list div.milestone-name-upload { border: solid 1px #979797; margin: 10px; }
@@ -309,7 +312,7 @@ main div.content div.list div.data-table div.table div.row { border-bottom: soli
 main div.content div.preview-window { margin: 25px auto 0px; }
 main div.content div.preview-window div.file-name { font-size: 18px; font-weight: 300; margin: 0px 0px 15px; }
 main div.content div.preview-window div.preview-area { border: solid 1px #979797; padding: 0px; text-align: center; }
-main div.content div.preview-window div.preview-area img { height: auto; width: 100%; }
+main div.content div.preview-window div.preview-area img { display: block; height: auto; width: 100%; }
 main div.content div.feedback-due { font-size: 22px; line-height: 24px; margin: 25px auto; }
 main div.content div.feedback-due span { font-weight: 900; padding: 0px 15px 0px 0px; }
 main div.content div.schedule-delivery { border: solid 1px #979797; margin: 25px auto; }
@@ -342,8 +345,8 @@ main div.content div.info-window a.info-btn:visited,
 main div.content div.info-window a.info-btn:hover, 
 main div.content div.info-window a.info-btn:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; font-weight: 900; margin: 0px auto; padding: 10px; text-decoration: none; width: 230px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
-main div.content div.info-window.milestone-reaction.accepted { padding: 15px 0px; }
-main div.content div.info-window.milestone-reaction.accepted div { font-size: 26px; font-weight: 500; padding: 0px 65px; }
+main div.content div.info-window.milestone-reaction { padding: 15px 0px; }
+main div.content div.info-window.milestone-reaction div { font-size: 26px; font-weight: 500; padding: 0px 65px; }
 
 main div.upload-modal div.modal-header { font-size: 18px; font-weight: 700; padding: 50px 25px; }
 main div.upload-modal div.upload-line { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 10px; }
