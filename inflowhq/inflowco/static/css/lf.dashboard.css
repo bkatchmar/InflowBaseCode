@@ -476,6 +476,11 @@ main div.create-contract-super-window form.contract-creation div.mini-field-line
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.field { padding: 0px; width: 92px; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch span.custom-text { width: 50px; }
 
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.switch.contract-type span.border { width: 110px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field table.contract-type { width: 290px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field table.contract-type td { border: #A7A7A7 1px solid; cursor: pointer; padding: 15px 0px; text-align: center; vertical-align: middle; width: 145px; }
+main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field table.contract-type td.on { background-color: #F2F2F2; }
+
 main div.create-contract-super-window form.contract-creation div#milestones { display: none; }
 
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field.clear { float: none;  }

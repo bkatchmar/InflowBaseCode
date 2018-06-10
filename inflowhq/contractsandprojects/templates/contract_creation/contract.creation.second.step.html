@@ -32,10 +32,14 @@
 				<div class="mini-field-line">
 					<div class="input-field mini-field switch">
 						<span class="label">How would you like to charge?</span>
-						<span class="switch">
-							<span class="border" ng-class="{'on': contractType=='d'}" ng-class="{'border': contractType=='t'}">Lump Sum</span>
-							<span class="border" ng-class="{'on': contractType=='t'}">Hourly Rate</span>
-						</span>
+						<table class="contract-type">
+							<tbody>
+								<tr>
+									<td class="milestones" ng-class="{'on': contractType=='d'}">Milestones / Deliverables</td>
+									<td class="hourly" ng-class="{'on': contractType=='t'}">Hourly Rate</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 					<div class="input-field mini-field" ng-show="contractType=='t'">
 						<span class="label">Hourly rate*:</span>
