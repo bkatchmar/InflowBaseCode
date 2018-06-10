@@ -35,8 +35,8 @@
 						<table class="contract-type">
 							<tbody>
 								<tr>
-									<td class="milestones" ng-class="{'on': contractType=='d'}">Milestones / Deliverables</td>
-									<td class="hourly" ng-class="{'on': contractType=='t'}">Hourly Rate</td>
+									<td class="milestones" ng-class="{'on': contractType=='d'}" ng-click="contractType = 'd'">Milestones / Deliverables</td>
+									<td class="hourly" ng-class="{'on': contractType=='t'}" ng-click="contractType = 't'">Hourly Rate</td>
 								</tr>
 							</tbody>
 						</table>
@@ -110,6 +110,7 @@
 				<div class="submit-buttons alt">
 					<input type="submit" name="action" value="Save for Later" class="later" ng-disabled="contractCreationStep2.$invalid" />
 				</div>
+				<input type="hidden" name="contractType" ng-bind="contractType" ng-value="contractType" />
 				{% csrf_token %}
 			</form>
 		</div>

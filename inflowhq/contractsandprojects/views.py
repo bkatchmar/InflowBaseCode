@@ -361,6 +361,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         downPaymentAmount = request.POST.get("downPaymentAmount", "")
         totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
         totalContractAmount = request.POST.get("totalContractAmount", "")
+        contractType = request.POST.get("contractType", "d")
         
         # Milestone amounts
         milestoneName = request.POST.getlist("milestoneName")
@@ -378,6 +379,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             created_contract.StartDate = handler.get_entry_for_date(contractStartDate)
             created_contract.EndDate = handler.get_entry_for_date(contractEndDate)
+            created_contract.ContractType = contractType
             
             created_contract.TotalContractWorth = handler.get_entry_for_float(totalContractAmount)
             created_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
