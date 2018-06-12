@@ -424,6 +424,10 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio {}
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio input[type="radio"] { display: inline-block; height: 20px; width: 20px; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.radio span.label { width: auto; }
+main div.create-contract-super-window form.contract-creation div.input-field.dropdown {}
+main div.create-contract-super-window form.contract-creation div.input-field.dropdown span.field { padding: 12px 0px; vertical-align: top; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field span.dropdown { width: 320px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.field span.dropdown select { margin: 0px; width: 100%; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.text { font-size: 20px; line-height: 22px; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field span.text.corrected { padding: 0px 10px 0px 0px; text-decoration: line-through; }
 main div.create-contract-super-window form.contract-creation div.input-field span.field.highlighted { border: solid 2px #e31a1a; padding: 5px; }

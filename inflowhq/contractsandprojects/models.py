@@ -68,6 +68,7 @@ class Contract(models.Model):
     RequestForChangeFee = models.DecimalField(decimal_places=2,null=True,default=0.00000,max_digits=10)
     ChargeForLateReview = models.DecimalField(decimal_places=2,null=True,default=0.00000,max_digits=10)
     KillFee = models.DecimalField(decimal_places=2,null=True,default=0.00,max_digits=10)
+    FreelancerPortfolioPiece = models.CharField(max_length=50,null=True)
 
     def create_new_milestone(self):
         newly_created_milestone = Milestone.objects.create(MilestoneContract=self,Name="",Deadline=datetime.date.today())
@@ -211,6 +212,7 @@ class RecipientAddress(models.Model):
     State = models.CharField(max_length=100)
     City = models.CharField(max_length=200)
     Country = models.ForeignKey(Country,unique=False,null=True,on_delete=models.SET_NULL)
+    ZipCode = models.CharField(max_length=20,null=True)
     
     class Meta:
        db_table = 'ContractRecipientAddress'

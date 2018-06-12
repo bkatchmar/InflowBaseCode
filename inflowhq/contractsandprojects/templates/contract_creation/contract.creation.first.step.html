@@ -75,7 +75,7 @@
 				</div>
 				{% for address in contract_info.locations %}
 					<div>
-						<div class="header sub">Business Location</div>
+						<div class="header sub">Business Location (optional)</div>
 						<div class="input-field text-single-line">
 							<span class="label">Business Address*:</span>
 							<span class="field"><input type="text" placeholder="Business Address 1" name="clientBusinessAddress1" ng-model="clientBusinessAddress1" ng-init="clientBusinessAddress1='{{address.addr1}}'" required /></span>
@@ -94,6 +94,10 @@
 							<span class="label">State or Province*:</span>
 							<span class="field"><input type="text" placeholder="Business State or Province" name="clientBusinessAddressState" ng-model="clientBusinessAddressState" ng-init="clientBusinessAddressState='{{address.state}}'" required /></span>
 							<span class="error-msg" ng-show="contractCreationStep1.clientBusinessAddressState.$touched && contractCreationStep1.clientBusinessAddressState.$invalid">Business State is required.</span>
+						</div>
+						<div class="input-field text-single-line">
+							<span class="label">Zipcode:</span>
+							<span class="field"><input type="text" placeholder="Zipcode" name="zipCode" ng-model="zipCode" ng-value="zipCode" ng-init="zipCode='{{address.zip}}'" /></span>
 						</div>
 					</div>
 				{% endfor %}
@@ -116,6 +120,20 @@
 								<input type="radio" name="who-owns" value="client" ng-model="whoOwnsWork" />
 							{% endif %}
 							<span class="label">Client owns this work</span>
+						</span>
+					</span>
+				</div>
+				<div class="input-field dropdown">
+					<span class="label">This work can be used in freelancer’s portfolio:</span>
+					<span class="field">
+						<span class="dropdown">
+							<select name="portfolio-piece">
+								<option value="Yes" {% if contract_info.portfolio == "Yes" %}selected="selected"{% endif %}>Yes</option>
+								<option value="Yes, but after a certain date" {% if contract_info.portfolio == "Yes, but after a certain date" %}selected="selected"{% endif %}>Yes, but after a certain date</option>
+								<option value="Yes, but must stay confidential" {% if contract_info.portfolio == "Yes, but must stay confidential" %}selected="selected"{% endif %}>Yes, but must stay confidential</option>
+								<option value="No" {% if contract_info.portfolio == "No" %}selected="selected"{% endif %}>No</option>
+								<option value="No, but can be revisited" {% if contract_info.portfolio == "No, but can be revisited" %}selected="selected"{% endif %}>No, but can be revisited</option>
+							</select>
 						</span>
 					</span>
 				</div>

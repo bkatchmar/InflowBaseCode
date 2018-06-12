@@ -133,7 +133,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         
         # Used for sending contract information to the view
         contract_info = { 
-            "id" : 0, "contract_name" : "", "contract_description" : "", "contract_type" : "d", "ownership_type" : "i",
+            "id" : 0, "contract_name" : "", "contract_description" : "", "contract_type" : "d", "ownership_type" : "i", "portfolio" : "Yes",
             "contact" : { "name" : "", "billing_name" : "", "email" : "", "phone" : "" },
             "locations" : []
         }
@@ -156,6 +156,9 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             contract_info["contract_type"] = selected_contract.ContractType
             contract_info["ownership_type"] = selected_contract.Ownership
             
+            if not selected_contract.FreelancerPortfolioPiece is None:
+                contract_info["portfolio"] = selected_contract.FreelancerPortfolioPiece
+            
             if selected_recipient is not None:
                 contract_info["contact"]["name"] = selected_recipient.Name
                 contract_info["contact"]["billing_name"] = selected_recipient.BillingName
@@ -169,14 +172,14 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
                 # Iterate through all locations and put them into the JSON context
                 addr_index = 1
                 for address in selected_recipient_addresses:
-                    entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State }
+                    entered_address = { "index" : addr_index, "addr1" : address.Address1, "addr2" : address.Address2, "city" : address.City, "state" : address.State, "zip" : ("" if address.ZipCode is None else address.ZipCode) }
                     contract_info["locations"].append(entered_address)
                     addr_index = addr_index + 1
             
             if len(selected_recipient_addresses) == 0:
-                contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":""})
+                contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":"","zip":""})
         else:
-            contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":""})
+            contract_info["locations"].append({"index":1,"addr1":"","addr2":"","city":"","state":"","zip":""})
                     
         context["contract_info"] = contract_info
         return context
@@ -197,6 +200,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         description = request.POST.get("description", "")
         who_owns = request.POST.get("who-owns", "")
         who_owns_db = ""
+        portfolio_piece = request.POST.get("portfolio-piece", "")
         
         if contract_type == "milestones":
             contract_type_db = "d"
@@ -213,13 +217,14 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             created_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
             
             if created_contract is None:
-                created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today())
+                created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today(),FreelancerPortfolioPiece=portfolio_piece)
             else:
                 created_contract.Name = project_name
                 created_contract.ContractType = contract_type_db
                 created_contract.Ownership = who_owns_db
+                created_contract.FreelancerPortfolioPiece = portfolio_piece
         else:
-            created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today())
+            created_contract = Contract.objects.create(Creator=request.user,Name=project_name,ContractType=contract_type_db,Ownership=who_owns_db,StartDate=datetime.date.today(),EndDate=datetime.date.today(),FreelancerPortfolioPiece=portfolio_piece)
         
         if description != "":
             created_contract.Description = description
@@ -258,6 +263,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         client_business_address_2 = request.POST.getlist("clientBusinessAddress2")
         client_business_address_city = request.POST.getlist("clientBusinessAddressCity")
         client_business_address_state = request.POST.getlist("clientBusinessAddressState")
+        client_business_address_zip = request.POST.getlist("zipCode")
         
         for address_index in range(0,len(client_business_address_1)):
             if address_index < len(retrieved_contract_recipient_addresses):
@@ -269,6 +275,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
             created_contract_recipient_address.Address2 = client_business_address_2[address_index]
             created_contract_recipient_address.City = client_business_address_city[address_index]
             created_contract_recipient_address.State = client_business_address_state[address_index]
+            created_contract_recipient_address.ZipCode = client_business_address_zip[address_index]
             created_contract_recipient_address.save()
         
         return created_contract
