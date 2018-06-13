@@ -3,7 +3,6 @@ stepOneApp.controller("createContractStepOneCtrl", function($scope) {});
 stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 	$scope.loadInMilestones = function() {
 		$scope.milestones=[];
-		$scope.downPaymentRate=0;
 		$scope.toDelete = 0;
 		
 		$http.get("/inflow/projects/contract-service/milestones/" + $scope.contractId).then(function(response) {
@@ -35,16 +34,6 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 		}
 		
 		$scope.contractTotal = calculatedTotalAmount;
-		$scope.changeRate($scope.downPaymentRate);
-	};
-	$scope.changeRate = function(rate) {
-		$scope.downPaymentRate = rate;
-		
-		if (rate === 'c') {
-			$scope.downPaymentAmount = $scope.contractTotal * 0;	
-		} else {
-			$scope.downPaymentAmount = $scope.contractTotal * rate;	
-		}
 	};
 	$scope.generateDatePickersForUnusedDateFields = function() {
 		jQuery("div.input-field.date input[type='text']:not(.hasDatepicker)").datepicker({showOtherMonths:true,selectOtherMonths:true,dateFormat:"M dd yy"});
