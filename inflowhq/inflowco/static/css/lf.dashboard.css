@@ -413,6 +413,7 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.pencil-edit img { height: auto; width: 24px; }
 main div.create-contract-super-window form.contract-creation div.input-field span { display: inline-block; text-align: center; }
 main div.create-contract-super-window form.contract-creation div.input-field span.label { font-size: 20px; line-height: 22px; padding: 0px 15px 0px 0px; text-align: right; width: 260px; }
+main div.create-contract-super-window form.contract-creation div.input-field span.label.extra-fee { text-align: left; width: 100%; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line span.label { vertical-align: top; }
 main div.create-contract-super-window form.contract-creation div.input-field.text-multi-line div.counter { padding: 10px 140px 10px 0px; text-align: right; }
 main div.create-contract-super-window form.contract-creation div.input-field span.error-msg { color: #800000; display: block; font-size: 16px; font-weight: 700; line-height: 18px; padding: 15px 0px 0px; }
@@ -460,6 +461,11 @@ main div.create-contract-super-window form.contract-creation div.input-field spa
 main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:hover,
 main div.create-contract-super-window form.contract-creation div.input-field span.buttons a:active { background-color: #FFF; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 16px; margin: 0px 10px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 main div.create-contract-super-window form.contract-creation div.input-field span.buttons a.continue { background-color: #D8D8D8; }
+
+main div.create-contract-super-window form.contract-creation div.input-field.extra-fee-line {}
+main div.create-contract-super-window form.contract-creation div.input-field.extra-fee-line span.extra-fee-line { text-align: left; }
+main div.create-contract-super-window form.contract-creation div.input-field.extra-fee-line span.extra-fee-line input { display: inline-block; margin: 9px 4px; width: 40px; }
+main div.create-contract-super-window form.contract-creation div.input-field.extra-fee-line span.extra-fee-line select { display: inline-block; height: 40px; margin: 0px; }
 
 main div.create-contract-super-window form.contract-creation div.mini-field-line { overflow: hidden; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field { float: left; width: 290px; }

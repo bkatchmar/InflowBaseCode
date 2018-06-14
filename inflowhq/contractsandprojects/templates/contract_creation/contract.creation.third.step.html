@@ -19,23 +19,21 @@
 			</div>
 			<form class="contract-creation smaller" name="contractCreationStep3" method="post" action="{% url 'contracts:create_contract_step_3' contract_info.id %}" ng-app="createContractStepThreeApp" ng-controller="createContractStepThreeCtrl" ng-init="kill_fee={{contract_info.kill_fee}};charge_late_fee={{contract_info.charge_for_late_review}};request_change_fee={{contract_info.request_for_change_fee}};extra_revision_fee={{contract_info.extra_revision_fee}}">
 				<div class="header left">Optional Fees</div>
-				<div class="mini-field-line">
-					<div class="input-field mini-field">
-						<span class="label">Extra Revision Fee (optional):</span>
-						<span class="field"><input type="number" placeholder="$0.00" name="extra_revision_fee" ng-model="extra_revision_fee" ng-value="extra_revision_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
-					</div>
+				<div class="input-field text-single-line">
+					<span class="label extra-fee">Extra Revision Hourly Rate (optional):</span>
+					<span class="field"><input type="number" placeholder="$0.00" name="extra_revision_fee" ng-model="extra_revision_fee" ng-value="extra_revision_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 				</div>
-				<div class="mini-field-line">
-					<div class="input-field mini-field">
-						<span class="label">Charge for Late Review (optional):</span>
-						<span class="field"><input type="number" placeholder="$0.00" name="charge_late_fee" ng-model="charge_late_fee" ng-value="charge_late_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
-					</div>
+				<div class="input-field text-single-line">
+					<span class="label extra-fee">Request for Change Fee (optional):</span>
+					<span class="field"><input type="number" placeholder="$0.00" name="charge_late_fee" ng-model="charge_late_fee" ng-value="charge_late_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 				</div>
-				<div class="mini-field-line">
-					<div class="input-field mini-field">
-						<span class="label">Early Termination Fee (optional):</span>
-						<span class="field"><input type="number" placeholder="$0.00" name="kill_fee" ng-model="kill_fee" ng-value="kill_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
-					</div>
+				<div class="input-field text-single-line extra-fee-line">
+					<span class="label extra-fee">Charge for Late Review (optional):</span>
+					<span class="extra-fee-line">If the Client is <input type="number" name="number-of-days" placeholder="1" /> days(s) late, a charge of <input type="text" name="charge-amount" placeholder="$0.00" /> <select name="frequency"><option value="Per Day">Per Day</option><option value="Per Week">Per Week</option></select> will be added to the Total Project Amount.</span>
+				</div>
+				<div class="input-field text-single-line">
+					<span class="label extra-fee">Kill Fee (optional):</span>
+					<span class="field"><input type="number" placeholder="$0.00" name="kill_fee" ng-model="kill_fee" ng-value="kill_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 				</div>
 				<div class="submit-buttons">
 					<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
