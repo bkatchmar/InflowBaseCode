@@ -7,7 +7,7 @@ import pathlib
 
 # Django References
 from django.contrib.auth.models import User
-from django.http import Http404, JsonResponse
+from django.http import JsonResponse
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -22,7 +22,7 @@ from accounts.models import UserSettings
 
 # Contracts and Projects App References
 from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
-from contractsandprojects.models import Contract, ContractFile, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile, MilestoneReaction
+from contractsandprojects.models import Contract, ContractFile, ContractLateReviewCharge, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile, MilestoneReaction
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
 from contractsandprojects.request_handler import AmazonBotoHandler, RequestInputHandler
@@ -130,6 +130,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         context = super(CreateContractStepOne, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         context["in_edit_mode"] = True
+        context["next_step"] = request.GET.get("from-step", "2")
         
         # Used for sending contract information to the view
         contract_info = { 
@@ -186,7 +187,16 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
     
     def process_continue(self,request,**kwargs):
         created_contract = self.build_new_object(request,**kwargs)
-        return redirect(reverse("contracts:create_contract_step_2", kwargs={"contract_id" : created_contract.id}))
+        
+        next_step = request.POST.get("next-step", "2")
+        next_step_name = "contracts:create_contract_step_2"
+        
+        if next_step == "3":
+            next_step_name = "contracts:create_contract_step_3"
+        elif next_step == "4":
+            next_step_name = "contracts:create_contract_step_4"
+        
+        return redirect(reverse(next_step_name, kwargs={"contract_id" : created_contract.id}))
     
     def process_save_for_later(self,request,**kwargs):
         created_contract = self.build_new_object(request,**kwargs)
@@ -455,19 +465,32 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
         context["in_edit_mode"] = False
         
         contract_info = { 
-            "id" : 0, "contract_name" : "", "extra_revision_fee" : 0.00, "request_for_change_fee" : 0.00, "charge_for_late_review" : 0.00, "kill_fee" : 0.00,
+            "id" : 0,
+            "contract_name" : "",
+            "extra_revision_fee" : 0.00,
+            "request_for_change_fee" : 0.00,
+            "charge_for_late_review" : 0.00,
+            "kill_fee" : 0.00,
+            "late_review" : { "days" : 1, "amount" : 0.00, "frequency" : "d" }
         }
         
         selected_contract = self.get_contract_if_user_is_creator(request.user,**kwargs)
         
         # If we even passed a variable in, go ahead and check to make sure its an actual contract
         if selected_contract is not None:
+            contract_late_charge = ContractLateReviewCharge.objects.filter(ContractForCharge=selected_contract).first()
+            
             context["in_edit_mode"] = (selected_contract.ContractState == "c")
             contract_info["id"] = selected_contract.id
             contract_info["contract_name"] = selected_contract.Name
             contract_info["extra_revision_fee"] = selected_contract.ExtraRevisionFee
             contract_info["charge_for_late_review"] = selected_contract.ChargeForLateReview
             contract_info["kill_fee"] = selected_contract.KillFee
+            
+            if not contract_late_charge is None:
+                contract_info["late_review"]["days"] = contract_late_charge.DaysLateTolerance
+                contract_info["late_review"]["amount"] = contract_late_charge.Charge
+                contract_info["late_review"]["frequency"] = contract_late_charge.TimeWindowToleranceType
                 
         context["contract_info"] = contract_info
         return context
@@ -482,17 +505,41 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
     
     def build_new_object(self,request,**kwargs):
         handler = RequestInputHandler()
-        extraRevisionFee = request.POST.get("extra_revision_fee", "")
-        chargeLateFee = request.POST.get("charge_late_fee", "")
-        killFee = request.POST.get("kill_fee", "")
+        
+        # Contract Fields
+        extra_revision_fee = request.POST.get("extra_revision_fee", "")
+        charge_late_fee = request.POST.get("charge_late_fee", "")
+        kill_fee = request.POST.get("kill_fee", "")
+        
+        # Fields for Late Review Charge
+        number_of_days = handler.get_entry_for_int(request.POST.get("number-of-days" , ""))
+        charge_amount = handler.get_entry_for_float(request.POST.get("charge-amount", ""))
+        frequency = request.POST.get("frequency", "")
         
         selected_contract = None
         if "contract_id" in kwargs:
-            selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
-            selected_contract.ChargeForLateReview = handler.get_entry_for_float(chargeLateFee)
-            selected_contract.KillFee = handler.get_entry_for_float(killFee)
+            selected_contract = Contract.objects.get(id=kwargs.get("contract_id"))
+            
+            # Fill In Contract Fields
+            selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extra_revision_fee)
+            selected_contract.ChargeForLateReview = handler.get_entry_for_float(charge_late_fee)
+            selected_contract.KillFee = handler.get_entry_for_float(kill_fee)
             selected_contract.save()
+            
+            # Fill in the Late Review Object
+            late_review_charge = ContractLateReviewCharge.objects.filter(ContractForCharge=selected_contract).first()
+            
+            if late_review_charge is None:
+                ContractLateReviewCharge.objects.create(
+                    ContractForCharge=selected_contract,
+                    DaysLateTolerance=number_of_days,
+                    Charge=charge_amount,
+                    TimeWindowToleranceType=frequency)
+            else:
+                late_review_charge.DaysLateTolerance = number_of_days
+                late_review_charge.Charge = charge_amount
+                late_review_charge.TimeWindowToleranceType = frequency
+                late_review_charge.save()
         
         return selected_contract
 

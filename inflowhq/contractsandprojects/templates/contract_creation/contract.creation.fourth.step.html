@@ -37,7 +37,10 @@
 				{% endfor %}
 				
 				<div class="overview-section">
-					<div class="header">Project Information<div class="go-to-edit-mode" ng-click="changeEditMode('project-information',0)" ng-bind="editModeLabels[0]"></div></div>
+					<div class="header">
+						Project Information
+						<a href="{% url 'contracts:create_contract_step_1_edit' contract_info.id %}?from-step=4" class="go-to-edit-mode">Edit</a>
+					</div>
 					<div class="input-field text-single-line">
 						<span class="pencil-edit" ng-class="{'on': editMode=='project-information'}" ng-click="changeWhatWeAreEditing('contractName')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label" ng-class="{'error' : contractCreationStep4.contractName.$touched && contractCreationStep4.contractName.$invalid}">Project Name:</span>

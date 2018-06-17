@@ -49,6 +49,11 @@ MILESTONE_REACTIONS = (
                   ('r', 'Reject'),
                   )
 
+TIME_WINDOW_TOLERANCE = (
+                  ('d', 'Per Day'),
+                  ('w', 'Per Week'),
+                  )
+
 class Contract(models.Model):
     Creator = models.ForeignKey(User,unique=False,on_delete=models.CASCADE)
     Name = models.CharField(max_length=200)
@@ -177,7 +182,7 @@ class Contract(models.Model):
         return rtnVal
 
     class Meta:
-       db_table = 'Contract'
+       db_table = "Contract"
     
 class ContractFile(models.Model):
     ContractForFile = models.ForeignKey(Contract,unique=False,on_delete=models.CASCADE)
@@ -189,6 +194,15 @@ class ContractFile(models.Model):
     
     class Meta:
        db_table = 'ContractFile'
+       
+class ContractLateReviewCharge(models.Model):
+    ContractForCharge = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
+    DaysLateTolerance = models.IntegerField(null=False)
+    Charge = models.DecimalField(decimal_places=3,null=False,default=0.000,max_digits=10)
+    TimeWindowToleranceType = models.CharField(max_length=1,choices=TIME_WINDOW_TOLERANCE,default='d')
+    
+    class Meta:
+       db_table = "ContractLateReviewCharge"
 
 class Recipient(models.Model):
     ContractForRecipient = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)

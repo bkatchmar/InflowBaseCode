@@ -29,7 +29,7 @@
 				</div>
 				<div class="input-field text-single-line extra-fee-line">
 					<span class="label extra-fee">Charge for Late Review (optional):</span>
-					<span class="extra-fee-line">If the Client is <input type="number" name="number-of-days" placeholder="1" /> days(s) late, a charge of <input type="text" name="charge-amount" placeholder="$0.00" /> <select name="frequency"><option value="Per Day">Per Day</option><option value="Per Week">Per Week</option></select> will be added to the Total Project Amount.</span>
+					<span class="extra-fee-line">If the Client is <input type="number" name="number-of-days" placeholder="1" value="{{contract_info.late_review.days}}" /> days(s) late, a charge of <input type="text" name="charge-amount" placeholder="$0.00" value="{{contract_info.late_review.amount}}" /> <select name="frequency"><option value="d" {%if contract_info.late_review.frequency == "d"%}selected="selected"{%endif%}>Per Day</option><option value="w" {%if contract_info.late_review.frequency == "w"%}selected="selected"{%endif%}>Per Week</option></select> will be added to the Total Project Amount.</span>
 				</div>
 				<div class="input-field text-single-line">
 					<span class="label extra-fee">Kill Fee (optional):</span>

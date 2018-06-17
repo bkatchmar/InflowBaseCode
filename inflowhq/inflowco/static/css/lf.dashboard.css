@@ -534,6 +534,7 @@ main div.create-contract-super-window form.contract-creation div.overview-sectio
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:hover,
 main div.create-contract-super-window form.contract-creation div.overview-section div.header a:active { display: block; font-size: 16px; font-weight: 300; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.header div.go-to-edit-mode { cursor: pointer; display: block; font-size: 16px; font-weight: 300; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
+main div.create-contract-super-window form.contract-creation div.overview-section div.header a.go-to-edit-mode { font-size: 16px; font-weight: 300; position: absolute; right: 0px; text-decoration: underline; top: 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.header.sub { font-size: 20px; font-style: italic; padding: 20px 0px; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.input-field span.label { font-weight: 700; vertical-align: top; width: 50%; }
 main div.create-contract-super-window form.contract-creation div.overview-section div.input-field span.label.error { color: #800000; }
