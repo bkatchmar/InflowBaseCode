@@ -115,7 +115,7 @@ class CreateContractStepOne(LoginRequiredMixin, TemplateView, ContractPermission
         
         action_taken = request.POST.get("action", "")
         
-        if action_taken == "Continue": # User wants to go to the next step
+        if action_taken == "Continue" or action_taken == "Save and Return to Project Overview": # User wants to go to the next step
             return self.process_continue(request,**kwargs)
         elif action_taken == "Save for Later":
             return self.process_save_for_later(request,**kwargs)
@@ -306,7 +306,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         
         action_taken = request.POST.get("action", "")
         
-        if action_taken == "Continue": # User wants to go to the next step
+        if action_taken == "Continue" or action_taken == "Save and Return to Project Overview": # User wants to go to the next step
             return self.process_continue(request,**kwargs)
         elif action_taken == "Save for Later":
             return self.process_save_for_later(request,**kwargs)
@@ -321,6 +321,7 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
         context = super(CreateContractStepTwo, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         context["in_edit_mode"] = False
+        context["next_step"] = request.GET.get("from-step", "3")
         
         today = datetime.date.today()
         # Used for sending contract information to the view
@@ -364,7 +365,14 @@ class CreateContractStepTwo(LoginRequiredMixin, TemplateView, ContractPermission
     
     def process_continue(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
-        return redirect(reverse("contracts:create_contract_step_3", kwargs={"contract_id" : contract.id}))
+        
+        next_step = request.POST.get("next-step", "3")
+        next_step_name = "contracts:create_contract_step_3"
+        
+        if next_step == "4":
+            next_step_name = "contracts:create_contract_step_4"
+        
+        return redirect(reverse(next_step_name, kwargs={"contract_id" : contract.id}))
     
     def process_save_for_later(self,request,**kwargs):
         contract = self.build_new_object(request,**kwargs)
@@ -448,7 +456,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
         
         action_taken = request.POST.get("action", "")
         
-        if action_taken == "Continue": # User wants to go to the next step
+        if action_taken == "Continue" or action_taken == "Save and Return to Project Overview": # User wants to go to the next step
             return self.process_continue(request, **kwargs)
         elif action_taken == "Save for Later":
             return self.process_save_for_later(request, **kwargs)
@@ -463,6 +471,7 @@ class CreateContractStepThree(LoginRequiredMixin, TemplateView, ContractPermissi
         context = super(CreateContractStepThree, self).get_context_data(**kwargs)
         context["view_mode"] = "projects"
         context["in_edit_mode"] = False
+        context["next_step"] = request.GET.get("from-step", "0")
         
         contract_info = { 
             "id" : 0,
@@ -592,9 +601,18 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView, ContractPermiss
         if contract_info.Description is not None:
             contract_info.Description = contract_info.Description.replace("\"", "\\\"").replace("'", "\\'")
         
+        # Late Review Information
+        late_review_charge_obj = { "information" : False, "amount" : "0", "frequency" : "Per Day" }
+        late_review_charge = ContractLateReviewCharge.objects.filter(ContractForCharge=contract_info).first()
+        
+        if not late_review_charge is None:
+            late_review_charge_obj = { "information" : True, "amount" : late_review_charge.Charge, "frequency" : late_review_charge.get_window_value_view() }
+        
+        # Set Context Data
         context["contract_info"] = contract_info
         context["contract_recipient"] = selected_contract_recipient
         context["contract_recipient_addresses"] = selected_contract_recipient_addresses
+        context["contract_late_review_charge"] = late_review_charge_obj
         
         # Retrieve the milestones (if any)
         milestone_index = 1
@@ -617,83 +635,9 @@ class CreateContractStepFourth(LoginRequiredMixin, TemplateView, ContractPermiss
         return redirect(reverse("contracts:home"))
     
     def build_new_object(self,request,**kwargs):
-        handler = RequestInputHandler()
-        contractName = request.POST.get("contractName", "")
-        contractDescription = request.POST.get("contractDescription", "")
-        
-        nameOfContact = request.POST.get("nameOfContact", "")
-        billingName = request.POST.get("billingName", "")
-        billingEmail = request.POST.get("billingEmail", "")
-        phone_number = request.POST.get("phoneNumber", "")
-        totalMilestoneProjectCost = request.POST.get("totalMilestoneProjectCost", "")
-        totalNumberOfRevisions = request.POST.get("totalNumberOfRevisions", "")
-        downPaymentAmount = request.POST.get("downPaymentAmount", "")
-        extraRevisionFee = request.POST.get("extraRevisionFee", "")
-        lateReviewFee = request.POST.get("lateReviewFee", "")
-        killFee = request.POST.get("killFee", "")
-        
         selected_contract = None
         if "contract_id" in kwargs:
             selected_contract = Contract.objects.filter(id=kwargs.get("contract_id")).first()
-            selected_contract_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
-            recipient_addresses = RecipientAddress.objects.filter(RecipientForAddress=selected_contract_recipient)
-            
-            selected_contract.Name = contractName
-            selected_contract.Description = contractDescription
-            selected_contract.TotalContractWorth = handler.get_entry_for_float(totalMilestoneProjectCost)
-            selected_contract.NumberOfAllowedRevisions = handler.get_entry_for_int(totalNumberOfRevisions)
-            selected_contract.DownPaymentAmount = handler.get_entry_for_float(downPaymentAmount)
-            
-            selected_contract.ExtraRevisionFee = handler.get_entry_for_float(extraRevisionFee)
-            selected_contract.ChargeForLateReview = handler.get_entry_for_float(lateReviewFee)
-            selected_contract.KillFee = handler.get_entry_for_float(killFee)
-            
-            selected_contract.save()
-            
-            if selected_contract_recipient is not None:
-                selected_contract_recipient.Name = nameOfContact
-                selected_contract_recipient.BillingName = billingName
-                selected_contract_recipient.EmailAddress = billingEmail
-                selected_contract_recipient.PhoneNumber = phone_number
-                
-                selected_contract_recipient.save()
-                
-                for addr in recipient_addresses:
-                    addr1_field = ("address1%s" % addr.id)
-                    addr2_field = ("address2%s" % addr.id)
-                    city_field = ("addressCity%s" % addr.id)
-                    state_field = ("addressState%s" % addr.id)
-                    
-                    address1 = request.POST.get(addr1_field, "")
-                    address2 = request.POST.get(addr2_field, "")
-                    city = request.POST.get(city_field, "")
-                    state = request.POST.get(state_field, "")
-                    
-                    addr.Address1 = address1
-                    addr.Address2 = address2
-                    addr.City = city
-                    addr.State = state
-                    addr.save()
-            
-            # Build the milestones
-            milestone_index = 1
-            selected_contract_milestones = Milestone.objects.filter(MilestoneContract=selected_contract)
-            for milestone in selected_contract_milestones:
-                # Fields from POST
-                milestoneName = request.POST.get(("milestoneName%s" % milestone_index), "")
-                milestoneDescription = request.POST.get(("milestoneDescription%s" % milestone_index), "")
-                milestoneTotal = request.POST.get(("milestoneTotal%s" % milestone_index), "")
-                milestoneDeadline = request.POST.get(("milestoneDeadline%s" % milestone_index), "")
-                estimateHourCompletion = request.POST.get(("estimateHourCompletion%s" % milestone_index), "")
-                
-                milestone.Name = milestoneName
-                milestone.Explanation = milestoneDescription
-                milestone.MilestonePaymentAmount = handler.get_entry_for_float(milestoneTotal)
-                milestone.Deadline = handler.get_entry_for_date(milestoneDeadline)
-                milestone.EstimateHoursRequired = handler.get_entry_for_float(estimateHourCompletion)
-                milestone.save()
-                
-                milestone_index = milestone_index + 1
             
         return selected_contract
 

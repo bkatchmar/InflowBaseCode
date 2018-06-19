@@ -42,40 +42,7 @@ stepTwoApp.controller("createContractStepTwoCtrl", function($scope, $http) {
 
 stepThreeApp.controller("createContractStepThreeCtrl", function($scope) {});
 
-stepFourApp.controller("createContractStepFourCtrl", function($scope) {
-	$scope.changeEditMode = function(mode,index) {
-		var getOutOfEditMode = ($scope.editMode === mode);
-		
-		if (getOutOfEditMode) { $scope.editMode = ""; $scope.currentlyEditing = ""; }
-		else { $scope.editMode = mode; }
-		
-		for (var iterator = 0; iterator < $scope.editModeLabels.length; iterator++) {
-			$scope.editModeLabels[iterator] = "Edit";
-		}
-		
-		if (!getOutOfEditMode) { $scope.editModeLabels[index] = "Finish Editing"; }
-	};
-	$scope.changeWhatWeAreEditing = function(field) {
-		$scope.currentlyEditing = field;
-	};
-	$scope.updatePhoneNumber = function() {
-		$scope.phoneNumber = $scope.companyContactPhone1 + "-" + $scope.companyContactPhone2 + "-" + $scope.companyContactPhone3;
-	};
-	$scope.updateTotals = function(overrideHours) {
-		var totalMilestoneProjectCost = 0;
-		
-		var iterator = 1;
-		while ($scope["milestoneTotal" + iterator]) {
-			if (overrideHours) {
-				$scope["milestoneTotal" + iterator] = ($scope["estimateHourCompletion" + iterator] * $scope.hourlyRate);
-			}
-			totalMilestoneProjectCost = totalMilestoneProjectCost + $scope["milestoneTotal" + iterator];
-			iterator++;
-		}
-		
-		$scope.totalMilestoneProjectCost = totalMilestoneProjectCost;
-	};
-});
+stepFourApp.controller("createContractStepFourCtrl", function($scope) {});
 
 stepFiveApp.controller("createContractStepFiveCtrl", function($scope) {
 	$scope.changeEditMode = function() {

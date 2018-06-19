@@ -139,8 +139,12 @@
 				</div>
 				<input type="hidden" name="next-step" value="{{next_step}}" />
 				<div class="submit-buttons">
-					<a href="{% url 'contracts:home' %}" class="btn">Back</a>
-					<input type="submit" name="action" value="Continue" class="continue" />
+					{% if next_step == 2 %}
+						<a href="{% url 'contracts:home' %}" class="btn">Back</a>
+						<input type="submit" name="action" value="Continue" class="continue" />
+					{% else %}
+						<input type="submit" name="action" value="Save and Return to Project Overview" class="continue" />
+					{% endif %}
 				</div>
 				<div class="submit-buttons alt">
 					<input type="submit" name="action" value="Save for Later" class="later" />

@@ -201,6 +201,11 @@ class ContractLateReviewCharge(models.Model):
     Charge = models.DecimalField(decimal_places=3,null=False,default=0.000,max_digits=10)
     TimeWindowToleranceType = models.CharField(max_length=1,choices=TIME_WINDOW_TOLERANCE,default='d')
     
+    def get_window_value_view(self):
+        for window in TIME_WINDOW_TOLERANCE:
+            if self.TimeWindowToleranceType == window[0]:
+                return window[1]
+    
     class Meta:
        db_table = "ContractLateReviewCharge"
 

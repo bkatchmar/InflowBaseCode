@@ -35,9 +35,14 @@
 					<span class="label extra-fee">Kill Fee (optional):</span>
 					<span class="field"><input type="number" placeholder="$0.00" name="kill_fee" ng-model="kill_fee" ng-value="kill_fee" ng-pattern="/^[0-9]{0,8}([,.][0-9]{1,2})?$/" /></span>
 				</div>
+				<input type="hidden" name="next-step" value="{{next_step}}" />
 				<div class="submit-buttons">
-					<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
-					<input type="submit" name="action" value="Continue" class="continue" ng-disabled="contractCreationStep3.$invalid" />
+					{% if next_step == 0 %}
+						<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
+						<input type="submit" name="action" value="Continue" class="continue" ng-disabled="contractCreationStep3.$invalid" />
+					{% else %}
+						<input type="submit" name="action" value="Save and Return to Project Overview" class="continue" ng-disabled="contractCreationStep3.$invalid" />
+					{% endif %}
 				</div>
 				<div class="submit-buttons alt">
 					<input type="submit" name="action" value="Save for Later" class="later" ng-disabled="contractCreationStep3.$invalid" />
