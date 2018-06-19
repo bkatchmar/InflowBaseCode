@@ -37,7 +37,7 @@
 				</div>
 				<input type="hidden" name="next-step" value="{{next_step}}" />
 				<div class="submit-buttons">
-					{% if next_step == 0 %}
+					{% if next_step == "0" %}
 						<a href="{% url 'contracts:create_contract_step_2' contract_info.id %}" class="btn">Back</a>
 						<input type="submit" name="action" value="Continue" class="continue" ng-disabled="contractCreationStep3.$invalid" />
 					{% else %}
