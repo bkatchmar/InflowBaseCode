@@ -1560,6 +1560,23 @@ class ClientSpecificProjectPreviewMilestoneRejectConfirm(LoginRequiredMixin, Tem
             
         return context
 
+class AmendContractOverview(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
+    template_name = "contract_revision/contract.overview.html"
+    
+    def get(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, **kwargs):
+        context = self.get_context_data(request, **kwargs)
+        return render(request, self.template_name, context)
+    
+    def get_context_data(self, request, **kwargs):
+        # Set the context
+        context = super(AmendContractOverview, self).get_context_data(**kwargs)
+        context["view_mode"] = "projects"
+        return context
+
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
     template_name = "email_area.html"
     
