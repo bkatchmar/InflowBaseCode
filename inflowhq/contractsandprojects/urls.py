@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/invoices', views.ClientSpecificProjectInvoices.as_view(), name='client_project_invoices'),
     url(r'^work-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/files', views.ClientSpecificProjectFiles.as_view(), name='client_project_files'),
     url(r'^amend-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/overview', views.AmendContractOverview.as_view(), name='amend_contract_overview'),
+    url(r'^amend-contract/(?P<contract_slug>[-\w]+)-(?P<contract_id>[0-9]+)/view', views.ViewContractAmendments.as_view(), name='view_contract_amendments'),
     url(r'^emailer', views.EmailPlaceholderView.as_view(), name='contract_email_placeholder'),
     url(r'^contract-service/delete-milestone-file/(?P<milestone_file_id>[0-9]+)', views.JsonDeleteMilestoneFile.as_view(), name='json_delete_milestone_file'),
     url(r'^contract-service/delete-contract-file/(?P<contract_file_id>[0-9]+)', views.JsonDeleteContractFile.as_view(), name='json_delete_contract_file'),

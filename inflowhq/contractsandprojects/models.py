@@ -209,6 +209,25 @@ class ContractLateReviewCharge(models.Model):
     class Meta:
        db_table = "ContractLateReviewCharge"
 
+class ContractAmendmentSet(models.Model):
+    ContractAmended = models.ForeignKey(Contract,unique=False,on_delete=models.CASCADE)
+    Proposer = models.ForeignKey(User,unique=False,on_delete=models.CASCADE)
+    DateSubmitted = models.DateTimeField(auto_now=False,auto_now_add=False)
+    
+    class Meta:
+       db_table = "ContractAmendmentSet"
+       
+class ContractAmendment(models.Model):
+    Set = models.ForeignKey(ContractAmendmentSet,unique=False,on_delete=models.CASCADE)
+    Field = models.CharField(max_length=50,null=False)
+    ChangeFrom = models.TextField()
+    ChangeTo = models.TextField()
+    ReasonForChange = models.TextField()
+    SystemGeneratedMessage = models.TextField()
+    
+    class Meta:
+       db_table = "ContractAmendment"
+
 class Recipient(models.Model):
     ContractForRecipient = models.ForeignKey(Contract,unique=True,on_delete=models.CASCADE)
     Name = models.CharField(max_length=200)
