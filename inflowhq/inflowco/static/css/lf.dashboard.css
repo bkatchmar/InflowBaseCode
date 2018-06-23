@@ -375,9 +375,13 @@ main div.upload-modal div.buttons a:visited,
 main div.upload-modal div.buttons a:hover,
 main div.upload-modal div.buttons a:active { background-color: #D8D8D8; border: solid 1px #979797; border-radius: 8px; display: inline-block; font-size: 18px; margin: 0px 0px 0px 25px; padding: 10px 30px; -moz-border-radius: 8px; -webkit-border-radius: 8px; }
 
+main div.content div.amendment-list { padding: 15px 0px; text-align: center; }
+main div.content div.amendment-list a { display: block; margin: 5px 0px; }
+
 main div.create-contract-super-window { margin: 0px 25px; min-width: 928px; padding: 25px; position: relative; }
 main div.create-contract-super-window div.header { font-size: 30px; font-weight: 700; line-height: 32px; padding: 0px 15px 20px; }
-main div.create-contract-super-window div.sub-header {}
+main div.create-contract-super-window div.sub-header { padding: 10px 0px; }
+main div.create-contract-super-window div.sub-header a { text-decoration: underline; }
 main div.create-contract-super-window div.progress-bar { padding: 10px 40px 55px; }
 main div.create-contract-super-window div.progress-bar span.number { width: 195px; }
 main div.create-contract-super-window div.progress-bar span.number.one span.text { left: -45px; }

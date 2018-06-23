@@ -22,7 +22,9 @@ from accounts.models import UserSettings
 
 # Contracts and Projects App References
 from contractsandprojects.contract_standard_permission_handler import ContractPermissionHandler
-from contractsandprojects.models import Contract, ContractFile, ContractLateReviewCharge, Recipient, RecipientAddress, Relationship, Milestone, MilestoneFile, MilestoneReaction
+from contractsandprojects.models import Contract, ContractAmendmentSet, ContractAmendment, ContractFile, ContractLateReviewCharge
+from contractsandprojects.models import Milestone, MilestoneFile, MilestoneReaction
+from contractsandprojects.models import Recipient, RecipientAddress, Relationship
 from contractsandprojects.models import CONTRACT_TYPES
 from contractsandprojects.email_handler import EmailHandler
 from contractsandprojects.request_handler import AmazonBotoHandler, RequestInputHandler
@@ -1574,7 +1576,12 @@ class AmendContractOverview(LoginRequiredMixin, TemplateView, ContractPermission
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(AmendContractOverview, self).get_context_data(**kwargs)
+        
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        
         context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        
         return context
     
 class ViewContractAmendments(LoginRequiredMixin, TemplateView, ContractPermissionHandler):
@@ -1587,7 +1594,14 @@ class ViewContractAmendments(LoginRequiredMixin, TemplateView, ContractPermissio
     def get_context_data(self, request, **kwargs):
         # Set the context
         context = super(ViewContractAmendments, self).get_context_data(**kwargs)
+        
+        selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        amendment_sets = ContractAmendmentSet.objects.filter(ContractAmended=selected_contract)
+        
         context["view_mode"] = "projects"
+        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["amendments"] = amendment_sets
+        
         return context
 
 class EmailPlaceholderView(LoginRequiredMixin, TemplateView):
