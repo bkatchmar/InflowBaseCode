@@ -1,0 +1,1 @@
+var reviewApp = angular.module("contractReviewApp", []);

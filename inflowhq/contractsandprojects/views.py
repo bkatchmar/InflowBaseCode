@@ -1578,9 +1578,18 @@ class AmendContractOverview(LoginRequiredMixin, TemplateView, ContractPermission
         context = super(AmendContractOverview, self).get_context_data(**kwargs)
         
         selected_contract = self.get_contract_if_user_has_relationship(request.user,**kwargs)
+        selected_recipient = Recipient.objects.filter(ContractForRecipient=selected_contract).first()
         
         context["view_mode"] = "projects"
-        context["contract_info"] = { "id" : selected_contract.id, "name" : selected_contract.Name, "slug" : selected_contract.UrlSlug }
+        context["contract_info"] = selected_contract
+        
+        if selected_recipient is None:
+            context["client_name"] = ""
+        else:
+            if selected_recipient.Name is None:
+                context["client_name"] = selected_recipient.BillingName
+            else:
+                context["client_name"] = selected_recipient.Name
         
         return context
     

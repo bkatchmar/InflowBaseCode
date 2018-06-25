@@ -13,16 +13,37 @@
 			</div>
 			<div class="header">Work Overview</div>
 			<div class="sub-header">Please review details of the contract. You will be able to review the full contract agreement before signing. If you have any edits you’d like to make, please do so below with the Edit button.</div>
-			<div class="sub-header"><a href="{% url 'contracts:view_contract_amendments' contract_info.slug contract_info.id %}">View all of this contract's amendments</a></div>
-			<form class="contract-creation review-contract" method="post">
+			<div class="sub-header"><a href="{% url 'contracts:view_contract_amendments' contract_info.UrlSlug contract_info.id %}">View all of this contract's amendments</a></div>
+			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="">
 				<div class="overview-section">
 					<div class="header">
 						Project Information
-						<a href="#" class="go-to-edit-mode">Edit</a>
+						<div class="go-to-edit-mode">Edit</div>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">Project Name:</span>
+						<span class="field">
+							<span class="text on">{{contract_info.Name}}</span>
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">Project Description:</span>
+						<span class="field">
+							<span class="text on">{{contract_info.Description}}</span>
+						</span>
+					</div>
+					<div class="input-field text-single-line">
+						<span class="label">Name of Contact:</span>
+						<span class="field">
+							<span class="text on">{{client_name}}</span>
+						</span>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
 {% endblock %}
-{% block bottom_scripts %}{% endblock %}
+{% block bottom_scripts %}
+	<script src="{% static 'js/inflow.contract.review.app.js' %}"></script>
+	<script src="{% static 'js/inflow.contract.review.controller.js' %}"></script>
+{% endblock %}
