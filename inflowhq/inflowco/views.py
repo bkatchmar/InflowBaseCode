@@ -214,51 +214,27 @@ class HelpTopicInflow101(LoginRequiredMixin,TemplateView):
     
 class BaseSitemap(Sitemap):
     def items(self):
-        return ["index",
-                "how_it_works",
-                "about_us",
-                "accounts:login",
-                "accounts:create",
-                "htmldemos:freelancer_active_use_specific_project_milestones_upload_idle",
-                "htmldemos:freelancer_active_use_specific_project_milestones_upload_progress",
-                "htmldemos:freelancer_active_use_specific_project_milestones_preview_note",
-                "htmldemos:freelancer_active_use_specific_project_milestones_preview",
-                "htmldemos:freelancer_active_use_specific_project_milestones_schedule_send_now",
-                "htmldemos:freelancer_active_use_specific_project_milestones_schedule_send",
-                "htmldemos:freelancer_active_use_specific_project_milestones_schedule",
-                "htmldemos:freelancer_active_use_specific_project_overview",
-                "htmldemos:freelancer_active_use_specific_project_invoices",
-                "htmldemos:freelancer_active_use_specific_project_files",
-                "htmldemos:freelancer_active_use_quick_view",
-                "htmldemos:freelancer_active_use_email_confirm_freelancer",
-                "htmldemos:freelancer_active_use_email_confirm_client",
-                "htmldemos:freelancer_active_use",
-                "htmldemos:client_active_use_projects_preview_accept_send",
-                "htmldemos:client_active_use_projects_preview_accept",
-                "htmldemos:client_active_use_projects_preview_decline_send",
-                "htmldemos:client_active_use_projects_preview_decline",
-                "htmldemos:client_active_use_projects_preview",
-                "htmldemos:client_active_use_projects_files",
-                "htmldemos:client_active_use_projects_invoices",
-                "htmldemos:client_active_use_projects_overview",
-                "htmldemos:client_active_use_projects_milestones",
-                "htmldemos:client_active_use_projects_quick_view",
-                "htmldemos:client_active_use_projects_home",
-                "htmldemos:client_active_use"]
+        return ["index","how_it_works","about_us","accounts:login","accounts:create"]
 
     def location(self, item):
         return reverse(item)
     
     def changefreq(self, item):
-        if item == "htmldemos:demo_home":
-            return "daily"
-        elif item == "htmldemos:demo_my_projects":
-            return "yearly"
-        else: 
-            return "never"
+        return "never"
         
     def priority(self, item):
-        return 0.5
+        if item == "index":
+            return 1.0
+        elif item == "how_it_works":
+            return 0.9
+        elif item == "about_us":
+            return 0.7
+        elif item == "accounts:login":
+            return 0.1
+        elif item == "accounts:create":
+            return 0.1
+        else:
+            return 0.5
     
 class GoogleDomainVerificationFile(TemplateView):
     template_name = "google255e09f84b6b193b.html"
@@ -269,23 +245,7 @@ class GoogleDomainVerificationFile(TemplateView):
     def post(self, request):
         return render(request, self.template_name)
 
-class BasicJsonResponse(View):
-    def get(self, request):
-        data = {
-            'name': 'Vitor',
-            'location': 'Finland',
-            'is_active': True,
-            'count': 28
-            }
-        return JsonResponse(data)
-
 class DjangoModelJsonResponse(View):
     def get(self, request):
         first_currency = Currency.objects.first()
-        data = {
-            "IdCurrency" : first_currency.IdCurrency,
-            "Country" : first_currency.Country,
-            "Name" : first_currency.Name,
-            "Code" : first_currency.Code
-            }
         return JsonResponse(first_currency.to_dict(), safe=False)
