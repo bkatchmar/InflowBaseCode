@@ -4,3 +4,4 @@
 *.project
 *.pydevproject
 *org.eclipse.core.resources.prefs
+*.vscode

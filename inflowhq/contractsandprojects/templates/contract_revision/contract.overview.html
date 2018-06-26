@@ -14,25 +14,28 @@
 			<div class="header">Work Overview</div>
 			<div class="sub-header">Please review details of the contract. You will be able to review the full contract agreement before signing. If you have any edits you’d like to make, please do so below with the Edit button.</div>
 			<div class="sub-header"><a href="{% url 'contracts:view_contract_amendments' contract_info.UrlSlug contract_info.id %}">View all of this contract's amendments</a></div>
-			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="">
+			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="initArrayVals();editMode=''">
 				<div class="overview-section">
 					<div class="header">
 						Project Information
-						<div class="go-to-edit-mode">Edit</div>
+						<div class="go-to-edit-mode" ng-bind="editLabels[0]" ng-click="changeLabels(0);changeMode('project-info')"></div>
 					</div>
 					<div class="input-field text-single-line">
+						<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Project Name:</span>
 						<span class="field">
 							<span class="text on">{{contract_info.Name}}</span>
 						</span>
 					</div>
 					<div class="input-field text-single-line">
+							<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Project Description:</span>
 						<span class="field">
 							<span class="text on">{{contract_info.Description}}</span>
 						</span>
 					</div>
 					<div class="input-field text-single-line">
+						<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Name of Contact:</span>
 						<span class="field">
 							<span class="text on">{{client_name}}</span>
@@ -55,5 +58,5 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.review.app.js' %}"></script>
-	<script src="{% static 'js/inflow.contract.review.controller.js' %}"></script>
+	<script src="{% static 'js/inflow.contract.review.controller.js' %}?d=201806"></script>
 {% endblock %}
