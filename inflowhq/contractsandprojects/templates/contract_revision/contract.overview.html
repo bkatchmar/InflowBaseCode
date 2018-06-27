@@ -14,42 +14,40 @@
 			<div class="header">Work Overview</div>
 			<div class="sub-header">Please review details of the contract. You will be able to review the full contract agreement before signing. If you have any edits you’d like to make, please do so below with the Edit button.</div>
 			<div class="sub-header"><a href="{% url 'contracts:view_contract_amendments' contract_info.UrlSlug contract_info.id %}">View all of this contract's amendments</a></div>
-			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="initArrayVals();editMode=''">
+			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="initArrayVals();editMode='';whatWeAreEditing='';">
 				<div class="overview-section">
 					<div class="header">
 						Project Information
 						<div class="go-to-edit-mode" ng-bind="editLabels[0]" ng-click="changeLabels(0);changeMode('project-info')"></div>
 					</div>
 					<div class="input-field text-single-line">
-						<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="pencil-edit on" ng-show="editMode == 'project-info'" ng-click="changeWhatEditing('project-name')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Project Name:</span>
 						<span class="field">
 							<span class="text on">{{contract_info.Name}}</span>
 						</span>
 					</div>
 					<div class="input-field text-single-line">
-							<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+							<span class="pencil-edit on" ng-show="editMode == 'project-info'" ng-click="changeWhatEditing('project-description')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Project Description:</span>
 						<span class="field">
 							<span class="text on">{{contract_info.Description}}</span>
 						</span>
 					</div>
 					<div class="input-field text-single-line">
-						<span class="pencil-edit on" ng-show="editMode == 'project-info'"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
+						<span class="pencil-edit on" ng-show="editMode == 'project-info'" ng-click="changeWhatEditing('name-of-contact')"><img src="{% static 'img/if_pencil_216350.png' %}" alt="edit this" /></span>
 						<span class="label">Name of Contact:</span>
 						<span class="field">
-							<span class="text on">{{client_name}}</span>
+							<span class="text on" ng-class="{ 'amended' : doesTheCurrentEditObjectsContainElement('name-of-contact') }">{{client_name}}</span>
 						</span>
-						<!--
-							<span class="edit-window">
-								<span class="field"><input type="text" placeholder="Contact Name" name="edit-contact-name" required /></span>
-								<span class="field"><textarea name="edit-description" placeholder="Please list your reason for the change" maxlength="500"></textarea></span>
-								<span class="buttons">
-									<a href="#">Cancel</a>
-									<a href="#" class="continue">Propose Edit</a>
-								</span>
+						<span class="edit-window" ng-show="whatWeAreEditing == 'name-of-contact'">
+							<span class="field"><input type="text" placeholder="Contact Name" name="edit-contact-name" class="on" required /></span>
+							<span class="field"><textarea name="edit-description" placeholder="Please list your reason for the change" maxlength="500"></textarea></span>
+							<span class="buttons">
+								<a href="javascript:void(0);" ng-click="cancelEdit()">Cancel</a>
+								<a href="javascript:void(0);" class="continue">Propose Edit</a>
 							</span>
-						-->
+						</span>
 					</div>
 				</div>
 			</form>
@@ -58,5 +56,5 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.review.app.js' %}"></script>
-	<script src="{% static 'js/inflow.contract.review.controller.js' %}?d=201806"></script>
+	<script src="{% static 'js/inflow.contract.review.controller.js' %}?d=201806262229"></script>
 {% endblock %}
