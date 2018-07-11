@@ -39,6 +39,8 @@
 						<span class="label">Name of Contact:</span>
 						<span class="field">
 							<span class="text on" ng-class="{ 'amended' : doesTheCurrentEditObjectsContainElement('name-of-contact') }">{{client_name}}</span>
+							<span class="text on proposed-new" ng-bind="getProposedNewValue('name-of-contact')"></span>
+							<spaN class="text on description-block" ng-bind="getProposedDescription('name-of-contact')"></spaN>
 						</span>
 						<span class="edit-window" ng-show="whatWeAreEditing == 'name-of-contact'">
 							<span class="field"><input type="text" placeholder="Contact Name" name="edit-contact-name" class="on" ng-model="proposedChangeValue" /></span>
@@ -56,5 +58,5 @@
 {% endblock %}
 {% block bottom_scripts %}
 	<script src="{% static 'js/inflow.contract.review.app.js' %}"></script>
-	<script src="{% static 'js/inflow.contract.review.controller.js' %}?d=20180701"></script>
+	<script src="{% static 'js/inflow.contract.review.controller.js' %}?d=20180709"></script>
 {% endblock %}

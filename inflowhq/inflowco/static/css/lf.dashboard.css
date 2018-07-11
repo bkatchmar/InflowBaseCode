@@ -212,7 +212,6 @@ main div.content div.milestone-detail-list div.milestone-name-upload { border: s
 main div.content div.milestone-detail-list div.milestone-name-upload span.name { display: inline-block; font-size: 18px; font-weight: 700; line-height: 18px; padding: 10px; }
 main div.content div.milestone-detail-list div.milestone-name-upload span.upload { border-left: solid 1px #979797; display: inline-block; float: right; font-size: 14px; font-weight: 400; padding: 11px 10px;  }
 main div.content div.milestone-detail-list div.milestone-name-upload span.upload.on { background-color: #D8D8D8; }
-main div.content div.milestone-detail-list div.milestone-name-upload span.upload a {}
 main div.content div.milestone-detail-list div.milestone-information { margin: 10px; overflow: hidden; }
 main div.content div.milestone-detail-list div.milestone-information div.due-date { float: left; text-align: center; width: 10%; }
 main div.content div.milestone-detail-list div.milestone-information div.due-date div.due { font-size: 14px; font-weight: 700; padding: 5px 0px; }
@@ -443,6 +442,8 @@ main div.create-contract-super-window form.contract-creation.review-contract div
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.text { display: none; text-align: left; }
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.text.on { display: inline-block; }
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.text.amended { text-decoration: line-through; }
+main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.text.on.proposed-new { color: #373737; font-size: 18px; margin: 0px 0px 0px 5px; }
+main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.text.on.description-block { color: #0d0d0d; display: block; font-size: 16px; }
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field input { display: none; }
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field input.on { display: inline-block; margin: 0px; width: 270px; }
 main div.create-contract-super-window form.contract-creation.review-contract div.input-field span.field span.hyphen { display: none; padding: 5px 0px; width: 100%; }
@@ -470,7 +471,6 @@ main div.create-contract-super-window form.contract-creation div.input-field.ext
 
 main div.create-contract-super-window form.contract-creation div.mini-field-line { overflow: hidden; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field { float: left; width: 290px; }
-main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span {}
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.label { padding: 0px 0px 10px 2px; text-align: left; width: 100%; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.label span { font-size: 16px; font-weight: 300; }
 main div.create-contract-super-window form.contract-creation div.mini-field-line div.input-field.mini-field span.field { width: 100%; }
@@ -498,7 +498,6 @@ main div.create-contract-super-window form.contract-creation div.mini-field-line
 
 main div.create-contract-super-window form.contract-creation div.milestone-block { border-color: #979797; border-style: solid; border-width: 1px 0px; padding: 25px 0px; position: relative; }
 main div.create-contract-super-window form.contract-creation div.milestone-block img.remove-milestone { cursor: pointer; height: auto; position: absolute; right: 10px; top: 25px; width: 35px; }
-main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line {}
 main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line span { display: block; text-align: left; }
 main div.create-contract-super-window form.contract-creation div.milestone-block div.input-field.text-multi-line span.label { text-align: left; padding: 0px 0px 10px 2px; }
 main div.create-contract-super-window form.contract-creation div.milestone-block div.mini-field-line div.input-field.mini-field span.label { height: 44px; }
@@ -666,7 +665,6 @@ main div.content div.accordian div.items div.item div.row.on { display: block; }
 main div.content div.accordian div.items div.item div.row span { display: inline-block; font-weight: 700; margin: 0px 10px 0px 0px; vertical-align: top; }
 main div.content div.accordian div.items div.item div.row span.multi-line { display: inline-block; font-weight: 300; }
 main div.content div.accordian div.items div.item div.arrow { cursor: pointer; position: absolute; right: 10px; top: 14px; }
-main div.content.outer div.help-accordian-holder {}
 main div.content.outer div.help-accordian-holder div.help-accordian-row { min-height: 250px; overflow: hidden; }
 
 /* DatePicker */
