@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.utils import timezone
 from inflowco.models import Currency, Country
-from contractsandprojects.models import Contract, Milestone, Payment, PaymentPlan, Recipient, Relationship, ContractText
+from contractsandprojects.models import Contract, Milestone, Payment, PaymentPlan, Recipient, Relationship, ContractText, ContractAmendmentSet, ContractAmendment
 import pytz
 
 class ContractScreenAuthenticationTestCase(TestCase):
@@ -430,3 +430,47 @@ class ContractPhoneNumberTest(TestCase):
         self.assertTrue(loginAttempt)
         self.assertEqual(200,response.status_code) # User can see the page
         self.assertEqual(contract_1.id,response.context["contract_info"].id)
+
+class ContractAmendmentSetTest(TestCase):
+    def setUp(self):
+        usd = Currency.objects.create()
+        timezone.activate(pytz.timezone("America/New_York"))
+
+        # Users
+        user1 = User.objects.create(username="brian",email="brian@workinflow.co",first_name="Brian",last_name="Katchmar",is_staff=True,is_active=True,is_superuser=True)
+        user1.set_password("password1")
+        user1.save()
+
+        # Contracts
+        contract1 = Contract.objects.create(Creator=user1,Name="Amendment Set Trial",StartDate=date(2017,10,5),EndDate=date(2017,10,15))
+        contract1.create_slug()
+        contract1.save()
+        
+        # Contract Recipients
+        Recipient.objects.create(ContractForRecipient=contract1,Name="John Smith",BillingName="John Smith")
+
+        # Contract Relationship
+        Relationship.objects.create(ContractUser=user1,ContractForRelationship=contract1,RelationshipType='f')
+
+        # Create Amendment
+        ContractAmendmentSet.objects.create(ContractAmended=contract1,Proposer=user1,DateSubmitted=timezone.now())
+
+    def testContractAmendmentObjectSuccesfullyChangesContractField(self):
+        contract1 = Contract.objects.get(Name="Amendment Set Trial")
+        amendment_set = ContractAmendmentSet.objects.get(ContractAmended=contract1)
+        amendments_before = len(ContractAmendment.objects.filter(Set=amendment_set))
+        recipient = Recipient.objects.get(ContractForRecipient=contract1)
+
+        self.assertIsNotNone(contract1)
+        self.assertIsNotNone(amendment_set)
+        self.assertEqual(recipient.Name,"John Smith")
+
+        amendment_set.amend_contract_and_create_amendment_entry("name-of-contact","Jane Doe","John Smith No Longer Works Here")
+
+        amendments_after = len(ContractAmendment.objects.filter(Set=amendment_set))
+
+        self.assertNotEqual(amendments_before, amendments_after)
+
+        recipient = Recipient.objects.get(ContractForRecipient=contract1)
+
+        self.assertEqual(recipient.Name,"Jane Doe")

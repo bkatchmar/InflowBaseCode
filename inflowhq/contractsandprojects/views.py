@@ -1571,6 +1571,17 @@ class AmendContractOverview(LoginRequiredMixin, TemplateView, ContractPermission
     
     def post(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
+
+        # Get the field information that Angular fed into the form
+        field_names = request.POST.getlist("field-name")
+        field_values = request.POST.getlist("field-value")
+        field_value_reasons = request.POST.getlist("field-value-reason")
+
+        # Time to iterate
+        for address_index in range(0,len(field_names)):
+            sdfds = ""
+            # created_contract_recipient_address.Address1 = field_names[address_index]
+        
         return render(request, self.template_name, context)
     
     def get_context_data(self, request, **kwargs):

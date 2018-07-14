@@ -214,6 +214,22 @@ class ContractAmendmentSet(models.Model):
     Proposer = models.ForeignKey(User,unique=False,on_delete=models.CASCADE)
     DateSubmitted = models.DateTimeField(auto_now=False,auto_now_add=False)
     
+    def amend_contract_and_create_amendment_entry(self,contract_field,new_field_value,reason_for_change):
+        # Get corresponding data types related to this contract
+        contract_recipient = Recipient.objects.filter(ContractForRecipient=self.ContractAmended).first()
+
+        if contract_field == "name-of-contact":
+            if contract_recipient is not None:
+                ContractAmendment.objects.create(
+                    Set=self,
+                    Field=contract_field,
+                    ChangeFrom=contract_recipient.Name,
+                    ChangeTo=new_field_value,
+                    ReasonForChange=reason_for_change,
+                    SystemGeneratedMessage="")
+                contract_recipient.Name = new_field_value
+                contract_recipient.save()
+
     class Meta:
        db_table = "ContractAmendmentSet"
        

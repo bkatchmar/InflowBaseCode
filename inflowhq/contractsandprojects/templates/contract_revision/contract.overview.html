@@ -52,6 +52,13 @@
 						</span>
 					</div>
 				</div>
+
+				<div ng-repeat="eObject in editObjects">
+					<input type="hidden" name="field-name" ng-value="eObject.fieldName" />
+					<input type="hidden" name="field-value" ng-value="eObject.newValue" />
+					<input type="hidden" name="field-value-reason" ng-value="eObject.newValueReason" />
+				</div>
+
 			</form>
 		</div>
 	</div>
