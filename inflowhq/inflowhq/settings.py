@@ -19,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "editedoutduetosensitivity"
+SECRET_KEY = "7t=&8c9%(9%piw_q%pqr_5gis*4dy1^=z47=e+x-uzjv6m!5+e"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -28,20 +28,20 @@ ALLOWED_HOSTS = ["localhost","inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticb
 ADMINS = [("Brian", "brian@workinflow.co"),]
 
 # Stripe Information
-STRIPE_TEST_API_SECRET = "editedoutduetosensitivity"
-STRIPE_TEST_PUBLISHABLE_KEY = "editedoutduetosensitivity"
-STRIPE_CALL_STATE = "editedoutduetosensitivity"
-STRIPE_ACCOUNT_ID = "editedoutduetosensitivity"
+STRIPE_TEST_API_SECRET = "sk_test_PfUWHnbzVYVNQdc1pFC3u3iJ"
+STRIPE_TEST_PUBLISHABLE_KEY = "pk_test_tMPznJe4OlrOWublp14JFfi0"
+STRIPE_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
+STRIPE_ACCOUNT_ID = "ca_CYMWKoSmtNrYvVDOG6e3FvCAxGnPf1sk"
 STRIPE_REDIRECT_URI = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/stripe/express-setup"
 
 # LinkedIn Info
-LINKEDIN_CLIENT_ID = "editedoutduetosensitivity"
-LINKEDIN_CLIENT_SECRET = "editedoutduetosensitivity"
-LINKEDIN_CALL_STATE = "editedoutduetosensitivity"
+LINKEDIN_CLIENT_ID = "78ikt1qlinvfqg"
+LINKEDIN_CLIENT_SECRET = "JxqIUYwOl3BbEDGz"
+LINKEDIN_CALL_STATE = "BKlSbtptlh4m0HelllSbhhkHfmt1YasiktH"
 LINKEDIN_REDIRECT_URL = "http://inflowwinstondev-env.9erc4v9sv4.us-east-2.elasticbeanstalk.com/account/login"
 
 # MailChimp Info
-MAILCHIMP_USERNAME = "Brian@workinflow.co"
+MAILCHIMP_USERNAME = "Josh@workinflow.co"
 MAILCHIMP_API_KEY = "847c3df3e6ec9b554e30e521c28a1934-us16"
 MAILCHIMP_REGION = "us16"
 MAILCHIMP_LIST = {"General Splash Page Signups" : "2b105e40a9"}
@@ -105,9 +105,9 @@ SILENCED_SYSTEM_CHECKS = ["fields.W342"]
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'personalMySqlName',
+        'NAME': 'brianpersonal',
         'USER': 'root',
-        'PASSWORD': 'mysqlpassword',
+        'PASSWORD': 'th3l10nk1ng',
         'HOST': 'localhost',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
