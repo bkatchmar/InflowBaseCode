@@ -14,7 +14,7 @@
 			<div class="header">Work Overview</div>
 			<div class="sub-header">Please review details of the contract. You will be able to review the full contract agreement before signing. If you have any edits you’d like to make, please do so below with the Edit button.</div>
 			<div class="sub-header"><a href="{% url 'contracts:view_contract_amendments' contract_info.UrlSlug contract_info.id %}">View all of this contract's amendments</a></div>
-			<form class="contract-creation review-contract" method="post" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="initArrayVals();editMode='';whatWeAreEditing='';proposedChangeValue='';proposedChangeReason='';">
+			<form class="contract-creation review-contract" method="post" action="{% url 'contracts:amend_contract_overview' contract_info.UrlSlug contract_info.id %}" name="contractReview" ng-app="contractReviewApp" ng-controller="contractReviewCtrl" ng-init="initArrayVals();editMode='';whatWeAreEditing='';proposedChangeValue='';proposedChangeReason='';">
 				<div class="overview-section">
 					<div class="header">
 						Project Information
@@ -51,14 +51,16 @@
 							</span>
 						</span>
 					</div>
+					<div class="submit-buttons">
+						<input type="submit" name="action" value="Continue" class="continue" />
+					</div>
 				</div>
-
 				<div ng-repeat="eObject in editObjects">
 					<input type="hidden" name="field-name" ng-value="eObject.fieldName" />
 					<input type="hidden" name="field-value" ng-value="eObject.newValue" />
 					<input type="hidden" name="field-value-reason" ng-value="eObject.newValueReason" />
 				</div>
-
+				{% csrf_token %}
 			</form>
 		</div>
 	</div>

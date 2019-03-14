@@ -1572,17 +1572,24 @@ class AmendContractOverview(LoginRequiredMixin, TemplateView, ContractPermission
     def post(self, request, **kwargs):
         context = self.get_context_data(request, **kwargs)
 
+        # Data from context
+        contract = context["contract_info"]
+        amendment_set = ContractAmendmentSet.objects.create(ContractAmended=contract,Proposer=request.user,DateSubmitted=timezone.now())
+
         # Get the field information that Angular fed into the form
         field_names = request.POST.getlist("field-name")
         field_values = request.POST.getlist("field-value")
         field_value_reasons = request.POST.getlist("field-value-reason")
 
         # Time to iterate
-        for address_index in range(0,len(field_names)):
-            sdfds = ""
-            # created_contract_recipient_address.Address1 = field_names[address_index]
+        for index in range(0,len(field_names)):
+            amendment_set.amend_contract_and_create_amendment_entry(
+                field_names[index],
+                field_values[index],
+                field_value_reasons[index])
         
-        return render(request, self.template_name, context)
+        # TO DO: Change to next screen confirming the proposed changes
+        return redirect(reverse("contracts:home"))
     
     def get_context_data(self, request, **kwargs):
         # Set the context
