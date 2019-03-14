@@ -35,3 +35,21 @@ pip install -Iv stripe==1.77.1
 ```
 
 I don't see a problem in installing later versions, but at the time of that requirements.txt file, these were the versions being used.
+
+# Important Information 
+As usual with a Django project, the most important file can be found in the settings.py file, in this project, located in the "inflowhq" folder. The most important part of this being what database is used. This project was created using MySQL as the backend, but theoretically any backend Django supports out of the box can be used.
+
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mysql instance name',
+        'USER': 'mysql user name',
+        'PASSWORD': 'MySql Login password',
+        'HOST': 'mysql host name',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        }
+    }
+}
+```
