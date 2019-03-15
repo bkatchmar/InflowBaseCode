@@ -53,3 +53,53 @@ DATABASES = {
     }
 }
 ```
+
+Once the database is configured, Django needs to migrate to build the schema
+
+```
+python manage.py migrate
+```
+
+Finally, because the app utilizes Django's user login, this command is needed to create a superuser
+
+```
+python manage.py createsuperuser
+```
+
+Finally, the below command starts the develpoment surver
+
+```
+python manage.py runserver
+```
+
+# About the Django Site Structure
+Due to how Django is designed to break things down into individual "apps," this project has several apps in mind, each one tasked to handle a specific piece of function;
+
+* inflowco
+* inflowdemo
+* accounts
+* contractsandprojects
+* talktostripe
+
+Descriptions for each app is detailed below.
+
+## inflowco
+The primary purpose is this app is to be the main entry point for the site. This app hosts public facing pages and handles some high level login functions such as using Google or LinkedIn to log the user in if the appropriate post data is found. Hosts some files Google wants to see to verify the correct app and some generic models that do not belong anywhere else.
+
+### Models
+Nothing too special in this app, just some base utility models.
+
+#### Currency
+This was kind of "for the kicks of it" but also because I imagined sooner or later freelancers in other countries will want to charge in a currency other than USD. I realized later on that stripe would probably handle this better, but this model was created very early on in the app development.
+
+#### Country
+Country where the user is based, has some basic information and a reference to the base currency that user will be charging in.
+
+#### EmailSignup
+Base object to collect emails from a signup page, was going to use this listing for future marketing purposes or to import into MailChimp when the time came.
+
+### Unit Tests
+Not much going on here but since we had sign up pages and views that acted differently from each other, it was prudent to at least have some tests laid down. I wanted to see if the master pages on the public facing pages worked as expected by reading the context data from the resposne and see if I can successfully log in and see pages that require the user to be logged in. Also tested posting to pages to see if the email sign up worked as I expect them to.
+
+### mailchimp.py
+This was a separate class I was using with the intention of talking to MailChimp, a third party marketing email vendor. We intended to build this out a little further, but all we managed to do with the time given was to post to a specific list once a user signed up on the site. Still, it shows a base level how we use the requests library.
