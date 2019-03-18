@@ -103,3 +103,15 @@ Not much going on here but since we had sign up pages and views that acted diffe
 
 ### mailchimp.py
 This was a separate class I was using with the intention of talking to MailChimp, a third party marketing email vendor. We intended to build this out a little further, but all we managed to do with the time given was to post to a specific list once a user signed up on the site. Still, it shows a base level how we use the requests library.
+
+## accounts
+The primary purpose of this app is to handle both logins, sign ups, and onboarding. We use Django's built in User model complete with encrypted passwords and using both LinkedIn and Google to allow users to sign up.
+
+### Models
+All models here are related to gathering information about the user and their account. From storing data regarding onboarding to their base settings. We also store things like their Google API and LinkedIn API keys.
+
+### UserSettings
+This model's primary purpose is to store essential information related to the user. Including the generation of the freelancer's url slug to personalize URLs for users.
+
+### UserPaymentHistory
+UNDERDEVELOPED; this was intended to be our records for user payments toward are subscription model before we came to the conclusion that it will probably be better to let Stripe handle everything.
