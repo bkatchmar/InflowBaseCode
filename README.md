@@ -110,8 +110,41 @@ The primary purpose of this app is to handle both logins, sign ups, and onboardi
 ### Models
 All models here are related to gathering information about the user and their account. From storing data regarding onboarding to their base settings. We also store things like their Google API and LinkedIn API keys.
 
-### UserSettings
+#### UserSettings
 This model's primary purpose is to store essential information related to the user. Including the generation of the freelancer's url slug to personalize URLs for users.
 
-### UserPaymentHistory
+#### UserPaymentHistory
 UNDERDEVELOPED; this was intended to be our records for user payments toward are subscription model before we came to the conclusion that it will probably be better to let Stripe handle everything.
+
+#### UserLinkedInInformation
+Model used to store user's information for logging into LinkedIn in the event that they signed up via LinkedIn.
+
+#### UserGoogleInformation
+Model used to store user's information for logging into Google in the event that they signed up via Google.
+
+#### UserType
+Used for onboarding, users can identify as different types of freelancer during onboarding. Largely used to collect information.
+
+#### UserInterest
+Onboarding class, used with an enumeration field to determine what parts of the site a given user is interested in;
+
+```
+FREELANCER_INTERESTED_IN = (
+    ("m", "Milestone Tracking"),
+    ("p", "Proposals and Contracts"),
+    ("i", "Invoices"),
+    ("a", "All of them")
+)
+```
+
+#### UserAssociatedTypes
+Many-to-Many model with the user account and UserType.
+
+#### NotificationSetting
+Base setting string to tell the system what users should be notified about.
+
+#### UserNotificationSettings
+Many-To-Many model with the user and the NotificationSetting
+
+#### InFlowInvitation
+GUID model for when a user invites someone to the platform.
